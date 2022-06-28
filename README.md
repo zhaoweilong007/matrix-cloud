@@ -1,4 +1,4 @@
-# Spring Cloud matrix
+# Spring Cloud Matrix
 
 ## 介绍
 
@@ -16,10 +16,10 @@ Spring cloud matrix是微服务的矩阵，整合目前主流的微服务框架
 
 ### 技术选型
 
-| 技术框架             | 描述                 | 版本         |
-| -------------------- | -------------------- | ------------ |
+| 技术框架             | 描述                 | 版本           |
+| -------------------- | -------------------- |--------------|
 | spring cloud alibaba | spring cloud alibaba | 2021.0.1.0   |
-| spring boot          | spring boot          | 2.7.0        |
+| spring boot          | spring boot          | 2.7.1        |
 | nacos                | 服务注册发现         | 2021.1       |
 | apache shenyu        | 网关                 | 2.4.3        |
 | dubbo                | rpc                  | dubbo3       |
