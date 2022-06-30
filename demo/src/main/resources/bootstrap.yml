@@ -1,0 +1,5 @@
+spring:
+  profiles:
+    include: common
+  application:
+    name: demoApp

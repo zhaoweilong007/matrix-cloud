@@ -1,13 +1,13 @@
 plugins {
     id "java-library"
-    id 'org.springframework.boot' version '2.7.1' apply false
+    id 'org.springframework.boot' version '2.6.3' apply false
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 }
 
 ext {
-    springBootVersion = '2.7.1'
+    springBootVersion = '2.6.3'
     springCloudAlibabaVersion = '2021.0.1.0'
-    springCloudVersion = '2021.0.3'
+    springCloudVersion = '2021.0.1'
 }
 
 wrapper.setGradleVersion("7.4.2")
@@ -60,9 +60,6 @@ subprojects {
         compileOnly 'org.projectlombok:lombok:1.18.24'
         annotationProcessor 'org.projectlombok:lombok:1.18.24'
         testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
-    }
-    test {
-        useJUnitPlatform()
     }
 }
 
