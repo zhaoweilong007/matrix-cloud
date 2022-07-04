@@ -5,7 +5,13 @@ spring:
       username: nacos
       password: nacos
       config:
-        file-extension: yml
+        file-extension: yaml
+feign:
+  client:
+    refresh-enabled: true
+    config:
+      default:
+        logger-level: full
 
 management:
   endpoints:

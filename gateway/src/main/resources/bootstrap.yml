@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: api-gateway
+  profiles:
+    include: common
+    active: dev
+server:
+  port: 9000
+

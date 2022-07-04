@@ -1,0 +1,44 @@
+spring:
+  cloud:
+    nacos:
+      config:
+        file-extension: yaml
+    gateway:
+      globalcors:
+        ## 配置跨域
+        cors-configurations:
+          '[/**]':
+            allowed-origins: "*"
+            allowed-methods: "*"
+            allowed-headers: "*"
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: baidu
+          uri: http://www.baidu.com
+          predicates:
+            - Path=/baidu
+          filters:
+            - RedirectTo=302,http://www.baidu.com
+        - id: demo
+          uri: lb://demoapp
+          predicates:
+            - Path=/hello/**
+
+    sentinel:
+      transport:
+        dashboard: localhost:8080
+        port: 8719
+      eager: true
+      scg:
+        fallback:
+          content-type: application/json
+          mode: response
+          response-status: 429
+          response-body: '{"message":"Too Many Requests"}'
+feign:
+  ## 启用对 feign 的 Sentinel 支持
+  sentinel:
+    enabled: true

@@ -3,3 +3,9 @@ spring:
     include: common
   application:
     name: demoApp
+  cloud:
+    nacos:
+      config:
+        file-extension: yaml
+server:
+  port: 8081

@@ -4,6 +4,7 @@ dependencies {
     api('com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-config')
     api('org.springframework.boot:spring-boot-starter-actuator')
     api('org.springframework.cloud:spring-cloud-starter-bootstrap')
+    api('org.springframework.cloud:spring-cloud-starter-openfeign')
 }
 tasks.bootJar { enabled = false }
 tasks.jar { enabled = true }
