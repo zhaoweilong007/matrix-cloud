@@ -1,8 +1,11 @@
 spring:
   cloud:
+    ## ancos配置
     nacos:
       config:
         file-extension: yaml
+
+    ## gateway配置
     gateway:
       globalcors:
         ## 配置跨域
@@ -23,22 +26,34 @@ spring:
           filters:
             - RedirectTo=302,http://www.baidu.com
         - id: demo
-          uri: lb://demoapp
+          uri: lb://demoApp
           predicates:
             - Path=/hello/**
 
+    ## sentinel配置
     sentinel:
-      transport:
-        dashboard: localhost:8080
-        port: 8719
-      eager: true
       scg:
         fallback:
           content-type: application/json
           mode: response
           response-status: 429
           response-body: '{"message":"Too Many Requests"}'
-feign:
-  ## 启用对 feign 的 Sentinel 支持
-  sentinel:
-    enabled: true
+      datasource:
+        gw-flow:
+          nacos:
+            server-addr: localhost:8848
+            username: nacos
+            password: nacos
+            data-id: gateway-flow
+            group-id: DEFAULT_GROUP
+            data-type: json
+            rule-type: gw_flow
+        gw-api-group:
+          nacos:
+            server-addr: localhost:8848
+            username: nacos
+            password: nacos
+            data-id: gateway-api-group
+            group-id: DEFAULT_GROUP
+            data-type: json
+            rule-type: gw_api_group

@@ -15,9 +15,6 @@ public class GateWayConfig {
 
     public static String NACOS_SERVER_ADDR = "localhost:8848";
 
-
-    public static String NACOS_NAMESPACE = "public";
-
     public static String NACOS_ROUTE_DATA_ID = "gateway-route";
 
     public static String NACOS_ROUTE_GROUP = "DEFAULT_GROUP";

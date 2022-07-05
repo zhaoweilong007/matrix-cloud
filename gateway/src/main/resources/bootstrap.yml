@@ -7,3 +7,8 @@ spring:
 server:
   port: 9000
 
+logging:
+  level:
+    org.springframework.cloud.gateway: info
+    com.alibaba.cloud: info
+    com.alibaba.csp.sentinel.datasource.nacos: info

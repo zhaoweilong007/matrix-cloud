@@ -21,7 +21,7 @@ import java.util.concurrent.Executor;
 import java.util.function.Consumer;
 
 /**
- * 描述：
+ * 描述：gateway基于nacos路由动态配置
  *
  * @author zwl
  * @since 2022/7/4 14:26
