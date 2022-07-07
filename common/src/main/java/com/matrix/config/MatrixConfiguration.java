@@ -13,7 +13,7 @@ import java.util.List;
  * @since 2022/7/7 15:01
  **/
 @ConfigurationProperties(prefix = "matrix")
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @Data
 public class MatrixConfiguration {
 

@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
  * @since 2022/7/6 10:12
  **/
 @EnableOpenApi
-public class SwaggerAutoConfiguration {
+public class MatrixSwaggerAutoConfiguration {
 
     /**
      * 修复springfox spring-boot版本问题

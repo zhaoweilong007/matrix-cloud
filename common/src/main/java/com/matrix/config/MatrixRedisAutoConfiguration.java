@@ -22,7 +22,7 @@ import java.util.List;
  * @since 2022/7/7 13:59
  **/
 @EnableCaching
-public class RedisAutoConfiguration {
+public class MatrixRedisAutoConfiguration {
 
     @Bean
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory) {
