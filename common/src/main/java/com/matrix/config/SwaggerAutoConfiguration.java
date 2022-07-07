@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.SpringBootVersion;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
@@ -31,14 +31,7 @@ import java.util.stream.Collectors;
  * @since 2022/7/6 10:12
  **/
 @EnableOpenApi
-@EnableConfigurationProperties(SwaggerProperties.class)
 public class SwaggerAutoConfiguration {
-    private final SwaggerProperties swaggerProperties;
-
-    public SwaggerAutoConfiguration(SwaggerProperties swaggerProperties) {
-        this.swaggerProperties = swaggerProperties;
-    }
-
 
     /**
      * 修复springfox spring-boot版本问题
@@ -77,10 +70,12 @@ public class SwaggerAutoConfiguration {
     }
 
     @Bean
-    public Docket createRestApi() {
+    @ConditionalOnBean(MatrixConfiguration.class)
+    public Docket createRestApi(MatrixConfiguration matrixConfiguration) {
+        SwaggerProperties swaggerProperties = matrixConfiguration.getSwagger();
         return new Docket(DocumentationType.OAS_30)
                 .enable(swaggerProperties.getEnable())
-                .apiInfo(apiInfo())
+                .apiInfo(apiInfo(swaggerProperties))
                 .select()
                 .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.any())
@@ -93,7 +88,7 @@ public class SwaggerAutoConfiguration {
     /**
      * API 页面上半部分展示信息
      */
-    private ApiInfo apiInfo() {
+    private ApiInfo apiInfo(SwaggerProperties swaggerProperties) {
         return new ApiInfoBuilder()
                 .title(swaggerProperties.getName() + " Api Doc")
                 .description(swaggerProperties.getDescription())

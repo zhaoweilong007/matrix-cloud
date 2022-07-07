@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.matrix.config.SwaggerAutoConfiguration
+com.matrix.config.SwaggerAutoConfiguration,\
+com.matrix.config.RedisAutoConfiguration

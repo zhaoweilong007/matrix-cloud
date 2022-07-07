@@ -16,9 +16,17 @@ spring:
         file-extension: yaml
 
 
+matrix:
+  swagger:
+    enable: true
+    description: 演示文档
+    version: 1.0.0
+  cache:
+    - name: demo
+      prefix: demo
+      ttl: 30s
 
 
-swagger:
-  enable: true
-  description: 演示文档
-  version: 1.0.0
+
+
+

@@ -2,15 +2,13 @@ package com.matrix.config;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * 描述：
+ * 描述：swagger配置
  *
  * @author zwl
  * @since 2022/7/6 15:22
  **/
-@ConfigurationProperties(prefix = "swagger")
 @Data
 public class SwaggerProperties {
 
@@ -34,9 +32,4 @@ public class SwaggerProperties {
      * 项目描述信息
      */
     private String description;
-
-    /**
-     * 接口调试地址
-     */
-    private String tryHost;
 }

@@ -16,6 +16,8 @@ spring:
     lettuce:
       pool:
         max-active: 300
+  cache:
+    type: redis
 
   # spring cloud配置
   cloud:
