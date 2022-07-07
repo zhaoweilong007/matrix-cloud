@@ -2,6 +2,22 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+  servlet:
+    multipart:
+      max-request-size: "2MB"
+      max-file-size: "2MB"
+  jackson:
+    time-zone: GMT+8
+  # redis配置
+  redis:
+    host: localhost
+    port: 6379
+    database: 0
+    lettuce:
+      pool:
+        max-active: 300
+
+  # spring cloud配置
   cloud:
     nacos:
       server-addr: localhost:8848
@@ -16,6 +32,8 @@ spring:
         port: 8719
         dashboard: localhost:8080
         client-ip: 192.168.2.99
+
+# feign配置
 feign:
   ## 启用对 feign 的 Sentinel 支持
   sentinel:
@@ -26,6 +44,7 @@ feign:
       default:
         logger-level: full
 
+# 端点配置
 management:
   endpoints:
     jmx:
@@ -37,3 +56,21 @@ management:
   endpoint:
     health:
       show-details: always
+
+# 文档配置
+knife4j:
+  enable: true
+  production: false
+  cors: true
+
+# mybatis plus配置
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-value: "Y" # 逻辑已删除值(默认为 Y)
+      logic-not-delete-value: "N" # 逻辑未删除值(默认为 N)
+  configuration:
+    map-underscore-to-camel-case: true
+    call-setters-on-nulls: true
+  check-config-location: false

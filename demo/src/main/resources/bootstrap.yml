@@ -1,14 +1,21 @@
+server:
+  port: 8081
 spring:
   profiles:
     include: common
   application:
     name: demoApp
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/demo?allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
   cloud:
     nacos:
       config:
         file-extension: yaml
-server:
-  port: 8081
+
+
 
 
 swagger:

@@ -4,8 +4,8 @@ import com.google.common.collect.Lists;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.SpringBootVersion;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -25,17 +25,17 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * 描述：
+ * 描述：swagger文档配置
  *
  * @author zwl
  * @since 2022/7/6 10:12
  **/
-@Configuration
 @EnableOpenApi
-public class SwaggerConfiguration {
+@EnableConfigurationProperties(SwaggerProperties.class)
+public class SwaggerAutoConfiguration {
     private final SwaggerProperties swaggerProperties;
 
-    public SwaggerConfiguration(SwaggerProperties swaggerProperties) {
+    public SwaggerAutoConfiguration(SwaggerProperties swaggerProperties) {
         this.swaggerProperties = swaggerProperties;
     }
 

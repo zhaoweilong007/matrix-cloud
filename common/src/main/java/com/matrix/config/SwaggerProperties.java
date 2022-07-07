@@ -3,7 +3,6 @@ package com.matrix.config;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
 
 /**
  * 描述：
@@ -11,7 +10,6 @@ import org.springframework.context.annotation.Configuration;
  * @author zwl
  * @since 2022/7/6 15:22
  **/
-@Configuration
 @ConfigurationProperties(prefix = "swagger")
 @Data
 public class SwaggerProperties {
