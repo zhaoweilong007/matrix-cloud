@@ -31,13 +31,14 @@ import java.util.stream.Collectors;
  * @since 2022/7/6 10:12
  **/
 @EnableOpenApi
+@ConditionalOnBean(MatrixConfiguration.class)
 public class MatrixSwaggerAutoConfiguration {
 
     /**
      * 修复springfox spring-boot版本问题
      */
     @Bean
-    public static BeanPostProcessor springfoxHandlerProviderBeanPostProcessor() {
+    public BeanPostProcessor springfoxHandlerProviderBeanPostProcessor() {
         return new BeanPostProcessor() {
 
             @Override
@@ -70,7 +71,6 @@ public class MatrixSwaggerAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnBean(MatrixConfiguration.class)
     public Docket createRestApi(MatrixConfiguration matrixConfiguration) {
         SwaggerProperties swaggerProperties = matrixConfiguration.getSwagger();
         return new Docket(DocumentationType.OAS_30)

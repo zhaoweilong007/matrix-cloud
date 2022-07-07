@@ -1,14 +1,12 @@
 package com.matrix.config;
 
-import com.baomidou.mybatisplus.autoconfigure.MybatisPlusAutoConfiguration;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.*;
 import com.matrix.utils.UserContextHolder;
 import org.apache.ibatis.reflection.MetaObject;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import java.util.Date;
 import java.util.Optional;
@@ -20,7 +18,7 @@ import java.util.Optional;
  * @author zwl
  * @since 2022/7/7 16:27
  **/
-@AutoConfigureAfter(MybatisPlusAutoConfiguration.class)
+@ConditionalOnBean(MatrixConfiguration.class)
 public class MatrixMybatisAutoConfiguration {
 
     @Bean
