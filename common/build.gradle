@@ -1,17 +1,26 @@
 dependencies {
+    /*spring boot*/
     api('org.springframework.boot:spring-boot-starter-web')
-    api('com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-discovery'){
-        exclude group: "com.alibaba.nacos", module: "nacos-client"
-    }
-    api('com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-config'){
-        exclude group: "com.alibaba.nacos", module: "nacos-client"
-    }
+    api('org.springframework.boot:spring-boot-starter-validation')
     api('org.springframework.boot:spring-boot-starter-actuator')
+
+    /*spring cloud alibaba*/
+    api('com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-discovery') {
+        exclude group: "com.alibaba.nacos", module: "nacos-client"
+    }
+    api('com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-config') {
+        exclude group: "com.alibaba.nacos", module: "nacos-client"
+    }
+    api 'com.alibaba.nacos:nacos-client:2.1.0'
+    api 'com.alibaba.cloud:spring-cloud-starter-alibaba-sentinel'
+
+    /*spring cloud*/
     api('org.springframework.cloud:spring-cloud-starter-bootstrap')
     api('org.springframework.cloud:spring-cloud-starter-openfeign')
     api 'org.springframework.cloud:spring-cloud-starter-loadbalancer'
-    api 'com.alibaba.cloud:spring-cloud-starter-alibaba-sentinel'
-    api 'com.alibaba.nacos:nacos-client:2.1.0'
+
+    /*other*/
+    api 'com.github.xiaoymin:knife4j-micro-spring-boot-starter:3.0.3'
 }
 tasks.bootJar { enabled = false }
 tasks.jar { enabled = true }

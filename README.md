@@ -41,11 +41,17 @@ common组件包含以下公共依赖
 - spring-boot-starter-actuator
 - spring-cloud-starter-alibaba-nacos-discovery
 - spring-cloud-starter-alibaba-nacos-config
+
+> 集成nacos服务注册发现，配置中心
+
 - spring-cloud-starter-bootstrap
 
 > 在SpringBoot 2.4.x的版本之后，对于bootstrap.properties/bootstrap.yaml配置文件 的支持
 
 - spring-cloud-starter-openfeign
+
+> 集成openfeign
+
 - spring-cloud-starter-loadbalancer
 
 > Spring Cloud 2020版本以后，默认移除了对Netflix的依赖，其中就包括Ribbon，官方默认推荐使用Spring Cloud
@@ -54,6 +60,10 @@ common组件包含以下公共依赖
 - spring-cloud-starter-alibaba-sentinel
 
 > 集成sentinel的支持
+
+- knife4j
+
+> 集成knife4j的支持
 
 ## Gateway网关
 

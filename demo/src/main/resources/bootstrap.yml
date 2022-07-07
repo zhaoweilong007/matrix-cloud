@@ -9,3 +9,9 @@ spring:
         file-extension: yaml
 server:
   port: 8081
+
+
+swagger:
+  enable: true
+  description: 演示文档
+  version: 1.0.0

@@ -1,13 +1,16 @@
-plugins {
-    id 'org.springframework.boot' version '2.6.3'
-    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+buildscript {
+    ext {
+        springBootVersion = '2.6.3'
+        springCloudAlibabaVersion = '2021.0.1.0'
+        springCloudVersion = '2021.0.1'
+    }
 }
 
-ext {
-    springBootVersion = '2.6.3'
-    springCloudAlibabaVersion = '2021.0.1.0'
-    springCloudVersion = '2021.0.1'
+plugins {
+    id "org.springframework.boot" version "${springBootVersion}"
+    id "io.spring.dependency-management" version '1.0.11.RELEASE'
 }
+
 
 wrapper.setGradleVersion("7.4.2")
 
