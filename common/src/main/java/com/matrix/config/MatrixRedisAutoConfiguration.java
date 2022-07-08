@@ -1,6 +1,5 @@
 package com.matrix.config;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -14,7 +13,6 @@ import org.springframework.data.redis.serializer.RedisSerializer;
  * @since 2022/7/7 13:59
  **/
 @EnableCaching
-@ConditionalOnClass({MatrixConfiguration.class})
 public class MatrixRedisAutoConfiguration {
 
     @Bean

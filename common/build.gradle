@@ -29,6 +29,8 @@ dependencies {
     api('org.apache.commons:commons-pool2:2.11.1')
     api('mysql:mysql-connector-java:8.0.29')
     api 'com.github.ben-manes.caffeine:caffeine:3.1.1'
+    api("cn.dev33:sa-token-spring-boot-starter:1.30.0")
+    api("cn.dev33:sa-token-dao-redis-jackson:1.30.0")
 }
 tasks.bootJar { enabled = false }
 tasks.jar { enabled = true }

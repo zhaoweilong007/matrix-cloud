@@ -1,4 +1,4 @@
-package com.matrix.config;
+package com.matrix.properties;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;

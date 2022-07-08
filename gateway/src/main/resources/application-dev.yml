@@ -57,3 +57,19 @@ spring:
             group-id: DEFAULT_GROUP
             data-type: json
             rule-type: gw_api_group
+
+
+matrix:
+  swagger:
+    name: api-gateway
+    version: 1.0.0
+    description: api网关
+  security:
+    whiteUrls:
+      - /user/**
+
+
+
+sa-token:
+  # jwt秘钥
+  jwt-secret-key: asdasdasifhueuiwyurfewbfjsdafjk

@@ -5,49 +5,49 @@
       "type": "java.lang.Boolean",
       "defaultValue": true,
       "description": "enable swagger.",
-      "sourceType": "com.matrix.config.MatrixConfiguration"
+      "sourceType": "com.matrix.properties.MatrixProperties"
     },
     {
       "name": "matrix.swagger.name",
       "type": "java.lang.String",
       "defaultValue": "",
       "description": "swagger name.",
-      "sourceType": "com.matrix.config.MatrixConfiguration"
+      "sourceType": "com.matrix.properties.MatrixProperties"
     },
     {
       "name": "matrix.swagger.version",
       "type": "java.lang.String",
       "defaultValue": "",
       "description": "swagger version.",
-      "sourceType": "com.matrix.config.MatrixConfiguration"
+      "sourceType": "com.matrix.properties.MatrixProperties"
     },
     {
       "name": "matrix.swagger.description",
       "type": "java.lang.String",
       "defaultValue": "",
       "description": "swagger description.",
-      "sourceType": "com.matrix.config.MatrixConfiguration"
+      "sourceType": "com.matrix.properties.MatrixProperties"
     },
     {
       "name": "matrix.cache.name",
       "type": "java.lang.String",
       "defaultValue": "",
       "description": "cache name.",
-      "sourceType": "com.matrix.config.MatrixConfiguration"
+      "sourceType": "com.matrix.properties.MatrixProperties"
     },
     {
       "name": "matrix.cache.prefix",
       "type": "java.lang.String",
       "defaultValue": "",
       "description": "cache key prefix.",
-      "sourceType": "com.matrix.config.MatrixConfiguration"
+      "sourceType": "com.matrix.properties.MatrixProperties"
     },
     {
       "name": "matrix.cache.ttl",
       "type": "java.lang.String",
       "defaultValue": "",
       "description": "cache value ttl.",
-      "sourceType": "com.matrix.config.MatrixConfiguration"
+      "sourceType": "com.matrix.properties.MatrixProperties"
     }
   ]
 }

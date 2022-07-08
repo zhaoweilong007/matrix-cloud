@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.*;
 import com.matrix.utils.UserContextHolder;
 import org.apache.ibatis.reflection.MetaObject;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
 
 import java.util.Date;
@@ -18,7 +17,6 @@ import java.util.Optional;
  * @author zwl
  * @since 2022/7/7 16:27
  **/
-@ConditionalOnBean(MatrixConfiguration.class)
 public class MatrixMybatisAutoConfiguration {
 
     @Bean

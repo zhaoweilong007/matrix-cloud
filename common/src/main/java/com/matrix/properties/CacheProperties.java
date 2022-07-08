@@ -1,4 +1,4 @@
-package com.matrix.config;
+package com.matrix.properties;
 
 import lombok.Data;
 

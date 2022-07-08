@@ -1,6 +1,8 @@
-package com.matrix.config;
+package com.matrix.component;
 
 import cn.hutool.core.collection.CollectionUtil;
+import com.matrix.properties.CacheProperties;
+import com.matrix.properties.MatrixProperties;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.annotation.Lazy;
@@ -23,12 +25,12 @@ import java.util.List;
 public class CacheManagerProcessor implements BeanPostProcessor {
 
     private final RedisConnectionFactory factory;
-    private final MatrixConfiguration matrixConfiguration;
+    private final MatrixProperties matrixConfiguration;
 
     @Lazy
-    public CacheManagerProcessor(RedisConnectionFactory factory, MatrixConfiguration matrixConfiguration) {
+    public CacheManagerProcessor(RedisConnectionFactory factory, MatrixProperties matrixProperties) {
         this.factory = factory;
-        this.matrixConfiguration = matrixConfiguration;
+        this.matrixConfiguration = matrixProperties;
     }
 
 
