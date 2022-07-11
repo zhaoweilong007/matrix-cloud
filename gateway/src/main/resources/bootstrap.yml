@@ -2,18 +2,50 @@ spring:
   application:
     name: api-gateway
   profiles:
-    include: common
     active: dev
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/demo?allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai
-    username: root
-    password: 123456
+  jackson:
+    time-zone: GMT+8
 server:
   port: 9000
 
-logging:
-  level:
-    org.springframework.cloud.gateway: info
-    com.alibaba.cloud: info
-    com.alibaba.csp.sentinel.datasource.nacos: info
+
+# feign配置
+feign:
+  ## 启用对 feign 的 Sentinel 支持
+  sentinel:
+    enabled: true
+  client:
+    refresh-enabled: true
+    config:
+      default:
+        logger-level: full
+
+# 端点配置
+management:
+  endpoints:
+    jmx:
+      exposure:
+        include: "*"
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+
+
+# mybatis plus配置
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: auto
+  configuration:
+    map-underscore-to-camel-case: true
+    call-setters-on-nulls: true
+  check-config-location: false
+
+#logging:
+#  level:
+#    org.springframework.cloud.gateway: info
+#    com.alibaba.cloud: info
+#    com.alibaba.csp.sentinel.datasource.nacos: info

@@ -3,7 +3,6 @@ package com.matrix.config;
 import cn.dev33.satoken.jwt.StpLogicJwtForSimple;
 import cn.dev33.satoken.reactor.filter.SaReactorFilter;
 import cn.dev33.satoken.stp.StpLogic;
-import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
 import com.matrix.security.ForwardAuthFilter;
 import com.matrix.security.SecurityAuth;
@@ -16,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
  * @author zwl
  * @since 2022/7/8 14:48
  **/
-@Configuration
+@Configuration(proxyBeanMethods = false)
 public class SaTokenConfig {
 
     /**
@@ -41,12 +40,11 @@ public class SaTokenConfig {
     @Bean
     public SaReactorFilter getSaReactorFilter(SecurityAuth securityAuth, MatrixSecurityProperties matrixSecurityProperties) {
         return new SaReactorFilter()
-                .addInclude(matrixSecurityProperties.getBlackUrls().toArray(new String[0]))
+                .addInclude("/**")
+                .addExclude("/favicon.ico", "/actuator/**")
                 .addExclude(matrixSecurityProperties.getWhiteUrls().toArray(new String[0]))
-                .setAuth(r -> {
-                    StpUtil.checkLogin();
-                })
-                .setError(e -> SaResult.error(e.getMessage()));
+                .setAuth(securityAuth)
+                .setError(e -> SaResult.error(e.getMessage()).setCode(401));
     }
 
 }

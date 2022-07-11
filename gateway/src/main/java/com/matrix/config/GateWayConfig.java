@@ -1,6 +1,5 @@
 package com.matrix.config;
 
-import org.springframework.context.annotation.Configuration;
 
 /**
  * 描述：
@@ -8,7 +7,6 @@ import org.springframework.context.annotation.Configuration;
  * @author zwl
  * @since 2022/7/4 15:26
  **/
-@Configuration
 public class GateWayConfig {
 
     public static final long DEFAULT_TIMEOUT = 30000;

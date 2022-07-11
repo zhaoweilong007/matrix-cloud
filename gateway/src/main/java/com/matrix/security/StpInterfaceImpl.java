@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
- * 描述：鉴权接口
+ * 描述：获取权限角色
  *
  * @author zwl
  * @since 2022/7/8 14:46
@@ -26,6 +26,7 @@ public class StpInterfaceImpl implements StpInterface {
      */
     @Override
     public List<String> getPermissionList(Object loginId, String loginType) {
+        log.info("StpInterfaceImpl getPermissionList loginId:{},loginType:{}", loginId, loginType);
         return null;
     }
 
@@ -38,6 +39,7 @@ public class StpInterfaceImpl implements StpInterface {
      */
     @Override
     public List<String> getRoleList(Object loginId, String loginType) {
+        log.info("StpInterfaceImpl getRoleList loginId:{},loginType:{}", loginId, loginType);
         return null;
     }
 }
