@@ -1,16 +1,16 @@
 package com.matrix.controller;
 
-import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
-import com.matrix.entity.dto.SysAdminDto;
+import com.matrix.entity.dto.SysAdminRegisterDto;
+import com.matrix.entity.po.SysAdmin;
+import com.matrix.service.SysAdminService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 
 /**
  * 描述：登录控制器
@@ -20,35 +20,27 @@ import javax.validation.Valid;
  **/
 @RestController
 @Slf4j
-@RequestMapping("/user")
+@RequestMapping("/auth")
 @Valid
 @RequiredArgsConstructor
 public class LoginController {
 
+    private final SysAdminService sysAdminService;
+
     /**
-     * @param sysAdminDto 登录参数
+     * @param sysAdminRegisterDto 登录参数
      * @return SaResult
      */
-    @PostMapping("/register")
-    public SaResult register(@RequestBody SysAdminDto sysAdminDto) {
-        return SaResult.ok();
+    @PostMapping("register")
+    public Mono<SaResult> register(@RequestBody SysAdminRegisterDto sysAdminRegisterDto) {
+        SysAdmin sysAdmin = sysAdminService.register(sysAdminRegisterDto);
+        return sysAdmin == null ? Mono.just(SaResult.error("注册失败，用户已存在")) : Mono.just(SaResult.data(sysAdmin));
     }
 
-    @RequestMapping("login")
-    public SaResult login() {
-        StpUtil.login(10001);
-        return SaResult.ok("登录成功");
-    }
-
-    @RequestMapping("isLogin")
-    public SaResult isLogin() {
-        return SaResult.ok("是否登录：" + StpUtil.isLogin());
-    }
-
-    @RequestMapping("logout")
-    public SaResult logout() {
-        StpUtil.logout();
-        return SaResult.ok();
+    @PostMapping("login")
+    public Mono<SaResult> login(@NotBlank(message = "用户名不能为空") @RequestParam String username,
+                                @NotBlank(message = "密码不呢为空") @RequestParam String password) {
+        return Mono.just(SaResult.data(sysAdminService.login(username, password)));
     }
 
 

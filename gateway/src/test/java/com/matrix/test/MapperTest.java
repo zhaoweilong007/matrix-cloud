@@ -3,6 +3,7 @@ package com.matrix.test;
 import cn.dev33.satoken.secure.SaSecureUtil;
 import com.matrix.entity.po.SysAdmin;
 import com.matrix.service.SysAdminService;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,5 +42,11 @@ public class MapperTest {
 
     }
 
+
+    @Test
+    public void query() {
+        SysAdmin sysAdmin = sysAdminService.getById(7);
+        Assertions.assertNotNull(sysAdmin);
+    }
 
 }
