@@ -6,7 +6,6 @@ import cn.dev33.satoken.util.SaResult;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
  * 描述：sa-token配置
@@ -23,11 +22,8 @@ public class MatrixSaTokenAutoConfigure {
                 .addInclude("/**")
                 .addExclude("/favicon.ico", "/actuator/**")
                 .setAuth(obj -> {
-                    // 校验 Id-Token 身份凭证     —— 以下两句代码可简化为：SaIdUtil.checkCurrentRequestToken();
                     SaIdUtil.checkCurrentRequestToken();
                 })
-                .setError(e -> {
-                    return SaResult.error(e.getMessage());
-                });
+                .setError(e -> SaResult.error(e.getMessage()).setCode(401));
     }
 }

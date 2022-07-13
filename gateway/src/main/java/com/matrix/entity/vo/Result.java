@@ -2,31 +2,24 @@ package com.matrix.entity.vo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.matrix.exception.BaseException;
-import com.matrix.exception.ErrorType;
-import com.matrix.exception.SystemErrorType;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import com.matrix.exception.model.BaseException;
+import com.matrix.exception.model.ErrorType;
+import com.matrix.exception.model.SystemErrorType;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.time.Instant;
 import java.time.ZonedDateTime;
 
-@ApiModel(description = "响应对象")
 @Data
 public class Result<T> implements Serializable {
 
     public static final Integer SUCCESSFUL_CODE = 200;
     public static final String SUCCESSFUL_MSG = "成功";
 
-    @ApiModelProperty(value = "处理结果code", required = true)
     private Integer code;
-    @ApiModelProperty(value = "处理结果描述信息")
     private String msg;
-    @ApiModelProperty(value = "请求结果生成时间戳")
     private Instant time;
-    @ApiModelProperty(value = "处理结果数据信息")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private T data;
 

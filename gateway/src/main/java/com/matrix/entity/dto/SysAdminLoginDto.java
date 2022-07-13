@@ -11,13 +11,10 @@ import javax.validation.constraints.NotBlank;
  * @since 2022/7/11 15:58
  **/
 @Data
-public class SysAdminRegisterDto {
+public class SysAdminLoginDto {
 
     @NotBlank(message = "用户名不能为空")
     private String username;
-
-    @NotBlank(message = "邮箱不能为空")
-    private String email;
 
     @NotBlank(message = "密码不能为空")
     private String password;

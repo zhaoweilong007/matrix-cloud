@@ -1,7 +1,10 @@
 package com.matrix.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.matrix.entity.dto.SysRoleDto;
 import com.matrix.entity.po.SysRole;
+
+import java.util.List;
 
 /**
  * (SysRole)表服务接口
@@ -11,5 +14,12 @@ import com.matrix.entity.po.SysRole;
  */
 public interface SysRoleService extends IService<SysRole> {
 
+    Boolean add(SysRoleDto sysRoleDto);
+
+    Boolean update(SysRoleDto sysRoleDto);
+
+    Boolean assignMenu(Long roleId, List<Long> menuIds);
+
+    Boolean assignResource(Long roleId, List<Long> resourceIds);
 }
 

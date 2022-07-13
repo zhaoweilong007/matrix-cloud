@@ -1,12 +1,15 @@
 package com.matrix.service;
 
 import cn.dev33.satoken.stp.SaTokenInfo;
+import cn.hutool.system.UserInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.matrix.entity.dto.SysAdminLoginDto;
 import com.matrix.entity.dto.SysAdminRegisterDto;
 import com.matrix.entity.dto.UpdateAdminPasswordDto;
 import com.matrix.entity.po.SysAdmin;
 import com.matrix.entity.po.SysResource;
 import com.matrix.entity.po.SysRole;
+import com.matrix.entity.vo.SysAdminUserInfo;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -27,28 +30,24 @@ public interface SysAdminService extends IService<SysAdmin> {
     /**
      * 注册功能
      */
-    SysAdmin register(SysAdminRegisterDto umsAdminParam);
+    String register(SysAdminRegisterDto umsAdminParam);
 
     /**
      * 登录功能
      *
-     * @param username 用户名
-     * @param password 密码
-     * @return 生成的JWT的token
      */
-    SaTokenInfo login(String username, String password);
+    SaTokenInfo login(SysAdminLoginDto sysAdminLoginDto);
 
     /**
      * 刷新token的功能
      *
-     * @param oldToken 旧的token
      */
     String refreshToken(String oldToken);
 
     /**
-     * 根据用户id获取用户
+     * 根据用户id获取用户信息
      */
-    SysAdmin getItem(Long id);
+    SysAdminUserInfo userInfo(Long id);
 
     /**
      * 根据用户名或昵称分页查询用户

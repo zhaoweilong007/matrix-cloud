@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -20,14 +21,11 @@ import static org.springframework.http.HttpStatus.*;
 
 
 /**
- * 全局异常处理器，将 Exception 翻译成 Result + 对应的异常编号
+ * 全局异常处理器
  */
 @RestControllerAdvice
-@AllArgsConstructor
 @Slf4j
 public class GlobalExceptionHandler {
-
-    private final String applicationName;
 
 
     /**

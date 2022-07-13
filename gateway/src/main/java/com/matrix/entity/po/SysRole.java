@@ -1,10 +1,7 @@
 package com.matrix.entity.po;
 
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
-
-import java.util.Date;
 
 /**
  * (SysRole)表实体类
@@ -23,12 +20,9 @@ public class SysRole extends BasePo<SysRole> {
 
     private Integer adminCount;
 
-
     private Integer status;
 
     private Integer sort;
-
-
 
 
 }

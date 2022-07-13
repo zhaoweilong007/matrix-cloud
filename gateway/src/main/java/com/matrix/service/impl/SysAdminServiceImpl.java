@@ -3,12 +3,16 @@ package com.matrix.service.impl;
 import cn.dev33.satoken.secure.SaSecureUtil;
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.core.lang.Assert;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.matrix.entity.dto.SysAdminLoginDto;
 import com.matrix.entity.dto.SysAdminRegisterDto;
 import com.matrix.entity.dto.UpdateAdminPasswordDto;
 import com.matrix.entity.po.SysAdmin;
 import com.matrix.entity.po.SysResource;
 import com.matrix.entity.po.SysRole;
+import com.matrix.entity.vo.SysAdminUserInfo;
 import com.matrix.exception.model.BusinessErrorType;
 import com.matrix.exception.model.ServiceException;
 import com.matrix.mapper.SysAdminMapper;
@@ -33,27 +37,27 @@ public class SysAdminServiceImpl extends ServiceImpl<SysAdminMapper, SysAdmin> i
     }
 
     @Override
-    public SysAdmin register(SysAdminRegisterDto sysAdminRegisterDto) {
-        Long count = baseMapper.selectCount(this.lambdaQuery().eq(SysAdmin::getUsername, sysAdminRegisterDto.getUserName()));
+    public String register(SysAdminRegisterDto sysAdminRegisterDto) {
+        Long count = baseMapper.selectCount(Wrappers.<SysAdmin>lambdaQuery().eq(SysAdmin::getUsername, sysAdminRegisterDto.getUsername()));
         if (count > 0) {
-            return null;
+            throw new ServiceException(BusinessErrorType.USER_EXISTS);
         }
         SysAdmin sysAdmin = new SysAdmin();
-        sysAdmin.setUsername(sysAdminRegisterDto.getUserName());
+        sysAdmin.setUsername(sysAdminRegisterDto.getUsername());
         sysAdmin.setPassword(SaSecureUtil.md5(sysAdminRegisterDto.getPassword()));
         sysAdmin.setEmail(sysAdminRegisterDto.getEmail());
         baseMapper.insert(sysAdmin);
-        return sysAdmin;
+        return sysAdmin.getUsername();
     }
 
     @Override
-    public SaTokenInfo login(String username, String password) {
-        SysAdmin sysAdmin = baseMapper.selectOne(this.lambdaQuery().eq(SysAdmin::getUsername, username));
+    public SaTokenInfo login(SysAdminLoginDto sysAdminLoginDto) {
+        SysAdmin sysAdmin = baseMapper.selectOne(Wrappers.<SysAdmin>lambdaQuery().eq(SysAdmin::getUsername, sysAdminLoginDto.getUsername()));
         if (sysAdmin == null) {
-            throw new ServiceException(BusinessErrorType.User_not_found);
+            throw new ServiceException(BusinessErrorType.USER_NOT_EXISTS);
         }
-        if (!Objects.equals(SaSecureUtil.md5(password), sysAdmin.getPassword())) {
-            throw new ServiceException(BusinessErrorType.Authentication_failed);
+        if (!Objects.equals(SaSecureUtil.md5(sysAdminLoginDto.getPassword()), sysAdmin.getPassword())) {
+            throw new ServiceException(BusinessErrorType.AUTHENTICATION_FAILED);
         }
         StpUtil.login(sysAdmin.getId());
         return StpUtil.getTokenInfo();
@@ -65,7 +69,13 @@ public class SysAdminServiceImpl extends ServiceImpl<SysAdminMapper, SysAdmin> i
     }
 
     @Override
-    public SysAdmin getItem(Long id) {
+    public SysAdminUserInfo userInfo(Long id) {
+        SysAdmin sysAdmin = baseMapper.selectById(id);
+        Assert.notNull(sysAdmin, () -> new ServiceException(BusinessErrorType.USER_NOT_EXISTS));
+        SysAdminUserInfo sysAdminUserInfo = new SysAdminUserInfo();
+        sysAdminUserInfo.setSysAdmin(sysAdmin);
+
+
         return null;
     }
 

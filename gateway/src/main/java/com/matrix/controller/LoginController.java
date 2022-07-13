@@ -1,16 +1,15 @@
 package com.matrix.controller;
 
+import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
+import com.matrix.entity.dto.SysAdminLoginDto;
 import com.matrix.entity.dto.SysAdminRegisterDto;
-import com.matrix.entity.po.SysAdmin;
 import com.matrix.service.SysAdminService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
-
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 
 /**
  * 描述：登录控制器
@@ -21,7 +20,7 @@ import javax.validation.constraints.NotBlank;
 @RestController
 @Slf4j
 @RequestMapping("/auth")
-@Valid
+@Validated
 @RequiredArgsConstructor
 public class LoginController {
 
@@ -32,16 +31,36 @@ public class LoginController {
      * @return SaResult
      */
     @PostMapping("register")
-    public Mono<SaResult> register(@RequestBody SysAdminRegisterDto sysAdminRegisterDto) {
-        SysAdmin sysAdmin = sysAdminService.register(sysAdminRegisterDto);
-        return sysAdmin == null ? Mono.just(SaResult.error("注册失败，用户已存在")) : Mono.just(SaResult.data(sysAdmin));
+    public Mono<SaResult> register(@Validated @RequestBody SysAdminRegisterDto sysAdminRegisterDto) {
+        String username = sysAdminService.register(sysAdminRegisterDto);
+        return Mono.just(SaResult.data(username));
     }
 
+
+    /**
+     * 登录
+     *
+     * @return SaResult
+     */
     @PostMapping("login")
-    public Mono<SaResult> login(@NotBlank(message = "用户名不能为空") @RequestParam String username,
-                                @NotBlank(message = "密码不呢为空") @RequestParam String password) {
-        return Mono.just(SaResult.data(sysAdminService.login(username, password)));
+    public Mono<SaResult> login(@Validated @RequestBody SysAdminLoginDto sysAdminLoginDto) {
+        return Mono.just(SaResult.data(sysAdminService.login(sysAdminLoginDto)));
     }
 
+    /**
+     * 退出登录
+     */
+    @GetMapping("logout")
+    public Mono<SaResult> logout() {
+        StpUtil.logout();
+        return Mono.just(SaResult.ok());
+    }
+
+
+    @GetMapping("userInfo")
+    public Mono<SaResult> getUserInfo() {
+        Long loginId = (Long) StpUtil.getLoginId();
+        return Mono.just(SaResult.data(sysAdminService.userInfo(loginId)));
+    }
 
 }
