@@ -36,7 +36,7 @@ public class StpInterfaceImpl implements StpInterface {
     @Override
     public List<String> getPermissionList(Object loginId, String loginType) {
         log.info("StpInterfaceImpl getPermissionList loginId:{},loginType:{}", loginId, loginType);
-        List<SysResource> resources = sysResourceService.getResourceByAdminId(((Long) loginId));
+        List<SysResource> resources = sysResourceService.getResourceByAdminId(Long.valueOf(loginId.toString()));
         return resources.stream().map(SysResource::getUrl).collect(Collectors.toList());
     }
 
