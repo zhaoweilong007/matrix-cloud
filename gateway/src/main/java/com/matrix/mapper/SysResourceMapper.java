@@ -3,6 +3,8 @@ package com.matrix.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.matrix.entity.po.SysResource;
 
+import java.util.List;
+
 /**
  * (SysResource)表数据库访问层
  *
@@ -11,5 +13,10 @@ import com.matrix.entity.po.SysResource;
  */
 public interface SysResourceMapper extends BaseMapper<SysResource> {
 
+    List<SysResource> getResourceByAdminId(Long id);
+
+    List<SysResource> getResourceByRoleId(Long id);
+
+    List<String> getAllResource();
 }
 

@@ -6,8 +6,11 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.matrix.convert.ConvertMapper;
 import com.matrix.entity.dto.SysMenuDto;
 import com.matrix.entity.po.SysMenu;
+import com.matrix.entity.po.SysRoleMenuRelation;
 import com.matrix.mapper.SysMenuMapper;
 import com.matrix.service.SysMenuService;
+import com.matrix.service.SysRoleMenuRelationService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,7 +23,10 @@ import java.util.stream.Collectors;
  * @since 2022-07-11 16:53:50
  */
 @Service
+@RequiredArgsConstructor
 public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> implements SysMenuService {
+
+    private final SysRoleMenuRelationService sysRoleMenuRelationService;
 
     @Override
     public Boolean create(SysMenuDto sysMenuDto) {
@@ -94,5 +100,27 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
         }
         return sysMenu.setHidden(hidden).updateById();
     }
+
+    @Override
+    public Boolean assignMenu(Long roleId, List<Long> menuIds) {
+        List<SysRoleMenuRelation> relationList = menuIds.stream().filter(id -> getById(id) == null).map(mid -> {
+            SysRoleMenuRelation sysRoleMenuRelation = new SysRoleMenuRelation();
+            sysRoleMenuRelation.setRoleId(roleId);
+            sysRoleMenuRelation.setMenuId(mid);
+            return sysRoleMenuRelation;
+        }).collect(Collectors.toList());
+        return sysRoleMenuRelationService.saveBatch(relationList);
+    }
+
+    @Override
+    public List<SysMenu> getMenuByAdminId(Long id) {
+        return baseMapper.getMenuByAdminId(id);
+    }
+
+    @Override
+    public List<SysMenu> getMenuByRoleId(Long id) {
+        return baseMapper.getMenuByRoleId(id);
+    }
+
 }
 

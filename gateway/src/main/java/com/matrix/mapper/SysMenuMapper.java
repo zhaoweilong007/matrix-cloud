@@ -3,6 +3,8 @@ package com.matrix.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.matrix.entity.po.SysMenu;
 
+import java.util.List;
+
 /**
  * (SysMenu)表数据库访问层
  *
@@ -11,5 +13,8 @@ import com.matrix.entity.po.SysMenu;
  */
 public interface SysMenuMapper extends BaseMapper<SysMenu> {
 
+    List<SysMenu> getMenuByAdminId(Long id);
+
+    List<SysMenu> getMenuByRoleId(Long id);
 }
 

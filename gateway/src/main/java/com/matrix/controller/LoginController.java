@@ -4,7 +4,7 @@ import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
 import com.matrix.entity.dto.SysAdminLoginDto;
 import com.matrix.entity.dto.SysAdminRegisterDto;
-import com.matrix.service.SysAdminService;
+import com.matrix.service.LoginService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -24,7 +24,7 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class LoginController {
 
-    private final SysAdminService sysAdminService;
+    private final LoginService loginService;
 
     /**
      * @param sysAdminRegisterDto 登录参数
@@ -32,10 +32,9 @@ public class LoginController {
      */
     @PostMapping("register")
     public Mono<SaResult> register(@Validated @RequestBody SysAdminRegisterDto sysAdminRegisterDto) {
-        String username = sysAdminService.register(sysAdminRegisterDto);
+        String username = loginService.register(sysAdminRegisterDto);
         return Mono.just(SaResult.data(username));
     }
-
 
     /**
      * 登录
@@ -44,7 +43,7 @@ public class LoginController {
      */
     @PostMapping("login")
     public Mono<SaResult> login(@Validated @RequestBody SysAdminLoginDto sysAdminLoginDto) {
-        return Mono.just(SaResult.data(sysAdminService.login(sysAdminLoginDto)));
+        return Mono.just(SaResult.data(loginService.login(sysAdminLoginDto)));
     }
 
     /**
@@ -56,11 +55,5 @@ public class LoginController {
         return Mono.just(SaResult.ok());
     }
 
-
-    @GetMapping("userInfo")
-    public Mono<SaResult> getUserInfo() {
-        Long loginId = (Long) StpUtil.getLoginId();
-        return Mono.just(SaResult.data(sysAdminService.userInfo(loginId)));
-    }
 
 }

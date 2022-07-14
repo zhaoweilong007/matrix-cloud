@@ -19,6 +19,8 @@ public enum BusinessErrorType implements ErrorType {
      */
     AUTHENTICATION_FAILED(4000, "用户名或密码错误"),
 
+    PASSWORD_MISTAKE(4001, "密码错误"),
+
     USER_EXISTS(4001, "用户已存在"),
     USER_NOT_EXISTS(4001, "用户不存在"),
     USER_HAS_BEEN_LOCKED(4002, "用户已被锁定");

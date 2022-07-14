@@ -18,8 +18,18 @@ public interface SysRoleService extends IService<SysRole> {
 
     Boolean update(SysRoleDto sysRoleDto);
 
-    Boolean assignMenu(Long roleId, List<Long> menuIds);
 
-    Boolean assignResource(Long roleId, List<Long> resourceIds);
+
+    Boolean assignRole(Long userId,List<Long> roleIds);
+
+
+    /**
+     * 获取角色列表
+     * @param id
+     * @return
+     */
+    List<SysRole> getRoleByAdminId(Long id);
+
+    Boolean updateHidden(Long id, Integer status);
 }
 

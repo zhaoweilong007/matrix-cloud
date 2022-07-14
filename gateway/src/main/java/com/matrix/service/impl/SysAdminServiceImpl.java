@@ -10,15 +10,18 @@ import com.matrix.entity.dto.SysAdminLoginDto;
 import com.matrix.entity.dto.SysAdminRegisterDto;
 import com.matrix.entity.dto.UpdateAdminPasswordDto;
 import com.matrix.entity.po.SysAdmin;
-import com.matrix.entity.po.SysResource;
-import com.matrix.entity.po.SysRole;
 import com.matrix.entity.vo.SysAdminUserInfo;
 import com.matrix.exception.model.BusinessErrorType;
 import com.matrix.exception.model.ServiceException;
 import com.matrix.mapper.SysAdminMapper;
+import com.matrix.service.LoginService;
 import com.matrix.service.SysAdminService;
+import com.matrix.service.SysMenuService;
+import com.matrix.service.SysRoleService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -29,11 +32,16 @@ import java.util.Objects;
  * @since 2022-07-11 16:53:49
  */
 @Service
-public class SysAdminServiceImpl extends ServiceImpl<SysAdminMapper, SysAdmin> implements SysAdminService {
+public class SysAdminServiceImpl extends ServiceImpl<SysAdminMapper, SysAdmin> implements SysAdminService, LoginService {
+
+    @Autowired
+    private SysMenuService sysMenuService;
+    @Autowired
+    private SysRoleService sysRoleService;
 
     @Override
     public SysAdmin getAdminByUsername(String username) {
-        return null;
+        return this.getOne(Wrappers.<SysAdmin>query().lambda().eq(SysAdmin::getUsername, username));
     }
 
     @Override
@@ -60,6 +68,8 @@ public class SysAdminServiceImpl extends ServiceImpl<SysAdminMapper, SysAdmin> i
             throw new ServiceException(BusinessErrorType.AUTHENTICATION_FAILED);
         }
         StpUtil.login(sysAdmin.getId());
+        sysAdmin.setLoginTime(new Date());
+        updateById(sysAdmin);
         return StpUtil.getTokenInfo();
     }
 
@@ -74,9 +84,17 @@ public class SysAdminServiceImpl extends ServiceImpl<SysAdminMapper, SysAdmin> i
         Assert.notNull(sysAdmin, () -> new ServiceException(BusinessErrorType.USER_NOT_EXISTS));
         SysAdminUserInfo sysAdminUserInfo = new SysAdminUserInfo();
         sysAdminUserInfo.setSysAdmin(sysAdmin);
+        sysAdminUserInfo.setMenus(sysMenuService.getMenuByAdminId(id));
+        sysAdminUserInfo.setRoles(sysRoleService.getRoleByAdminId(id));
+        return sysAdminUserInfo;
+    }
 
-
-        return null;
+    @Override
+    public Boolean updateHidden(Long id, Integer status) {
+        SysAdmin sysAdmin = getById(id);
+        Assert.notNull(sysAdmin, () -> new ServiceException(BusinessErrorType.USER_NOT_EXISTS));
+        sysAdmin.setStatus(status);
+        return updateById(sysAdmin);
     }
 
     @Override
@@ -85,33 +103,17 @@ public class SysAdminServiceImpl extends ServiceImpl<SysAdminMapper, SysAdmin> i
     }
 
     @Override
-    public int update(Long id, SysAdmin admin) {
-        return 0;
+    public Boolean updatePassword(UpdateAdminPasswordDto updatePasswordParam) {
+        //更改密码
+        SysAdmin sysAdmin = getById(updatePasswordParam.getId());
+        Assert.notNull(sysAdmin, () -> new ServiceException(BusinessErrorType.USER_NOT_EXISTS));
+        if (!Objects.equals(SaSecureUtil.md5(updatePasswordParam.getOldPassword()), sysAdmin.getPassword())) {
+            throw new ServiceException(BusinessErrorType.PASSWORD_MISTAKE);
+        }
+        sysAdmin.setPassword(SaSecureUtil.md5(updatePasswordParam.getNewPassword()));
+        return updateById(sysAdmin);
     }
 
-    @Override
-    public int delete(Long id) {
-        return 0;
-    }
 
-    @Override
-    public int updateRole(Long adminId, List<Long> roleIds) {
-        return 0;
-    }
-
-    @Override
-    public List<SysRole> getRoleList(Long adminId) {
-        return null;
-    }
-
-    @Override
-    public List<SysResource> getResourceList(Long adminId) {
-        return null;
-    }
-
-    @Override
-    public int updatePassword(UpdateAdminPasswordDto updatePasswordParam) {
-        return 0;
-    }
 }
 

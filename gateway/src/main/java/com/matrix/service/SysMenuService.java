@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.PageDTO;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.matrix.entity.dto.SysMenuDto;
 import com.matrix.entity.po.SysMenu;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -50,6 +51,17 @@ public interface SysMenuService extends IService<SysMenu> {
      */
     Boolean updateHidden(Long id, Integer hidden);
 
+    /**
+     * 分配菜单
+     *
+     * @param roleId  权限id
+     * @param menuIds 菜单ids
+     * @return
+     */
+    Boolean assignMenu(Long roleId, List<Long> menuIds);
 
+    List<SysMenu> getMenuByAdminId(@Param("id") Long id);
+
+    List<SysMenu> getMenuByRoleId(@Param("id") Long id);
 }
 

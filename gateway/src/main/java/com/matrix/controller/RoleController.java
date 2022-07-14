@@ -1,6 +1,9 @@
 package com.matrix.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.matrix.entity.dto.SysRoleDto;
+import com.matrix.entity.po.SysRole;
 import com.matrix.entity.vo.Result;
 import com.matrix.service.SysRoleService;
 import lombok.RequiredArgsConstructor;
@@ -38,19 +41,39 @@ public class RoleController {
         return Mono.just(Result.success(roleService.update(sysRoleDto)));
     }
 
-    /**
-     * 分配菜单
-     */
-    @PostMapping("assignMenu")
-    public Mono<Result<Boolean>> assignMenu(Long roleId, List<Long> menuIds) {
-        return Mono.just(Result.success(roleService.assignMenu(roleId, menuIds)));
+    @DeleteMapping("{id}")
+    public Mono<Result<Boolean>> delete(@PathVariable("id") Long id) {
+        return Mono.just(Result.success(roleService.removeById(id)));
+    }
+
+
+    @GetMapping("list")
+    public Mono<Result<Page<SysRole>>> list(Page<SysRole> page, SysRole sysRole) {
+        return Mono.just(Result.success(roleService.page(page, new QueryWrapper<>(sysRole))));
+    }
+
+    @PostMapping("assignRole")
+    public Mono<Result<Boolean>> assignRole(Long userId, List<Long> roleIds) {
+        return Mono.just(Result.success(roleService.assignRole(userId, roleIds)));
     }
 
     /**
-     * 分配资源
+     * 获取用户角色列表
+     *
+     * @param id 用户id
+     * @return
      */
-    @PostMapping("assignResource")
-    public Mono<Result<Boolean>> assignResource(Long roleId, List<Long> resourceIds) {
-        return Mono.just(Result.success(roleService.assignResource(roleId, resourceIds)));
+    @GetMapping("role/{id}")
+    public Mono<Result<List<SysRole>>> getRoleById(@PathVariable("id") Long id) {
+        return Mono.just(Result.success(roleService.getRoleByAdminId(id)));
+    }
+
+
+    /**
+     * 更新显示状态
+     */
+    @PutMapping("status/{id}/{status}")
+    public Mono<Result<Boolean>> updateStatus(@PathVariable("id") Long id, @PathVariable("status") Integer status) {
+        return Mono.just(Result.success(roleService.updateHidden(id, status)));
     }
 }

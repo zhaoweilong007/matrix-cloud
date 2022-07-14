@@ -1,10 +1,16 @@
 package com.matrix.security;
 
 import cn.dev33.satoken.stp.StpInterface;
+import com.matrix.entity.po.SysResource;
+import com.matrix.entity.po.SysRole;
+import com.matrix.service.SysResourceService;
+import com.matrix.service.SysRoleService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 描述：获取权限角色
@@ -16,18 +22,22 @@ import java.util.List;
 @Slf4j
 public class StpInterfaceImpl implements StpInterface {
 
+    @Autowired
+    private SysRoleService roleService;
+    @Autowired
+    private SysResourceService sysResourceService;
 
     /**
      * 获取权限列表
      *
      * @param loginId   账号id
      * @param loginType 账号类型
-     * @return
      */
     @Override
     public List<String> getPermissionList(Object loginId, String loginType) {
         log.info("StpInterfaceImpl getPermissionList loginId:{},loginType:{}", loginId, loginType);
-        return null;
+        List<SysResource> resources = sysResourceService.getResourceByAdminId(((Long) loginId));
+        return resources.stream().map(SysResource::getUrl).collect(Collectors.toList());
     }
 
     /**
@@ -35,11 +45,11 @@ public class StpInterfaceImpl implements StpInterface {
      *
      * @param loginId   账号id
      * @param loginType 账号类型
-     * @return
      */
     @Override
     public List<String> getRoleList(Object loginId, String loginType) {
         log.info("StpInterfaceImpl getRoleList loginId:{},loginType:{}", loginId, loginType);
-        return null;
+        List<SysRole> roles = roleService.getRoleByAdminId(((Long) loginId));
+        return roles.stream().map(SysRole::getName).collect(Collectors.toList());
     }
 }
