@@ -23,9 +23,8 @@ public class MatrixMybatisAutoConfiguration {
     @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor() {
         MybatisPlusInterceptor mybatisPlusInterceptor = new MybatisPlusInterceptor();
-        mybatisPlusInterceptor.addInnerInterceptor(new IllegalSQLInnerInterceptor());
         mybatisPlusInterceptor.addInnerInterceptor(new PaginationInnerInterceptor());
-        mybatisPlusInterceptor.addInnerInterceptor(new TenantLineInnerInterceptor());
+        //mybatisPlusInterceptor.addInnerInterceptor(new TenantLineInnerInterceptor());
         mybatisPlusInterceptor.addInnerInterceptor(new OptimisticLockerInnerInterceptor());
         mybatisPlusInterceptor.addInnerInterceptor(new BlockAttackInnerInterceptor());
         return mybatisPlusInterceptor;
