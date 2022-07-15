@@ -3,3 +3,7 @@ dependencies {
     api(project(':common:matrix-swagger'))
     api(project(':common:matrix-web'))
 }
+
+bootJar {
+    enabled = false
+}

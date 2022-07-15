@@ -1,0 +1,5 @@
+tasks {
+    bootJar {
+        enabled = false
+    }
+}

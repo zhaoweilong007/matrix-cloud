@@ -2,3 +2,7 @@ dependencies {
     api(project(":common:common-core"))
     api 'com.github.xiaoymin:knife4j-micro-spring-boot-starter:3.0.3'
 }
+
+bootJar {
+    enabled = false
+}
