@@ -1,6 +1,11 @@
 rootProject.name = 'spring-cloud-matrix'
 include 'demo'
-include 'common'
 include 'gateway'
 include 'doc'
-
+include 'common'
+include 'common:common-core'
+include 'common:matrix-redis'
+include 'common:matrix-swagger'
+include 'common:matrix-web'
+include 'common:matrix-security'
+include 'common:matrix-core'

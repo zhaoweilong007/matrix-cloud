@@ -1,0 +1,5 @@
+dependencies {
+    api(project(':common:matrix-redis'))
+    api(project(':common:matrix-swagger'))
+    api(project(':common:matrix-web'))
+}
