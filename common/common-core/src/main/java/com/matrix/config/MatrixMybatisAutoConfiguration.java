@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.*;
 import com.matrix.service.UserService;
 import org.apache.ibatis.reflection.MetaObject;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 
 import java.util.Date;
@@ -16,6 +17,7 @@ import java.util.Date;
  * @author zwl
  * @since 2022/7/7 16:27
  **/
+@MapperScan("com.matrix.mapper")
 public class MatrixMybatisAutoConfiguration {
 
     @Bean

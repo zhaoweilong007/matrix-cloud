@@ -1,7 +1,5 @@
 package com.matrix.config;
 
-import com.matrix.properties.MatrixProperties;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -28,12 +26,5 @@ public class MatrixRedisAutoConfiguration {
         template.setValueSerializer(RedisSerializer.json());
         template.setHashValueSerializer(RedisSerializer.json());
         return template;
-    }
-
-
-    @Bean
-    @ConditionalOnClass(MatrixProperties.class)
-    public CacheManagerProcessor cacheManagerProcessor(RedisConnectionFactory factory, MatrixProperties matrixProperties) {
-        return new CacheManagerProcessor(factory, matrixProperties);
     }
 }

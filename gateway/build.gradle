@@ -1,6 +1,7 @@
 dependencies {
     api(project(":common:common-core"))
     api(project(":common:matrix-redis"))
+    api(project(":common:matrix-swagger"))
 
 
     /*spring cloud*/

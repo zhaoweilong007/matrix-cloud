@@ -4,7 +4,8 @@ import com.google.common.collect.Lists;
 import com.matrix.properties.MatrixProperties;
 import com.matrix.properties.SwaggerProperties;
 import org.springframework.boot.SpringBootVersion;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -28,7 +29,8 @@ import java.util.Set;
 public class MatrixSwaggerAutoConfiguration {
 
     @Bean
-    @ConditionalOnClass(MatrixProperties.class)
+    @ConditionalOnBean(MatrixProperties.class)
+    @ConditionalOnProperty(prefix = "matrix.swagger",name = "enable",havingValue = "true")
     public Docket createRestApi(MatrixProperties matrixProperties) {
         SwaggerProperties swaggerProperties = matrixProperties.getSwagger();
         return new Docket(DocumentationType.OAS_30)

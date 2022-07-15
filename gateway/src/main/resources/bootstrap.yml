@@ -21,6 +21,8 @@ spring:
         locator:
           enabled: true
           lower-case-service-id: true
+  main:
+    allow-bean-definition-overriding: true
 
 server:
   port: 9000
