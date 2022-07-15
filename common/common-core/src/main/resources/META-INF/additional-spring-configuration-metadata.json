@@ -48,6 +48,20 @@
       "defaultValue": "",
       "description": "cache value ttl.",
       "sourceType": "com.matrix.properties.MatrixProperties"
+    },
+    {
+      "name": "matrix.tenant.enable",
+      "type": "java.lang.Boolean",
+      "defaultValue": true,
+      "description": "enable tenant.",
+      "sourceType": "com.matrix.properties.MatrixProperties"
+    },
+    {
+      "name": "matrix.tenant.ignoreTables",
+      "type": "java.util.List",
+      "defaultValue": "",
+      "description": "ignore tables.",
+      "sourceType": "com.matrix.properties.MatrixProperties"
     }
   ]
 }

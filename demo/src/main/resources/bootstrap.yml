@@ -25,7 +25,9 @@ matrix:
     - name: demo
       prefix: demo
       ttl: 30s
-
+  tenant:
+    enable: true
+    ignoreTables:
 
 
 

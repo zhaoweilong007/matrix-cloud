@@ -2,10 +2,17 @@ package com.matrix.config;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
-import com.baomidou.mybatisplus.extension.plugins.inner.*;
+import com.baomidou.mybatisplus.extension.plugins.inner.BlockAttackInnerInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.TenantLineInnerInterceptor;
+import com.matrix.properties.MatrixProperties;
+import com.matrix.properties.TenantProperties;
 import com.matrix.service.UserService;
+import com.matrix.teannt.PreTenantHandler;
 import org.apache.ibatis.reflection.MetaObject;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
 
 import java.util.Date;
@@ -17,18 +24,27 @@ import java.util.Date;
  * @author zwl
  * @since 2022/7/7 16:27
  **/
-@MapperScan("com.matrix.mapper")
+@MapperScan("com.matrix.**.mapper")
 public class MatrixMybatisAutoConfiguration {
 
     @Bean
-    public MybatisPlusInterceptor mybatisPlusInterceptor() {
+    @ConditionalOnBean(MatrixProperties.class)
+    public MybatisPlusInterceptor mybatisPlusInterceptor(MatrixProperties matrixProperties) {
+        TenantProperties tenant = matrixProperties.getTenant();
         MybatisPlusInterceptor mybatisPlusInterceptor = new MybatisPlusInterceptor();
+
+        if (tenant != null && tenant.getEnable()) {
+            TenantLineInnerInterceptor tenantLineInnerInterceptor = new TenantLineInnerInterceptor();
+            tenantLineInnerInterceptor.setTenantLineHandler(new PreTenantHandler(tenant));
+            mybatisPlusInterceptor.addInnerInterceptor(tenantLineInnerInterceptor);
+        }
+
         mybatisPlusInterceptor.addInnerInterceptor(new PaginationInnerInterceptor());
-        //mybatisPlusInterceptor.addInnerInterceptor(new TenantLineInnerInterceptor());
         mybatisPlusInterceptor.addInnerInterceptor(new OptimisticLockerInnerInterceptor());
         mybatisPlusInterceptor.addInnerInterceptor(new BlockAttackInnerInterceptor());
         return mybatisPlusInterceptor;
     }
+
 
     @Bean
     public MetaObjectHandler defaultMetaObjectHandler(UserService userService) {

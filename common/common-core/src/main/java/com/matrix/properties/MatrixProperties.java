@@ -21,4 +21,6 @@ public class MatrixProperties {
     private SwaggerProperties swagger;
 
     private List<CacheProperties> cache;
+
+    private TenantProperties tenant;
 }

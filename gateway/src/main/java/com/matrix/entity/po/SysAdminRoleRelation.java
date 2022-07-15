@@ -11,7 +11,7 @@ import lombok.Data;
  * @since 2022-07-11 16:53:50
  */
 @Data
-public class SysAdminRoleRelation extends Model<SysAdminRoleRelation> {
+public class SysAdminRoleRelation extends TenantPo<SysAdminRoleRelation> {
     @TableId
     private Long id;
 

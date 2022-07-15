@@ -47,7 +47,7 @@ public class GlobalExceptionHandler implements ErrorWebExceptionHandler {
 
     private Result<?> baseExceptionHandler(ServerWebExchange exchange, BaseException ex) {
         ServerHttpRequest request = exchange.getRequest();
-        log.error("[baseExceptionHandler][uri({}/{}) 发生异常]", request.getURI(), request.getMethod(), ex);
+        log.warn("baseExceptionHandler uri:{},method:{},msg:{}", request.getURI(), request.getMethod(), ex.getMessage());
         return Result.fail(ex.getErrorType());
     }
 
@@ -57,7 +57,7 @@ public class GlobalExceptionHandler implements ErrorWebExceptionHandler {
     private Result<?> responseStatusExceptionHandler(ServerWebExchange exchange,
                                                      ResponseStatusException ex) {
         ServerHttpRequest request = exchange.getRequest();
-        log.error("[responseStatusExceptionHandler][uri({}/{}) 发生异常]", request.getURI(), request.getMethod(), ex);
+        log.warn("[responseStatusExceptionHandler][uri({}/{}) 发生异常]", request.getURI(), request.getMethod(), ex);
         return Result.fail(ex.getRawStatusCode(), ex.getReason());
     }
 

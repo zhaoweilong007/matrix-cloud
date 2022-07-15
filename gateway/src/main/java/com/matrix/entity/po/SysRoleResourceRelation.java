@@ -11,7 +11,7 @@ import lombok.Data;
  * @since 2022-07-11 16:53:52
  */
 @Data
-public class SysRoleResourceRelation extends Model<SysRoleResourceRelation> {
+public class SysRoleResourceRelation extends TenantPo<SysRoleResourceRelation> {
 
     @TableId
     private Long id;

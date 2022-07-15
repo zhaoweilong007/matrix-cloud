@@ -3,11 +3,9 @@ package com.matrix.entity.po;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
 import org.apache.ibatis.type.JdbcType;
 
-import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -17,8 +15,7 @@ import java.util.Date;
  * @since 2022/7/7 16:37
  **/
 @Data
-public class BasePo<T extends BasePo<?>> extends Model<T> implements Serializable {
-
+public class BasePo<T extends BasePo<?>> extends TenantPo<T> {
 
     @TableField(fill = FieldFill.INSERT)
     private Date createTime;
