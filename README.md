@@ -2,7 +2,7 @@
 
 ## 介绍
 
-Spring cloud matrix是微服务的矩阵，整合目前主流的微服务框架
+Spring cloud matrix是微服务的脚手架，整合目前主流的微服务框架
 
 ### 项目环境
 
@@ -35,43 +35,38 @@ Spring cloud matrix是微服务的矩阵，整合目前主流的微服务框架
 
 ## Common组件
 
-common组件包含以下公共依赖
-
-- spring-boot-starter-web
-- spring-boot-starter-actuator
-- spring-cloud-starter-alibaba-nacos-discovery
-- spring-cloud-starter-alibaba-nacos-config
+- common-core
+- matrix-redis
+- matrix-swagger
+- matrix-web
 
 > 集成nacos服务注册发现，配置中心
 
-- spring-cloud-starter-bootstrap
-
 > 在SpringBoot 2.4.x的版本之后，对于bootstrap.properties/bootstrap.yaml配置文件 的支持
 
-- spring-cloud-starter-openfeign
-
 > 集成openfeign
-
-- spring-cloud-starter-loadbalancer
 
 > Spring Cloud 2020版本以后，默认移除了对Netflix的依赖，其中就包括Ribbon，官方默认推荐使用Spring Cloud
 > Loadbalancer正式替换Ribbon，并成为了Spring Cloud负载均衡器的唯一实现
 
-- spring-cloud-starter-alibaba-sentinel
-
 > 集成sentinel的支持
-
-- knife4j
 
 > 集成knife4j的支持
 
 ## Gateway网关
+
+### 路由管理
 
 gateway使用alibaba sentinel集成，支持nacos动态路由配置
 
 > ps:在gateway网关集成sentinel时，需要添加JVM参数`-Dcsp.sentinel.app.type=1`,将应用识别为网关，否则看不到api管理页面
 
 通过nacos监听配置，使用`RouteDefinitionWriter`更新网关路由配置，实现动态路由配置
+
+### 权限管理:
+
+- sa-token框架集成，网关统一鉴权，内部服务外网隔离
+- 基于RBAC的权限管理，动态配置资源权限
 
 ## 部署
 
