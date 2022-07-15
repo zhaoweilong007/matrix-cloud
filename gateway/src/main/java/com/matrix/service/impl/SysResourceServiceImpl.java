@@ -1,5 +1,6 @@
 package com.matrix.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.matrix.convert.ConvertMapper;
 import com.matrix.entity.dto.SysResourceDto;
@@ -9,6 +10,8 @@ import com.matrix.mapper.SysResourceMapper;
 import com.matrix.service.SysResourceService;
 import com.matrix.service.SysRoleResourceRelationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,7 +31,9 @@ public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysRe
 
 
     @Override
+    @CachePut(value = "resource", key = "'resource'")
     public Boolean assignResource(Long roleId, List<Long> resourceIds) {
+        sysRoleResourceRelationService.remove(new LambdaQueryWrapper<SysRoleResourceRelation>().eq(SysRoleResourceRelation::getRoleId, roleId));
         List<SysRoleResourceRelation> list = resourceIds.stream().filter(id -> sysRoleResourceRelationService.getById(id) == null).map(rid -> {
             SysRoleResourceRelation sysRoleResourceRelation = new SysRoleResourceRelation();
             sysRoleResourceRelation.setRoleId(roleId);
@@ -50,12 +55,14 @@ public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysRe
         return this.updateById(sysResource);
     }
 
+    @Cacheable(value = "resource", key = "'resource'")
     @Override
     public List<SysResource> getResourceByAdminId(Long adminId) {
         return baseMapper.getResourceByAdminId(adminId);
     }
 
     @Override
+    @Cacheable(value = "resource", key = "'resource'")
     public List<SysResource> getResourceByRoleId(Long id) {
         return baseMapper.getResourceByRoleId(id);
     }

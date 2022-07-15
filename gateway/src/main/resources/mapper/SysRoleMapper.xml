@@ -35,7 +35,7 @@
         select r.*
         from sys_role r
                  left join sys_admin_role_relation sarr on r.id = sarr.role_id
-        where sarr.admin_id = #{id}
+        where sarr.admin_id = #{adminId}
           and r.deleted = 0
         group by r.id
     </select>

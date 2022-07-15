@@ -52,8 +52,8 @@ public class RoleController {
         return Mono.just(Result.success(roleService.page(page, new QueryWrapper<>(sysRole))));
     }
 
-    @PostMapping("assignRole")
-    public Mono<Result<Boolean>> assignRole(Long userId, List<Long> roleIds) {
+    @GetMapping("assignRole")
+    public Mono<Result<Boolean>> assignRole(@RequestParam Long userId,@RequestParam List<Long> roleIds) {
         return Mono.just(Result.success(roleService.assignRole(userId, roleIds)));
     }
 
@@ -63,7 +63,7 @@ public class RoleController {
      * @param id 用户id
      * @return
      */
-    @GetMapping("role/{id}")
+    @GetMapping("admin/{id}")
     public Mono<Result<List<SysRole>>> getRoleById(@PathVariable("id") Long id) {
         return Mono.just(Result.success(roleService.getRoleByAdminId(id)));
     }

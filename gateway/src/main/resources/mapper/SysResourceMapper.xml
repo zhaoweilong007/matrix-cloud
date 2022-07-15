@@ -36,7 +36,7 @@
                             from sys_role_resource_relation srrr
                                      left join sys_admin_role_relation sarr
                                                on srrr.role_id = sarr.role_id
-                            where sarr.admin_id = #{id}) res
+                            where sarr.admin_id = #{adminId}) res
                            on res.resource_id = sr.id
         where sr.deleted = 0
         group by sr.id

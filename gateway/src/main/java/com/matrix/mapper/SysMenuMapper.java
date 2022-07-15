@@ -13,8 +13,8 @@ import java.util.List;
  */
 public interface SysMenuMapper extends BaseMapper<SysMenu> {
 
-    List<SysMenu> getMenuByAdminId(Long id);
+    List<SysMenu> getMenuByAdminId(Long adminId);
 
-    List<SysMenu> getMenuByRoleId(Long id);
+    List<SysMenu> getMenuByRoleId(Long roleId);
 }
 

@@ -11,6 +11,8 @@ import com.matrix.mapper.SysMenuMapper;
 import com.matrix.service.SysMenuService;
 import com.matrix.service.SysRoleMenuRelationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -102,8 +104,10 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     }
 
     @Override
+    @CachePut(value = "menuCache", key = "#roleId")
     public Boolean assignMenu(Long roleId, List<Long> menuIds) {
-        List<SysRoleMenuRelation> relationList = menuIds.stream().filter(id -> getById(id) == null).map(mid -> {
+        sysRoleMenuRelationService.remove(Wrappers.<SysRoleMenuRelation>lambdaQuery().eq(SysRoleMenuRelation::getRoleId, roleId));
+        List<SysRoleMenuRelation> relationList = menuIds.stream().filter(id -> getById(id) != null).map(mid -> {
             SysRoleMenuRelation sysRoleMenuRelation = new SysRoleMenuRelation();
             sysRoleMenuRelation.setRoleId(roleId);
             sysRoleMenuRelation.setMenuId(mid);
@@ -113,13 +117,14 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     }
 
     @Override
-    public List<SysMenu> getMenuByAdminId(Long id) {
-        return baseMapper.getMenuByAdminId(id);
+    public List<SysMenu> getMenuByAdminId(Long adminId) {
+        return baseMapper.getMenuByAdminId(adminId);
     }
 
     @Override
-    public List<SysMenu> getMenuByRoleId(Long id) {
-        return baseMapper.getMenuByRoleId(id);
+    @Cacheable(value = "menuCache", key = "#roleId")
+    public List<SysMenu> getMenuByRoleId(Long roleId) {
+        return baseMapper.getMenuByRoleId(roleId);
     }
 
 }

@@ -5,6 +5,23 @@ spring:
     active: dev
   jackson:
     time-zone: GMT+8
+  cache:
+    type: redis
+  cloud:
+    ## gateway配置
+    gateway:
+      globalcors:
+        ## 配置跨域
+        cors-configurations:
+          '[/**]':
+            allowed-origins: "*"
+            allowed-methods: "*"
+            allowed-headers: "*"
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+
 server:
   port: 9000
 

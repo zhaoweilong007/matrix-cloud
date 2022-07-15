@@ -17,10 +17,6 @@ import reactor.core.publisher.Mono;
 
 /**
  * Web 工具类
- * <p>
- * copy from yudao-spring-boot-starter-web 的 WebFrameworkUtils 类
- *
- * @author 芋道源码
  */
 @Slf4j
 public class WebFrameworkUtils {

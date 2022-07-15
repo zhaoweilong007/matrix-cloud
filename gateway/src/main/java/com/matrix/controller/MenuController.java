@@ -110,8 +110,8 @@ public class MenuController {
     /**
      * 为角色分配菜单
      */
-    @PostMapping("assignMenu")
-    public Mono<Result<Boolean>> assignMenu(Long roleId, List<Long> menuIds) {
+    @GetMapping("assignMenu")
+    public Mono<Result<Boolean>> assignMenu(@RequestParam Long roleId, @RequestParam List<Long> menuIds) {
         return Mono.just(Result.success(sysMenuService.assignMenu(roleId, menuIds)));
     }
 

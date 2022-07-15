@@ -11,6 +11,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+
 /**
  * 描述：
  *
@@ -21,7 +23,7 @@ import reactor.core.publisher.Mono;
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/resource/category")
-public class SysResourceCategoryController {
+public class ResourceCategoryController {
 
     private final SysResourceCategoryService sysResourceCategoryService;
 
@@ -52,6 +54,12 @@ public class SysResourceCategoryController {
     @GetMapping("/list")
     public Mono<Result<Page<SysResourceCategory>>> getList(Page<SysResourceCategory> page, SysResourceCategory sysResourceCategory) {
         return Mono.just(Result.success(sysResourceCategoryService.page(page, new QueryWrapper<>(sysResourceCategory))));
+    }
+
+
+    @GetMapping("/listAll")
+    public Mono<Result<List<SysResourceCategory>>> getListAll() {
+        return Mono.just(Result.success(sysResourceCategoryService.list()));
     }
 
 }

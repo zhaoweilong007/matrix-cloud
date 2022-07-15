@@ -32,19 +32,7 @@ spring:
       password: nacos
       config:
         file-extension: yaml
-    ## gateway配置
-    gateway:
-      globalcors:
-        ## 配置跨域
-        cors-configurations:
-          '[/**]':
-            allowed-origins: "*"
-            allowed-methods: "*"
-            allowed-headers: "*"
-      discovery:
-        locator:
-          enabled: true
-          lower-case-service-id: true
+
     ## sentinel配置
     sentinel:
       enabled: true
@@ -104,3 +92,7 @@ sa-token:
   token-style: uuid
   # 是否输出操作日志
   is-log: true
+
+logging:
+  level:
+    com.matrix.mapper: debug

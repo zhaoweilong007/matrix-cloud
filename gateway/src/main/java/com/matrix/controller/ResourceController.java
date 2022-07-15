@@ -80,9 +80,15 @@ public class ResourceController {
     /**
      * 分配资源
      */
-    @PostMapping("assignResource")
-    public Mono<Result<Boolean>> assignResource(Long roleId, List<Long> resourceIds) {
+    @GetMapping("assignResource")
+    public Mono<Result<Boolean>> assignResource(@RequestParam Long roleId,@RequestParam List<Long> resourceIds) {
         return Mono.just(Result.success(sysResourceService.assignResource(roleId, resourceIds)));
+    }
+
+
+    @GetMapping("listAll")
+    public Mono<Result<List<SysResource>>> listAll() {
+        return Mono.just(Result.success(sysResourceService.list()));
     }
 
 

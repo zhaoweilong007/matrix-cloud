@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.PageDTO;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.matrix.entity.dto.SysMenuDto;
 import com.matrix.entity.po.SysMenu;
-import org.apache.ibatis.annotations.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -58,10 +58,11 @@ public interface SysMenuService extends IService<SysMenu> {
      * @param menuIds 菜单ids
      * @return
      */
+    @Transactional(rollbackFor = Exception.class)
     Boolean assignMenu(Long roleId, List<Long> menuIds);
 
-    List<SysMenu> getMenuByAdminId(@Param("id") Long id);
+    List<SysMenu> getMenuByAdminId(Long adminId);
 
-    List<SysMenu> getMenuByRoleId(@Param("id") Long id);
+    List<SysMenu> getMenuByRoleId(Long roleId);
 }
 

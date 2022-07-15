@@ -1,5 +1,7 @@
 package com.matrix.entity.dto;
 
+import lombok.Data;
+
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -10,6 +12,7 @@ import javax.validation.constraints.NotNull;
  * @author zwl
  * @since 2022/7/13 15:26
  **/
+@Data
 public class SysRoleDto {
 
     private Long id;

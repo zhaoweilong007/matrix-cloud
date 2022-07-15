@@ -13,9 +13,9 @@ import java.util.List;
  */
 public interface SysResourceMapper extends BaseMapper<SysResource> {
 
-    List<SysResource> getResourceByAdminId(Long id);
+    List<SysResource> getResourceByAdminId(Long adminId);
 
-    List<SysResource> getResourceByRoleId(Long id);
+    List<SysResource> getResourceByRoleId(Long roleId);
 
     List<String> getAllResource();
 }
