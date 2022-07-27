@@ -28,7 +28,3 @@ matrix:
   tenant:
     enable: true
     ignoreTables:
-
-
-
-

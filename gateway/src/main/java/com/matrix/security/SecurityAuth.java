@@ -35,5 +35,7 @@ public class SecurityAuth implements SaFilterAuthStrategy {
         String path = request.getURI().getPath();
         String resource = permissionList.stream().filter(url -> antPathMatcher.match(url, path)).findFirst().orElseThrow(() -> new NotPermissionException(path));
         log.info("用户:【{}】 资源:【{}】授权成功", StpUtil.getLoginId(), resource);
+
+
     }
 }

@@ -27,7 +27,7 @@ public class LoginController {
     private final LoginService loginService;
 
     /**
-     * @param sysAdminRegisterDto 登录参数
+     * 注册
      * @return SaResult
      */
     @PostMapping("register")

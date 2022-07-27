@@ -12,7 +12,7 @@ import java.util.Date;
  * @since 2022-07-11 16:53:49
  */
 @Data
-public class SysAdmin extends BasePo<SysAdmin> {
+public class SysAdmin extends TenantPo<SysAdmin> {
 
     @TableId
     private Long id;
@@ -32,6 +32,8 @@ public class SysAdmin extends BasePo<SysAdmin> {
     private Date loginTime;
 
     private Integer status;
+
+    private String userType;
 
 
 }

@@ -1,8 +1,8 @@
-package com.matrix.teannt;
+package com.matrix.component;
 
 import com.baomidou.mybatisplus.extension.plugins.handler.TenantLineHandler;
+import com.matrix.context.TenantContextHold;
 import com.matrix.properties.TenantProperties;
-import com.matrix.utils.TenantContextHold;
 import lombok.RequiredArgsConstructor;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.LongValue;
@@ -18,7 +18,7 @@ import java.util.List;
  * @since 2022/7/15 17:33
  **/
 @RequiredArgsConstructor
-public class PreTenantHandler implements TenantLineHandler {
+public class ServletTenantHandler implements TenantLineHandler {
 
     private final TenantProperties tenantProperties;
 
@@ -39,7 +39,7 @@ public class PreTenantHandler implements TenantLineHandler {
 
     @Override
     public boolean ignoreTable(String tableName) {
-        return tenantProperties.getIgnoreTables().stream().anyMatch(s -> s.equalsIgnoreCase(tableName));
+        return TenantContextHold.isIgnore() || tenantProperties.getIgnoreTables().stream().anyMatch(s -> s.equalsIgnoreCase(tableName));
     }
 
     @Override

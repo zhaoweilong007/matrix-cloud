@@ -13,7 +13,7 @@ import java.util.List;
  * @since 2022-07-11 16:53:50
  */
 @Data
-public class SysMenu extends BasePo<SysMenu> {
+public class SysMenu extends TenantPo<SysMenu> {
     @TableId
     private Long id;
 

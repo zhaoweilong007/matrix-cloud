@@ -10,7 +10,7 @@ import lombok.Data;
  * @since 2022-07-11 16:53:51
  */
 @Data
-public class SysRole extends BasePo<SysRole> {
+public class SysRole extends TenantPo<SysRole> {
     @TableId
     private Long id;
 

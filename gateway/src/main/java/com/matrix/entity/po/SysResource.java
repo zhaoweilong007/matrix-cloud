@@ -15,7 +15,7 @@ import java.io.Serializable;
  * @since 2022-07-11 16:53:51
  */
 @Data
-public class SysResource extends BasePo<SysResource> {
+public class SysResource extends TenantPo<SysResource> {
     @TableId
     private Long id;
 

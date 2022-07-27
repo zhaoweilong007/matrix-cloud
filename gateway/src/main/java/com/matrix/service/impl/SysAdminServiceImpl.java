@@ -9,7 +9,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.matrix.entity.dto.SysAdminLoginDto;
 import com.matrix.entity.dto.SysAdminRegisterDto;
 import com.matrix.entity.dto.UpdateAdminPasswordDto;
+import com.matrix.entity.enums.DeviceType;
 import com.matrix.entity.po.SysAdmin;
+import com.matrix.entity.vo.LoginUser;
 import com.matrix.entity.vo.SysAdminUserInfo;
 import com.matrix.exception.model.BusinessErrorType;
 import com.matrix.exception.model.ServiceException;
@@ -18,6 +20,7 @@ import com.matrix.service.LoginService;
 import com.matrix.service.SysAdminService;
 import com.matrix.service.SysMenuService;
 import com.matrix.service.SysRoleService;
+import com.matrix.utils.LoginHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,10 +49,8 @@ public class SysAdminServiceImpl extends ServiceImpl<SysAdminMapper, SysAdmin> i
 
     @Override
     public String register(SysAdminRegisterDto sysAdminRegisterDto) {
-        Long count = baseMapper.selectCount(Wrappers.<SysAdmin>lambdaQuery().eq(SysAdmin::getUsername, sysAdminRegisterDto.getUsername()));
-        if (count > 0) {
-            throw new ServiceException(BusinessErrorType.USER_EXISTS);
-        }
+        boolean exists = baseMapper.exists(Wrappers.<SysAdmin>lambdaQuery().eq(SysAdmin::getUsername, sysAdminRegisterDto.getUsername()));
+        Assert.isTrue(!exists, () -> new ServiceException(BusinessErrorType.USER_EXISTS));
         SysAdmin sysAdmin = new SysAdmin();
         sysAdmin.setUsername(sysAdminRegisterDto.getUsername());
         sysAdmin.setPassword(SaSecureUtil.md5(sysAdminRegisterDto.getPassword()));
@@ -61,16 +62,18 @@ public class SysAdminServiceImpl extends ServiceImpl<SysAdminMapper, SysAdmin> i
     @Override
     public SaTokenInfo login(SysAdminLoginDto sysAdminLoginDto) {
         SysAdmin sysAdmin = baseMapper.selectOne(Wrappers.<SysAdmin>lambdaQuery().eq(SysAdmin::getUsername, sysAdminLoginDto.getUsername()));
-        if (sysAdmin == null) {
-            throw new ServiceException(BusinessErrorType.USER_NOT_EXISTS);
-        }
-        if (!Objects.equals(SaSecureUtil.md5(sysAdminLoginDto.getPassword()), sysAdmin.getPassword())) {
-            throw new ServiceException(BusinessErrorType.AUTHENTICATION_FAILED);
-        }
-        StpUtil.login(sysAdmin.getId());
+        Assert.notNull(sysAdmin, () -> new ServiceException(BusinessErrorType.USER_NOT_EXISTS));
+        Assert.notEquals(sysAdmin.getPassword(), SaSecureUtil.md5(sysAdminLoginDto.getPassword()), () -> new ServiceException(BusinessErrorType.PASSWORD_MISTAKE));
+        LoginUser loginUser = buildLoginUser(sysAdmin);
+        LoginHelper.loginByDevice(loginUser, DeviceType.PC);
         sysAdmin.setLoginTime(new Date());
         updateById(sysAdmin);
         return StpUtil.getTokenInfo();
+    }
+
+    private LoginUser buildLoginUser(SysAdmin sysAdmin) {
+        return LoginUser.builder().userId(sysAdmin.getId()).username(sysAdmin.getUsername())
+                .tenantId(sysAdmin.getTenantId()).userType(sysAdmin.getUserType()).build();
     }
 
     @Override

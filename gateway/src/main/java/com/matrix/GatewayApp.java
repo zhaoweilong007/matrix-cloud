@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableTransactionManagement
-@EnableCaching
 public class GatewayApp {
     public static void main(String[] args) {
         SpringApplication.run(GatewayApp.class, args);

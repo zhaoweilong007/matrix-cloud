@@ -1,7 +1,6 @@
 package com.matrix.entity.po;
 
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
 
 /**
@@ -19,7 +18,6 @@ public class SysRoleResourceRelation extends TenantPo<SysRoleResourceRelation> {
     private Long roleId;
 
     private Long resourceId;
-
 
 
 }

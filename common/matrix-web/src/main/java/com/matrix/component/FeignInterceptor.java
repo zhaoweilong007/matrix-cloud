@@ -1,6 +1,8 @@
 package com.matrix.component;
 
 import cn.dev33.satoken.id.SaIdUtil;
+import com.matrix.context.TenantContextHold;
+import com.matrix.properties.TenantProperties;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 
@@ -16,5 +18,6 @@ public class FeignInterceptor implements RequestInterceptor {
     @Override
     public void apply(RequestTemplate template) {
         template.header(SaIdUtil.ID_TOKEN, SaIdUtil.getToken());
+        template.header(TenantProperties.TENANT_KEY, String.valueOf(TenantContextHold.getTenantId()));
     }
 }

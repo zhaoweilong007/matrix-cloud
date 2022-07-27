@@ -3,9 +3,11 @@ package com.matrix.convert;
 import com.matrix.entity.dto.SysMenuDto;
 import com.matrix.entity.dto.SysResourceDto;
 import com.matrix.entity.dto.SysRoleDto;
+import com.matrix.entity.dto.TenantDto;
 import com.matrix.entity.po.SysMenu;
 import com.matrix.entity.po.SysResource;
 import com.matrix.entity.po.SysRole;
+import com.matrix.entity.po.Tenant;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.factory.Mappers;
@@ -34,5 +36,7 @@ public interface ConvertMapper {
     SysMenu convert(SysMenuDto dto);
 
     SysResource convert(SysResourceDto dto);
+
+    Tenant convert(TenantDto dto);
 
 }

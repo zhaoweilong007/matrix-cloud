@@ -1,11 +1,13 @@
 package com.matrix.config;
 
 import com.google.common.collect.Lists;
+import com.matrix.component.SpringfoxHandlerProviderBeanPostProcessor;
 import com.matrix.properties.MatrixProperties;
 import com.matrix.properties.SwaggerProperties;
 import org.springframework.boot.SpringBootVersion;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -29,8 +31,14 @@ import java.util.Set;
 public class MatrixSwaggerAutoConfiguration {
 
     @Bean
+    @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
+    public SpringfoxHandlerProviderBeanPostProcessor springfoxHandlerProviderBeanPostProcessor() {
+        return new SpringfoxHandlerProviderBeanPostProcessor();
+    }
+
+    @Bean
     @ConditionalOnBean(MatrixProperties.class)
-    @ConditionalOnProperty(prefix = "matrix.swagger",name = "enable",havingValue = "true")
+    @ConditionalOnProperty(prefix = "matrix.swagger", name = "enable", havingValue = "true")
     public Docket createRestApi(MatrixProperties matrixProperties) {
         SwaggerProperties swaggerProperties = matrixProperties.getSwagger();
         return new Docket(DocumentationType.OAS_30)
