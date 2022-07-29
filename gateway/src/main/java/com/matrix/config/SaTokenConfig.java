@@ -5,11 +5,11 @@ import cn.dev33.satoken.reactor.filter.SaReactorFilter;
 import cn.dev33.satoken.stp.StpLogic;
 import cn.dev33.satoken.util.SaResult;
 import com.matrix.filter.ForwardAuthFilter;
+import com.matrix.properties.SecurityProperties;
 import com.matrix.security.SecurityAuth;
 import com.matrix.security.SecurityBeforeAuth;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 
 /**
  * 描述：sa-token配置
@@ -32,8 +32,8 @@ public class SaTokenConfig {
      * 为请求添加 Id-Token
      */
     @Bean
-    public ForwardAuthFilter forwardAuthFilter(MatrixSecurityProperties matrixSecurityProperties) {
-        return new ForwardAuthFilter(matrixSecurityProperties);
+    public ForwardAuthFilter forwardAuthFilter() {
+        return new ForwardAuthFilter();
     }
 
     /**
@@ -42,11 +42,11 @@ public class SaTokenConfig {
     @Bean
     public SaReactorFilter getSaReactorFilter(SecurityAuth securityAuth,
                                               SecurityBeforeAuth securityBeforeAuth,
-                                              MatrixSecurityProperties matrixSecurityProperties) {
+                                              SecurityProperties securityProperties) {
         return new SaReactorFilter()
                 .addInclude("/**")
                 .addExclude("/favicon.ico", "/actuator/**")
-                .addExclude(matrixSecurityProperties.getWhiteUrls().toArray(new String[0]))
+                .addExclude(securityProperties.getWhiteUrls().toArray(new String[0]))
                 .setBeforeAuth(securityBeforeAuth)
                 .setAuth(securityAuth)
                 .setError(e -> SaResult.error(e.getMessage()).setCode(401));

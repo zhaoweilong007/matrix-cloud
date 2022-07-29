@@ -1,5 +1,7 @@
 package com.matrix.filter;
 
+import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.dfa.StopChar;
 import com.matrix.context.TenantContextHold;
 import com.matrix.context.UserContextHolder;
 import com.matrix.entity.vo.LoginUser;
@@ -18,16 +20,21 @@ import java.io.IOException;
  * @author zwl
  * @since 2022/7/26 16:37
  **/
-public class TenantFilter extends OncePerRequestFilter {
+public class TenantServletFilter extends OncePerRequestFilter {
 
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        LoginUser loginUser = LoginHelper.getLoginUser();
-        if (loginUser != null) {
-            UserContextHolder.setContext(loginUser);
-            TenantContextHold.setTenantId(loginUser.getTenantId());
+        try {
+            LoginUser loginUser = LoginHelper.getLoginUser();
+            if (loginUser != null) {
+                UserContextHolder.setLoginUser(loginUser);
+                TenantContextHold.setTenantId(loginUser.getTenantId());
+            }
+            filterChain.doFilter(request, response);
+        } finally {
+            UserContextHolder.clear();
+            TenantContextHold.clear();
         }
-        filterChain.doFilter(request, response);
     }
 }

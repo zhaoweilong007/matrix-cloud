@@ -1,8 +1,5 @@
 package com.matrix.config;
 
-import cn.dev33.satoken.filter.SaServletFilter;
-import cn.dev33.satoken.id.SaIdUtil;
-import cn.dev33.satoken.util.SaResult;
 import com.matrix.component.FeignInterceptor;
 import com.matrix.component.SpringfoxHandlerProviderBeanPostProcessor;
 import com.matrix.filter.XssFilter;
@@ -22,24 +19,13 @@ import org.springframework.web.filter.CorsFilter;
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 public class MatrixWebAutoConfigure {
 
-
-
-
     @Bean
-    public SaServletFilter getSaServletFilter() {
-        return new SaServletFilter()
-                .addInclude("/**")
-                .addExclude("/favicon.ico", "/actuator/**")
-                .setAuth(obj -> {
-                    SaIdUtil.checkCurrentRequestToken();
-                })
-                .setError(e -> SaResult.error(e.getMessage()).setCode(401));
+    public SpringfoxHandlerProviderBeanPostProcessor springfoxHandlerProviderBeanPostProcessor() {
+        return new SpringfoxHandlerProviderBeanPostProcessor();
     }
 
-    @Bean
-    public FeignInterceptor feignInterceptor() {
-        return new FeignInterceptor();
-    }
+
+
 
 
     @Bean

@@ -1,8 +1,8 @@
 package com.matrix.properties;
 
 import lombok.Data;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 
@@ -13,10 +13,8 @@ import java.util.List;
  * @since 2022/7/7 15:01
  **/
 @ConfigurationProperties(prefix = "matrix")
-@Configuration(proxyBeanMethods = false)
 @Data
 public class MatrixProperties {
-
 
     private SwaggerProperties swagger;
 

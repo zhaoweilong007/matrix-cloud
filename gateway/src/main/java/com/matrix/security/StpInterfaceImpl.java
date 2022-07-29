@@ -5,6 +5,7 @@ import com.matrix.entity.po.SysResource;
 import com.matrix.entity.po.SysRole;
 import com.matrix.service.SysResourceService;
 import com.matrix.service.SysRoleService;
+import com.matrix.utils.LoginHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -36,7 +37,8 @@ public class StpInterfaceImpl implements StpInterface {
     @Override
     public List<String> getPermissionList(Object loginId, String loginType) {
         log.info("StpInterfaceImpl getPermissionList loginId:{},loginType:{}", loginId, loginType);
-        List<SysResource> resources = sysResourceService.getResourceByAdminId(Long.valueOf(loginId.toString()));
+        Long userId = LoginHelper.getUserId();
+        List<SysResource> resources = sysResourceService.getResourceByAdminId(userId);
         return resources.stream().map(SysResource::getUrl).collect(Collectors.toList());
     }
 
@@ -49,7 +51,8 @@ public class StpInterfaceImpl implements StpInterface {
     @Override
     public List<String> getRoleList(Object loginId, String loginType) {
         log.info("StpInterfaceImpl getRoleList loginId:{},loginType:{}", loginId, loginType);
-        List<SysRole> roles = roleService.getRoleByAdminId(((Long) loginId));
+        Long userId = LoginHelper.getUserId();
+        List<SysRole> roles = roleService.getRoleByAdminId(userId);
         return roles.stream().map(SysRole::getName).collect(Collectors.toList());
     }
 }

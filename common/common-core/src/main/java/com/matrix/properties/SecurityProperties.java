@@ -1,4 +1,4 @@
-package com.matrix.config;
+package com.matrix.properties;
 
 import com.google.common.collect.Lists;
 import lombok.Data;
@@ -13,10 +13,9 @@ import java.util.List;
  * @author zwl
  * @since 2022/7/8 15:03
  **/
-@ConfigurationProperties(prefix = "matrix.security")
-@Configuration(proxyBeanMethods = false)
 @Data
-public class MatrixSecurityProperties {
+@ConfigurationProperties(prefix = "matrix.security")
+public class SecurityProperties {
 
     /**
      * 放行白名单

@@ -21,6 +21,7 @@ dependencies {
     api('org.springframework.cloud:spring-cloud-starter-bootstrap')
     api('org.springframework.cloud:spring-cloud-starter-openfeign')
     api 'org.springframework.cloud:spring-cloud-starter-loadbalancer'
+    api 'org.springframework.cloud:spring-cloud-loadbalancer'
 
     /*other*/
     api('com.baomidou:mybatis-plus-boot-starter:3.5.2')

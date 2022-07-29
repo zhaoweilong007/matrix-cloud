@@ -5,10 +5,11 @@ import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.InnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.TenantLineInnerInterceptor;
 import com.google.common.collect.Lists;
-import com.matrix.component.ReactorTenantHandler;
-import com.matrix.component.ServletTenantHandler;
-import com.matrix.filter.TenantFilter;
+import com.matrix.component.TenantHandler;
+import com.matrix.filter.TenantReactorFilter;
+import com.matrix.filter.TenantServletFilter;
 import com.matrix.properties.MatrixProperties;
+import com.matrix.properties.SecurityProperties;
 import com.matrix.properties.TenantProperties;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -29,16 +30,21 @@ public class MatrixTenantAutoConfiguration {
 
     @Bean
     @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
-    public FilterRegistrationBean<TenantFilter> tenantFilter() {
-        FilterRegistrationBean<TenantFilter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setFilter(new TenantFilter());
+    public FilterRegistrationBean<TenantServletFilter> tenantFilter() {
+        FilterRegistrationBean<TenantServletFilter> registrationBean = new FilterRegistrationBean<>();
+        registrationBean.setFilter(new TenantServletFilter());
         registrationBean.setOrder(SaTokenConsts.ASSEMBLY_ORDER + 1);
         return registrationBean;
     }
 
+    @Bean
+    @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
+    public TenantReactorFilter tenantReactorFilter(SecurityProperties securityProperties) {
+        return new TenantReactorFilter(securityProperties);
+    }
+
 
     @Bean
-    @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
     public BeanPostProcessor mybatisPlusInterceptorBeanPostProcessor(MatrixProperties matrixProperties) {
 
         return new BeanPostProcessor() {
@@ -49,7 +55,7 @@ public class MatrixTenantAutoConfiguration {
                     if (tenantProperties != null && tenantProperties.getEnable()) {
                         MybatisPlusInterceptor plusInterceptor = (MybatisPlusInterceptor) bean;
                         ArrayList<InnerInterceptor> innerInterceptors = Lists.newArrayList(plusInterceptor.getInterceptors());
-                        TenantLineInnerInterceptor tenantLineInnerInterceptor = new TenantLineInnerInterceptor(new ServletTenantHandler(tenantProperties));
+                        TenantLineInnerInterceptor tenantLineInnerInterceptor = new TenantLineInnerInterceptor(new TenantHandler(tenantProperties));
                         innerInterceptors.add(0, tenantLineInnerInterceptor);
                         plusInterceptor.setInterceptors(innerInterceptors);
                     }
@@ -59,25 +65,5 @@ public class MatrixTenantAutoConfiguration {
         };
     }
 
-    @Bean
-    @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
-    public BeanPostProcessor mybatisPlusInterceptorBeanPostProcessor2(MatrixProperties matrixProperties) {
 
-        return new BeanPostProcessor() {
-            @Override
-            public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-                if (bean instanceof MybatisPlusInterceptor) {
-                    TenantProperties tenantProperties = matrixProperties.getTenant();
-                    if (tenantProperties != null && tenantProperties.getEnable()) {
-                        MybatisPlusInterceptor plusInterceptor = (MybatisPlusInterceptor) bean;
-                        ArrayList<InnerInterceptor> innerInterceptors = Lists.newArrayList(plusInterceptor.getInterceptors());
-                        TenantLineInnerInterceptor tenantLineInnerInterceptor = new TenantLineInnerInterceptor(new ReactorTenantHandler(tenantProperties));
-                        innerInterceptors.add(0, tenantLineInnerInterceptor);
-                        plusInterceptor.setInterceptors(innerInterceptors);
-                    }
-                }
-                return bean;
-            }
-        };
-    }
 }

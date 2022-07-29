@@ -5,6 +5,7 @@ spring:
     host: 127.0.0.1
     # Redis服务器连接端口
     port: 6379
+    database: 0
     # Redis服务器连接密码（默认为空）
     # password:
     # 连接超时时间
@@ -72,6 +73,7 @@ matrix:
   security:
     whiteUrls:
       - /auth/**
+      - /demoapp/**
   tenant:
     enable: true
     ignoreTables:
@@ -82,4 +84,5 @@ matrix:
 
 logging:
   level:
+    com.matrix.filter: debug
     com.matrix.mapper: debug

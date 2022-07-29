@@ -9,11 +9,11 @@ import com.matrix.entity.vo.LoginUser;
 public class UserContextHolder {
     private static final ThreadLocal<LoginUser> THREAD_LOCAL = new TransmittableThreadLocal<>();
 
-    public static void setContext(LoginUser loginUser) {
+    public static void setLoginUser(LoginUser loginUser) {
         THREAD_LOCAL.set(loginUser);
     }
 
-    public static LoginUser getContext() {
+    public static LoginUser getLoginUser() {
         return THREAD_LOCAL.get();
     }
 

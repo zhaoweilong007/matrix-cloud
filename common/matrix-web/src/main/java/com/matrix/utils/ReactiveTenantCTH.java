@@ -25,23 +25,17 @@ public class ReactiveTenantCTH {
     }
 
     public static Mono<Boolean> isIgnore() {
-        return Mono.deferContextual(contextView -> {
-            if (contextView.isEmpty()) {
-                return Mono.just(false);
-            }
-            Boolean flag = contextView.get(TENANT_IGNORE);
-            return Mono.just(flag);
-        });
+        return Mono.subscriberContext().map(context -> context.get(TENANT_IGNORE));
     }
 
 
-    public static void put(Context context, Long tenantId) {
-        context.put(TenantProperties.TENANT_KEY, tenantId);
+    public static Context put(Context context, Long tenantId) {
+        return context.put(TenantProperties.TENANT_KEY, tenantId);
     }
 
 
-    public static void setignore(Context context) {
-        context.put(TENANT_IGNORE, Boolean.TRUE);
+    public static Context setignore(Context context) {
+        return Context.of(TENANT_IGNORE, true);
     }
 
 

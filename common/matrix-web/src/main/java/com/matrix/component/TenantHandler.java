@@ -18,7 +18,7 @@ import java.util.List;
  * @since 2022/7/15 17:33
  **/
 @RequiredArgsConstructor
-public class ServletTenantHandler implements TenantLineHandler {
+public class TenantHandler implements TenantLineHandler {
 
     private final TenantProperties tenantProperties;
 

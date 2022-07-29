@@ -2,6 +2,8 @@ package com.matrix.properties;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * 描述：swagger配置
@@ -10,12 +12,13 @@ import org.springframework.beans.factory.annotation.Value;
  * @since 2022/7/6 15:22
  **/
 @Data
+@ConfigurationProperties(prefix = "matrix.swagger")
 public class SwaggerProperties {
 
     /**
      * 是否开启swagger，生产环境一般关闭，所以这里定义一个变量
      */
-    private Boolean enable;
+    private Boolean enable = true;
 
     /**
      * 项目应用名

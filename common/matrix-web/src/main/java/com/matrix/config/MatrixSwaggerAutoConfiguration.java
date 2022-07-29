@@ -30,11 +30,7 @@ import java.util.Set;
 @EnableOpenApi
 public class MatrixSwaggerAutoConfiguration {
 
-    @Bean
-    @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
-    public SpringfoxHandlerProviderBeanPostProcessor springfoxHandlerProviderBeanPostProcessor() {
-        return new SpringfoxHandlerProviderBeanPostProcessor();
-    }
+
 
     @Bean
     @ConditionalOnBean(MatrixProperties.class)

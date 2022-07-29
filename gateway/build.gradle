@@ -16,6 +16,4 @@ dependencies {
 
     /*other*/
     implementation "cn.dev33:sa-token-reactor-spring-boot-starter:1.30.0"
-    implementation "cn.dev33:sa-token-dao-redis-jackson:1.30.0"
-    implementation "cn.dev33:sa-token-jwt:1.30.0"
 }

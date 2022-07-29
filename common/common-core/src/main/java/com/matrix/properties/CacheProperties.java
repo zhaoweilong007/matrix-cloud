@@ -1,6 +1,8 @@
 package com.matrix.properties;
 
 import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 
 import java.time.Duration;
 
@@ -11,6 +13,7 @@ import java.time.Duration;
  * @since 2022/7/7 15:02
  **/
 @Data
+@ConfigurationProperties(prefix = "matrix.cache")
 public class CacheProperties {
 
     /**

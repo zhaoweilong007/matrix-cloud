@@ -41,14 +41,14 @@ public class MatrixMybatisAutoConfiguration {
         return new MetaObjectHandler() {
             @Override
             public void insertFill(MetaObject metaObject) {
-                setFieldValByName("createBy", LoginHelper.getUserId(), metaObject);
+                setFieldValByName("createBy", LoginHelper.getUsername(), metaObject);
                 setFieldValByName("createTime", new Date(), metaObject);
                 this.updateFill(metaObject);
             }
 
             @Override
             public void updateFill(MetaObject metaObject) {
-                setFieldValByName("updateBy", LoginHelper.getUserId(), metaObject);
+                setFieldValByName("updateBy", LoginHelper.getUsername(), metaObject);
                 setFieldValByName("updateTime", new Date(), metaObject);
             }
         };
