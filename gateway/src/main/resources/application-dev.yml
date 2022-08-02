@@ -1,12 +1,16 @@
 spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/matrix?allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+  jackson:
+    time-zone: GMT+8
   # redis配置
   redis:
-    # Redis服务器地址
     host: 127.0.0.1
-    # Redis服务器连接端口
     port: 6379
     database: 0
-    # Redis服务器连接密码（默认为空）
     # password:
     # 连接超时时间
     timeout: 10s
@@ -20,20 +24,15 @@ spring:
         max-idle: 10
         # 连接池中的最小空闲连接
         min-idle: 0
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/matrix?allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai
-    username: root
-    password: 123456
+  cache:
+    type: redis
   cloud:
-    ## ancos配置
     nacos:
       server-addr: localhost:8848
       username: nacos
       password: nacos
       config:
         file-extension: yaml
-
     ## sentinel配置
     sentinel:
       enabled: true
@@ -67,18 +66,6 @@ spring:
             group-id: DEFAULT_GROUP
             data-type: json
             rule-type: gw_api_group
-
-
-matrix:
-  security:
-    whiteUrls:
-      - /auth/**
-      - /demoapp/**
-  tenant:
-    enable: true
-    ignoreTables:
-      - tenant
-
 
 
 

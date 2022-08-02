@@ -1,0 +1,5 @@
+dependencies {
+    api(project(":common:matrix-core"))
+    api(project(":common:matrix-web"))
+    api(project(":system:system-api"))
+}

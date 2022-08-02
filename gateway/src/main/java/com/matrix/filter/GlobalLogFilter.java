@@ -31,7 +31,7 @@ import static org.springframework.cloud.gateway.support.ServerWebExchangeUtils.G
  * @author Lion Li
  */
 @Slf4j
-@Component
+//@Component
 public class GlobalLogFilter implements GlobalFilter, Ordered {
 
     private static final String START_TIME = "startTime";

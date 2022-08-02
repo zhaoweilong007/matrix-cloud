@@ -1,6 +1,5 @@
 dependencies {
-    api(project(':common:matrix-redis'))
-    api(project(':common:matrix-web'))
+    api(project(':common:common-core'))
 }
 
 bootJar {

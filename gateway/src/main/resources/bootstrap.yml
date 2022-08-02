@@ -1,12 +1,11 @@
+server:
+  port: 9000
+
 spring:
   application:
     name: api-gateway
   profiles:
     active: dev
-  jackson:
-    time-zone: GMT+8
-  cache:
-    type: redis
   cloud:
     ## gateway配置
     gateway:
@@ -21,12 +20,10 @@ spring:
         locator:
           enabled: true
           lower-case-service-id: true
+      loadbalancer:
+        use404: true
   main:
     allow-bean-definition-overriding: true
-
-server:
-  port: 9000
-
 
 # feign配置
 feign:
@@ -34,9 +31,10 @@ feign:
   sentinel:
     enabled: true
   client:
-    refresh-enabled: true
     config:
       default:
+        connect-timeout: 5000
+        read-timeout: 5000
         logger-level: full
 
 # 端点配置
@@ -64,8 +62,36 @@ mybatis-plus:
   check-config-location: false
 
 
-logging:
-  level:
-    org.springframework.cloud.gateway: debug
+sa-token:
+  # jwt秘钥
+  jwt-secret-key: asdasdasifhueuiwyurfewbfjsdafjk
+  # token名称 (同时也是cookie名称)
+  token-name: Authorization
+  # token有效期，单位s 默认30天, -1代表永不过期
+  timeout: 2592000
+  # token临时有效期 (指定时间内无操作就视为token过期) 单位: 秒
+  activity-timeout: 1800
+  # 是否允许同一账号并发登录 (为true时允许一起登录, 为false时新登录挤掉旧登录)
+  is-concurrent: true
+  # 在多人登录同一账号时，是否共用一个token (为true时所有登录共用一个token, 为false时每次登录新建一个token)
+  is-share: true
+  # token风格
+  token-style: uuid
+  # 是否输出操作日志
+  is-log: true
+
+
+matrix:
+  swagger:
+    enable: false
+  security:
+    whiteUrls:
+      - /system-server/auth/**
+  tenant:
+    enable: false
+
+#logging:
+#  level:
+#    org.springframework.cloud.gateway: debug
 #    com.alibaba.cloud: info
 #    com.alibaba.csp.sentinel.datasource.nacos: info

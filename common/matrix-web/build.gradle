@@ -2,9 +2,6 @@ dependencies {
     api(project(":common:common-core"))
     api('org.springframework.boot:spring-boot-starter-web')
     api("cn.dev33:sa-token-spring-boot-starter:1.30.0")
-    api "cn.dev33:sa-token-dao-redis-jackson:1.30.0"
-    api "cn.dev33:sa-token-jwt:1.30.0"
-    api 'com.github.xiaoymin:knife4j-micro-spring-boot-starter:3.0.3'
 }
 
 bootJar {

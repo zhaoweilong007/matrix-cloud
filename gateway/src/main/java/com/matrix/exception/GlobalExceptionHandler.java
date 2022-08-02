@@ -1,7 +1,6 @@
 package com.matrix.exception;
 
 import com.matrix.entity.vo.Result;
-import com.matrix.exception.model.BaseException;
 import com.matrix.utils.WebFrameworkUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;

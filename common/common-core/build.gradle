@@ -5,23 +5,18 @@ dependencies {
     api 'org.springframework.boot:spring-boot-starter-test'
     api('org.springframework.boot:spring-boot-configuration-processor')
     annotationProcessor('org.springframework.boot:spring-boot-configuration-processor')
+    api('org.springframework.boot:spring-boot-starter-data-redis')
 
 
     /*spring cloud alibaba*/
-    api('com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-discovery') {
-        exclude group: "com.alibaba.nacos", module: "nacos-client"
-    }
-    api('com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-config') {
-        exclude group: "com.alibaba.nacos", module: "nacos-client"
-    }
-    api 'com.alibaba.nacos:nacos-client:2.1.0'
+    api('com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-discovery')
+    api('com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-config')
     api 'com.alibaba.cloud:spring-cloud-starter-alibaba-sentinel'
 
     /*spring cloud*/
     api('org.springframework.cloud:spring-cloud-starter-bootstrap')
     api('org.springframework.cloud:spring-cloud-starter-openfeign')
     api 'org.springframework.cloud:spring-cloud-starter-loadbalancer'
-    api 'org.springframework.cloud:spring-cloud-loadbalancer'
 
     /*other*/
     api('com.baomidou:mybatis-plus-boot-starter:3.5.2')
@@ -29,7 +24,9 @@ dependencies {
     api('org.apache.commons:commons-pool2:2.11.1')
     api 'com.github.ben-manes.caffeine:caffeine:3.1.1'
     api 'com.alibaba:transmittable-thread-local:2.13.2'
-
+    api "cn.dev33:sa-token-dao-redis-jackson:1.30.0"
+    api "cn.dev33:sa-token-jwt:1.30.0"
+    api 'com.github.xiaoymin:knife4j-micro-spring-boot-starter:3.0.3'
 }
 
 bootJar {

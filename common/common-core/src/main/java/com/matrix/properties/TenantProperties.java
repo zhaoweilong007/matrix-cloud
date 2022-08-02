@@ -22,4 +22,6 @@ public class TenantProperties {
 
     private List<String> ignoreTables;
 
+    private List<String> ignoreUrls;
+
 }

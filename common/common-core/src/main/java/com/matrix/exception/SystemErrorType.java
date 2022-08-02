@@ -10,7 +10,7 @@ public enum SystemErrorType implements ErrorType {
     /**
      * 系统异常
      */
-    SYSTEM_ERROR(500, "系统异常"),
+    SYSTEM_ERROR(-1, "系统异常"),
     SYSTEM_BUSY(1000, "系统繁忙,请稍候再试"),
 
     GATEWAY_NOT_FOUND_SERVICE(1001, "服务未找到"),
@@ -20,7 +20,6 @@ public enum SystemErrorType implements ErrorType {
     ARGUMENT_NOT_VALID(2000, "请求参数校验不通过"),
     INVALID_TOKEN(2001, "无效token"),
     UPLOAD_FILE_SIZE_LIMIT(2002, "上传文件大小超过限制"),
-
 
     DUPLICATE_PRIMARY_KEY(3000, "唯一键冲突");
 

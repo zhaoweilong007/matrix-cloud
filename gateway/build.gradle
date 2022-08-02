@@ -1,8 +1,6 @@
 dependencies {
-    implementation(project(":common:matrix-core")) {
-        exclude group: "org.springframework.boot", module: "spring-boot-starter-web"
-        exclude group: "cn.dev33", module: "sa-token-spring-boot-starter"
-    }
+    implementation(project(":common:matrix-core"))
+    implementation(project(":system:system-api"))
 
     /*spring cloud*/
     implementation 'org.springframework.cloud:spring-cloud-starter-gateway'

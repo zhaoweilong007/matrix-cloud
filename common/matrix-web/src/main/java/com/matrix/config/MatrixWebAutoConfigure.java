@@ -1,11 +1,10 @@
 package com.matrix.config;
 
-import com.matrix.component.FeignInterceptor;
-import com.matrix.component.SpringfoxHandlerProviderBeanPostProcessor;
 import com.matrix.filter.XssFilter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -17,16 +16,14 @@ import org.springframework.web.filter.CorsFilter;
  * @since 2022/7/8 15:50
  **/
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
+@Import(MatrixTenantAutoConfiguration.class)
 public class MatrixWebAutoConfigure {
+
 
     @Bean
     public SpringfoxHandlerProviderBeanPostProcessor springfoxHandlerProviderBeanPostProcessor() {
         return new SpringfoxHandlerProviderBeanPostProcessor();
     }
-
-
-
-
 
     @Bean
     public FilterRegistrationBean<CorsFilter> corsFilterBean() {
@@ -49,4 +46,6 @@ public class MatrixWebAutoConfigure {
         bean.setOrder(Integer.MIN_VALUE);
         return bean;
     }
+
+
 }

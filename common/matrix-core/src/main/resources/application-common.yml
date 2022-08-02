@@ -4,18 +4,28 @@ spring:
       matching-strategy: ant_path_matcher
   servlet:
     multipart:
-      max-request-size: "2MB"
-      max-file-size: "2MB"
+      max-request-size: 5MB
+      max-file-size: 100MB
   jackson:
     time-zone: GMT+8
   # redis配置
   redis:
-    host: localhost
+    host: 127.0.0.1
     port: 6379
     database: 0
+    # password:
+    # 连接超时时间
+    timeout: 10s
     lettuce:
       pool:
-        max-active: 300
+        # 连接池最大连接数
+        max-active: 200
+        # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-wait: -1ms
+        # 连接池中的最大空闲连接
+        max-idle: 10
+        # 连接池中的最小空闲连接
+        min-idle: 0
   cache:
     type: redis
 
@@ -34,24 +44,23 @@ spring:
         port: 8719
         dashboard: localhost:8080
         client-ip: 192.168.2.99
+  main:
+    allow-bean-definition-overriding: true
 
-# feign配置
 feign:
   ## 启用对 feign 的 Sentinel 支持
   sentinel:
     enabled: true
   client:
-    refresh-enabled: true
     config:
       default:
+        connect-timeout: 5000
+        read-timeout: 5000
         logger-level: full
 
 # 端点配置
 management:
   endpoints:
-    jmx:
-      exposure:
-        include: "*"
     web:
       exposure:
         include: "*"
@@ -70,8 +79,6 @@ mybatis-plus:
   global-config:
     db-config:
       id-type: auto
-      logic-delete-value: "Y" # 逻辑已删除值(默认为 Y)
-      logic-not-delete-value: "N" # 逻辑未删除值(默认为 N)
   configuration:
     map-underscore-to-camel-case: true
     call-setters-on-nulls: true

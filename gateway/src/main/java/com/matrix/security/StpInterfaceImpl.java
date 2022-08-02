@@ -1,10 +1,12 @@
 package com.matrix.security;
 
 import cn.dev33.satoken.stp.StpInterface;
-import com.matrix.entity.po.SysResource;
-import com.matrix.entity.po.SysRole;
-import com.matrix.service.SysResourceService;
-import com.matrix.service.SysRoleService;
+import com.matrix.api.system.ResourceAPI;
+import com.matrix.api.system.RoleAPI;
+import com.matrix.api.system.entity.po.SysResource;
+import com.matrix.api.system.entity.po.SysRole;
+import com.matrix.entity.vo.Result;
+import com.matrix.exception.ServiceException;
 import com.matrix.utils.LoginHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +26,9 @@ import java.util.stream.Collectors;
 public class StpInterfaceImpl implements StpInterface {
 
     @Autowired
-    private SysRoleService roleService;
+    private RoleAPI roleAPI;
     @Autowired
-    private SysResourceService sysResourceService;
+    private ResourceAPI resourceAPI;
 
     /**
      * 获取权限列表
@@ -38,8 +40,11 @@ public class StpInterfaceImpl implements StpInterface {
     public List<String> getPermissionList(Object loginId, String loginType) {
         log.info("StpInterfaceImpl getPermissionList loginId:{},loginType:{}", loginId, loginType);
         Long userId = LoginHelper.getUserId();
-        List<SysResource> resources = sysResourceService.getResourceByAdminId(userId);
-        return resources.stream().map(SysResource::getUrl).collect(Collectors.toList());
+        Result<List<SysResource>> result = resourceAPI.getResourceByAdminId(userId);
+        if (result.isSuccess()) {
+            return result.getData().stream().map(SysResource::getUrl).collect(Collectors.toList());
+        }
+        throw new ServiceException(result);
     }
 
     /**
@@ -52,7 +57,10 @@ public class StpInterfaceImpl implements StpInterface {
     public List<String> getRoleList(Object loginId, String loginType) {
         log.info("StpInterfaceImpl getRoleList loginId:{},loginType:{}", loginId, loginType);
         Long userId = LoginHelper.getUserId();
-        List<SysRole> roles = roleService.getRoleByAdminId(userId);
-        return roles.stream().map(SysRole::getName).collect(Collectors.toList());
+        Result<List<SysRole>> result = roleAPI.getRoleByAdminId(userId);
+        if (result.isFail()) {
+            throw new ServiceException(result);
+        }
+        return result.getData().stream().map(SysRole::getName).collect(Collectors.toList());
     }
 }
