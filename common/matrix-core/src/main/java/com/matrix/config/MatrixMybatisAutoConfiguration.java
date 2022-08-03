@@ -5,11 +5,9 @@ import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.*;
 import com.google.common.collect.Lists;
 import com.matrix.component.TenantHandler;
-import com.matrix.properties.MatrixProperties;
 import com.matrix.properties.TenantProperties;
 import com.matrix.utils.LoginHelper;
 import org.apache.ibatis.reflection.MetaObject;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -30,7 +28,6 @@ import java.util.Date;
 public class MatrixMybatisAutoConfiguration {
 
     @Bean
-    @ConditionalOnBean(MatrixProperties.class)
     public MybatisPlusInterceptor mybatisPlusInterceptor() {
         MybatisPlusInterceptor mybatisPlusInterceptor = new MybatisPlusInterceptor();
         mybatisPlusInterceptor.addInnerInterceptor(new PaginationInnerInterceptor());
@@ -60,13 +57,12 @@ public class MatrixMybatisAutoConfiguration {
     }
 
     @Bean
-    public BeanPostProcessor mybatisPlusInterceptorBeanPostProcessor(MatrixProperties matrixProperties) {
+    public BeanPostProcessor mybatisPlusInterceptorBeanPostProcessor(TenantProperties tenantProperties) {
 
         return new BeanPostProcessor() {
             @Override
             public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
                 if (bean instanceof MybatisPlusInterceptor) {
-                    TenantProperties tenantProperties = matrixProperties.getTenant();
                     if (tenantProperties != null && tenantProperties.getEnable()) {
                         MybatisPlusInterceptor plusInterceptor = (MybatisPlusInterceptor) bean;
                         ArrayList<InnerInterceptor> innerInterceptors = Lists.newArrayList(plusInterceptor.getInterceptors());

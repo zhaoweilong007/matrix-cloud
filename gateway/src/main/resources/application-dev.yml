@@ -27,12 +27,6 @@ spring:
   cache:
     type: redis
   cloud:
-    nacos:
-      server-addr: localhost:8848
-      username: nacos
-      password: nacos
-      config:
-        file-extension: yaml
     ## sentinel配置
     sentinel:
       enabled: true

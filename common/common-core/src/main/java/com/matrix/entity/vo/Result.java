@@ -123,8 +123,8 @@ public class Result<T> implements Serializable {
         return new Result<>(SystemErrorType.SYSTEM_ERROR, data);
     }
 
-    public static <T> Result<T> fail(int httpBadRequest, String format) {
-        return new Result<>(httpBadRequest, format, null);
+    public static <T> Result<T> fail(int code, String msg) {
+        return new Result<>(code, msg, null);
     }
 
 

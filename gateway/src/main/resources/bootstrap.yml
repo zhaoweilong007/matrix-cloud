@@ -7,6 +7,12 @@ spring:
   profiles:
     active: dev
   cloud:
+    nacos:
+      server-addr: localhost:8848
+      username: nacos
+      password: nacos
+      config:
+        file-extension: yaml
     ## gateway配置
     gateway:
       globalcors:
@@ -87,6 +93,7 @@ matrix:
   security:
     whiteUrls:
       - /system-server/auth/**
+      - /docApp/**
   tenant:
     enable: false
 

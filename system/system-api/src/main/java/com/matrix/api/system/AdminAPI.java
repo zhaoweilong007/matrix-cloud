@@ -3,6 +3,7 @@ package com.matrix.api.system;
 import cn.dev33.satoken.util.SaResult;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.matrix.api.system.entity.po.SysAdmin;
+import com.matrix.component.FeignInterceptor;
 import com.matrix.entity.vo.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
  * @since 2022/8/2 11:14
  **/
 
-@FeignClient(value = "system-server", path = AdminAPI.PREFIX)
+@FeignClient(value = "system-server", path = AdminAPI.PREFIX, configuration = FeignInterceptor.class)
 @Api(tags = "用户服务")
 public interface AdminAPI {
 

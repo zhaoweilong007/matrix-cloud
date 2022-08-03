@@ -1,7 +1,6 @@
 package com.matrix.config;
 
 
-import com.matrix.properties.CacheProperties;
 import com.matrix.properties.MatrixProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
@@ -16,7 +15,7 @@ import org.springframework.web.client.RestTemplate;
  * @author zwl
  * @since 2022/7/8 16:22
  **/
-@Import({MatrixProperties.class, CacheProperties.class})
+@Import(MatrixProperties.class)
 public class MatrixAutoConfiguration {
 
 

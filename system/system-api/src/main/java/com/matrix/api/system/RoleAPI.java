@@ -2,6 +2,7 @@ package com.matrix.api.system;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.matrix.api.system.entity.po.SysRole;
+import com.matrix.component.FeignInterceptor;
 import com.matrix.entity.vo.Result;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -19,7 +20,7 @@ import java.util.List;
  * @author zwl
  * @since 2022/8/2 11:19
  **/
-@FeignClient(value = "system-server", path = RoleAPI.PREFIX)
+@FeignClient(value = "system-server", path = RoleAPI.PREFIX,configuration = FeignInterceptor.class)
 @ApiOperation("角色服务")
 public interface RoleAPI {
 

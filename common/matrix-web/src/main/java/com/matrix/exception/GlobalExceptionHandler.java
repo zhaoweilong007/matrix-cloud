@@ -1,5 +1,6 @@
 package com.matrix.exception;
 
+import cn.dev33.satoken.exception.SaTokenException;
 import com.matrix.entity.vo.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindException;
@@ -60,7 +61,16 @@ public class GlobalExceptionHandler {
         if (ex instanceof ServiceException) {
             return serviceExceptionHandler((ServiceException) ex);
         }
+        if (ex instanceof SaTokenException) {
+            return saTokenExceptionHandler((SaTokenException) ex);
+        }
         return defaultExceptionHandler(request, ex);
+    }
+
+    @ExceptionHandler({SaTokenException.class})
+    private Result<?> saTokenExceptionHandler(SaTokenException ex) {
+        log.warn("SaTokenException", ex);
+        return Result.fail(ex.getCode(),ex.getMessage());
     }
 
     /**

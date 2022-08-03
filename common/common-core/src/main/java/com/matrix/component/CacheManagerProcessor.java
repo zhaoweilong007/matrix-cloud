@@ -1,4 +1,4 @@
-package com.matrix.config;
+package com.matrix.component;
 
 import cn.hutool.core.collection.CollectionUtil;
 import com.matrix.properties.CacheProperties;
@@ -11,7 +11,6 @@ import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.RedisSerializer;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -21,7 +20,6 @@ import java.util.List;
  * @author zwl
  * @since 2022/7/7 18:03
  **/
-@Component
 public class CacheManagerProcessor implements BeanPostProcessor {
 
     private final RedisConnectionFactory factory;

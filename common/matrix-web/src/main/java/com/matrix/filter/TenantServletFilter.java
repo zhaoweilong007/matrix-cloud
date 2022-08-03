@@ -1,11 +1,15 @@
 package com.matrix.filter;
 
 import cn.dev33.satoken.router.SaRouter;
+import com.alibaba.fastjson2.JSON;
 import com.matrix.context.TenantContextHold;
 import com.matrix.context.UserContextHolder;
 import com.matrix.entity.vo.LoginUser;
+import com.matrix.entity.vo.Result;
+import com.matrix.exception.GlobalExceptionHandler;
 import com.matrix.properties.TenantProperties;
 import com.matrix.utils.LoginHelper;
+import com.matrix.utils.ServletUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -24,6 +28,7 @@ import java.io.IOException;
 @AllArgsConstructor
 public class TenantServletFilter extends OncePerRequestFilter {
     private TenantProperties tenantProperties;
+    private GlobalExceptionHandler globalExceptionHandler;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -31,9 +36,15 @@ public class TenantServletFilter extends OncePerRequestFilter {
             if (SaRouter.match(tenantProperties.getIgnoreUrls()).isHit()) {
                 TenantContextHold.setIgnore(true);
             } else {
-                LoginUser loginUser = LoginHelper.getLoginUser();
-                UserContextHolder.setLoginUser(loginUser);
-                TenantContextHold.setTenantId(loginUser.getTenantId());
+                try {
+                    LoginUser loginUser = LoginHelper.getLoginUser();
+                    UserContextHolder.setLoginUser(loginUser);
+                    TenantContextHold.setTenantId(loginUser.getTenantId());
+                } catch (Exception e) {
+                    Result<?> result = globalExceptionHandler.allExceptionHandler(request, e);
+                    ServletUtils.renderString(response, JSON.toJSONString(result));
+                    return;
+                }
             }
         }
         filterChain.doFilter(request, response);

@@ -1,6 +1,10 @@
 package com.matrix.config;
 
+import cn.dev33.satoken.filter.SaServletFilter;
+import cn.dev33.satoken.id.SaIdUtil;
+import cn.dev33.satoken.util.SaResult;
 import com.matrix.filter.XssFilter;
+import com.matrix.properties.SecurityProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -47,5 +51,16 @@ public class MatrixWebAutoConfigure {
         return bean;
     }
 
-
+    @Bean
+    public SaServletFilter getSaServletFilter(SecurityProperties securityProperties) {
+        return new SaServletFilter()
+                .addInclude("/**")
+                .addExclude("/favicon.ico", "/actuator/**")
+                .addExclude(securityProperties.getWhiteUrls().toArray(new String[0]))
+                .setAuth(obj -> {
+                    // 校验 Id-Token 身份凭证
+                    SaIdUtil.checkCurrentRequestToken();
+                })
+                .setError(e -> SaResult.error(e.getMessage()));
+    }
 }

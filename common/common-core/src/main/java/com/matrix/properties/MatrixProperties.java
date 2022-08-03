@@ -1,7 +1,6 @@
 package com.matrix.properties;
 
 import lombok.Data;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.util.List;
@@ -16,9 +15,6 @@ import java.util.List;
 @Data
 public class MatrixProperties {
 
-    private SwaggerProperties swagger;
-
     private List<CacheProperties> cache;
 
-    private TenantProperties tenant;
 }

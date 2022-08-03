@@ -1,7 +1,9 @@
 package com.matrix.config;
 
+import com.matrix.component.CacheManagerProcessor;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializer;
@@ -13,6 +15,7 @@ import org.springframework.data.redis.serializer.RedisSerializer;
  * @since 2022/7/7 13:59
  **/
 @EnableCaching
+@Import(CacheManagerProcessor.class)
 public class MatrixRedisAutoConfiguration {
 
     @Bean
