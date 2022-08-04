@@ -22,3 +22,8 @@ matrix:
       - tenant
     ignore-urls:
       - /auth/**
+  security:
+    white-urls:
+      - /auth/**
+      - /resource/admin/**
+      - /role/admin/**

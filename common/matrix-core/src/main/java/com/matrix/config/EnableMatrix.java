@@ -1,10 +1,14 @@
 package com.matrix.config;
 
+import cn.hutool.extra.spring.EnableSpringUtil;
+import com.matrix.component.FeignInterceptor;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 import java.lang.annotation.*;
+
 
 /**
  * 描述：
@@ -17,8 +21,10 @@ import java.lang.annotation.*;
 @Inherited
 @Documented
 @EnableDiscoveryClient
-@EnableFeignClients
+@EnableFeignClients(defaultConfiguration = FeignInterceptor.class)
 @MapperScan("com.matrix.**.mapper")
+@EnableAsync
+@EnableSpringUtil
 public @interface EnableMatrix {
 
 }

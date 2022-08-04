@@ -14,9 +14,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  * @since ${DATE} ${TIME}
  **/
 @SpringBootApplication
-@EnableDiscoveryClient
-@EnableFeignClients
-@MapperScan("com.matrix.**.mapper")
+@EnableMatrix
 public class SystemApp {
     public static void main(String[] args) {
         SpringApplication.run(SystemApp.class, args);

@@ -2,6 +2,7 @@ package com.matrix.config;
 
 import cn.dev33.satoken.filter.SaServletFilter;
 import cn.dev33.satoken.id.SaIdUtil;
+import cn.dev33.satoken.router.SaRouter;
 import cn.dev33.satoken.util.SaResult;
 import com.matrix.filter.XssFilter;
 import com.matrix.properties.SecurityProperties;
@@ -56,8 +57,11 @@ public class MatrixWebAutoConfigure {
         return new SaServletFilter()
                 .addInclude("/**")
                 .addExclude("/favicon.ico", "/actuator/**")
-                .addExclude(securityProperties.getWhiteUrls().toArray(new String[0]))
                 .setAuth(obj -> {
+                    if (SaRouter.match(securityProperties.getWhiteUrls()).isHit) {
+                        //白名单放行
+                        return;
+                    }
                     // 校验 Id-Token 身份凭证
                     SaIdUtil.checkCurrentRequestToken();
                 })

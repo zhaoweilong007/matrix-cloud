@@ -92,7 +92,6 @@ matrix:
     enable: false
   security:
     whiteUrls:
-      - /system-server/auth/**
       - /docApp/**
   tenant:
     enable: false

@@ -9,6 +9,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.cloud.openfeign.SpringQueryMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.MatrixVariable;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -19,7 +20,7 @@ import java.util.List;
  * @author zwl
  * @since 2022/8/2 13:46
  **/
-@FeignClient(value = "system-server", path = ResourceAPI.PREFIX,configuration = FeignInterceptor.class)
+@FeignClient(value = "system-server", path = ResourceAPI.PREFIX)
 @Api(tags = "资源服务")
 public interface ResourceAPI {
 
@@ -34,7 +35,7 @@ public interface ResourceAPI {
      * @param id 用户id
      */
     @GetMapping("/admin/{id}")
-    Result<List<SysResource>> getResourceByAdminId(@MatrixVariable("id") Long id);
+    Result<List<SysResource>> getResourceByAdminId(@PathVariable("id") Long id);
 
     /**
      * 根据角色id查询资源列表
@@ -42,7 +43,7 @@ public interface ResourceAPI {
      * @param id 角色id
      */
     @GetMapping("/role/{id}")
-    Result<List<SysResource>> getResourceByRoleId(@MatrixVariable("id") Long id);
+    Result<List<SysResource>> getResourceByRoleId(@PathVariable("id") Long id);
 
     /**
      * 分配资源

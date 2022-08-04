@@ -7,10 +7,7 @@ import com.matrix.entity.vo.Result;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.cloud.openfeign.SpringQueryMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.MatrixVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,7 +17,7 @@ import java.util.List;
  * @author zwl
  * @since 2022/8/2 11:19
  **/
-@FeignClient(value = "system-server", path = RoleAPI.PREFIX,configuration = FeignInterceptor.class)
+@FeignClient(value = "system-server", path = RoleAPI.PREFIX)
 @ApiOperation("角色服务")
 public interface RoleAPI {
 
@@ -37,10 +34,10 @@ public interface RoleAPI {
 
     @GetMapping("/admin/{id}")
     @ApiOperation("根据用户id获取用户角色列表")
-    Result<List<SysRole>> getRoleByAdminId(@MatrixVariable("id") Long id);
+    Result<List<SysRole>> getRoleByAdminId(@PathVariable("id") Long id);
 
 
     @PutMapping("/status/{id}/{status}")
     @ApiOperation("更新角色状态")
-    Result<Boolean> updateStatus(@MatrixVariable("id") Long id, @MatrixVariable("status") Integer status);
+    Result<Boolean> updateStatus(@PathVariable("id") Long id, @PathVariable("status") Integer status);
 }

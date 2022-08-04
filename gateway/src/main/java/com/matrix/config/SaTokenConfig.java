@@ -34,7 +34,6 @@ public class SaTokenConfig {
         return new SaReactorFilter()
                 .addInclude("/**")
                 .addExclude("/favicon.ico", "/actuator/**")
-                .addExclude(securityProperties.getWhiteUrls().toArray(new String[0]))
                 .setAuth(securityAuth)
                 .setError(e -> SaResult.error(e.getMessage()).setCode(401));
     }

@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
  * @since 2022/8/2 11:14
  **/
 
-@FeignClient(value = "system-server", path = AdminAPI.PREFIX, configuration = FeignInterceptor.class)
+@FeignClient(value = "system-server", path = AdminAPI.PREFIX)
 @Api(tags = "用户服务")
 public interface AdminAPI {
 
@@ -30,7 +30,7 @@ public interface AdminAPI {
 
     @DeleteMapping("/{id}")
     @ApiOperation("根据id删除")
-    Result<Boolean> delete(@MatrixVariable("id") Long id);
+    Result<Boolean> delete(@PathVariable("id") Long id);
 
     @PutMapping
     @ApiOperation("更新")
@@ -45,5 +45,5 @@ public interface AdminAPI {
      */
     @PutMapping("/status/{id}/{status}")
     @ApiOperation("更新用户状态")
-    Result<Boolean> updateStatus(@MatrixVariable("id") Long id, @MatrixVariable("status") Integer status);
+    Result<Boolean> updateStatus(@PathVariable("id") Long id, @PathVariable("status") Integer status);
 }

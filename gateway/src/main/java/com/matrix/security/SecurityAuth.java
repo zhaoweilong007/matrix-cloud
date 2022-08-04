@@ -3,8 +3,11 @@ package com.matrix.security;
 import cn.dev33.satoken.exception.NotPermissionException;
 import cn.dev33.satoken.filter.SaFilterAuthStrategy;
 import cn.dev33.satoken.reactor.context.SaReactorSyncHolder;
+import cn.dev33.satoken.router.SaRouter;
 import cn.dev33.satoken.stp.StpUtil;
+import com.matrix.properties.SecurityProperties;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
@@ -23,8 +26,16 @@ public class SecurityAuth implements SaFilterAuthStrategy {
 
     private final AntPathMatcher antPathMatcher = new AntPathMatcher();
 
+    @Autowired
+    private SecurityProperties securityProperties;
+
     @Override
     public void run(Object r) {
+        if (SaRouter.match(securityProperties.getWhiteUrls()).isHit) {
+            //白名单放行
+            return;
+        }
+
         log.info("SecurityAuth check permission...");
         //检查登录
         StpUtil.checkLogin();
