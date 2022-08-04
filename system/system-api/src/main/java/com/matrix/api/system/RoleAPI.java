@@ -2,12 +2,15 @@ package com.matrix.api.system;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.matrix.api.system.entity.po.SysRole;
-import com.matrix.component.FeignInterceptor;
 import com.matrix.entity.vo.Result;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.cloud.openfeign.SpringQueryMap;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -18,7 +21,7 @@ import java.util.List;
  * @since 2022/8/2 11:19
  **/
 @FeignClient(value = "system-server", path = RoleAPI.PREFIX)
-@ApiOperation("角色服务")
+@Api(tags = "角色服务")
 public interface RoleAPI {
 
     String PREFIX = "/role";

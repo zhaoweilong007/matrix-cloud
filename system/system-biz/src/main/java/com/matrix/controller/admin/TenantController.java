@@ -6,6 +6,7 @@ import com.matrix.api.system.entity.po.Tenant;
 import com.matrix.convert.ConvertMapper;
 import com.matrix.entity.vo.Result;
 import com.matrix.service.TenantService;
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/tenant")
+@Api(tags = "租户服务")
 public class TenantController {
     /**
      * 服务对象

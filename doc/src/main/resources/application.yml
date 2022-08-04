@@ -10,18 +10,11 @@ spring:
       username: nacos
       password: nacos
 
-
-
 knife4j:
   enableAggregation: true
   nacos:
     enable: true
     serviceUrl: http://localhost:8848/nacos
-    routes:
-      - name: 演示app
-        serviceName: demoApp
-        location: /v2/api-docs?group=default
-        servicePath: /demoApp
     serviceAuth:
       enable: true
       username: nacos

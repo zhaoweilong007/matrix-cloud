@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.matrix.api.system.entity.po.SysResourceCategory;
 import com.matrix.entity.vo.Result;
 import com.matrix.service.SysResourceCategoryService;
+import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -23,6 +24,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/resource/category")
+@Api(tags = "菜单分类服务")
 public class ResourceCategoryController {
 
     private final SysResourceCategoryService sysResourceCategoryService;

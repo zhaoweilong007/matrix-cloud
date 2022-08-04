@@ -7,9 +7,10 @@
     <result column="id" jdbcType="BIGINT" property="id" />
     <result column="role_id" jdbcType="BIGINT" property="roleId" />
     <result column="resource_id" jdbcType="BIGINT" property="resourceId" />
+    <result column="tenant_id" jdbcType="INTEGER" property="tenantId"/>
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, role_id, resource_id
+    id, role_id, resource_id,tenant_id
   </sql>
 </mapper>

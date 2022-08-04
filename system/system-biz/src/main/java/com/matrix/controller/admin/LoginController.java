@@ -5,6 +5,7 @@ import cn.dev33.satoken.util.SaResult;
 import com.matrix.api.system.entity.dto.SysAdminLoginDto;
 import com.matrix.api.system.entity.dto.SysAdminRegisterDto;
 import com.matrix.service.LoginService;
+import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -22,6 +23,7 @@ import reactor.core.publisher.Mono;
 @RequestMapping("/auth")
 @Validated
 @RequiredArgsConstructor
+@Api(tags = "登录服务")
 public class LoginController {
 
     private final LoginService loginService;

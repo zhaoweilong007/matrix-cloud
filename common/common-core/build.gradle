@@ -27,6 +27,7 @@ dependencies {
     api "cn.dev33:sa-token-dao-redis-jackson:1.30.0"
     api "cn.dev33:sa-token-jwt:1.30.0"
     api 'com.github.xiaoymin:knife4j-micro-spring-boot-starter:3.0.3'
+    api 'com.alibaba:druid-spring-boot-starter:1.2.11'
 }
 
 bootJar {

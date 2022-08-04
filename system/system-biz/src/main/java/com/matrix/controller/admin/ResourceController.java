@@ -64,6 +64,7 @@ public class ResourceController implements ResourceAPI {
     @GetMapping("/admin/{id}")
     @Override
     public Result<List<SysResource>> getResourceByAdminId(@PathVariable("id") Long id) {
+        log.debug("根据用户id查询资源列表,id={}", id);
         return Result.success(sysResourceService.getResourceByAdminId(id));
     }
 

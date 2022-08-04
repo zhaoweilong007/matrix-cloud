@@ -68,7 +68,7 @@ public class SecurityConfigManager implements InitializingBean {
             public void receiveConfigInfo(String configInfo) {
                 Yaml yaml = new Yaml();
                 yaml.setBeanAccess(BeanAccess.FIELD);
-                SecurityProperties properties = yaml.loadAs(config, SecurityProperties.class);
+                SecurityProperties properties = yaml.loadAs(configInfo, SecurityProperties.class);
                 updateConfig(properties);
             }
         });

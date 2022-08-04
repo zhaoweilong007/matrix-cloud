@@ -5,6 +5,7 @@ import com.matrix.api.system.entity.dto.SysMenuDto;
 import com.matrix.api.system.entity.po.SysMenu;
 import com.matrix.entity.vo.Result;
 import com.matrix.service.SysMenuService;
+import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -22,6 +23,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/menu")
+@Api(tags = "菜单服务")
 public class MenuController {
     private final SysMenuService sysMenuService;
 

@@ -18,10 +18,11 @@
     <result column="create_by" jdbcType="VARCHAR" property="createBy" />
     <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
     <result column="deleted" jdbcType="INTEGER" property="deleted" />
+    <result column="tenant_id" jdbcType="INTEGER" property="tenantId"/>
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
     id, username, `password`, icon, email, nick_name, note, login_time, `status`, create_time, 
-    update_time, create_by, update_by, deleted
+    update_time, create_by, update_by, deleted,tenant_id
   </sql>
 </mapper>

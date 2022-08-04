@@ -17,6 +17,7 @@
         <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
         <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
         <result column="deleted" jdbcType="INTEGER" property="deleted"/>
+        <result column="tenant_id" jdbcType="INTEGER" property="tenantId"/>
     </resultMap>
     <sql id="Base_Column_List">
         <!--@mbg.generated-->
@@ -32,7 +33,8 @@
         update_time,
         create_by,
         update_by,
-        deleted
+        deleted,
+        tenant_id
     </sql>
 
     <select id="getMenuByAdminId" resultMap="BaseResultMap">

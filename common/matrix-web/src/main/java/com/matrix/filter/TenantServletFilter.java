@@ -1,6 +1,5 @@
 package com.matrix.filter;
 
-import cn.dev33.satoken.router.SaRouter;
 import com.alibaba.fastjson2.JSON;
 import com.matrix.context.TenantContextHold;
 import com.matrix.context.UserContextHolder;
@@ -28,29 +27,15 @@ import java.io.IOException;
  **/
 @AllArgsConstructor
 public class TenantServletFilter extends OncePerRequestFilter {
-    private TenantProperties tenantProperties;
 
-    private SecurityProperties securityProperties;
-
-    private GlobalExceptionHandler globalExceptionHandler;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if (SaRouter.match(securityProperties.getWhiteUrls()).isHit()) {
-            TenantContextHold.setIgnore(true);
-        } else if (tenantProperties.getEnable() && SaRouter.match(tenantProperties.getIgnoreUrls()).isHit()) {
-            TenantContextHold.setIgnore(true);
-        } else {
-            try {
-                LoginUser loginUser = LoginHelper.getLoginUser();
-                UserContextHolder.setLoginUser(loginUser);
-                TenantContextHold.setTenantId(loginUser.getTenantId());
-            } catch (Exception e) {
-                Result<?> result = globalExceptionHandler.allExceptionHandler(request, e);
-                ServletUtils.renderString(response, JSON.toJSONString(result));
-                return;
-            }
+        try {
+            filterChain.doFilter(request, response);
+        } finally {
+            UserContextHolder.clear();
+            TenantContextHold.clear();
         }
-        filterChain.doFilter(request, response);
     }
 }
