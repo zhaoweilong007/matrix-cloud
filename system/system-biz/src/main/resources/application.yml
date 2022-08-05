@@ -20,5 +20,3 @@ matrix:
   security:
     white-urls:
       - /auth/**
-      - /resource/admin/**
-      - /role/admin/**

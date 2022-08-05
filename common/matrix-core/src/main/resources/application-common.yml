@@ -84,6 +84,9 @@ feign:
         connect-timeout: 5000
         read-timeout: 5000
         logger-level: full
+  autoconfiguration:
+    jackson:
+      enabled: true
 
 # 端点配置
 management:
@@ -109,7 +112,6 @@ mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
     call-setters-on-nulls: true
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   check-config-location: false
 
 
@@ -130,3 +132,11 @@ sa-token:
   token-style: uuid
   # 是否输出操作日志
   is-log: true
+
+
+logging:
+  file:
+    path: /var/logs
+  level:
+    com.matrix.mapper: debug
+    com.matrix.api.**: debug

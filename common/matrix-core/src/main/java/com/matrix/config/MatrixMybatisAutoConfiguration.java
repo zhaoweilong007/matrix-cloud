@@ -1,5 +1,7 @@
 package com.matrix.config;
 
+import com.baomidou.mybatisplus.autoconfigure.MybatisPlusProperties;
+import com.baomidou.mybatisplus.autoconfigure.MybatisPlusPropertiesCustomizer;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.*;
@@ -28,8 +30,12 @@ import java.util.Date;
 public class MatrixMybatisAutoConfiguration {
 
     @Bean
-    public MybatisPlusInterceptor mybatisPlusInterceptor() {
+    public MybatisPlusInterceptor mybatisPlusInterceptor(TenantProperties tenantProperties) {
         MybatisPlusInterceptor mybatisPlusInterceptor = new MybatisPlusInterceptor();
+        if (tenantProperties != null && tenantProperties.getEnable()) {
+            TenantLineInnerInterceptor tenantLineInnerInterceptor = new TenantLineInnerInterceptor(new TenantHandler(tenantProperties));
+            mybatisPlusInterceptor.addInnerInterceptor(tenantLineInnerInterceptor);
+        }
         mybatisPlusInterceptor.addInnerInterceptor(new PaginationInnerInterceptor());
         mybatisPlusInterceptor.addInnerInterceptor(new OptimisticLockerInnerInterceptor());
         mybatisPlusInterceptor.addInnerInterceptor(new BlockAttackInnerInterceptor());
@@ -55,25 +61,4 @@ public class MatrixMybatisAutoConfiguration {
             }
         };
     }
-
-    @Bean
-    public BeanPostProcessor mybatisPlusInterceptorBeanPostProcessor(TenantProperties tenantProperties) {
-
-        return new BeanPostProcessor() {
-            @Override
-            public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-                if (bean instanceof MybatisPlusInterceptor) {
-                    if (tenantProperties != null && tenantProperties.getEnable()) {
-                        MybatisPlusInterceptor plusInterceptor = (MybatisPlusInterceptor) bean;
-                        ArrayList<InnerInterceptor> innerInterceptors = Lists.newArrayList(plusInterceptor.getInterceptors());
-                        TenantLineInnerInterceptor tenantLineInnerInterceptor = new TenantLineInnerInterceptor(new TenantHandler(tenantProperties));
-                        innerInterceptors.add(0, tenantLineInnerInterceptor);
-                        plusInterceptor.setInterceptors(innerInterceptors);
-                    }
-                }
-                return bean;
-            }
-        };
-    }
-
 }

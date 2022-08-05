@@ -82,7 +82,11 @@ public class MatrixWebAutoConfigure {
 
                     LoginUser loginUser = LoginHelper.getLoginUser();
                     UserContextHolder.setLoginUser(loginUser);
-                    TenantContextHold.setTenantId(loginUser.getTenantId());
+                    if (loginUser.getTenantId() == null) {
+                        TenantContextHold.setIgnore(true);
+                    } else {
+                        TenantContextHold.setTenantId(loginUser.getTenantId());
+                    }
                 })
                 .setError(e -> SaResult.error(e.getMessage()));
     }

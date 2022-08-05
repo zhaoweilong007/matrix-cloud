@@ -96,6 +96,13 @@ matrix:
   tenant:
     enable: false
 
+logging:
+  file:
+    path: /var/logs
+  level:
+    com.matrix.mapper: debug
+    com.matrix.api.**: debug
+
 #logging:
 #  level:
 #    org.springframework.cloud.gateway: debug

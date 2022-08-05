@@ -1,6 +1,8 @@
 package com.matrix.component;
 
 import cn.dev33.satoken.id.SaIdUtil;
+import cn.dev33.satoken.stp.StpUtil;
+import com.matrix.entity.constans.MatrixConstants;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 
@@ -16,5 +18,8 @@ public class FeignInterceptor implements RequestInterceptor {
     @Override
     public void apply(RequestTemplate template) {
         template.header(SaIdUtil.ID_TOKEN, SaIdUtil.getToken());
+        if (StpUtil.isLogin()) {
+            template.header(MatrixConstants.AUTH_KEY, StpUtil.getTokenValue());
+        }
     }
 }
