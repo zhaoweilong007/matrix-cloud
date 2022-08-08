@@ -22,6 +22,8 @@ public class LoginHelper {
     public static final String JOIN_CODE = ":";
     public static final String LOGIN_USER_KEY = "loginUser";
 
+    public static final Long ADMINID = 1L;
+
     /**
      * 登录系统
      *
@@ -98,5 +100,11 @@ public class LoginHelper {
         return null;
     }
 
+    public static boolean isAdmin(Long userId) {
+        return ADMINID.equals(userId);
+    }
 
+    public static boolean isAdmin() {
+        return isAdmin(getUserId());
+    }
 }

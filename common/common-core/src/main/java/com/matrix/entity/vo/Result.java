@@ -8,8 +8,7 @@ import com.matrix.exception.SystemErrorType;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.time.Instant;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 @Data
 public class Result<T> implements Serializable {
@@ -19,19 +18,19 @@ public class Result<T> implements Serializable {
 
     private Integer code;
     private String msg;
-    private Instant time;
+    private LocalDateTime time;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private T data;
 
     public Result() {
-        this.time = ZonedDateTime.now().toInstant();
+        this.time = LocalDateTime.now();
     }
 
 
     public Result(ErrorType errorType) {
         this.code = errorType.getCode();
         this.msg = errorType.getMsg();
-        this.time = ZonedDateTime.now().toInstant();
+        this.time = LocalDateTime.now();
     }
 
     public Result(ErrorType errorType, T data) {
@@ -44,7 +43,7 @@ public class Result<T> implements Serializable {
         this.code = code;
         this.msg = msg;
         this.data = data;
-        this.time = ZonedDateTime.now().toInstant();
+        this.time = LocalDateTime.now();
     }
 
     /**

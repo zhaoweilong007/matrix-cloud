@@ -87,6 +87,13 @@ feign:
   autoconfiguration:
     jackson:
       enabled: true
+  compression:
+    request:
+      enabled: true
+    response:
+      enabled: true
+  metrics:
+    enabled: true
 
 # 端点配置
 management:

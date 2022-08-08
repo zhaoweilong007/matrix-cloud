@@ -1,6 +1,6 @@
 package com.matrix;
 
-import com.matrix.config.EnableMatrix;
+import com.matrix.annotation.EnableMatrix;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

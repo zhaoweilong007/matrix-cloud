@@ -42,6 +42,16 @@ feign:
         connect-timeout: 5000
         read-timeout: 5000
         logger-level: full
+  autoconfiguration:
+    jackson:
+      enabled: true
+  compression:
+    request:
+      enabled: true
+    response:
+      enabled: true
+  metrics:
+    enabled: true
 
 # 端点配置
 management:

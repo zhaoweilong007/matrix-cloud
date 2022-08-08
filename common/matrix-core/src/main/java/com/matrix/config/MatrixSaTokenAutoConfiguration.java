@@ -1,8 +1,10 @@
 package com.matrix.config;
 
 import cn.dev33.satoken.jwt.StpLogicJwtForSimple;
+import cn.dev33.satoken.stp.StpInterface;
 import cn.dev33.satoken.stp.StpLogic;
 import com.matrix.component.FeignInterceptor;
+import com.matrix.component.StpInterfaceImpl;
 import com.matrix.properties.SecurityProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -24,5 +26,10 @@ public class MatrixSaTokenAutoConfiguration {
     @Bean
     public FeignInterceptor feignInterceptor() {
         return new FeignInterceptor();
+    }
+
+    @Bean
+    public StpInterface stpInterfaceImpl() {
+        return new StpInterfaceImpl();
     }
 }

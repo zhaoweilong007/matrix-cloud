@@ -1,4 +1,4 @@
-package com.matrix.config;
+package com.matrix.annotation;
 
 import cn.hutool.extra.spring.EnableSpringUtil;
 import com.matrix.component.FeignInterceptor;

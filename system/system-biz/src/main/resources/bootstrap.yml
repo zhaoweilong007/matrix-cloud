@@ -8,3 +8,9 @@ spring:
     include: common
     active: dev
 
+logging:
+  file:
+    path: /var/logs
+  level:
+    com.matrix.mapper: debug
+    com.matrix.api.**: debug

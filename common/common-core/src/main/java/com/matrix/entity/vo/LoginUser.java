@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+import java.util.Set;
+
 /**
  * 描述：登录用户
  *
@@ -24,10 +27,12 @@ public class LoginUser {
 
     private Long tenantId;
 
+    private List<String> permissions;
+
+    private List<String> roles;
 
     public String getLoginId() {
         return userType + ":" + userId;
     }
-
 
 }

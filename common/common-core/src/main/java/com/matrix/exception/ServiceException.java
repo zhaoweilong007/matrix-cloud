@@ -11,6 +11,20 @@ public class ServiceException extends BaseException {
         super(errorType);
     }
 
+    public ServiceException(int code, String mes) {
+        super(new ErrorType() {
+            @Override
+            public Integer getCode() {
+                return code;
+            }
+
+            @Override
+            public String getMsg() {
+                return mes;
+            }
+        });
+    }
+
     public ServiceException(Result result) {
         super(new ErrorType() {
             @Override

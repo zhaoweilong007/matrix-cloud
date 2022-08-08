@@ -10,23 +10,23 @@ import com.matrix.api.system.entity.dto.SysAdminLoginDto;
 import com.matrix.api.system.entity.dto.SysAdminRegisterDto;
 import com.matrix.api.system.entity.dto.UpdateAdminPasswordDto;
 import com.matrix.api.system.entity.po.SysAdmin;
+import com.matrix.api.system.entity.po.SysResource;
+import com.matrix.api.system.entity.po.SysRole;
 import com.matrix.api.system.entity.vo.SysAdminUserInfo;
 import com.matrix.entity.enums.DeviceType;
 import com.matrix.entity.vo.LoginUser;
 import com.matrix.exception.BusinessErrorType;
 import com.matrix.exception.ServiceException;
 import com.matrix.mapper.SysAdminMapper;
-import com.matrix.service.LoginService;
-import com.matrix.service.SysAdminService;
-import com.matrix.service.SysMenuService;
-import com.matrix.service.SysRoleService;
+import com.matrix.service.*;
 import com.matrix.utils.LoginHelper;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * (SysAdmin)表服务实现类
@@ -35,12 +35,13 @@ import java.util.Objects;
  * @since 2022-07-11 16:53:49
  */
 @Service
+@RequiredArgsConstructor
 public class SysAdminServiceImpl extends ServiceImpl<SysAdminMapper, SysAdmin> implements SysAdminService, LoginService {
 
-    @Autowired
-    private SysMenuService sysMenuService;
-    @Autowired
-    private SysRoleService sysRoleService;
+    private final SysMenuService sysMenuService;
+    private final SysRoleService sysRoleService;
+    private final SysResourceService sysResourceService;
+
 
     @Override
     public SysAdmin getAdminByUsername(String username) {
@@ -73,7 +74,10 @@ public class SysAdminServiceImpl extends ServiceImpl<SysAdminMapper, SysAdmin> i
 
     private LoginUser buildLoginUser(SysAdmin sysAdmin) {
         return LoginUser.builder().userId(sysAdmin.getId()).username(sysAdmin.getUsername())
-                .tenantId(sysAdmin.getTenantId()).userType(sysAdmin.getUserType()).build();
+                .tenantId(sysAdmin.getTenantId()).userType(sysAdmin.getUserType())
+                .permissions(sysResourceService.getResourceByAdminId(sysAdmin.getId()).stream().map(SysResource::getUrl).collect(Collectors.toList()))
+                .roles(sysRoleService.getRoleByAdminId(sysAdmin.getId()).stream().map(SysRole::getName).collect(Collectors.toList()))
+                .build();
     }
 
     @Override

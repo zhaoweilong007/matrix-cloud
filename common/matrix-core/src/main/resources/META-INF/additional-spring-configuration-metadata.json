@@ -5,28 +5,28 @@
       "type": "java.lang.Boolean",
       "defaultValue": true,
       "description": "enable swagger.",
-      "sourceType": "com.matrix.properties.MatrixProperties"
+      "sourceType": "com.matrix.properties.SwaggerProperties"
     },
     {
       "name": "matrix.swagger.name",
       "type": "java.lang.String",
       "defaultValue": "",
       "description": "swagger name.",
-      "sourceType": "com.matrix.properties.MatrixProperties"
+      "sourceType": "com.matrix.properties.SwaggerProperties"
     },
     {
       "name": "matrix.swagger.version",
       "type": "java.lang.String",
       "defaultValue": "",
       "description": "swagger version.",
-      "sourceType": "com.matrix.properties.MatrixProperties"
+      "sourceType": "com.matrix.properties.SwaggerProperties"
     },
     {
       "name": "matrix.swagger.description",
       "type": "java.lang.String",
       "defaultValue": "",
       "description": "swagger description.",
-      "sourceType": "com.matrix.properties.MatrixProperties"
+      "sourceType": "com.matrix.properties.SwaggerProperties"
     },
     {
       "name": "matrix.cache.name",
@@ -54,14 +54,28 @@
       "type": "java.lang.Boolean",
       "defaultValue": true,
       "description": "enable tenant.",
-      "sourceType": "com.matrix.properties.MatrixProperties"
+      "sourceType": "com.matrix.properties.TenantProperties"
     },
     {
       "name": "matrix.tenant.ignoreTables",
       "type": "java.util.List",
       "defaultValue": "",
-      "description": "ignore tables.",
-      "sourceType": "com.matrix.properties.MatrixProperties"
+      "description": "ignoreTables.",
+      "sourceType": "com.matrix.properties.TenantProperties"
+    },
+    {
+      "name": "matrix.tenant.ignoreUrls",
+      "type": "java.util.List",
+      "defaultValue": "",
+      "description": "ignoreUrls.",
+      "sourceType": "com.matrix.properties.TenantProperties"
+    },
+    {
+      "name": "matrix.security.whiteUrls",
+      "type": "java.util.List",
+      "defaultValue": "",
+      "description": "whiteUrls.",
+      "sourceType": "com.matrix.properties.SecurityProperties"
     }
   ]
 }
