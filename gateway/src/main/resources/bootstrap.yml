@@ -102,7 +102,7 @@ matrix:
     enable: false
   security:
     whiteUrls:
-      - /docApp/**
+      - /docapp/**
   tenant:
     enable: false
 
