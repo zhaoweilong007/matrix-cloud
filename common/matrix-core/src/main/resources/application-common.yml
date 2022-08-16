@@ -147,3 +147,23 @@ logging:
   level:
     com.matrix.mapper: debug
     com.matrix.api.**: debug
+
+seata:
+  config:
+    type: nacos
+    nacos:
+      server-addr: localhost:8848
+      username: nacos
+      password: nacos
+      group: SEATA_GROUP
+      data-id: seataServer.properties
+      namespace:
+  registry:
+    type: nacos
+    nacos:
+      application: seata-server
+      server-addr: localhost:8848
+      group: SEATA_GROUP
+      cluster: default
+      username: nacos
+      password: nacos

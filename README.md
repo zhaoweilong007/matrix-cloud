@@ -46,8 +46,8 @@ Spring cloud matrix是微服务的脚手架，整合目前主流的微服务框�
 - [x] RBAC权限管理
 - [x] 聚合swagger文档
 - [x] 多租户管理
-- [ ] 动态路由
-- [ ] 集成seata分布式事务
+- [x] 动态路由
+- [x] 集成seata分布式事务
 - [ ] 集成skyWalking分布式链路追踪
 - [ ] 集成prometheus监控
 - [ ] 集成ELK日收集

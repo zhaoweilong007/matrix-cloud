@@ -1,17 +1,16 @@
 package com.matrix.config;
 
 import cn.hutool.core.collection.CollectionUtil;
+import com.alibaba.cloud.nacos.NacosConfigProperties;
 import com.alibaba.fastjson.JSON;
-import com.alibaba.nacos.api.NacosFactory;
 import com.alibaba.nacos.api.config.ConfigService;
 import com.alibaba.nacos.api.config.listener.Listener;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.event.RefreshRoutesEvent;
 import org.springframework.cloud.gateway.route.RouteDefinition;
 import org.springframework.cloud.gateway.route.RouteDefinitionWriter;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
@@ -28,23 +27,25 @@ import java.util.function.Consumer;
  **/
 @Component
 @Slf4j
-public class NacosDynamicRouteConfig implements ApplicationEventPublisherAware {
+@RequiredArgsConstructor
+public class NacosDynamicRouteConfig {
 
-    @Autowired
-    private RouteDefinitionWriter routeDefinitionWriter;
+    private final RouteDefinitionWriter routeDefinitionWriter;
 
-    private ApplicationEventPublisher publisher;
+    private final ApplicationEventPublisher publisher;
 
-    private ConfigService configService;
+    private final ConfigService configService;
+
+    private final NacosConfigProperties nacosConfigProperties;
+
+    public static String ROUTE_DATA_ID = "gateway-route";
 
 
     @PostConstruct
     public void init() throws Exception {
-        log.info("NacosDynamicRouteConfig init");
-        initConfigService();
-        String config = configService.getConfig(GateWayConfig.NACOS_ROUTE_DATA_ID, GateWayConfig.NACOS_ROUTE_GROUP, GateWayConfig.DEFAULT_TIMEOUT);
+        String config = configService.getConfig(ROUTE_DATA_ID, nacosConfigProperties.getGroup(), 3000);
         processConfigInfo(config, routeDefinition -> routeDefinitionWriter.save(Mono.just(routeDefinition)).subscribe());
-        configService.addListener(GateWayConfig.NACOS_ROUTE_DATA_ID, GateWayConfig.NACOS_ROUTE_GROUP, new Listener() {
+        configService.addListener(ROUTE_DATA_ID, nacosConfigProperties.getGroup(), new Listener() {
             @Override
             public Executor getExecutor() {
                 return null;
@@ -75,18 +76,5 @@ public class NacosDynamicRouteConfig implements ApplicationEventPublisherAware {
         routes.forEach(consumer);
     }
 
-    private ConfigService initConfigService() {
-        try {
-            return configService = NacosFactory.createConfigService(GateWayConfig.NACOS_SERVER_ADDR);
-        } catch (Exception e) {
-            log.error("初始化网关路由时发生错误", e);
-            return null;
-        }
-    }
 
-
-    @Override
-    public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
-        this.publisher = applicationEventPublisher;
-    }
 }
