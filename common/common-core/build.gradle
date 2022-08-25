@@ -1,23 +1,23 @@
 dependencies {
-    /*spring boot*/
+    /*spring boot starter*/
     api('org.springframework.boot:spring-boot-starter-validation')
     api('org.springframework.boot:spring-boot-starter-actuator')
     api 'org.springframework.boot:spring-boot-starter-test'
     api('org.springframework.boot:spring-boot-configuration-processor')
     annotationProcessor('org.springframework.boot:spring-boot-configuration-processor')
     api('org.springframework.boot:spring-boot-starter-data-redis')
-
-    // https://mvnrepository.com/artifact/io.seata/seata-spring-boot-starter
     api 'io.seata:seata-spring-boot-starter:1.5.2'
+    api('com.baomidou:mybatis-plus-boot-starter:3.5.2')
+    api 'com.github.xiaoymin:knife4j-micro-spring-boot-starter:3.0.3'
+    api 'com.alibaba:druid-spring-boot-starter:1.2.11'
 
 
     /*spring cloud alibaba*/
     api('com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-discovery')
     api('com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-config')
     api 'com.alibaba.cloud:spring-cloud-starter-alibaba-sentinel'
-
     api('com.alibaba.cloud:spring-cloud-starter-alibaba-seata') {
-        exclude group: 'io.seata', module: 'seata-spring-boot-starter'
+        exclude group: "io.seata", module: "seata-spring-boot-starter"
     }
 
 
@@ -27,15 +27,19 @@ dependencies {
     api 'org.springframework.cloud:spring-cloud-starter-loadbalancer'
 
     /*other*/
-    api('com.baomidou:mybatis-plus-boot-starter:3.5.2')
     api('mysql:mysql-connector-java:8.0.29')
     api('org.apache.commons:commons-pool2:2.11.1')
     api 'com.github.ben-manes.caffeine:caffeine:3.1.1'
     api 'com.alibaba:transmittable-thread-local:2.13.2'
     api "cn.dev33:sa-token-dao-redis-jackson:1.30.0"
     api "cn.dev33:sa-token-jwt:1.30.0"
-    api 'com.github.xiaoymin:knife4j-micro-spring-boot-starter:3.0.3'
-    api 'com.alibaba:druid-spring-boot-starter:1.2.11'
+
+
+    api 'org.apache.skywalking:apm-toolkit-logback-1.x:8.11.0'
+    api 'org.apache.skywalking:apm-toolkit-trace:8.11.0'
+    api 'org.apache.skywalking:apm-toolkit-opentracing:8.11.0'
+
+
 }
 
 bootJar {

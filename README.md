@@ -12,7 +12,7 @@ Spring cloud matrix是微服务的脚手架，整合目前主流的微服务框�
 - gradle7.4.2
 - mysql8.0
 - redis5.0
-- elasticSearch8.0
+- elasticSearch7.10.0
 
 ### 技术选型
 

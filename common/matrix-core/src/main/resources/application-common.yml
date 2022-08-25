@@ -10,9 +10,9 @@ spring:
     time-zone: GMT+8
   # redis配置
   redis:
-    host: 127.0.0.1
-    port: 6379
-    database: 0
+    host: ${REDIS_HOST:127.0.0.1}
+    port: ${REDIS_PORT:6379}
+    database: ${REDIS_DATABASE:0}
     timeout: 10s
     lettuce:
       pool:
@@ -59,18 +59,18 @@ spring:
   # spring cloud配置
   cloud:
     nacos:
-      server-addr: localhost:8848
-      username: nacos
-      password: nacos
+      server-addr: ${NACOS_SERVER_ADDRESS:localhost:8848}
+      username: ${NACOS_USERNAME:nacos}
+      password: ${NACOS_PASSWD:nacos}
       config:
         file-extension: yaml
     sentinel:
       enabled: true
       eager: true
       transport:
-        port: 8719
-        dashboard: localhost:8080
-        client-ip: 192.168.2.99
+        port: ${SENTINEL_PORT:8719}
+        dashboard: ${SENTINEL_DASHBOARD:localhost:8088}
+        client-ip: ${SENTINEL_CLIENT_IP:192.168.2.99}
   main:
     allow-bean-definition-overriding: true
 
@@ -101,6 +101,9 @@ management:
     web:
       exposure:
         include: "*"
+    jmx:
+      exposure:
+        include: "*"
   endpoint:
     health:
       show-details: always
@@ -124,7 +127,7 @@ mybatis-plus:
 
 sa-token:
   # jwt秘钥
-  jwt-secret-key: asdasdasifhueuiwyurfewbfjsdafjk
+  jwt-secret-key: ${SA_TOKEN_JWT_SECRET_KEY:abcdefghijklmnopqrstuvwxyz}
   # token名称 (同时也是cookie名称)
   token-name: Authorization
   # token有效期，单位s 默认30天, -1代表永不过期
@@ -152,9 +155,9 @@ seata:
   config:
     type: nacos
     nacos:
-      server-addr: localhost:8848
-      username: nacos
-      password: nacos
+      server-addr: ${NACOS_SERVER_ADDRESS:localhost:8848}
+      username: ${NACOS_USERNAME:nacos}
+      password: ${NACOS_PASSWD:nacos}
       group: SEATA_GROUP
       data-id: seataServer.properties
       namespace:
@@ -162,8 +165,8 @@ seata:
     type: nacos
     nacos:
       application: seata-server
-      server-addr: localhost:8848
+      server-addr: ${NACOS_SERVER_ADDRESS:localhost:8848}
       group: SEATA_GROUP
       cluster: default
-      username: nacos
-      password: nacos
+      username: ${NACOS_USERNAME:nacos}
+      password: ${NACOS_PASSWD:nacos}
