@@ -8,6 +8,7 @@ import com.google.common.collect.Lists;
 import com.matrix.context.TenantContextHold;
 import com.matrix.context.UserContextHolder;
 import com.matrix.entity.vo.LoginUser;
+import com.matrix.filter.ApmHttpInfoFilter;
 import com.matrix.filter.XssFilter;
 import com.matrix.properties.SecurityProperties;
 import com.matrix.properties.TenantProperties;
@@ -56,6 +57,14 @@ public class MatrixWebAutoConfigure {
     public FilterRegistrationBean<XssFilter> xssFilter() {
         FilterRegistrationBean<XssFilter> bean = new FilterRegistrationBean<>();
         bean.setFilter(new XssFilter());
+        bean.setOrder(Integer.MIN_VALUE);
+        return bean;
+    }
+
+    @Bean
+    public FilterRegistrationBean<ApmHttpInfoFilter> httpInfoFilter() {
+        FilterRegistrationBean<ApmHttpInfoFilter> bean = new FilterRegistrationBean<>();
+        bean.setFilter(new ApmHttpInfoFilter());
         bean.setOrder(Integer.MIN_VALUE);
         return bean;
     }

@@ -157,6 +157,8 @@ SW_AGENT_NAME修改为自己的应用名称，默认的后端地址为127.0.0.1:
 
 在config目录下 增加apm-trace-ignore-plugin.config配置文件
 
+如果需要开启sql参数显示，修改agent.config将参数plugin.jdbc.trace_sql_parameters设置为true
+
 ## rocketmq
 
 ## ELK
