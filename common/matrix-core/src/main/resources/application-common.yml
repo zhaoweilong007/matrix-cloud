@@ -8,6 +8,10 @@ spring:
       max-file-size: 100MB
   jackson:
     time-zone: GMT+8
+  messages:
+    basename: i18n/messages
+    encoding: utf-8
+    fallback-to-system-locale: true
   # redis配置
   redis:
     host: ${REDIS_HOST:127.0.0.1}

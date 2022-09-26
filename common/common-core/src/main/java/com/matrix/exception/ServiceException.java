@@ -8,10 +8,14 @@ public class ServiceException extends BaseException {
     //TODO 对业务异常的返回码进行校验，规范到一定范围内
 
     public ServiceException(ErrorType errorType) {
-        super(errorType);
+        super(errorType, null);
     }
 
-    public ServiceException(int code, String mes) {
+    public ServiceException(ErrorType errorType, Object[] args) {
+        super(errorType, args);
+    }
+
+    public ServiceException(int code, String msg) {
         super(new ErrorType() {
             @Override
             public Integer getCode() {
@@ -20,12 +24,26 @@ public class ServiceException extends BaseException {
 
             @Override
             public String getMsg() {
-                return mes;
+                return msg;
             }
-        });
+        }, null);
     }
 
-    public ServiceException(Result result) {
+    public ServiceException(int code, String msg, Object[] args) {
+        super(new ErrorType() {
+            @Override
+            public Integer getCode() {
+                return code;
+            }
+
+            @Override
+            public String getMsg() {
+                return msg;
+            }
+        }, args);
+    }
+
+    public ServiceException(Result<?> result) {
         super(new ErrorType() {
             @Override
             public Integer getCode() {
@@ -36,7 +54,7 @@ public class ServiceException extends BaseException {
             public String getMsg() {
                 return result.getMsg();
             }
-        });
+        }, null);
     }
 
 }
