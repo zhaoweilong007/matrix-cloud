@@ -7,9 +7,7 @@ import cn.dev33.satoken.router.SaRouter;
 import cn.dev33.satoken.stp.StpUtil;
 import com.matrix.properties.SecurityProperties;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.server.reactive.ServerHttpRequest;
-import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 
 import java.util.List;
@@ -20,14 +18,16 @@ import java.util.List;
  * @author zwl
  * @since 2022/7/8 15:04
  **/
-@Component
 @Slf4j
 public class SecurityAuth implements SaFilterAuthStrategy {
 
     private final AntPathMatcher antPathMatcher = new AntPathMatcher();
 
-    @Autowired
-    private SecurityProperties securityProperties;
+    private final SecurityProperties securityProperties;
+
+    public SecurityAuth(SecurityProperties securityProperties) {
+        this.securityProperties = securityProperties;
+    }
 
     @Override
     public void run(Object r) {

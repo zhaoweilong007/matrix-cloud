@@ -11,7 +11,7 @@ import org.springframework.cloud.gateway.event.RefreshRoutesEvent;
 import org.springframework.cloud.gateway.route.RouteDefinition;
 import org.springframework.cloud.gateway.route.RouteDefinitionWriter;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 import reactor.core.publisher.Mono;
 
 import javax.annotation.PostConstruct;
@@ -25,7 +25,7 @@ import java.util.function.Consumer;
  * @author zwl
  * @since 2022/7/4 14:26
  **/
-@Component
+@Configuration(proxyBeanMethods = false)
 @Slf4j
 @RequiredArgsConstructor
 public class NacosDynamicRouteConfig {

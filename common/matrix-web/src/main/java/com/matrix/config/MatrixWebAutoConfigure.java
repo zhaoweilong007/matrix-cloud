@@ -13,6 +13,7 @@ import com.matrix.filter.XssFilter;
 import com.matrix.properties.SecurityProperties;
 import com.matrix.properties.TenantProperties;
 import com.matrix.utils.LoginHelper;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -40,7 +41,9 @@ public class MatrixWebAutoConfigure {
 
     @Bean
     public LocaleChangeInterceptor localeChangeInterceptor() {
-        return new LocaleChangeInterceptor();
+        LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
+        localeChangeInterceptor.setParamName("content-language");
+        return localeChangeInterceptor;
     }
 
     @Bean
@@ -88,6 +91,7 @@ public class MatrixWebAutoConfigure {
     public List<String> excludeList = Lists.newArrayList("/favicon.ico", "/actuator/**");
 
     @Bean
+    @ConditionalOnBean(value = {SecurityProperties.class, TenantProperties.class})
     public SaServletFilter getSaServletFilter(SecurityProperties securityProperties,
                                               TenantProperties tenantProperties) {
         return new SaServletFilter()

@@ -8,7 +8,6 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.server.ServerWebExchange;
@@ -17,7 +16,6 @@ import reactor.core.publisher.Mono;
 /**
  * Gateway 的全局异常处理器，将 Exception 翻译成 CommonResult + 对应的异常编号
  */
-@Component
 @Order(-1) // 保证优先级高于默认的 Spring Cloud Gateway 的 ErrorWebExceptionHandler 实现
 @Slf4j
 public class GlobalExceptionHandler implements ErrorWebExceptionHandler {
