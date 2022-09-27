@@ -20,7 +20,7 @@ public class GlobalI18nFilter implements GlobalFilter, Ordered {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        String language = exchange.getRequest().getHeaders().getFirst("content-language");
+        String language = exchange.getRequest().getHeaders().getFirst("Accept-Language");
         Locale locale;
         if (language == null) {
             locale = Locale.getDefault();

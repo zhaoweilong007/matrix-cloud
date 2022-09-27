@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.matrix.exception.BaseException;
 import com.matrix.exception.ErrorType;
 import com.matrix.exception.SystemErrorType;
+import com.matrix.utils.MessageSourceUtils;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -29,7 +30,7 @@ public class Result<T> implements Serializable {
 
     public Result(ErrorType errorType) {
         this.code = errorType.getCode();
-        this.msg = errorType.getMsg();
+        this.msg = MessageSourceUtils.getMessage(errorType.getMsg());
         this.time = LocalDateTime.now();
     }
 
@@ -41,7 +42,7 @@ public class Result<T> implements Serializable {
 
     private Result(Integer code, String msg, T data) {
         this.code = code;
-        this.msg = msg;
+        this.msg = MessageSourceUtils.getMessage(msg);
         this.data = data;
         this.time = LocalDateTime.now();
     }
@@ -123,7 +124,7 @@ public class Result<T> implements Serializable {
     }
 
     public static <T> Result<T> fail(int code, String msg) {
-        return new Result<>(code, msg, null);
+        return new Result<>(code, MessageSourceUtils.getMessage(msg), null);
     }
 
 
