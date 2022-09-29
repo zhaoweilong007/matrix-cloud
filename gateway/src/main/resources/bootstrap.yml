@@ -6,6 +6,10 @@ spring:
     name: api-gateway
   profiles:
     active: dev
+  messages:
+    basename: i18n/messages
+    encoding: utf-8
+    fallback-to-system-locale: true
   cloud:
     nacos:
       server-addr: ${NACOS_SERVER_ADDRESS:localhost:8848}
@@ -61,6 +65,12 @@ spring:
           lower-case-service-id: true
       loadbalancer:
         use404: true
+      routes:
+        - id: demo
+          uri: grayLb://demo
+          predicates:
+            - Path=/demo/**
+
   main:
     allow-bean-definition-overriding: true
 

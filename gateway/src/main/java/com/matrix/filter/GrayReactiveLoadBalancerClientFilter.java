@@ -27,7 +27,7 @@ import java.net.URI;
 @Slf4j
 public class GrayReactiveLoadBalancerClientFilter implements GlobalFilter, Ordered {
 
-    private static final int LOAD_BALANCER_CLIENT_FILTER_ORDER = 10150;
+    public static final int LOAD_BALANCER_CLIENT_FILTER_ORDER = 10150;
     private final LoadBalancerClientFactory clientFactory;
     private LoadBalancerProperties properties;
 

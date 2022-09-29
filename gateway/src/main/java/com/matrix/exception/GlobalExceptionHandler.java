@@ -55,7 +55,7 @@ public class GlobalExceptionHandler implements ErrorWebExceptionHandler {
                                                      ResponseStatusException ex) {
         ServerHttpRequest request = exchange.getRequest();
         log.warn("[responseStatusExceptionHandler][uri({}/{}) 发生异常]", request.getURI(), request.getMethod(), ex);
-        return Result.fail(ex.getRawStatusCode(), ex.getReason());
+        return Result.fail(ex.getRawStatusCode(), ex.getMessage());
     }
 
     /**

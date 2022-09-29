@@ -15,12 +15,12 @@ public class MessageSourceUtils {
     public static String getMessage(String code, Object[] arga) {
         MessageSource messageSource = SpringUtil.getBean(MessageSource.class);
         Assert.notNull(messageSource, "MessageSource cannot be null");
-        return messageSource.getMessage(code, arga, LocaleContextHolder.getLocale());
+        return messageSource.getMessage(code, arga, code, LocaleContextHolder.getLocale());
     }
 
     public static String getMessage(String code) {
         MessageSource messageSource = SpringUtil.getBean(MessageSource.class);
         Assert.notNull(messageSource, "MessageSource cannot be null");
-        return messageSource.getMessage(code, null, LocaleContextHolder.getLocale());
+        return messageSource.getMessage(code, null, code, LocaleContextHolder.getLocale());
     }
 }

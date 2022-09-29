@@ -1,9 +1,7 @@
 package com.matrix.exception;
 
-import cn.hutool.extra.spring.SpringUtil;
+import com.matrix.utils.MessageSourceUtils;
 import lombok.Getter;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 
 @Getter
 public class BaseException extends RuntimeException {
@@ -42,10 +40,6 @@ public class BaseException extends RuntimeException {
 
     @Override
     public String getMessage() {
-        MessageSource source = SpringUtil.getBean(MessageSource.class);
-        if (source == null) {
-            return super.getMessage();
-        }
-        return source.getMessage(errorType.getMsg(), args, LocaleContextHolder.getLocale());
+        return MessageSourceUtils.getMessage(errorType.getMsg(), args);
     }
 }

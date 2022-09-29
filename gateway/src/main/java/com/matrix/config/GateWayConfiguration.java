@@ -13,9 +13,13 @@ import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerProperties;
+import org.springframework.cloud.gateway.route.RedisRouteDefinitionRepository;
+import org.springframework.cloud.gateway.route.RouteDefinition;
+import org.springframework.cloud.gateway.route.RouteDefinitionRepository;
 import org.springframework.cloud.loadbalancer.support.LoadBalancerClientFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.scheduling.annotation.Scheduled;
 
@@ -29,6 +33,11 @@ import java.util.stream.Collectors;
  **/
 @Configuration(proxyBeanMethods = false)
 public class GateWayConfiguration {
+
+    @Bean
+    public RouteDefinitionRepository routeDefinitionRepository(ReactiveRedisTemplate<String, RouteDefinition> reactiveRedisTemplate) {
+        return new RedisRouteDefinitionRepository(reactiveRedisTemplate);
+    }
 
     @Bean
     public GrayReactiveLoadBalancerClientFilter grayReactiveLoadBalancerClientFilter(LoadBalancerClientFactory clientFactory, LoadBalancerProperties properties) {
