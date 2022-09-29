@@ -8,19 +8,6 @@ spring:
     include: common
     active: dev
 
-# 端点配置
-management:
-  endpoints:
-    jmx:
-      exposure:
-        include: "*"
-    web:
-      exposure:
-        include: "*"
-  endpoint:
-    health:
-      show-details: always
-
 logging:
   file:
     path: /var/logs

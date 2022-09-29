@@ -63,6 +63,7 @@ spring:
         locator:
           enabled: true
           lower-case-service-id: true
+          url-expression: "'grayLb://'+serviceId"
       loadbalancer:
         use404: true
       routes:

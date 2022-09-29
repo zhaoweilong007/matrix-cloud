@@ -1,6 +1,8 @@
 package com.matrix.config;
 
 import cn.dev33.satoken.id.SaIdUtil;
+import com.matrix.component.InstancesChangeEventListener;
+import com.matrix.component.ServerListChangeEventListener;
 import com.matrix.exception.GlobalExceptionHandler;
 import com.matrix.filter.GlobalI18nFilter;
 import com.matrix.filter.GlobalLogFilter;
@@ -33,6 +35,16 @@ import java.util.stream.Collectors;
  **/
 @Configuration(proxyBeanMethods = false)
 public class GateWayConfiguration {
+
+    @Bean
+    public InstancesChangeEventListener instancesChangeEventListener() {
+        return new InstancesChangeEventListener();
+    }
+
+    @Bean
+    public ServerListChangeEventListener serverListChangeEventListener() {
+        return new ServerListChangeEventListener();
+    }
 
     @Bean
     public RouteDefinitionRepository routeDefinitionRepository(ReactiveRedisTemplate<String, RouteDefinition> reactiveRedisTemplate) {

@@ -1,6 +1,7 @@
 package com.matrix.filter;
 
 import cn.hutool.core.util.StrUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.loadbalancer.DefaultResponse;
@@ -20,14 +21,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
- * 描述：
+ * 描述：版本号灰度发布
  *
  * @author zwl
  * @since 2022/9/26 16:49
  **/
+@Slf4j
 public class VersionGrayLoadBalancer implements ReactorServiceInstanceLoadBalancer {
-    private ObjectProvider<ServiceInstanceListSupplier> serviceInstanceListSupplierProvider;
-    private String serviceId;
+    private final ObjectProvider<ServiceInstanceListSupplier> serviceInstanceListSupplierProvider;
+    private final String serviceId;
     private final AtomicInteger position;
 
 
@@ -61,6 +63,12 @@ public class VersionGrayLoadBalancer implements ReactorServiceInstanceLoadBalanc
             List<ServiceInstance> serviceInstances = instances.stream()
                     .filter(instance -> reqVersion.equals(instance.getMetadata().get("version")))
                     .collect(Collectors.toList());
+
+            if (serviceInstances.isEmpty()) {
+                log.warn("No version servers available for service,serviceName:{},version:{}", this.serviceId, reqVersion);
+                return new EmptyResponse();
+            }
+
 
             return processRibbonInstanceResponse(serviceInstances);
 

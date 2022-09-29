@@ -164,3 +164,15 @@ SW_AGENT_NAME修改为自己的应用名称，默认的后端地址为127.0.0.1:
 ## ELK
 
 ## Promethues+grafana
+
+## other
+
+- gateway api endpoints:
+  /actuator/gateway/routes/{id},methods=[DELETE]，删除单个路由
+  /actuator/gateway/routes/{id},methods=[POST]，增加单个路由
+  /actuator/gateway/routes/{id},methods=[GET]，查看单个路由
+  /actuator/gateway/routes],methods=[GET]，获取路由列表
+  /actuator/gateway/refresh,methods=[POST]，路由刷新
+  /actuator/gateway/globalfilters,methods=[GET]，获取全局过滤器列表
+  /actuator/gateway/routefilters,methods=[GET]，路由过滤器工厂列表
+  /actuator/gateway/routes/{id}/combinedfilters,methods=[GET]，获取单个路由的联合过滤器

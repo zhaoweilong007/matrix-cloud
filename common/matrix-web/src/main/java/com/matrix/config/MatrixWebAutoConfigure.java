@@ -4,10 +4,7 @@ import cn.dev33.satoken.filter.SaServletFilter;
 import cn.dev33.satoken.id.SaIdUtil;
 import cn.dev33.satoken.router.SaRouter;
 import cn.dev33.satoken.util.SaResult;
-import com.alibaba.cloud.nacos.NacosConfigProperties;
-import com.alibaba.nacos.api.config.ConfigService;
 import com.google.common.collect.Lists;
-import com.matrix.RegisterRoute;
 import com.matrix.context.TenantContextHold;
 import com.matrix.context.UserContextHolder;
 import com.matrix.entity.vo.LoginUser;
@@ -36,11 +33,6 @@ import java.util.List;
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @Import(MatrixTenantAutoConfiguration.class)
 public class MatrixWebAutoConfigure {
-
-    @Bean
-    public RegisterRoute registerRoute(ConfigService configService, NacosConfigProperties nacosConfigProperties) {
-        return new RegisterRoute(configService, nacosConfigProperties);
-    }
 
     @Bean
     public SpringfoxHandlerProviderBeanPostProcessor springfoxHandlerProviderBeanPostProcessor() {
