@@ -7,6 +7,7 @@ import com.alibaba.nacos.api.naming.NamingService;
 import com.alibaba.nacos.api.naming.pojo.Instance;
 import com.github.xiaoymin.knife4j.aggre.nacos.NacosRoute;
 import com.github.xiaoymin.knife4j.aggre.spring.configuration.Knife4jAggregationProperties;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,12 +20,13 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * 描述：
+ * 描述：自动配置路由
  *
  * @author zwl
  * @since 2022/8/4 10:46
  **/
 @Component
+@Slf4j
 public class Knife4jBeanPostprocess implements BeanPostProcessor {
 
     @Value("${spring.application.name}")
@@ -63,7 +65,7 @@ public class Knife4jBeanPostprocess implements BeanPostProcessor {
                     nacosRoute.setLocation("/v2/api-docs");
                     return nacosRoute;
                 }).collect(Collectors.toList());
-
+                log.info("register nacos routes:{}", routeList);
                 aggregationProperties.getNacos().setRoutes(routeList);
             } catch (Exception e) {
                 throw new RuntimeException(e);

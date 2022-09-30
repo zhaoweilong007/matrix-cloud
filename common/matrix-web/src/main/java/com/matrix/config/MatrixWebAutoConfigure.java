@@ -13,6 +13,7 @@ import com.matrix.filter.XssFilter;
 import com.matrix.properties.SecurityProperties;
 import com.matrix.properties.TenantProperties;
 import com.matrix.utils.LoginHelper;
+import com.matrix.utils.ProfileUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -79,6 +80,11 @@ public class MatrixWebAutoConfigure {
                 .addInclude("/**")
                 .addExclude()
                 .setAuth(obj -> {
+                    //swagger接口放行
+                    if (ProfileUtils.isTest() && SaRouter.match("/v2/api-docs").isHit()) {
+                        TenantContextHold.setIgnore(true);
+                        return;
+                    }
                     if (SaRouter.match(securityProperties.getWhiteUrls()).isHit || SaRouter.match(excludeList).isHit) {
                         //白名单放行
                         TenantContextHold.setIgnore(true);

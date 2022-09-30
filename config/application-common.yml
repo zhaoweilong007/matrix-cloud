@@ -1,4 +1,6 @@
 spring:
+  main:
+    allow-bean-definition-overriding: true
   servlet:
     multipart:
       max-request-size: 5MB
@@ -68,21 +70,14 @@ spring:
             multi-statement-allow: true
   # spring cloud配置
   cloud:
-    nacos:
-      server-addr: ${NACOS_SERVER_ADDRESS:localhost:8848}
-      username: ${NACOS_USERNAME:nacos}
-      password: ${NACOS_PASSWD:nacos}
-      config:
-        file-extension: yaml
     sentinel:
       enabled: true
       eager: true
       transport:
         port: ${SENTINEL_PORT:8719}
         dashboard: ${SENTINEL_DASHBOARD:localhost:8088}
-        client-ip: ${SENTINEL_CLIENT_IP:192.168.2.99}
-  main:
-    allow-bean-definition-overriding: true
+        client-ip: ${SENTINEL_CLIENT_IP:192.168.2.101}
+
 
 feign:
   ## 启用对 feign 的 Sentinel 支持
@@ -160,23 +155,3 @@ logging:
   level:
     com.matrix.mapper: debug
     com.matrix.api.**: debug
-
-seata:
-  config:
-    type: nacos
-    nacos:
-      server-addr: ${NACOS_SERVER_ADDRESS:localhost:8848}
-      username: ${NACOS_USERNAME:nacos}
-      password: ${NACOS_PASSWD:nacos}
-      group: SEATA_GROUP
-      data-id: seataServer.properties
-      namespace:
-  registry:
-    type: nacos
-    nacos:
-      application: seata-server
-      server-addr: ${NACOS_SERVER_ADDRESS:localhost:8848}
-      group: SEATA_GROUP
-      cluster: default
-      username: ${NACOS_USERNAME:nacos}
-      password: ${NACOS_PASSWD:nacos}

@@ -6,6 +6,7 @@ import cn.dev33.satoken.reactor.context.SaReactorSyncHolder;
 import cn.dev33.satoken.router.SaRouter;
 import cn.dev33.satoken.stp.StpUtil;
 import com.matrix.properties.SecurityProperties;
+import com.matrix.utils.ProfileUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.util.AntPathMatcher;
@@ -33,6 +34,11 @@ public class SecurityAuth implements SaFilterAuthStrategy {
     public void run(Object r) {
         if (SaRouter.match(securityProperties.getWhiteUrls()).isHit) {
             //白名单放行
+            return;
+        }
+
+        //swagger接口放行
+        if (ProfileUtils.isTest() && SaRouter.match("/v2/api-docs").isHit()) {
             return;
         }
 

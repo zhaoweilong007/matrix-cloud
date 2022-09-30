@@ -7,16 +7,16 @@ spring:
 
 matrix:
   swagger:
-    enable: false
-  security:
-    whiteUrls:
-      - /docapp/**
+    enable: true
+    name: 系统服务
+    version: 1.0.0
+    description: 系统服务接口文档
   tenant:
-    enable: false
-
-logging:
-  file:
-    path: /var/logs
-  level:
-    com.matrix.mapper: debug
-    com.matrix.api.**: debug
+    enable: true
+    ignoreTables:
+      - tenant
+    ignore-urls:
+      - /auth/**
+  security:
+    white-urls:
+      - /auth/**

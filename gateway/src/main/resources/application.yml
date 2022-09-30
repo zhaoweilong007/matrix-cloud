@@ -1,9 +1,9 @@
 server:
-  port: 9001
+  port: 9000
 
 spring:
   application:
-    name: system-server
+    name: api-gateway
   profiles:
     include: matrix
     active: dev

@@ -1,5 +1,5 @@
 dependencies {
-    api(project(":common:matrix-core"))
-    api(project(":common:matrix-web"))
-    api(project(":system:system-api"))
+    implementation(project(":common:matrix-core"))
+    implementation(project(":common:matrix-web"))
+    implementation(project(":system:system-api"))
 }

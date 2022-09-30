@@ -2,6 +2,7 @@ package com.matrix.config;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.boot.autoconfigure.web.servlet.WebMvcProperties;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
 import springfox.documentation.spring.web.plugins.WebFluxRequestHandlerProvider;
@@ -24,6 +25,10 @@ public class SpringfoxHandlerProviderBeanPostProcessor implements BeanPostProces
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         if (bean instanceof WebMvcRequestHandlerProvider || bean instanceof WebFluxRequestHandlerProvider) {
             customizeSpringfoxHandlerMappings(getHandlerMappings(bean));
+        }
+        if (bean instanceof WebMvcProperties) {
+            WebMvcProperties properties = (WebMvcProperties) bean;
+            properties.getPathmatch().setMatchingStrategy(WebMvcProperties.MatchingStrategy.ANT_PATH_MATCHER);
         }
         return bean;
     }
