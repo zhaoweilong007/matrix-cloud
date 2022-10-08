@@ -28,7 +28,7 @@ startup.cmd -m standalone
 
 ## sentinel
 
-- 版本：1.8.4
+- 版本：1.8.5
 - ui地址：localhost:8088
 - 默认账号密码sentinel/sentinel
 
