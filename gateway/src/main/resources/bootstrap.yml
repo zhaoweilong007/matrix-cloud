@@ -1,0 +1,29 @@
+server:
+  port: 9000
+
+spring:
+  application:
+    name: api-gateway
+  profiles:
+    include: matrix
+    active: dev
+    ## gateway配置
+  cloud:
+    nacos:
+      server-addr: ${NACOS_SERVER_ADDRESS:localhost:8848}
+      username: ${NACOS_USERNAME:nacos}
+      password: ${NACOS_PASSWD:nacos}
+      config:
+        file-extension: yaml
+        shared-configs:
+          - data-id: application-common
+            refresh: true
+
+
+logging:
+  level:
+    com.alibaba.cloud.nacos.client: debug
+    com.matrix.mapper: debug
+    com.matrix.api.**: debug
+  file:
+    path: /var/logs

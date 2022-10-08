@@ -16,10 +16,6 @@ spring:
     deserialization:
       # 允许对象忽略json中不存在的属性
       fail_on_unknown_properties: false
-  messages:
-    basename: i18n/messages
-    encoding: utf-8
-    fallback-to-system-locale: true
   # redis配置
   redis:
     host: ${REDIS_HOST:127.0.0.1}
@@ -68,16 +64,6 @@ spring:
         wall:
           config:
             multi-statement-allow: true
-  # spring cloud配置
-  cloud:
-    sentinel:
-      enabled: true
-      eager: true
-      transport:
-        port: ${SENTINEL_PORT:8719}
-        dashboard: ${SENTINEL_DASHBOARD:localhost:8088}
-        client-ip: ${SENTINEL_CLIENT_IP:192.168.2.101}
-
 
 feign:
   ## 启用对 feign 的 Sentinel 支持
@@ -100,18 +86,6 @@ feign:
   metrics:
     enabled: true
 
-# 端点配置
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-    jmx:
-      exposure:
-        include: "*"
-  endpoint:
-    health:
-      show-details: always
 
 # 文档配置
 knife4j:

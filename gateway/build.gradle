@@ -8,7 +8,6 @@ dependencies {
 
     /*spring cloud alibaba*/
     implementation 'com.alibaba.cloud:spring-cloud-alibaba-sentinel-gateway'
-    implementation 'com.alibaba.csp:sentinel-spring-cloud-gateway-adapter'
     implementation 'com.alibaba.csp:sentinel-datasource-nacos'
 
 

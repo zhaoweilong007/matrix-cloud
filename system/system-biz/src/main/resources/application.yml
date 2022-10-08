@@ -1,9 +1,0 @@
-server:
-  port: 9001
-
-spring:
-  application:
-    name: system-server
-  profiles:
-    include: matrix
-    active: dev

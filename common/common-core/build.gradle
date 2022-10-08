@@ -24,6 +24,7 @@ dependencies {
     /*spring cloud*/
     api('org.springframework.cloud:spring-cloud-starter-openfeign')
     api 'org.springframework.cloud:spring-cloud-starter-loadbalancer'
+    api 'org.springframework.cloud:spring-cloud-starter-bootstrap'
 
     /*other*/
     api('mysql:mysql-connector-java:8.0.29')

@@ -1,19 +1,17 @@
 spring:
   main:
     allow-bean-definition-overriding: true
+  messages:
+    basename: i18n/messages
+    encoding: utf-8
+    fallback-to-system-locale: true
   cloud:
-    nacos:
-      server-addr: ${NACOS_SERVER_ADDRESS:localhost:8848}
-      username: ${NACOS_USERNAME:nacos}
-      password: ${NACOS_PASSWD:nacos}
-      config:
-        file-extension: yaml
-        import-check:
-          enabled: false
-    config:
-      import:
-        - optional:nacos:application-common.yml
-        - optional:nacos:${spring.application.name}.yml
+    sentinel:
+      enabled: true
+      eager: true
+      transport:
+        port: ${SENTINEL_PORT:8719}
+        dashboard: ${SENTINEL_DASHBOARD:localhost:8088}
 seata:
   config:
     type: nacos
@@ -33,9 +31,15 @@ seata:
       username: ${NACOS_USERNAME:nacos}
       password: ${NACOS_PASSWD:nacos}
 
-logging:
-  file:
-    path: /var/logs
-  level:
-    com.matrix.mapper: debug
-    com.matrix.api.**: debug
+# 端点配置
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+    jmx:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always

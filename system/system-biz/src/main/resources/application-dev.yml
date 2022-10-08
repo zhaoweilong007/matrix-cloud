@@ -1,3 +1,4 @@
+# 以下配置可以配置在nacos中
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
