@@ -1,6 +1,5 @@
 dependencies {
     api(project(':common:common-core'))
-    api("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 }
 
 bootJar {

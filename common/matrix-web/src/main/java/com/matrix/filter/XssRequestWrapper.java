@@ -6,7 +6,6 @@ import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HTMLFilter;
-import org.apache.commons.io.IOUtils;
 
 import javax.servlet.ReadListener;
 import javax.servlet.ServletInputStream;
@@ -16,7 +15,6 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
@@ -58,7 +56,7 @@ public class XssRequestWrapper extends HttpServletRequestWrapper {
     public ServletInputStream getInputStream() throws IOException {
 
         // 读取内容，并过滤
-        String content = IOUtils.toString(super.getInputStream(), StandardCharsets.UTF_8);
+        String content = IoUtil.read(super.getInputStream(), StandardCharsets.UTF_8);
         content = filterXss(content);
         final ByteArrayInputStream newInputStream = new ByteArrayInputStream(content.getBytes());
         // 返回 ServletInputStream

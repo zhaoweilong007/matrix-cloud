@@ -147,11 +147,3 @@ sa-token:
   token-style: uuid
   # 是否输出操作日志
   is-log: true
-
-
-logging:
-  file:
-    path: /var/logs
-  level:
-    com.matrix.mapper: debug
-    com.matrix.api.**: debug
