@@ -6,19 +6,19 @@ spring:
     name: docApp
   cloud:
     nacos:
-      server-addr: localhost:8848
-      username: nacos
-      password: nacos
+      server-addr: ${NACOS_SERVER_ADDRESS:localhost:8848}
+      username: ${NACOS_USERNAME:nacos}
+      password: ${NACOS_PASSWD:nacos}
 
 knife4j:
   enableAggregation: true
   nacos:
     enable: true
-    serviceUrl: http://localhost:8848/nacos
+    serviceUrl: http://${NACOS_SERVER_ADDRESS:localhost:8848}/nacos
     serviceAuth:
       enable: true
-      username: nacos
-      password: nacos
+      username: ${NACOS_USERNAME:nacos}
+      password: ${NACOS_PASSWD:nacos}
   basicAuth:
     enable: true
     username: admin

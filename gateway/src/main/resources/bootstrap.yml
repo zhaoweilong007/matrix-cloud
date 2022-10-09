@@ -7,7 +7,6 @@ spring:
   profiles:
     include: matrix
     active: dev
-    ## gateway配置
   cloud:
     nacos:
       server-addr: ${NACOS_SERVER_ADDRESS:localhost:8848}
@@ -18,11 +17,8 @@ spring:
         shared-configs:
           - data-id: application-common
             refresh: true
-
-
 logging:
   level:
-    com.alibaba.cloud.nacos.client: debug
     com.matrix.mapper: debug
     com.matrix.api.**: debug
   file:

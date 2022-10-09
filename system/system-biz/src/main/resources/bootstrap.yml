@@ -19,7 +19,6 @@ spring:
             refresh: true
 logging:
   level:
-    com.alibaba.cloud.nacos.client: debug
     com.matrix.mapper: debug
     com.matrix.api.**: debug
   file:

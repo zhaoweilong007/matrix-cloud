@@ -26,6 +26,19 @@ docker-compose -f nacos/docker-compose.yml up -d
 startup.cmd -m standalone
 ```
 
+### Docker安装
+
+```shell
+docker run --name nacos-standalone -e MODE=standalone -d -p 8848:8848 -p 9848:9848 -p 9849:9849 nacos/nacos-server:2.0.0
+```
+
+> 注意⚠️：Nacos2.0版本相比1.X新增了gRPC的通信方式，因此需要增加2个端口。新增端口是在配置的主端口(server.port)
+> 基础上，进行一定偏移量自动生成。
+
+客户端拥有相同的计算逻辑，用户如同1.X的使用方式，配置主端口(默认8848)，通过相同的偏移量，计算对应gRPC端口(默认9848)。
+
+因此如果客户端和服务端之前存在端口转发，或防火墙时，需要对端口转发配置和防火墙配置做相应的调整。
+
 ## sentinel
 
 - 版本：1.8.5
