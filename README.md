@@ -1,10 +1,10 @@
 # Spring Cloud Matrix
 
-## 介绍
+## ✨介绍
 
 Spring cloud matrix是微服务的脚手架，整合目前主流的微服务框架
 
-### 项目环境
+### 🔨项目环境
 
 开发环境和相应中间件版本
 
@@ -14,7 +14,7 @@ Spring cloud matrix是微服务的脚手架，整合目前主流的微服务框�
 - redis5.0
 - elasticSearch7.10.0
 
-### 技术选型
+### 📝技术选型
 
 | 技术框架                 | 描述                   | 版本           |
 |----------------------|----------------------|--------------|
@@ -33,7 +33,7 @@ Spring cloud matrix是微服务的脚手架，整合目前主流的微服务框�
 
 后续会逐步整合相关框架，搭建一个分布式系统架构.....
 
-## 模块
+## 📌模块
 
 | 模块 | 描述   | 服务地址                            |
 |----|------|---------------------------------|
@@ -41,7 +41,7 @@ Spring cloud matrix是微服务的脚手架，整合目前主流的微服务框�
 |system-server| 系统服务 | http://localhost:9001           |
 |doc| 文档服务 | http://localhost:10000/doc.html |
 
-## 功能开发进度
+## ⏳功能开发进度
 
 - [x] RBAC权限管理
 - [x] 聚合swagger文档
@@ -98,6 +98,85 @@ gateway使用alibaba sentinel集成，支持nacos动态路由配置
 - sa-token框架集成，网关统一鉴权，内部服务外网隔离
 - 基于RBAC的权限管理，动态配置资源权限
 
+## 🔔构建自定义组件说明
+
+如需自定义组件，可按以下步骤自动接入spring cloud matrix服务
+
+- 在spring-cloud-matrix下新建模块
+- 添加以下核心配置依赖
+
+```groovy
+dependencies {
+    implementation(project(":common:matrix-core"))
+    implementation(project(":common:matrix-web"))
+}
+```
+
+matrix-core自动集成
+matrix-web对servlet的配置（目前只支持servlet）
+
+- 在启动类上加上`@EnableMatrix.java`注解
+- 新建bootstrap.yml配置文件，配置如下
+
+```yaml
+spring:
+  application:
+    name: youAppName
+  profiles:
+    include: matrix #包含了基础配置，可在matrix-core下application-matrix.yml查看
+    active: dev #指定当前环境
+  cloud:
+    # nacos配置，可通过环境变量指定
+    nacos:
+      server-addr: ${NACOS_SERVER_ADDRESS:localhost:8848}
+      username: ${NACOS_USERNAME:nacos}
+      password: ${NACOS_PASSWD:nacos}
+      config:
+        file-extension: yaml
+        shared-configs:
+          - data-id: application-common #包含的公共配置，在/config/application-common.yaml查看
+            refresh: true
+logging:
+  level:
+    com.matrix.mapper: debug
+    com.matrix.api.**: debug
+  file:
+    path: /var/logs
+```
+
+> 以上步骤完成可正常启动应用，自动接入所有微服务功能
+
 ## 部署
 
+### 应用构建
+
+所有应用使用jib自动构建docker镜像
+
+项目使用阿里云镜像仓库，可以修改为其他仓库，在[build.gradle](/build.gradle)下修改
+
+构建本地镜像并推送到远程仓库
+
+```shell
+./gradlew.bat jib
+```
+
+如新增自定义组件，还需在[build.gradle](/build.gradle)下以下位置增加一行配置，让该模块包含jib的配置
+
+```groovy
+//定义需要构建docker的模块
+def javaMicroservices = [
+        project(':gateway'),
+        project(':system:system-biz'),
+        project(':doc'),
+        //添加自定义组件
+        project(':youModuleName')
+]
+```
+
+### 中间件
+
 相关中间件的部署可以查看[deploy文档](/deploy/README.md)
+
+提供docker-compose配置文件一键部署所有中间件，[docker-compose.yml](/deploy/docker-compose.yml)
+
+> ps: sql文件需要自行导入，deploy下[nacos.sql](/deploy/nacos/nacos.sql)和[matrix.sql](/deploy/nacos/matrix.sql)

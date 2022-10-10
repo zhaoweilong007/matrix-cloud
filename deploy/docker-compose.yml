@@ -77,7 +77,7 @@ services:
       - mysql
 
   sentinel:
-    image: linking0606/sentinel-dashboard:1.8.5
+    image: linking0606/sentinel-dashboard:1.8.5 # https://github.com/lk0423/sentinel-dashboard/blob/master/
     container_name: sentinel
     environment:
       - "PARAM=-Dserver.port=8858 -Dcsp.sentinel.dashboard.server=localhost:8858 -Dproject.name=sentinel-dashboard -Ddatasource.provider=nacos -Ddatasource.provider.nacos.server-addr=nacos:8848 -Ddatasource.provider.nacos.username=nacos -Ddatasource.provider.nacos.password=nacos"
