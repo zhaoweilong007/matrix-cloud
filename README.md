@@ -115,7 +115,7 @@ dependencies {
 matrix-core自动集成
 matrix-web对servlet的配置（目前只支持servlet）
 
-- 在启动类上加上`@EnableMatrix.java`注解
+- 在启动类上加上`@EnableMatrix`注解
 - 新建bootstrap.yml配置文件，配置如下
 
 ```yaml
