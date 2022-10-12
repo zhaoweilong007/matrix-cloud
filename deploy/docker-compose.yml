@@ -1,37 +1,44 @@
-version: '3'
-
+version: "3.8"
 services:
+  nacos:
+    image: nacos/nacos-server:${NACOS_VERSION}
+    container_name: nacos
+    hostname: nacos
+    env_file:
+      - ./env/nacos-standlone-mysql.env
+    volumes:
+      - ./log/nacos:/home/nacos/logs
+    ports:
+      - "8848:8848"
+      - "9848:9848"
+      - "9555:9555"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: always
+
   mysql:
-    image: mysql:8.0.30
     container_name: mysql
     hostname: mysql
-    environment:
-      # 时区上海
-      TZ: Asia/Shanghai
-      # root 密码
-      MYSQL_ROOT_PASSWORD: matrix
-      # 初始化数据库
-      MYSQL_DATABASE: matrix
+    build:
+      context: .
+      dockerfile: ./image/mysql/8/Dockerfile
+    image: example/mysql:8.0.30
+    env_file:
+      - ./env/mysql.env
+    volumes:
+      - ./mysql:/var/lib/mysql
     ports:
       - "3306:3306"
-    volumes:
-      # 数据挂载
-      - ./mysql/data/:/var/lib/mysql/
-      # 配置挂载
-      - ./mysql/conf/:/etc/mysql/conf.d/
-    command:
-      --default-authentication-plugin=caching_sha2_password
-      --character-set-server=utf8mb4
-      --collation-server=utf8mb4_general_ci
-      --explicit_defaults_for_timestamp=true
-      --lower_case_table_names=1
-    privileged: true
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      interval: 5s
+      timeout: 10s
+      retries: 10
     restart: always
-    networks:
-      - matrix
 
   redis:
-    image: redis:6.2.7
+    image: redis:${REDIS_VERSION}
     container_name: redis
     ports:
       - "6379:6379"
@@ -46,50 +53,36 @@ services:
     command: "redis-server /redis/config/redis.conf"
     privileged: true
     restart: always
-    networks:
-      - matrix
-
-  nacos:
-    container_name: nacos
-    image: nacos/nacos-server:latest
-    env_file:
-      - ./nacos/nacos-standlone-mysql.env
-    environment:
-      # JVM大小参数
-      - JVM_XMS=128m   #-Xms default :2g
-      - JVM_XMX=128m   #-Xmx default :2g
-      - JVM_XMN=32m   #-Xmn default :1g
-      - JVM_MS=16m     #-XX:MetaspaceSize default :128m
-      - JVM_MMS=16m    #-XX:MaxMetaspaceSize default :320m
-      - NACOS_DEBUG=n  #是否开启远程debug，y/n，默认n
-      - TOMCAT_ACCESSLOG_ENABLED=false #是否开始tomcat访问日志的记录，默认false
-    volumes:
-      - ./log/nacos:/home/nacos/logs
-    ports:
-      - "8848:8848"
-      - "9848:9848"
-      - "9849:9849"
-      - "9555:9555"
-    restart: always
-    networks:
-      - matrix
-    depends_on:
-      - mysql
 
   sentinel:
-    image: linking0606/sentinel-dashboard:1.8.5 # https://github.com/lk0423/sentinel-dashboard/blob/master/
+    # https://github.com/lk0423/sentinel-dashboard
+    image: linking0606/sentinel-dashboard:${SENTINEL_VERSION}
     container_name: sentinel
     environment:
-      - "PARAM=-Dserver.port=8858 -Dcsp.sentinel.dashboard.server=localhost:8858 -Dproject.name=sentinel-dashboard -Ddatasource.provider=nacos -Ddatasource.provider.nacos.server-addr=nacos:8848 -Ddatasource.provider.nacos.username=nacos -Ddatasource.provider.nacos.password=nacos"
+      PARAM: -Dserver.port=8088 -Dcsp.sentinel.dashboard.server=localhost:8088 -Dproject.name=sentinel-dashboard -Ddatasource.provider=nacos -Ddatasource.provider.nacos.server-addr=nacos:8848 -Ddatasource.provider.nacos.username=nacos -Ddatasource.provider.nacos.password=nacos
+      TZ: Asia/Shanghai"
     ports:
-      - "8858:8858"
+      - "8088:8088"
     restart: always
-    networks:
-      - matrix
     depends_on:
       - nacos
 
-networks:
-  matrix:
-    driver: bridge
-
+  seata-server:
+    image: seataio/seata-server:${SEATA_VERSION}
+    container_name: seata-server
+    hostname: seata-server
+    env_file:
+      - ./env/seata.env
+    environment:
+      # 时区上海
+      TZ: Asia/Shanghai
+    ports:
+      - "8091:8091"
+      - "7091:7091"
+    volumes:
+      # 假设我们通过docker cp命令把资源文件拷贝到相对路径`./seata-server/resources`中
+      - ./seata:/seata-server/resources
+    restart: always
+    privileged: true
+    depends_on:
+      - nacos

@@ -6,7 +6,7 @@ buildscript {
         //阿里云仓库地址
         registryUrl = 'registry.cn-hangzhou.aliyuncs.com'
         //阿里云仓库名
-        registryNamespace = 'my_docker_dev'
+        registryNamespace = 'matrix-cloud'
         //阿里云仓库用户名及密码
         registryUsername = ''
         registryPassword = ''

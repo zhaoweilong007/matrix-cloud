@@ -26,7 +26,7 @@ seata:
     # support: nacos, consul, apollo, zk, etcd3
     type: nacos
     nacos:
-      server-addr: 127.0.0.1:8848
+      server-addr: nacos:8848
       namespace: ""
       group: SEATA_GROUP
       username: nacos
@@ -40,7 +40,7 @@ seata:
     type: nacos
     nacos:
       application: seata-server
-      server-addr: 127.0.0.1:8848
+      server-addr: nacos:8848
       group: SEATA_GROUP
       namespace: ""
       cluster: default
@@ -49,8 +49,66 @@ seata:
       ##if use MSE Nacos with auth, mutex with username/password attribute
       #access-key: ""
       #secret-key: ""
-  #  server:
-  #    service-port: 8091 #If not configured, the default is '${server.port} + 1000'
+  server:
+    service-port: 8091 #If not configured, the default is '${server.port} + 1000'
+    max-commit-retry-timeout: -1
+    max-rollback-retry-timeout: -1
+    rollback-retry-timeout-unlock-enable: false
+    enable-check-auth: true
+    enable-parallel-request-handle: true
+    retry-dead-threshold: 130000
+    xaer-nota-retry-timeout: 60000
+    recovery:
+      handle-all-session-period: 1000
+    undo:
+      log-save-days: 7
+      log-delete-period: 86400000
+    session:
+      branch-async-queue-size: 5000 #branch async remove queue size
+      enable-branch-async-remove: false #enable to asynchronous remove branchSession
+  store:
+    # support: file 、 db 、 redis
+    mode: db
+    session:
+      mode: db
+    lock:
+      mode: db
+    file:
+      dir: sessionStore
+      max-branch-session-size: 16384
+      max-global-session-size: 512
+      file-write-buffer-cache-size: 16384
+      session-reload-read-size: 100
+      flush-disk-mode: async
+    db:
+      datasource: druid
+      db-type: mysql
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://mysql:3306/seata?allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai
+      user: root
+      password: matrix
+      min-conn: 5
+      max-conn: 100
+      global-table: global_table
+      branch-table: branch_table
+      lock-table: lock_table
+      distributed-lock-table: distributed_lock
+      query-limit: 100
+      max-wait: 5000
+  metrics:
+    enabled: false
+    registry-type: compact
+    exporter-list: prometheus
+    exporter-prometheus-port: 9898
+  transport:
+    rpc-tc-request-timeout: 30000
+    enable-tc-server-batch-send-response: false
+    shutdown:
+      wait: 3
+    thread-factory:
+      boss-thread-prefix: NettyBoss
+      worker-thread-prefix: NettyServerNIOWorker
+      boss-thread-size: 1
   security:
     secretKey: SeataSecretKey0c382ef121d778043159209298fd40bf3850a017
     tokenValidityInMilliseconds: 1800000

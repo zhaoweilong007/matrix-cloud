@@ -179,4 +179,4 @@ def javaMicroservices = [
 
 提供docker-compose配置文件一键部署所有中间件，[docker-compose.yml](/deploy/docker-compose.yml)
 
-> ps: sql文件需要自行导入，deploy下[nacos.sql](/deploy/nacos/nacos.sql)和[matrix.sql](/deploy/nacos/matrix.sql)
+> ps: sql文件需要自行导入，deploy下[nacos.sql](/deploy/sql/nacos.sql)和[matrix.sql](/deploy/sql/matrix.sql)
