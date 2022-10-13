@@ -33,3 +33,4 @@ out/
 
 /deploy/log/**
 /deploy/mysql/**
+/deploy/elk/elasticsearch/nodes/**
