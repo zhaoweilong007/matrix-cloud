@@ -34,3 +34,4 @@ out/
 /deploy/log/**
 /deploy/mysql/**
 /deploy/elk/elasticsearch/nodes/**
+/deploy/redis/data
