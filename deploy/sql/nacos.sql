@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.0.30, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.31, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: nacos_config
 -- ------------------------------------------------------
@@ -27,27 +27,27 @@ DROP TABLE IF EXISTS `config_info`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `config_info`
 (
-    `id`                 bigint                           NOT NULL AUTO_INCREMENT COMMENT 'id',
-    `data_id`            varchar(255) COLLATE utf8mb3_bin NOT NULL COMMENT 'data_id',
-    `group_id`           varchar(255) COLLATE utf8mb3_bin          DEFAULT NULL,
-    `content`            longtext COLLATE utf8mb3_bin     NOT NULL COMMENT 'content',
-    `md5`                varchar(32) COLLATE utf8mb3_bin           DEFAULT NULL COMMENT 'md5',
-    `gmt_create`         datetime                         NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    `gmt_modified`       datetime                         NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
-    `src_user`           text COLLATE utf8mb3_bin COMMENT 'source user',
-    `src_ip`             varchar(50) COLLATE utf8mb3_bin           DEFAULT NULL COMMENT 'source ip',
-    `app_name`           varchar(128) COLLATE utf8mb3_bin          DEFAULT NULL,
-    `tenant_id`          varchar(128) COLLATE utf8mb3_bin          DEFAULT '' COMMENT '租户字段',
-    `c_desc`             varchar(256) COLLATE utf8mb3_bin          DEFAULT NULL,
-    `c_use`              varchar(64) COLLATE utf8mb3_bin           DEFAULT NULL,
-    `effect`             varchar(64) COLLATE utf8mb3_bin           DEFAULT NULL,
-    `type`               varchar(64) COLLATE utf8mb3_bin           DEFAULT NULL,
-    `c_schema`           text COLLATE utf8mb3_bin,
-    `encrypted_data_key` text COLLATE utf8mb3_bin         NOT NULL COMMENT '秘钥',
+    `id`                 bigint                                                 NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `data_id`            varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT 'data_id',
+    `group_id`           varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin          DEFAULT NULL,
+    `content`            longtext CHARACTER SET utf8mb3 COLLATE utf8mb3_bin     NOT NULL COMMENT 'content',
+    `md5`                varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin           DEFAULT NULL COMMENT 'md5',
+    `gmt_create`         datetime                                               NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `gmt_modified`       datetime                                               NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
+    `src_user`           text CHARACTER SET utf8mb3 COLLATE utf8mb3_bin COMMENT 'source user',
+    `src_ip`             varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin           DEFAULT NULL COMMENT 'source ip',
+    `app_name`           varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin          DEFAULT NULL,
+    `tenant_id`          varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin          DEFAULT '' COMMENT '租户字段',
+    `c_desc`             varchar(256) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin          DEFAULT NULL,
+    `c_use`              varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin           DEFAULT NULL,
+    `effect`             varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin           DEFAULT NULL,
+    `type`               varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin           DEFAULT NULL,
+    `c_schema`           text CHARACTER SET utf8mb3 COLLATE utf8mb3_bin,
+    `encrypted_data_key` text CHARACTER SET utf8mb3 COLLATE utf8mb3_bin         NOT NULL COMMENT '秘钥',
     PRIMARY KEY (`id`),
     UNIQUE KEY `uk_configinfo_datagrouptenant` (`data_id`, `group_id`, `tenant_id`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 584
+  AUTO_INCREMENT = 603
   DEFAULT CHARSET = utf8mb3
   COLLATE = utf8mb3_bin COMMENT ='config_info';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -69,13 +69,13 @@ VALUES (1, 'gateway-route', 'DEFAULT_GROUP', '[]', 'd751713988987e9331980363e241
        (23, 'gateway-api-group', 'DEFAULT_GROUP', '[]', 'd751713988987e9331980363e24189ce', '2022-07-05 08:21:40',
         '2022-07-05 08:21:40', NULL, '0:0:0:0:0:0:0:1', '', '', NULL, NULL, NULL, 'json', NULL, ''),
        (27, 'matrix-security', 'DEFAULT_GROUP',
-        '!!com.matrix.properties.SecurityProperties\nwhiteUrls: [/api-gateway/docapp/**, /system-server/auth/**, /system-server/nacos/**,\n  /system-server/nacos/shared/**, /api-gateway/docApp/**, /system-server/resource/admin/**,\n  /system-server/resource/role/**]\n',
-        '1131f9a8acc4fb16646785b1965a27a4', '2022-07-29 07:28:54', '2022-10-08 10:29:14', NULL, '192.168.2.134', '', '',
+        '!!com.matrix.properties.SecurityProperties\nwhiteUrls: [/system-server/auth/**, /system-server/nacos/**, /api-gateway/docapp/**,\n  /system-server/nacos/shared/**, /api-gateway/docApp/**, /system-server/resource/admin/**,\n  /system-server/resource/role/**]\n',
+        '39dd7e34946efbe24b78dd7c98c69022', '2022-07-29 07:28:54', '2022-10-24 15:56:59', NULL, '192.168.2.36', '', '',
         NULL, NULL, NULL, 'yaml', NULL, ''),
        (363, 'seataServer.properties', 'SEATA_GROUP',
-        'transport.type=TCP\ntransport.server=NIO\ntransport.heartbeat=true\ntransport.enableTmClientBatchSendRequest=false\ntransport.enableRmClientBatchSendRequest=true\ntransport.enableTcServerBatchSendResponse=false\ntransport.rpcRmRequestTimeout=30000\ntransport.rpcTmRequestTimeout=30000\ntransport.rpcTcRequestTimeout=30000\ntransport.threadFactory.bossThreadPrefix=NettyBoss\ntransport.threadFactory.workerThreadPrefix=NettyServerNIOWorker\ntransport.threadFactory.serverExecutorThreadPrefix=NettyServerBizHandler\ntransport.threadFactory.shareBossWorker=false\ntransport.threadFactory.clientSelectorThreadPrefix=NettyClientSelector\ntransport.threadFactory.clientSelectorThreadSize=1\ntransport.threadFactory.clientWorkerThreadPrefix=NettyClientWorkerThread\ntransport.threadFactory.bossThreadSize=1\ntransport.threadFactory.workerThreadSize=default\ntransport.shutdown.wait=3\ntransport.serialization=seata\ntransport.compressor=none\n\nservice.vgroupMapping.default_tx_group=default\n\n\nclient.rm.asyncCommitBufferLimit=10000\nclient.rm.lock.retryInterval=10\nclient.rm.lock.retryTimes=30\nclient.rm.lock.retryPolicyBranchRollbackOnConflict=true\nclient.rm.reportRetryCount=5\nclient.rm.tableMetaCheckEnable=true\nclient.rm.tableMetaCheckerInterval=60000\nclient.rm.sqlParserType=druid\nclient.rm.reportSuccessEnable=false\nclient.rm.sagaBranchRegisterEnable=false\nclient.rm.sagaJsonParser=fastjson\nclient.rm.tccActionInterceptorOrder=-2147482648\nclient.tm.commitRetryCount=5\nclient.tm.rollbackRetryCount=5\nclient.tm.defaultGlobalTransactionTimeout=60000\nclient.tm.degradeCheck=false\nclient.tm.degradeCheckAllowTimes=10\nclient.tm.degradeCheckPeriod=2000\nclient.tm.interceptorOrder=-2147482648\nclient.undo.dataValidation=true\nclient.undo.logSerialization=jackson\nclient.undo.onlyCareUpdateColumns=true\nserver.undo.logSaveDays=7\nserver.undo.logDeletePeriod=86400000\nclient.undo.logTable=undo_log\nclient.undo.compress.enable=true\nclient.undo.compress.type=zip\nclient.undo.compress.threshold=64k\n\ntcc.fence.logTableName=tcc_fence_log\ntcc.fence.cleanPeriod=1h\n\n\nlog.exceptionRate=100\n\nstore.mode=db\nstore.lock.mode=db\nstore.session.mode=db\n\nstore.db.datasource=druid\nstore.db.dbType=mysql\nstore.db.driverClassName=com.mysql.cj.jdbc.Driver\nstore.db.url=jdbc:mysql://localhost:3306/seata?allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai\nstore.db.user=root\nstore.db.password=123456\nstore.db.minConn=5\nstore.db.maxConn=30\nstore.db.globalTable=global_table\nstore.db.branchTable=branch_table\nstore.db.distributedLockTable=distributed_lock\nstore.db.queryLimit=100\nstore.db.lockTable=lock_table\nstore.db.maxWait=5000\n\n\n\nserver.recovery.committingRetryPeriod=1000\nserver.recovery.asynCommittingRetryPeriod=1000\nserver.recovery.rollbackingRetryPeriod=1000\nserver.recovery.timeoutRetryPeriod=1000\nserver.maxCommitRetryTimeout=-1\nserver.maxRollbackRetryTimeout=-1\nserver.rollbackRetryTimeoutUnlockEnable=false\nserver.distributedLockExpireTime=10000\nserver.xaerNotaRetryTimeout=60000\nserver.session.branchAsyncQueueSize=5000\nserver.session.enableBranchAsyncRemove=false\nserver.enableParallelRequestHandle=false\n\nmetrics.enabled=false\nmetrics.registryType=compact\nmetrics.exporterList=prometheus\nmetrics.exporterPrometheusPort=9898\n',
-        '6e9829aa77a51ff924b5440882ee16e3', '2022-08-16 08:28:13', '2022-08-16 08:44:42', 'nacos', '0:0:0:0:0:0:0:1',
-        '', '', '', '', '', 'properties', '', ''),
+        'transport.type=TCP\ntransport.server=NIO\ntransport.heartbeat=true\ntransport.enableTmClientBatchSendRequest=false\ntransport.enableRmClientBatchSendRequest=true\ntransport.enableTcServerBatchSendResponse=false\ntransport.rpcRmRequestTimeout=30000\ntransport.rpcTmRequestTimeout=30000\ntransport.rpcTcRequestTimeout=30000\ntransport.threadFactory.bossThreadPrefix=NettyBoss\ntransport.threadFactory.workerThreadPrefix=NettyServerNIOWorker\ntransport.threadFactory.serverExecutorThreadPrefix=NettyServerBizHandler\ntransport.threadFactory.shareBossWorker=false\ntransport.threadFactory.clientSelectorThreadPrefix=NettyClientSelector\ntransport.threadFactory.clientSelectorThreadSize=1\ntransport.threadFactory.clientWorkerThreadPrefix=NettyClientWorkerThread\ntransport.threadFactory.bossThreadSize=1\ntransport.threadFactory.workerThreadSize=default\ntransport.shutdown.wait=3\ntransport.serialization=seata\ntransport.compressor=none\n\nservice.vgroupMapping.default_tx_group=default\n\n\nclient.rm.asyncCommitBufferLimit=10000\nclient.rm.lock.retryInterval=10\nclient.rm.lock.retryTimes=30\nclient.rm.lock.retryPolicyBranchRollbackOnConflict=true\nclient.rm.reportRetryCount=5\nclient.rm.tableMetaCheckEnable=true\nclient.rm.tableMetaCheckerInterval=60000\nclient.rm.sqlParserType=druid\nclient.rm.reportSuccessEnable=false\nclient.rm.sagaBranchRegisterEnable=false\nclient.rm.sagaJsonParser=fastjson\nclient.rm.tccActionInterceptorOrder=-2147482648\nclient.tm.commitRetryCount=5\nclient.tm.rollbackRetryCount=5\nclient.tm.defaultGlobalTransactionTimeout=60000\nclient.tm.degradeCheck=false\nclient.tm.degradeCheckAllowTimes=10\nclient.tm.degradeCheckPeriod=2000\nclient.tm.interceptorOrder=-2147482648\nclient.undo.dataValidation=true\nclient.undo.logSerialization=jackson\nclient.undo.onlyCareUpdateColumns=true\nserver.undo.logSaveDays=7\nserver.undo.logDeletePeriod=86400000\nclient.undo.logTable=undo_log\nclient.undo.compress.enable=true\nclient.undo.compress.type=zip\nclient.undo.compress.threshold=64k\n\ntcc.fence.logTableName=tcc_fence_log\ntcc.fence.cleanPeriod=1h\n\n\nlog.exceptionRate=100\n\nserver.recovery.committingRetryPeriod=1000\nserver.recovery.asynCommittingRetryPeriod=1000\nserver.recovery.rollbackingRetryPeriod=1000\nserver.recovery.timeoutRetryPeriod=1000\nserver.maxCommitRetryTimeout=-1\nserver.maxRollbackRetryTimeout=-1\nserver.rollbackRetryTimeoutUnlockEnable=false\nserver.distributedLockExpireTime=10000\nserver.xaerNotaRetryTimeout=60000\nserver.session.branchAsyncQueueSize=5000\nserver.session.enableBranchAsyncRemove=false\nserver.enableParallelRequestHandle=false\n\nmetrics.enabled=false\nmetrics.registryType=compact\nmetrics.exporterList=prometheus\nmetrics.exporterPrometheusPort=9898\n',
+        '40d799cc5d94a7e8f50c6ce69cca265b', '2022-08-16 08:28:13', '2022-10-13 11:07:59', 'nacos', '172.30.0.1', '', '',
+        '', '', '', 'properties', '', ''),
        (371, 'service.vgroupMapping.default', 'SEATA_GROUP', 'default', 'c21f969b5f03d33d43e04f8f136e7682',
         '2022-08-16 09:43:23', '2022-08-16 09:43:23', NULL, '0:0:0:0:0:0:0:1', '', '', NULL, NULL, NULL, 'text', NULL,
         ''),
@@ -86,17 +86,17 @@ VALUES (1, 'gateway-route', 'DEFAULT_GROUP', '[]', 'd751713988987e9331980363e241
         'c21f969b5f03d33d43e04f8f136e7682', '2022-08-24 06:44:15', '2022-08-24 06:44:15', NULL, '0:0:0:0:0:0:0:1', '',
         '', NULL, NULL, NULL, 'text', NULL, ''),
        (484, 'application-common', 'DEFAULT_GROUP',
-        'spring:\n  main:\n    allow-bean-definition-overriding: true\n  servlet:\n    multipart:\n      max-request-size: 5MB\n      max-file-size: 100MB\n  jackson:\n    time-zone: GMT+8\n    date-format: yyyy-MM-dd HH:mm:ss\n    serialization:\n      # 格式化输出\n      INDENT_OUTPUT: false\n      # 忽略无法转换的对象\n      fail_on_empty_beans: false\n    deserialization:\n      # 允许对象忽略json中不存在的属性\n      fail_on_unknown_properties: false\n  # redis配置\n  redis:\n    host: ${REDIS_HOST:192.168.2.134}\n    port: ${REDIS_PORT:6379}\n    database: ${REDIS_DATABASE:0}\n    timeout: 10s\n    lettuce:\n      pool:\n        # 连接池最大连接数\n        max-active: 200\n        # 连接池最大阻塞等待时间（使用负值表示没有限制）\n        max-wait: -1ms\n        # 连接池中的最大空闲连接\n        max-idle: 10\n        # 连接池中的最小空闲连接\n        min-idle: 0\n  cache:\n    type: redis\n  datasource:\n    druid:\n      initial-size: 5 # 初始连接数\n      min-idle: 10 # 最小连接池数量\n      max-active: 20 # 最大连接池数量\n      max-wait: 600000 # 配置获取连接等待超时的时间，单位：毫秒\n      time-between-eviction-runs-millis: 60000 # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位：毫秒\n      min-evictable-idle-time-millis: 300000 # 配置一个连接在池中最小生存的时间，单位：毫秒\n      max-evictable-idle-time-millis: 900000 # 配置一个连接在池中最大生存的时间，单位：毫秒\n      validation-query: SELECT 1 FROM DUAL # 配置检测连接是否有效\n      test-while-idle: true\n      test-on-borrow: false\n      test-on-return: false\n      web-stat-filter:\n        enabled: true\n      stat-view-servlet:\n        enabled: true\n        allow: # 设置白名单，不填则允许所有访问\n        url-pattern: /druid/*\n        login-username: druid\n        login-password: druid\n      filter:\n        stat:\n          enabled: true\n          log-slow-sql: true # 慢 SQL 记录\n          slow-sql-millis: 100\n          merge-sql: true\n        wall:\n          config:\n            multi-statement-allow: true\n\nfeign:\n  ## 启用对 feign 的 Sentinel 支持\n  sentinel:\n    enabled: true\n  client:\n    config:\n      default:\n        connect-timeout: 5000\n        read-timeout: 5000\n        logger-level: full\n  autoconfiguration:\n    jackson:\n      enabled: true\n  compression:\n    request:\n      enabled: true\n    response:\n      enabled: true\n  metrics:\n    enabled: true\n\n\n# 文档配置\nknife4j:\n  enable: true\n  production: false\n  cors: true\n\n# mybatis plus配置\nmybatis-plus:\n  global-config:\n    db-config:\n      id-type: auto\n  configuration:\n    map-underscore-to-camel-case: true\n    call-setters-on-nulls: true\n  check-config-location: false\n\n\nsa-token:\n  # jwt秘钥\n  jwt-secret-key: ${SA_TOKEN_JWT_SECRET_KEY:abcdefghijklmnopqrstuvwxyz}\n  # token名称 (同时也是cookie名称)\n  token-name: Authorization\n  # token有效期，单位s 默认30天, -1代表永不过期\n  timeout: 2592000\n  # token临时有效期 (指定时间内无操作就视为token过期) 单位: 秒\n  activity-timeout: 1800\n  # 是否允许同一账号并发登录 (为true时允许一起登录, 为false时新登录挤掉旧登录)\n  is-concurrent: true\n  # 在多人登录同一账号时，是否共用一个token (为true时所有登录共用一个token, 为false时每次登录新建一个token)\n  is-share: true\n  # token风格\n  token-style: uuid\n  # 是否输出操作日志\n  is-log: true',
-        '137bab4cfdc7523b8bc8891b7ed830a9', '2022-09-30 08:30:56', '2022-10-09 01:47:44', 'nacos', '0:0:0:0:0:0:0:1',
-        '', '', '', '', '', 'yaml', '', ''),
+        'spring:\n  main:\n    allow-bean-definition-overriding: true\n  servlet:\n    multipart:\n      max-request-size: 5MB\n      max-file-size: 100MB\n  jackson:\n    time-zone: GMT+8\n    date-format: yyyy-MM-dd HH:mm:ss\n    serialization:\n      # 格式化输出\n      INDENT_OUTPUT: false\n      # 忽略无法转换的对象\n      fail_on_empty_beans: false\n    deserialization:\n      # 允许对象忽略json中不存在的属性\n      fail_on_unknown_properties: false\n  datasource:\n    druid:\n      initial-size: 5 # 初始连接数\n      min-idle: 10 # 最小连接池数量\n      max-active: 20 # 最大连接池数量\n      max-wait: 600000 # 配置获取连接等待超时的时间，单位：毫秒\n      time-between-eviction-runs-millis: 60000 # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位：毫秒\n      min-evictable-idle-time-millis: 300000 # 配置一个连接在池中最小生存的时间，单位：毫秒\n      max-evictable-idle-time-millis: 900000 # 配置一个连接在池中最大生存的时间，单位：毫秒\n      validation-query: SELECT 1 FROM DUAL # 配置检测连接是否有效\n      test-while-idle: true\n      test-on-borrow: false\n      test-on-return: false\n      web-stat-filter:\n        enabled: true\n      stat-view-servlet:\n        enabled: true\n        allow: # 设置白名单，不填则允许所有访问\n        url-pattern: /druid/*\n        login-username: druid\n        login-password: druid\n      filter:\n        stat:\n          enabled: true\n          log-slow-sql: true # 慢 SQL 记录\n          slow-sql-millis: 100\n          merge-sql: true\n        wall:\n          config:\n            multi-statement-allow: true\n\nfeign:\n  ## 启用对 feign 的 Sentinel 支持\n  sentinel:\n    enabled: true\n  client:\n    config:\n      default:\n        connect-timeout: 5000\n        read-timeout: 5000\n        logger-level: full\n  autoconfiguration:\n    jackson:\n      enabled: true\n  compression:\n    request:\n      enabled: true\n    response:\n      enabled: true\n  metrics:\n    enabled: true\n\n\n# 文档配置\nknife4j:\n  enable: true\n  production: false\n  cors: true\n\n# mybatis plus配置\nmybatis-plus:\n  global-config:\n    db-config:\n      id-type: auto\n  configuration:\n    map-underscore-to-camel-case: true\n    call-setters-on-nulls: true\n  check-config-location: false\n\n\nsa-token:\n  # jwt秘钥\n  jwt-secret-key: ${SA_TOKEN_JWT_SECRET_KEY:abcdefghijklmnopqrstuvwxyz}\n  # token名称 (同时也是cookie名称)\n  token-name: Authorization\n  # token有效期，单位s 默认30天, -1代表永不过期\n  timeout: 2592000\n  # token临时有效期 (指定时间内无操作就视为token过期) 单位: 秒\n  activity-timeout: 1800\n  # 是否允许同一账号并发登录 (为true时允许一起登录, 为false时新登录挤掉旧登录)\n  is-concurrent: true\n  # 在多人登录同一账号时，是否共用一个token (为true时所有登录共用一个token, 为false时每次登录新建一个token)\n  is-share: true\n  # token风格\n  token-style: uuid\n  # 是否输出操作日志\n  is-log: true',
+        '6e5ee18648390d8bb1a6888f37b63876', '2022-09-30 08:30:56', '2022-10-24 15:55:12', 'nacos', '192.168.96.1', '',
+        '', '', '', '', 'yaml', '', ''),
        (494, 'api-gateway', 'DEFAULT_GROUP',
         'spring:\n  cloud:\n    sentinel:\n      filter:\n        enabled: false\n      scg:\n        fallback:\n          content-type: application/json\n          mode: response\n          response-status: 429\n          response-body: \'{\"message\":\"Too Many Requests\"}\'\n      datasource:\n        gw-flow:\n          nacos:\n            server-addr: ${NACOS_SERVER_ADDRESS:localhost:8848}\n            username: ${NACOS_USERNAME:nacos}\n            password: ${NACOS_PASSWD:nacos}\n            data-id: gateway-flow\n            group-id: DEFAULT_GROUP\n            data-type: json\n            rule-type: gw_flow\n        gw-api-group:\n          nacos:\n            server-addr: ${NACOS_SERVER_ADDRESS:localhost:8848}\n            username: ${NACOS_USERNAME:nacos}\n            password: ${NACOS_PASSWD:nacos}\n            data-id: gateway-api-group\n            group-id: DEFAULT_GROUP\n            data-type: json\n            rule-type: gw_api_group\n    gateway:\n      globalcors:\n        cors-configurations:\n          \'[/**]\':\n            allowed-origins: \"*\"\n            allowed-methods: \"*\"\n            allowed-headers: \"*\"\n      discovery:\n        locator:\n          enabled: true\n          lower-case-service-id: true\n          url-expression: \"\'grayLb://\'+serviceId\"\n      loadbalancer:\n        use404: true',
         '457060057987b7e12bb8e840f95d79aa', '2022-09-30 09:18:19', '2022-10-08 10:24:24', 'nacos', '0:0:0:0:0:0:0:1',
         '', '', '', '', '', 'yaml', '', ''),
        (564, 'system-server-dev.yaml', 'DEFAULT_GROUP',
-        'spring:\r\n  datasource:\r\n    driver-class-name: com.mysql.cj.jdbc.Driver\r\n    url: jdbc:mysql://localhost:3306/matrix?allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai\r\n    username: root\r\n    password: 123456\r\n\r\nmatrix:\r\n  swagger:\r\n    enable: true\r\n    name: 系统服务\r\n    version: 1.0.0\r\n    description: 系统服务接口文档\r\n  tenant:\r\n    enable: true\r\n    ignoreTables:\r\n      - tenant\r\n    ignore-urls:\r\n      - /auth/**\r\n  security:\r\n    white-urls:\r\n      - /auth/**\r\n      - /nacos/**',
-        '6f5721b6e428559b0e578d6a3d48f96c', '2022-10-08 08:11:34', '2022-10-08 08:11:34', NULL, '0:0:0:0:0:0:0:1', '',
-        '', NULL, NULL, NULL, 'yaml', NULL, '');
+        'spring:\n  datasource:\n    driver-class-name: com.mysql.cj.jdbc.Driver\n    url: jdbc:mysql://192.168.2.36:3306/matrix?allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai\n    username: root\n    password: matrix\n\nmatrix:\n  swagger:\n    enable: true\n    name: 系统服务\n    version: 1.0.0\n    description: 系统服务接口文档\n  tenant:\n    enable: true\n    ignoreTables:\n      - tenant\n    ignore-urls:\n      - /auth/**\n  security:\n    white-urls:\n      - /auth/**\n      - /nacos/**',
+        '67485eb5a4f032cd574faf15653fb5fb', '2022-10-08 08:11:34', '2022-10-24 15:40:59', 'nacos', '192.168.96.1', '',
+        '', '', '', '', 'yaml', '', '');
 /*!40000 ALTER TABLE `config_info`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -110,14 +110,14 @@ DROP TABLE IF EXISTS `config_info_aggr`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `config_info_aggr`
 (
-    `id`           bigint                           NOT NULL AUTO_INCREMENT COMMENT 'id',
-    `data_id`      varchar(255) COLLATE utf8mb3_bin NOT NULL COMMENT 'data_id',
-    `group_id`     varchar(255) COLLATE utf8mb3_bin NOT NULL COMMENT 'group_id',
-    `datum_id`     varchar(255) COLLATE utf8mb3_bin NOT NULL COMMENT 'datum_id',
-    `content`      longtext COLLATE utf8mb3_bin     NOT NULL COMMENT '内容',
-    `gmt_modified` datetime                         NOT NULL COMMENT '修改时间',
-    `app_name`     varchar(128) COLLATE utf8mb3_bin DEFAULT NULL,
-    `tenant_id`    varchar(128) COLLATE utf8mb3_bin DEFAULT '' COMMENT '租户字段',
+    `id`           bigint                                                 NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `data_id`      varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT 'data_id',
+    `group_id`     varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT 'group_id',
+    `datum_id`     varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT 'datum_id',
+    `content`      longtext CHARACTER SET utf8mb3 COLLATE utf8mb3_bin     NOT NULL COMMENT '内容',
+    `gmt_modified` datetime                                               NOT NULL COMMENT '修改时间',
+    `app_name`     varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin DEFAULT NULL,
+    `tenant_id`    varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin DEFAULT '' COMMENT '租户字段',
     PRIMARY KEY (`id`),
     UNIQUE KEY `uk_configinfoaggr_datagrouptenantdatum` (`data_id`, `group_id`, `tenant_id`, `datum_id`)
 ) ENGINE = InnoDB
@@ -145,19 +145,19 @@ DROP TABLE IF EXISTS `config_info_beta`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `config_info_beta`
 (
-    `id`                 bigint                           NOT NULL AUTO_INCREMENT COMMENT 'id',
-    `data_id`            varchar(255) COLLATE utf8mb3_bin NOT NULL COMMENT 'data_id',
-    `group_id`           varchar(128) COLLATE utf8mb3_bin NOT NULL COMMENT 'group_id',
-    `app_name`           varchar(128) COLLATE utf8mb3_bin          DEFAULT NULL COMMENT 'app_name',
-    `content`            longtext COLLATE utf8mb3_bin     NOT NULL COMMENT 'content',
-    `beta_ips`           varchar(1024) COLLATE utf8mb3_bin         DEFAULT NULL COMMENT 'betaIps',
-    `md5`                varchar(32) COLLATE utf8mb3_bin           DEFAULT NULL COMMENT 'md5',
-    `gmt_create`         datetime                         NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    `gmt_modified`       datetime                         NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
-    `src_user`           text COLLATE utf8mb3_bin COMMENT 'source user',
-    `src_ip`             varchar(50) COLLATE utf8mb3_bin           DEFAULT NULL COMMENT 'source ip',
-    `tenant_id`          varchar(128) COLLATE utf8mb3_bin          DEFAULT '' COMMENT '租户字段',
-    `encrypted_data_key` text COLLATE utf8mb3_bin         NOT NULL COMMENT '秘钥',
+    `id`                 bigint                                                 NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `data_id`            varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT 'data_id',
+    `group_id`           varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT 'group_id',
+    `app_name`           varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin          DEFAULT NULL COMMENT 'app_name',
+    `content`            longtext CHARACTER SET utf8mb3 COLLATE utf8mb3_bin     NOT NULL COMMENT 'content',
+    `beta_ips`           varchar(1024) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin         DEFAULT NULL COMMENT 'betaIps',
+    `md5`                varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin           DEFAULT NULL COMMENT 'md5',
+    `gmt_create`         datetime                                               NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `gmt_modified`       datetime                                               NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
+    `src_user`           text CHARACTER SET utf8mb3 COLLATE utf8mb3_bin COMMENT 'source user',
+    `src_ip`             varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin           DEFAULT NULL COMMENT 'source ip',
+    `tenant_id`          varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin          DEFAULT '' COMMENT '租户字段',
+    `encrypted_data_key` text CHARACTER SET utf8mb3 COLLATE utf8mb3_bin         NOT NULL COMMENT '秘钥',
     PRIMARY KEY (`id`),
     UNIQUE KEY `uk_configinfobeta_datagrouptenant` (`data_id`, `group_id`, `tenant_id`)
 ) ENGINE = InnoDB
@@ -185,18 +185,18 @@ DROP TABLE IF EXISTS `config_info_tag`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `config_info_tag`
 (
-    `id`           bigint                           NOT NULL AUTO_INCREMENT COMMENT 'id',
-    `data_id`      varchar(255) COLLATE utf8mb3_bin NOT NULL COMMENT 'data_id',
-    `group_id`     varchar(128) COLLATE utf8mb3_bin NOT NULL COMMENT 'group_id',
-    `tenant_id`    varchar(128) COLLATE utf8mb3_bin          DEFAULT '' COMMENT 'tenant_id',
-    `tag_id`       varchar(128) COLLATE utf8mb3_bin NOT NULL COMMENT 'tag_id',
-    `app_name`     varchar(128) COLLATE utf8mb3_bin          DEFAULT NULL COMMENT 'app_name',
-    `content`      longtext COLLATE utf8mb3_bin     NOT NULL COMMENT 'content',
-    `md5`          varchar(32) COLLATE utf8mb3_bin           DEFAULT NULL COMMENT 'md5',
-    `gmt_create`   datetime                         NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    `gmt_modified` datetime                         NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
-    `src_user`     text COLLATE utf8mb3_bin COMMENT 'source user',
-    `src_ip`       varchar(50) COLLATE utf8mb3_bin           DEFAULT NULL COMMENT 'source ip',
+    `id`           bigint                                                 NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `data_id`      varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT 'data_id',
+    `group_id`     varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT 'group_id',
+    `tenant_id`    varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin          DEFAULT '' COMMENT 'tenant_id',
+    `tag_id`       varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT 'tag_id',
+    `app_name`     varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin          DEFAULT NULL COMMENT 'app_name',
+    `content`      longtext CHARACTER SET utf8mb3 COLLATE utf8mb3_bin     NOT NULL COMMENT 'content',
+    `md5`          varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin           DEFAULT NULL COMMENT 'md5',
+    `gmt_create`   datetime                                               NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `gmt_modified` datetime                                               NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
+    `src_user`     text CHARACTER SET utf8mb3 COLLATE utf8mb3_bin COMMENT 'source user',
+    `src_ip`       varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin           DEFAULT NULL COMMENT 'source ip',
     PRIMARY KEY (`id`),
     UNIQUE KEY `uk_configinfotag_datagrouptenanttag` (`data_id`, `group_id`, `tenant_id`, `tag_id`)
 ) ENGINE = InnoDB
@@ -224,13 +224,13 @@ DROP TABLE IF EXISTS `config_tags_relation`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `config_tags_relation`
 (
-    `id`        bigint                           NOT NULL COMMENT 'id',
-    `tag_name`  varchar(128) COLLATE utf8mb3_bin NOT NULL COMMENT 'tag_name',
-    `tag_type`  varchar(64) COLLATE utf8mb3_bin  DEFAULT NULL COMMENT 'tag_type',
-    `data_id`   varchar(255) COLLATE utf8mb3_bin NOT NULL COMMENT 'data_id',
-    `group_id`  varchar(128) COLLATE utf8mb3_bin NOT NULL COMMENT 'group_id',
-    `tenant_id` varchar(128) COLLATE utf8mb3_bin DEFAULT '' COMMENT 'tenant_id',
-    `nid`       bigint                           NOT NULL AUTO_INCREMENT,
+    `id`        bigint                                                 NOT NULL COMMENT 'id',
+    `tag_name`  varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT 'tag_name',
+    `tag_type`  varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin  DEFAULT NULL COMMENT 'tag_type',
+    `data_id`   varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT 'data_id',
+    `group_id`  varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT 'group_id',
+    `tenant_id` varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin DEFAULT '' COMMENT 'tenant_id',
+    `nid`       bigint                                                 NOT NULL AUTO_INCREMENT,
     PRIMARY KEY (`nid`),
     UNIQUE KEY `uk_configtagrelation_configidtag` (`id`, `tag_name`, `tag_type`),
     KEY `idx_tenant_id` (`tenant_id`)
@@ -259,16 +259,16 @@ DROP TABLE IF EXISTS `group_capacity`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `group_capacity`
 (
-    `id`                bigint unsigned                  NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-    `group_id`          varchar(128) COLLATE utf8mb3_bin NOT NULL DEFAULT '' COMMENT 'Group ID，空字符表示整个集群',
-    `quota`             int unsigned                     NOT NULL DEFAULT '0' COMMENT '配额，0表示使用默认值',
-    `usage`             int unsigned                     NOT NULL DEFAULT '0' COMMENT '使用量',
-    `max_size`          int unsigned                     NOT NULL DEFAULT '0' COMMENT '单个配置大小上限，单位为字节，0表示使用默认值',
-    `max_aggr_count`    int unsigned                     NOT NULL DEFAULT '0' COMMENT '聚合子配置最大个数，，0表示使用默认值',
-    `max_aggr_size`     int unsigned                     NOT NULL DEFAULT '0' COMMENT '单个聚合数据的子配置大小上限，单位为字节，0表示使用默认值',
-    `max_history_count` int unsigned                     NOT NULL DEFAULT '0' COMMENT '最大变更历史数量',
-    `gmt_create`        datetime                         NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    `gmt_modified`      datetime                         NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
+    `id`                bigint unsigned                                        NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+    `group_id`          varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL DEFAULT '' COMMENT 'Group ID，空字符表示整个集群',
+    `quota`             int unsigned                                           NOT NULL DEFAULT '0' COMMENT '配额，0表示使用默认值',
+    `usage`             int unsigned                                           NOT NULL DEFAULT '0' COMMENT '使用量',
+    `max_size`          int unsigned                                           NOT NULL DEFAULT '0' COMMENT '单个配置大小上限，单位为字节，0表示使用默认值',
+    `max_aggr_count`    int unsigned                                           NOT NULL DEFAULT '0' COMMENT '聚合子配置最大个数，，0表示使用默认值',
+    `max_aggr_size`     int unsigned                                           NOT NULL DEFAULT '0' COMMENT '单个聚合数据的子配置大小上限，单位为字节，0表示使用默认值',
+    `max_history_count` int unsigned                                           NOT NULL DEFAULT '0' COMMENT '最大变更历史数量',
+    `gmt_create`        datetime                                               NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `gmt_modified`      datetime                                               NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
     PRIMARY KEY (`id`),
     UNIQUE KEY `uk_group_id` (`group_id`)
 ) ENGINE = InnoDB
@@ -296,26 +296,26 @@ DROP TABLE IF EXISTS `his_config_info`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `his_config_info`
 (
-    `id`                 bigint unsigned                  NOT NULL,
-    `nid`                bigint unsigned                  NOT NULL AUTO_INCREMENT,
-    `data_id`            varchar(255) COLLATE utf8mb3_bin NOT NULL,
-    `group_id`           varchar(128) COLLATE utf8mb3_bin NOT NULL,
-    `app_name`           varchar(128) COLLATE utf8mb3_bin          DEFAULT NULL COMMENT 'app_name',
-    `content`            longtext COLLATE utf8mb3_bin     NOT NULL,
-    `md5`                varchar(32) COLLATE utf8mb3_bin           DEFAULT NULL,
-    `gmt_create`         datetime                         NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `gmt_modified`       datetime                         NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `src_user`           text COLLATE utf8mb3_bin,
-    `src_ip`             varchar(50) COLLATE utf8mb3_bin           DEFAULT NULL,
-    `op_type`            char(10) COLLATE utf8mb3_bin              DEFAULT NULL,
-    `tenant_id`          varchar(128) COLLATE utf8mb3_bin          DEFAULT '' COMMENT '租户字段',
-    `encrypted_data_key` text COLLATE utf8mb3_bin         NOT NULL COMMENT '秘钥',
+    `id`                 bigint unsigned                                        NOT NULL,
+    `nid`                bigint unsigned                                        NOT NULL AUTO_INCREMENT,
+    `data_id`            varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+    `group_id`           varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+    `app_name`           varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin          DEFAULT NULL COMMENT 'app_name',
+    `content`            longtext CHARACTER SET utf8mb3 COLLATE utf8mb3_bin     NOT NULL,
+    `md5`                varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin           DEFAULT NULL,
+    `gmt_create`         datetime                                               NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `gmt_modified`       datetime                                               NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `src_user`           text CHARACTER SET utf8mb3 COLLATE utf8mb3_bin,
+    `src_ip`             varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin           DEFAULT NULL,
+    `op_type`            char(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin              DEFAULT NULL,
+    `tenant_id`          varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin          DEFAULT '' COMMENT '租户字段',
+    `encrypted_data_key` text CHARACTER SET utf8mb3 COLLATE utf8mb3_bin         NOT NULL COMMENT '秘钥',
     PRIMARY KEY (`nid`),
     KEY `idx_gmt_create` (`gmt_create`),
     KEY `idx_gmt_modified` (`gmt_modified`),
     KEY `idx_did` (`data_id`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 780
+  AUTO_INCREMENT = 799
   DEFAULT CHARSET = utf8mb3
   COLLATE = utf8mb3_bin COMMENT ='多租户改造';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -1053,7 +1053,83 @@ VALUES (27, 596, 'matrix-security', 'DEFAULT_GROUP', '',
        (484, 779, 'application-common', 'DEFAULT_GROUP', '',
         'spring:\n  cloud:\n    sentinel:\n      enabled: true\n      eager: true\n      transport:\n        port: 8719\n        dashboard: localhost:8088\n  main:\n    allow-bean-definition-overriding: true\n  servlet:\n    multipart:\n      max-request-size: 5MB\n      max-file-size: 100MB\n  jackson:\n    time-zone: GMT+8\n    date-format: yyyy-MM-dd HH:mm:ss\n    serialization:\n      # 格式化输出\n      INDENT_OUTPUT: false\n      # 忽略无法转换的对象\n      fail_on_empty_beans: false\n    deserialization:\n      # 允许对象忽略json中不存在的属性\n      fail_on_unknown_properties: false\n  messages:\n    basename: i18n/messages\n    encoding: utf-8\n    fallback-to-system-locale: true\n  # redis配置\n  redis:\n    host: ${REDIS_HOST:127.0.0.1}\n    port: ${REDIS_PORT:6379}\n    database: ${REDIS_DATABASE:0}\n    timeout: 10s\n    lettuce:\n      pool:\n        # 连接池最大连接数\n        max-active: 200\n        # 连接池最大阻塞等待时间（使用负值表示没有限制）\n        max-wait: -1ms\n        # 连接池中的最大空闲连接\n        max-idle: 10\n        # 连接池中的最小空闲连接\n        min-idle: 0\n  cache:\n    type: redis\n  datasource:\n    druid:\n      initial-size: 5 # 初始连接数\n      min-idle: 10 # 最小连接池数量\n      max-active: 20 # 最大连接池数量\n      max-wait: 600000 # 配置获取连接等待超时的时间，单位：毫秒\n      time-between-eviction-runs-millis: 60000 # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位：毫秒\n      min-evictable-idle-time-millis: 300000 # 配置一个连接在池中最小生存的时间，单位：毫秒\n      max-evictable-idle-time-millis: 900000 # 配置一个连接在池中最大生存的时间，单位：毫秒\n      validation-query: SELECT 1 FROM DUAL # 配置检测连接是否有效\n      test-while-idle: true\n      test-on-borrow: false\n      test-on-return: false\n      web-stat-filter:\n        enabled: true\n      stat-view-servlet:\n        enabled: true\n        allow: # 设置白名单，不填则允许所有访问\n        url-pattern: /druid/*\n        login-username: druid\n        login-password: druid\n      filter:\n        stat:\n          enabled: true\n          log-slow-sql: true # 慢 SQL 记录\n          slow-sql-millis: 100\n          merge-sql: true\n        wall:\n          config:\n            multi-statement-allow: true\n# 端点配置\nmanagement:\n  endpoints:\n    web:\n      exposure:\n        include: \"*\"\n    jmx:\n      exposure:\n        include: \"*\"\n  endpoint:\n    health:\n      show-details: always\n\nfeign:\n  ## 启用对 feign 的 Sentinel 支持\n  sentinel:\n    enabled: true\n  client:\n    config:\n      default:\n        connect-timeout: 5000\n        read-timeout: 5000\n        logger-level: full\n  autoconfiguration:\n    jackson:\n      enabled: true\n  compression:\n    request:\n      enabled: true\n    response:\n      enabled: true\n  metrics:\n    enabled: true\n\n\n# 文档配置\nknife4j:\n  enable: true\n  production: false\n  cors: true\n\n# mybatis plus配置\nmybatis-plus:\n  global-config:\n    db-config:\n      id-type: auto\n  configuration:\n    map-underscore-to-camel-case: true\n    call-setters-on-nulls: true\n  check-config-location: false\n\n\nsa-token:\n  # jwt秘钥\n  jwt-secret-key: ${SA_TOKEN_JWT_SECRET_KEY:abcdefghijklmnopqrstuvwxyz}\n  # token名称 (同时也是cookie名称)\n  token-name: Authorization\n  # token有效期，单位s 默认30天, -1代表永不过期\n  timeout: 2592000\n  # token临时有效期 (指定时间内无操作就视为token过期) 单位: 秒\n  activity-timeout: 1800\n  # 是否允许同一账号并发登录 (为true时允许一起登录, 为false时新登录挤掉旧登录)\n  is-concurrent: true\n  # 在多人登录同一账号时，是否共用一个token (为true时所有登录共用一个token, 为false时每次登录新建一个token)\n  is-share: true\n  # token风格\n  token-style: uuid\n  # 是否输出操作日志\n  is-log: true',
         'bbbe0b568c067dd79240e2a7e44474eb', '2022-10-09 09:47:44', '2022-10-09 01:47:44', 'nacos', '0:0:0:0:0:0:0:1',
-        'U', '', '');
+        'U', '', ''),
+       (363, 780, 'seataServer.properties', 'SEATA_GROUP', '',
+        'transport.type=TCP\ntransport.server=NIO\ntransport.heartbeat=true\ntransport.enableTmClientBatchSendRequest=false\ntransport.enableRmClientBatchSendRequest=true\ntransport.enableTcServerBatchSendResponse=false\ntransport.rpcRmRequestTimeout=30000\ntransport.rpcTmRequestTimeout=30000\ntransport.rpcTcRequestTimeout=30000\ntransport.threadFactory.bossThreadPrefix=NettyBoss\ntransport.threadFactory.workerThreadPrefix=NettyServerNIOWorker\ntransport.threadFactory.serverExecutorThreadPrefix=NettyServerBizHandler\ntransport.threadFactory.shareBossWorker=false\ntransport.threadFactory.clientSelectorThreadPrefix=NettyClientSelector\ntransport.threadFactory.clientSelectorThreadSize=1\ntransport.threadFactory.clientWorkerThreadPrefix=NettyClientWorkerThread\ntransport.threadFactory.bossThreadSize=1\ntransport.threadFactory.workerThreadSize=default\ntransport.shutdown.wait=3\ntransport.serialization=seata\ntransport.compressor=none\n\nservice.vgroupMapping.default_tx_group=default\n\n\nclient.rm.asyncCommitBufferLimit=10000\nclient.rm.lock.retryInterval=10\nclient.rm.lock.retryTimes=30\nclient.rm.lock.retryPolicyBranchRollbackOnConflict=true\nclient.rm.reportRetryCount=5\nclient.rm.tableMetaCheckEnable=true\nclient.rm.tableMetaCheckerInterval=60000\nclient.rm.sqlParserType=druid\nclient.rm.reportSuccessEnable=false\nclient.rm.sagaBranchRegisterEnable=false\nclient.rm.sagaJsonParser=fastjson\nclient.rm.tccActionInterceptorOrder=-2147482648\nclient.tm.commitRetryCount=5\nclient.tm.rollbackRetryCount=5\nclient.tm.defaultGlobalTransactionTimeout=60000\nclient.tm.degradeCheck=false\nclient.tm.degradeCheckAllowTimes=10\nclient.tm.degradeCheckPeriod=2000\nclient.tm.interceptorOrder=-2147482648\nclient.undo.dataValidation=true\nclient.undo.logSerialization=jackson\nclient.undo.onlyCareUpdateColumns=true\nserver.undo.logSaveDays=7\nserver.undo.logDeletePeriod=86400000\nclient.undo.logTable=undo_log\nclient.undo.compress.enable=true\nclient.undo.compress.type=zip\nclient.undo.compress.threshold=64k\n\ntcc.fence.logTableName=tcc_fence_log\ntcc.fence.cleanPeriod=1h\n\n\nlog.exceptionRate=100\n\nstore.mode=db\nstore.lock.mode=db\nstore.session.mode=db\n\nstore.db.datasource=druid\nstore.db.dbType=mysql\nstore.db.driverClassName=com.mysql.cj.jdbc.Driver\nstore.db.url=jdbc:mysql://localhost:3306/seata?allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai\nstore.db.user=root\nstore.db.password=123456\nstore.db.minConn=5\nstore.db.maxConn=30\nstore.db.globalTable=global_table\nstore.db.branchTable=branch_table\nstore.db.distributedLockTable=distributed_lock\nstore.db.queryLimit=100\nstore.db.lockTable=lock_table\nstore.db.maxWait=5000\n\n\n\nserver.recovery.committingRetryPeriod=1000\nserver.recovery.asynCommittingRetryPeriod=1000\nserver.recovery.rollbackingRetryPeriod=1000\nserver.recovery.timeoutRetryPeriod=1000\nserver.maxCommitRetryTimeout=-1\nserver.maxRollbackRetryTimeout=-1\nserver.rollbackRetryTimeoutUnlockEnable=false\nserver.distributedLockExpireTime=10000\nserver.xaerNotaRetryTimeout=60000\nserver.session.branchAsyncQueueSize=5000\nserver.session.enableBranchAsyncRemove=false\nserver.enableParallelRequestHandle=false\n\nmetrics.enabled=false\nmetrics.registryType=compact\nmetrics.exporterList=prometheus\nmetrics.exporterPrometheusPort=9898\n',
+        '6e9829aa77a51ff924b5440882ee16e3', '2022-10-13 11:07:59', '2022-10-13 11:07:59', 'nacos', '172.30.0.1', 'U',
+        '', ''),
+       (484, 781, 'application-common', 'DEFAULT_GROUP', '',
+        'spring:\n  main:\n    allow-bean-definition-overriding: true\n  servlet:\n    multipart:\n      max-request-size: 5MB\n      max-file-size: 100MB\n  jackson:\n    time-zone: GMT+8\n    date-format: yyyy-MM-dd HH:mm:ss\n    serialization:\n      # 格式化输出\n      INDENT_OUTPUT: false\n      # 忽略无法转换的对象\n      fail_on_empty_beans: false\n    deserialization:\n      # 允许对象忽略json中不存在的属性\n      fail_on_unknown_properties: false\n  # redis配置\n  redis:\n    host: ${REDIS_HOST:192.168.2.134}\n    port: ${REDIS_PORT:6379}\n    database: ${REDIS_DATABASE:0}\n    timeout: 10s\n    lettuce:\n      pool:\n        # 连接池最大连接数\n        max-active: 200\n        # 连接池最大阻塞等待时间（使用负值表示没有限制）\n        max-wait: -1ms\n        # 连接池中的最大空闲连接\n        max-idle: 10\n        # 连接池中的最小空闲连接\n        min-idle: 0\n  cache:\n    type: redis\n  datasource:\n    druid:\n      initial-size: 5 # 初始连接数\n      min-idle: 10 # 最小连接池数量\n      max-active: 20 # 最大连接池数量\n      max-wait: 600000 # 配置获取连接等待超时的时间，单位：毫秒\n      time-between-eviction-runs-millis: 60000 # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位：毫秒\n      min-evictable-idle-time-millis: 300000 # 配置一个连接在池中最小生存的时间，单位：毫秒\n      max-evictable-idle-time-millis: 900000 # 配置一个连接在池中最大生存的时间，单位：毫秒\n      validation-query: SELECT 1 FROM DUAL # 配置检测连接是否有效\n      test-while-idle: true\n      test-on-borrow: false\n      test-on-return: false\n      web-stat-filter:\n        enabled: true\n      stat-view-servlet:\n        enabled: true\n        allow: # 设置白名单，不填则允许所有访问\n        url-pattern: /druid/*\n        login-username: druid\n        login-password: druid\n      filter:\n        stat:\n          enabled: true\n          log-slow-sql: true # 慢 SQL 记录\n          slow-sql-millis: 100\n          merge-sql: true\n        wall:\n          config:\n            multi-statement-allow: true\n\nfeign:\n  ## 启用对 feign 的 Sentinel 支持\n  sentinel:\n    enabled: true\n  client:\n    config:\n      default:\n        connect-timeout: 5000\n        read-timeout: 5000\n        logger-level: full\n  autoconfiguration:\n    jackson:\n      enabled: true\n  compression:\n    request:\n      enabled: true\n    response:\n      enabled: true\n  metrics:\n    enabled: true\n\n\n# 文档配置\nknife4j:\n  enable: true\n  production: false\n  cors: true\n\n# mybatis plus配置\nmybatis-plus:\n  global-config:\n    db-config:\n      id-type: auto\n  configuration:\n    map-underscore-to-camel-case: true\n    call-setters-on-nulls: true\n  check-config-location: false\n\n\nsa-token:\n  # jwt秘钥\n  jwt-secret-key: ${SA_TOKEN_JWT_SECRET_KEY:abcdefghijklmnopqrstuvwxyz}\n  # token名称 (同时也是cookie名称)\n  token-name: Authorization\n  # token有效期，单位s 默认30天, -1代表永不过期\n  timeout: 2592000\n  # token临时有效期 (指定时间内无操作就视为token过期) 单位: 秒\n  activity-timeout: 1800\n  # 是否允许同一账号并发登录 (为true时允许一起登录, 为false时新登录挤掉旧登录)\n  is-concurrent: true\n  # 在多人登录同一账号时，是否共用一个token (为true时所有登录共用一个token, 为false时每次登录新建一个token)\n  is-share: true\n  # token风格\n  token-style: uuid\n  # 是否输出操作日志\n  is-log: true',
+        '137bab4cfdc7523b8bc8891b7ed830a9', '2022-10-24 14:56:18', '2022-10-24 14:56:18', 'nacos', '192.168.96.1', 'U',
+        '', ''),
+       (27, 782, 'matrix-security', 'DEFAULT_GROUP', '',
+        '!!com.matrix.properties.SecurityProperties\nwhiteUrls: [/api-gateway/docapp/**, /system-server/auth/**, /system-server/nacos/**,\n  /system-server/nacos/shared/**, /api-gateway/docApp/**, /system-server/resource/admin/**,\n  /system-server/resource/role/**]\n',
+        '1131f9a8acc4fb16646785b1965a27a4', '2022-10-24 14:58:05', '2022-10-24 14:58:05', NULL, '192.168.2.36', 'U', '',
+        ''),
+       (484, 783, 'application-common', 'DEFAULT_GROUP', '',
+        'spring:\n  main:\n    allow-bean-definition-overriding: true\n  servlet:\n    multipart:\n      max-request-size: 5MB\n      max-file-size: 100MB\n  jackson:\n    time-zone: GMT+8\n    date-format: yyyy-MM-dd HH:mm:ss\n    serialization:\n      # 格式化输出\n      INDENT_OUTPUT: false\n      # 忽略无法转换的对象\n      fail_on_empty_beans: false\n    deserialization:\n      # 允许对象忽略json中不存在的属性\n      fail_on_unknown_properties: false\n  # redis配置\n  redis:\n    host: ${REDIS_HOST:192.168.2.36}\n    port: ${REDIS_PORT:6379}\n    database: ${REDIS_DATABASE:0}\n    timeout: 10s\n    lettuce:\n      pool:\n        # 连接池最大连接数\n        max-active: 200\n        # 连接池最大阻塞等待时间（使用负值表示没有限制）\n        max-wait: -1ms\n        # 连接池中的最大空闲连接\n        max-idle: 10\n        # 连接池中的最小空闲连接\n        min-idle: 0\n  cache:\n    type: redis\n  datasource:\n    druid:\n      initial-size: 5 # 初始连接数\n      min-idle: 10 # 最小连接池数量\n      max-active: 20 # 最大连接池数量\n      max-wait: 600000 # 配置获取连接等待超时的时间，单位：毫秒\n      time-between-eviction-runs-millis: 60000 # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位：毫秒\n      min-evictable-idle-time-millis: 300000 # 配置一个连接在池中最小生存的时间，单位：毫秒\n      max-evictable-idle-time-millis: 900000 # 配置一个连接在池中最大生存的时间，单位：毫秒\n      validation-query: SELECT 1 FROM DUAL # 配置检测连接是否有效\n      test-while-idle: true\n      test-on-borrow: false\n      test-on-return: false\n      web-stat-filter:\n        enabled: true\n      stat-view-servlet:\n        enabled: true\n        allow: # 设置白名单，不填则允许所有访问\n        url-pattern: /druid/*\n        login-username: druid\n        login-password: druid\n      filter:\n        stat:\n          enabled: true\n          log-slow-sql: true # 慢 SQL 记录\n          slow-sql-millis: 100\n          merge-sql: true\n        wall:\n          config:\n            multi-statement-allow: true\n\nfeign:\n  ## 启用对 feign 的 Sentinel 支持\n  sentinel:\n    enabled: true\n  client:\n    config:\n      default:\n        connect-timeout: 5000\n        read-timeout: 5000\n        logger-level: full\n  autoconfiguration:\n    jackson:\n      enabled: true\n  compression:\n    request:\n      enabled: true\n    response:\n      enabled: true\n  metrics:\n    enabled: true\n\n\n# 文档配置\nknife4j:\n  enable: true\n  production: false\n  cors: true\n\n# mybatis plus配置\nmybatis-plus:\n  global-config:\n    db-config:\n      id-type: auto\n  configuration:\n    map-underscore-to-camel-case: true\n    call-setters-on-nulls: true\n  check-config-location: false\n\n\nsa-token:\n  # jwt秘钥\n  jwt-secret-key: ${SA_TOKEN_JWT_SECRET_KEY:abcdefghijklmnopqrstuvwxyz}\n  # token名称 (同时也是cookie名称)\n  token-name: Authorization\n  # token有效期，单位s 默认30天, -1代表永不过期\n  timeout: 2592000\n  # token临时有效期 (指定时间内无操作就视为token过期) 单位: 秒\n  activity-timeout: 1800\n  # 是否允许同一账号并发登录 (为true时允许一起登录, 为false时新登录挤掉旧登录)\n  is-concurrent: true\n  # 在多人登录同一账号时，是否共用一个token (为true时所有登录共用一个token, 为false时每次登录新建一个token)\n  is-share: true\n  # token风格\n  token-style: uuid\n  # 是否输出操作日志\n  is-log: true',
+        '34194560406c8cb05f99c9832427a629', '2022-10-24 15:01:34', '2022-10-24 15:01:34', 'nacos', '192.168.96.1', 'U',
+        '', ''),
+       (27, 784, 'matrix-security', 'DEFAULT_GROUP', '',
+        '!!com.matrix.properties.SecurityProperties\nwhiteUrls: [/api-gateway/docapp/**, /system-server/auth/**, /system-server/nacos/**,\n  /system-server/nacos/shared/**, /api-gateway/docApp/**, /system-server/resource/admin/**,\n  /system-server/resource/role/**]\n',
+        '1131f9a8acc4fb16646785b1965a27a4', '2022-10-24 15:12:15', '2022-10-24 15:12:15', NULL, '192.168.2.36', 'U', '',
+        ''),
+       (484, 785, 'application-common', 'DEFAULT_GROUP', '',
+        'spring:\n  main:\n    allow-bean-definition-overriding: true\n  servlet:\n    multipart:\n      max-request-size: 5MB\n      max-file-size: 100MB\n  jackson:\n    time-zone: GMT+8\n    date-format: yyyy-MM-dd HH:mm:ss\n    serialization:\n      # 格式化输出\n      INDENT_OUTPUT: false\n      # 忽略无法转换的对象\n      fail_on_empty_beans: false\n    deserialization:\n      # 允许对象忽略json中不存在的属性\n      fail_on_unknown_properties: false\n  # redis配置\n  redis:\n    host: ${REDIS_HOST:192.168.2.36}\n    port: ${REDIS_PORT:6379}\n    database: ${REDIS_DATABASE:0}\n    timeout: 10s\n    password: matrix\n    lettuce:\n      pool:\n        # 连接池最大连接数\n        max-active: 200\n        # 连接池最大阻塞等待时间（使用负值表示没有限制）\n        max-wait: -1ms\n        # 连接池中的最大空闲连接\n        max-idle: 10\n        # 连接池中的最小空闲连接\n        min-idle: 0\n  cache:\n    type: redis\n  datasource:\n    druid:\n      initial-size: 5 # 初始连接数\n      min-idle: 10 # 最小连接池数量\n      max-active: 20 # 最大连接池数量\n      max-wait: 600000 # 配置获取连接等待超时的时间，单位：毫秒\n      time-between-eviction-runs-millis: 60000 # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位：毫秒\n      min-evictable-idle-time-millis: 300000 # 配置一个连接在池中最小生存的时间，单位：毫秒\n      max-evictable-idle-time-millis: 900000 # 配置一个连接在池中最大生存的时间，单位：毫秒\n      validation-query: SELECT 1 FROM DUAL # 配置检测连接是否有效\n      test-while-idle: true\n      test-on-borrow: false\n      test-on-return: false\n      web-stat-filter:\n        enabled: true\n      stat-view-servlet:\n        enabled: true\n        allow: # 设置白名单，不填则允许所有访问\n        url-pattern: /druid/*\n        login-username: druid\n        login-password: druid\n      filter:\n        stat:\n          enabled: true\n          log-slow-sql: true # 慢 SQL 记录\n          slow-sql-millis: 100\n          merge-sql: true\n        wall:\n          config:\n            multi-statement-allow: true\n\nfeign:\n  ## 启用对 feign 的 Sentinel 支持\n  sentinel:\n    enabled: true\n  client:\n    config:\n      default:\n        connect-timeout: 5000\n        read-timeout: 5000\n        logger-level: full\n  autoconfiguration:\n    jackson:\n      enabled: true\n  compression:\n    request:\n      enabled: true\n    response:\n      enabled: true\n  metrics:\n    enabled: true\n\n\n# 文档配置\nknife4j:\n  enable: true\n  production: false\n  cors: true\n\n# mybatis plus配置\nmybatis-plus:\n  global-config:\n    db-config:\n      id-type: auto\n  configuration:\n    map-underscore-to-camel-case: true\n    call-setters-on-nulls: true\n  check-config-location: false\n\n\nsa-token:\n  # jwt秘钥\n  jwt-secret-key: ${SA_TOKEN_JWT_SECRET_KEY:abcdefghijklmnopqrstuvwxyz}\n  # token名称 (同时也是cookie名称)\n  token-name: Authorization\n  # token有效期，单位s 默认30天, -1代表永不过期\n  timeout: 2592000\n  # token临时有效期 (指定时间内无操作就视为token过期) 单位: 秒\n  activity-timeout: 1800\n  # 是否允许同一账号并发登录 (为true时允许一起登录, 为false时新登录挤掉旧登录)\n  is-concurrent: true\n  # 在多人登录同一账号时，是否共用一个token (为true时所有登录共用一个token, 为false时每次登录新建一个token)\n  is-share: true\n  # token风格\n  token-style: uuid\n  # 是否输出操作日志\n  is-log: true',
+        '5d98cfe456500ce4276fa79edd98a2e3', '2022-10-24 15:18:03', '2022-10-24 15:18:03', 'nacos', '192.168.96.1', 'U',
+        '', ''),
+       (27, 786, 'matrix-security', 'DEFAULT_GROUP', '',
+        '!!com.matrix.properties.SecurityProperties\nwhiteUrls: [/api-gateway/docapp/**, /system-server/auth/**, /system-server/nacos/**,\n  /system-server/nacos/shared/**, /api-gateway/docApp/**, /system-server/resource/admin/**,\n  /system-server/resource/role/**]\n',
+        '1131f9a8acc4fb16646785b1965a27a4', '2022-10-24 15:19:18', '2022-10-24 15:19:18', NULL, '192.168.2.36', 'U', '',
+        ''),
+       (27, 787, 'matrix-security', 'DEFAULT_GROUP', '',
+        '!!com.matrix.properties.SecurityProperties\nwhiteUrls: [/api-gateway/docapp/**, /system-server/auth/**, /system-server/nacos/**,\n  /system-server/nacos/shared/**, /api-gateway/docApp/**, /system-server/resource/admin/**,\n  /system-server/resource/role/**]\n',
+        '1131f9a8acc4fb16646785b1965a27a4', '2022-10-24 15:28:46', '2022-10-24 15:28:46', NULL, '192.168.2.36', 'U', '',
+        ''),
+       (27, 788, 'matrix-security', 'DEFAULT_GROUP', '',
+        '!!com.matrix.properties.SecurityProperties\nwhiteUrls: [/api-gateway/docapp/**, /system-server/auth/**, /system-server/nacos/**,\n  /system-server/nacos/shared/**, /api-gateway/docApp/**, /system-server/resource/admin/**,\n  /system-server/resource/role/**]\n',
+        '1131f9a8acc4fb16646785b1965a27a4', '2022-10-24 15:30:17', '2022-10-24 15:30:18', NULL, '192.168.2.36', 'U', '',
+        ''),
+       (484, 789, 'application-common', 'DEFAULT_GROUP', '',
+        'spring:\n  main:\n    allow-bean-definition-overriding: true\n  servlet:\n    multipart:\n      max-request-size: 5MB\n      max-file-size: 100MB\n  jackson:\n    time-zone: GMT+8\n    date-format: yyyy-MM-dd HH:mm:ss\n    serialization:\n      # 格式化输出\n      INDENT_OUTPUT: false\n      # 忽略无法转换的对象\n      fail_on_empty_beans: false\n    deserialization:\n      # 允许对象忽略json中不存在的属性\n      fail_on_unknown_properties: false\n\n  cache:\n    type: redis\n  datasource:\n    druid:\n      initial-size: 5 # 初始连接数\n      min-idle: 10 # 最小连接池数量\n      max-active: 20 # 最大连接池数量\n      max-wait: 600000 # 配置获取连接等待超时的时间，单位：毫秒\n      time-between-eviction-runs-millis: 60000 # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位：毫秒\n      min-evictable-idle-time-millis: 300000 # 配置一个连接在池中最小生存的时间，单位：毫秒\n      max-evictable-idle-time-millis: 900000 # 配置一个连接在池中最大生存的时间，单位：毫秒\n      validation-query: SELECT 1 FROM DUAL # 配置检测连接是否有效\n      test-while-idle: true\n      test-on-borrow: false\n      test-on-return: false\n      web-stat-filter:\n        enabled: true\n      stat-view-servlet:\n        enabled: true\n        allow: # 设置白名单，不填则允许所有访问\n        url-pattern: /druid/*\n        login-username: druid\n        login-password: druid\n      filter:\n        stat:\n          enabled: true\n          log-slow-sql: true # 慢 SQL 记录\n          slow-sql-millis: 100\n          merge-sql: true\n        wall:\n          config:\n            multi-statement-allow: true\n\nfeign:\n  ## 启用对 feign 的 Sentinel 支持\n  sentinel:\n    enabled: true\n  client:\n    config:\n      default:\n        connect-timeout: 5000\n        read-timeout: 5000\n        logger-level: full\n  autoconfiguration:\n    jackson:\n      enabled: true\n  compression:\n    request:\n      enabled: true\n    response:\n      enabled: true\n  metrics:\n    enabled: true\n\n\n# 文档配置\nknife4j:\n  enable: true\n  production: false\n  cors: true\n\n# mybatis plus配置\nmybatis-plus:\n  global-config:\n    db-config:\n      id-type: auto\n  configuration:\n    map-underscore-to-camel-case: true\n    call-setters-on-nulls: true\n  check-config-location: false\n\n\nsa-token:\n  # jwt秘钥\n  jwt-secret-key: ${SA_TOKEN_JWT_SECRET_KEY:abcdefghijklmnopqrstuvwxyz}\n  # token名称 (同时也是cookie名称)\n  token-name: Authorization\n  # token有效期，单位s 默认30天, -1代表永不过期\n  timeout: 2592000\n  # token临时有效期 (指定时间内无操作就视为token过期) 单位: 秒\n  activity-timeout: 1800\n  # 是否允许同一账号并发登录 (为true时允许一起登录, 为false时新登录挤掉旧登录)\n  is-concurrent: true\n  # 在多人登录同一账号时，是否共用一个token (为true时所有登录共用一个token, 为false时每次登录新建一个token)\n  is-share: true\n  # token风格\n  token-style: uuid\n  # 是否输出操作日志\n  is-log: true',
+        'fb795d86856c012a70a7773bc0b006dd', '2022-10-24 15:31:18', '2022-10-24 15:31:19', 'nacos', '192.168.96.1', 'U',
+        '', ''),
+       (27, 790, 'matrix-security', 'DEFAULT_GROUP', '',
+        '!!com.matrix.properties.SecurityProperties\nwhiteUrls: [/api-gateway/docapp/**, /system-server/auth/**, /system-server/nacos/**,\n  /system-server/nacos/shared/**, /api-gateway/docApp/**, /system-server/resource/admin/**,\n  /system-server/resource/role/**]\n',
+        '1131f9a8acc4fb16646785b1965a27a4', '2022-10-24 15:31:55', '2022-10-24 15:31:56', NULL, '192.168.2.36', 'U', '',
+        ''),
+       (27, 791, 'matrix-security', 'DEFAULT_GROUP', '',
+        '!!com.matrix.properties.SecurityProperties\nwhiteUrls: [/api-gateway/docapp/**, /system-server/auth/**, /system-server/nacos/**,\n  /system-server/nacos/shared/**, /api-gateway/docApp/**, /system-server/resource/admin/**,\n  /system-server/resource/role/**]\n',
+        '1131f9a8acc4fb16646785b1965a27a4', '2022-10-24 15:34:02', '2022-10-24 15:34:03', NULL, '192.168.2.36', 'U', '',
+        ''),
+       (564, 792, 'system-server-dev.yaml', 'DEFAULT_GROUP', '',
+        'spring:\r\n  datasource:\r\n    driver-class-name: com.mysql.cj.jdbc.Driver\r\n    url: jdbc:mysql://localhost:3306/matrix?allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai\r\n    username: root\r\n    password: 123456\r\n\r\nmatrix:\r\n  swagger:\r\n    enable: true\r\n    name: 系统服务\r\n    version: 1.0.0\r\n    description: 系统服务接口文档\r\n  tenant:\r\n    enable: true\r\n    ignoreTables:\r\n      - tenant\r\n    ignore-urls:\r\n      - /auth/**\r\n  security:\r\n    white-urls:\r\n      - /auth/**\r\n      - /nacos/**',
+        '6f5721b6e428559b0e578d6a3d48f96c', '2022-10-24 15:40:58', '2022-10-24 15:40:59', 'nacos', '192.168.96.1', 'U',
+        '', ''),
+       (27, 793, 'matrix-security', 'DEFAULT_GROUP', '',
+        '!!com.matrix.properties.SecurityProperties\nwhiteUrls: [/api-gateway/docapp/**, /system-server/auth/**, /system-server/nacos/**,\n  /system-server/nacos/shared/**, /api-gateway/docApp/**, /system-server/resource/admin/**,\n  /system-server/resource/role/**]\n',
+        '1131f9a8acc4fb16646785b1965a27a4', '2022-10-24 15:41:28', '2022-10-24 15:41:28', NULL, '192.168.2.36', 'U', '',
+        ''),
+       (484, 794, 'application-common', 'DEFAULT_GROUP', '',
+        'spring:\n  main:\n    allow-bean-definition-overriding: true\n  servlet:\n    multipart:\n      max-request-size: 5MB\n      max-file-size: 100MB\n  jackson:\n    time-zone: GMT+8\n    date-format: yyyy-MM-dd HH:mm:ss\n    serialization:\n      # 格式化输出\n      INDENT_OUTPUT: false\n      # 忽略无法转换的对象\n      fail_on_empty_beans: false\n    deserialization:\n      # 允许对象忽略json中不存在的属性\n      fail_on_unknown_properties: false\n  # redis配置\n  redis:\n    host: ${REDIS_HOST:localhost}\n    port: ${REDIS_PORT:6379}\n    database: ${REDIS_DATABASE:0}\n    timeout: 10s\n    password: matrix\n    lettuce:\n      pool:\n        # 连接池最大连接数\n        max-active: 200\n        # 连接池最大阻塞等待时间（使用负值表示没有限制）\n        max-wait: -1ms\n        # 连接池中的最大空闲连接\n        max-idle: 10\n        # 连接池中的最小空闲连接\n        min-idle: 0\n  cache:\n    type: redis\n  datasource:\n    druid:\n      initial-size: 5 # 初始连接数\n      min-idle: 10 # 最小连接池数量\n      max-active: 20 # 最大连接池数量\n      max-wait: 600000 # 配置获取连接等待超时的时间，单位：毫秒\n      time-between-eviction-runs-millis: 60000 # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位：毫秒\n      min-evictable-idle-time-millis: 300000 # 配置一个连接在池中最小生存的时间，单位：毫秒\n      max-evictable-idle-time-millis: 900000 # 配置一个连接在池中最大生存的时间，单位：毫秒\n      validation-query: SELECT 1 FROM DUAL # 配置检测连接是否有效\n      test-while-idle: true\n      test-on-borrow: false\n      test-on-return: false\n      web-stat-filter:\n        enabled: true\n      stat-view-servlet:\n        enabled: true\n        allow: # 设置白名单，不填则允许所有访问\n        url-pattern: /druid/*\n        login-username: druid\n        login-password: druid\n      filter:\n        stat:\n          enabled: true\n          log-slow-sql: true # 慢 SQL 记录\n          slow-sql-millis: 100\n          merge-sql: true\n        wall:\n          config:\n            multi-statement-allow: true\n\nfeign:\n  ## 启用对 feign 的 Sentinel 支持\n  sentinel:\n    enabled: true\n  client:\n    config:\n      default:\n        connect-timeout: 5000\n        read-timeout: 5000\n        logger-level: full\n  autoconfiguration:\n    jackson:\n      enabled: true\n  compression:\n    request:\n      enabled: true\n    response:\n      enabled: true\n  metrics:\n    enabled: true\n\n\n# 文档配置\nknife4j:\n  enable: true\n  production: false\n  cors: true\n\n# mybatis plus配置\nmybatis-plus:\n  global-config:\n    db-config:\n      id-type: auto\n  configuration:\n    map-underscore-to-camel-case: true\n    call-setters-on-nulls: true\n  check-config-location: false\n\n\nsa-token:\n  # jwt秘钥\n  jwt-secret-key: ${SA_TOKEN_JWT_SECRET_KEY:abcdefghijklmnopqrstuvwxyz}\n  # token名称 (同时也是cookie名称)\n  token-name: Authorization\n  # token有效期，单位s 默认30天, -1代表永不过期\n  timeout: 2592000\n  # token临时有效期 (指定时间内无操作就视为token过期) 单位: 秒\n  activity-timeout: 1800\n  # 是否允许同一账号并发登录 (为true时允许一起登录, 为false时新登录挤掉旧登录)\n  is-concurrent: true\n  # 在多人登录同一账号时，是否共用一个token (为true时所有登录共用一个token, 为false时每次登录新建一个token)\n  is-share: true\n  # token风格\n  token-style: uuid\n  # 是否输出操作日志\n  is-log: true',
+        'ad30b28854b785ca26601e7adfba7655', '2022-10-24 15:42:08', '2022-10-24 15:42:08', 'nacos', '192.168.96.1', 'U',
+        '', ''),
+       (27, 795, 'matrix-security', 'DEFAULT_GROUP', '',
+        '!!com.matrix.properties.SecurityProperties\nwhiteUrls: [/system-server/auth/**, /system-server/nacos/**, /api-gateway/docapp/**,\n  /system-server/nacos/shared/**, /api-gateway/docApp/**, /system-server/resource/admin/**,\n  /system-server/resource/role/**]\n',
+        '39dd7e34946efbe24b78dd7c98c69022', '2022-10-24 15:42:43', '2022-10-24 15:42:44', NULL, '192.168.2.36', 'U', '',
+        ''),
+       (484, 796, 'application-common', 'DEFAULT_GROUP', '',
+        'spring:\n  main:\n    allow-bean-definition-overriding: true\n  servlet:\n    multipart:\n      max-request-size: 5MB\n      max-file-size: 100MB\n  jackson:\n    time-zone: GMT+8\n    date-format: yyyy-MM-dd HH:mm:ss\n    serialization:\n      # 格式化输出\n      INDENT_OUTPUT: false\n      # 忽略无法转换的对象\n      fail_on_empty_beans: false\n    deserialization:\n      # 允许对象忽略json中不存在的属性\n      fail_on_unknown_properties: false\n  # redis配置\n  redis:\n    host: ${REDIS_HOST:192.168.2.36}\n    port: ${REDIS_PORT:6379}\n    database: ${REDIS_DATABASE:0}\n    timeout: 10s\n    password: matrix\n    lettuce:\n      pool:\n        # 连接池最大连接数\n        max-active: 200\n        # 连接池最大阻塞等待时间（使用负值表示没有限制）\n        max-wait: -1ms\n        # 连接池中的最大空闲连接\n        max-idle: 10\n        # 连接池中的最小空闲连接\n        min-idle: 0\n  cache:\n    type: redis\n  datasource:\n    druid:\n      initial-size: 5 # 初始连接数\n      min-idle: 10 # 最小连接池数量\n      max-active: 20 # 最大连接池数量\n      max-wait: 600000 # 配置获取连接等待超时的时间，单位：毫秒\n      time-between-eviction-runs-millis: 60000 # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位：毫秒\n      min-evictable-idle-time-millis: 300000 # 配置一个连接在池中最小生存的时间，单位：毫秒\n      max-evictable-idle-time-millis: 900000 # 配置一个连接在池中最大生存的时间，单位：毫秒\n      validation-query: SELECT 1 FROM DUAL # 配置检测连接是否有效\n      test-while-idle: true\n      test-on-borrow: false\n      test-on-return: false\n      web-stat-filter:\n        enabled: true\n      stat-view-servlet:\n        enabled: true\n        allow: # 设置白名单，不填则允许所有访问\n        url-pattern: /druid/*\n        login-username: druid\n        login-password: druid\n      filter:\n        stat:\n          enabled: true\n          log-slow-sql: true # 慢 SQL 记录\n          slow-sql-millis: 100\n          merge-sql: true\n        wall:\n          config:\n            multi-statement-allow: true\n\nfeign:\n  ## 启用对 feign 的 Sentinel 支持\n  sentinel:\n    enabled: true\n  client:\n    config:\n      default:\n        connect-timeout: 5000\n        read-timeout: 5000\n        logger-level: full\n  autoconfiguration:\n    jackson:\n      enabled: true\n  compression:\n    request:\n      enabled: true\n    response:\n      enabled: true\n  metrics:\n    enabled: true\n\n\n# 文档配置\nknife4j:\n  enable: true\n  production: false\n  cors: true\n\n# mybatis plus配置\nmybatis-plus:\n  global-config:\n    db-config:\n      id-type: auto\n  configuration:\n    map-underscore-to-camel-case: true\n    call-setters-on-nulls: true\n  check-config-location: false\n\n\nsa-token:\n  # jwt秘钥\n  jwt-secret-key: ${SA_TOKEN_JWT_SECRET_KEY:abcdefghijklmnopqrstuvwxyz}\n  # token名称 (同时也是cookie名称)\n  token-name: Authorization\n  # token有效期，单位s 默认30天, -1代表永不过期\n  timeout: 2592000\n  # token临时有效期 (指定时间内无操作就视为token过期) 单位: 秒\n  activity-timeout: 1800\n  # 是否允许同一账号并发登录 (为true时允许一起登录, 为false时新登录挤掉旧登录)\n  is-concurrent: true\n  # 在多人登录同一账号时，是否共用一个token (为true时所有登录共用一个token, 为false时每次登录新建一个token)\n  is-share: true\n  # token风格\n  token-style: uuid\n  # 是否输出操作日志\n  is-log: true',
+        '5d98cfe456500ce4276fa79edd98a2e3', '2022-10-24 15:54:15', '2022-10-24 15:54:16', 'nacos', '192.168.96.1', 'U',
+        '', ''),
+       (484, 797, 'application-common', 'DEFAULT_GROUP', '',
+        'spring:\n  main:\n    allow-bean-definition-overriding: true\n  servlet:\n    multipart:\n      max-request-size: 5MB\n      max-file-size: 100MB\n  jackson:\n    time-zone: GMT+8\n    date-format: yyyy-MM-dd HH:mm:ss\n    serialization:\n      # 格式化输出\n      INDENT_OUTPUT: false\n      # 忽略无法转换的对象\n      fail_on_empty_beans: false\n    deserialization:\n      # 允许对象忽略json中不存在的属性\n      fail_on_unknown_properties: false\n  datasource:\n    druid:\n      initial-size: 5 # 初始连接数\n      min-idle: 10 # 最小连接池数量\n      max-active: 20 # 最大连接池数量\n      max-wait: 600000 # 配置获取连接等待超时的时间，单位：毫秒\n      time-between-eviction-runs-millis: 60000 # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位：毫秒\n      min-evictable-idle-time-millis: 300000 # 配置一个连接在池中最小生存的时间，单位：毫秒\n      max-evictable-idle-time-millis: 900000 # 配置一个连接在池中最大生存的时间，单位：毫秒\n      validation-query: SELECT 1 FROM DUAL # 配置检测连接是否有效\n      test-while-idle: true\n      test-on-borrow: false\n      test-on-return: false\n      web-stat-filter:\n        enabled: true\n      stat-view-servlet:\n        enabled: true\n        allow: # 设置白名单，不填则允许所有访问\n        url-pattern: /druid/*\n        login-username: druid\n        login-password: druid\n      filter:\n        stat:\n          enabled: true\n          log-slow-sql: true # 慢 SQL 记录\n          slow-sql-millis: 100\n          merge-sql: true\n        wall:\n          config:\n            multi-statement-allow: true\n\nfeign:\n  ## 启用对 feign 的 Sentinel 支持\n  sentinel:\n    enabled: true\n  client:\n    config:\n      default:\n        connect-timeout: 5000\n        read-timeout: 5000\n        logger-level: full\n  autoconfiguration:\n    jackson:\n      enabled: true\n  compression:\n    request:\n      enabled: true\n    response:\n      enabled: true\n  metrics:\n    enabled: true\n\n\n# 文档配置\nknife4j:\n  enable: true\n  production: false\n  cors: true\n\n# mybatis plus配置\nmybatis-plus:\n  global-config:\n    db-config:\n      id-type: auto\n  configuration:\n    map-underscore-to-camel-case: true\n    call-setters-on-nulls: true\n  check-config-location: false\n\n\nsa-token:\n  # jwt秘钥\n  jwt-secret-key: ${SA_TOKEN_JWT_SECRET_KEY:abcdefghijklmnopqrstuvwxyz}\n  # token名称 (同时也是cookie名称)\n  token-name: Authorization\n  # token有效期，单位s 默认30天, -1代表永不过期\n  timeout: 2592000\n  # token临时有效期 (指定时间内无操作就视为token过期) 单位: 秒\n  activity-timeout: 1800\n  # 是否允许同一账号并发登录 (为true时允许一起登录, 为false时新登录挤掉旧登录)\n  is-concurrent: true\n  # 在多人登录同一账号时，是否共用一个token (为true时所有登录共用一个token, 为false时每次登录新建一个token)\n  is-share: true\n  # token风格\n  token-style: uuid\n  # 是否输出操作日志\n  is-log: true',
+        '6e5ee18648390d8bb1a6888f37b63876', '2022-10-24 15:55:12', '2022-10-24 15:55:12', 'nacos', '192.168.96.1', 'U',
+        '', ''),
+       (27, 798, 'matrix-security', 'DEFAULT_GROUP', '',
+        '!!com.matrix.properties.SecurityProperties\nwhiteUrls: [/system-server/auth/**, /system-server/nacos/**, /api-gateway/docapp/**,\n  /system-server/nacos/shared/**, /api-gateway/docApp/**, /system-server/resource/admin/**,\n  /system-server/resource/role/**]\n',
+        '39dd7e34946efbe24b78dd7c98c69022', '2022-10-24 15:56:58', '2022-10-24 15:56:59', NULL, '192.168.2.36', 'U', '',
+        '');
 /*!40000 ALTER TABLE `his_config_info`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -1067,9 +1143,9 @@ DROP TABLE IF EXISTS `permissions`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `permissions`
 (
-    `role`     varchar(50) COLLATE utf8mb4_general_ci  NOT NULL,
-    `resource` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-    `action`   varchar(8) COLLATE utf8mb4_general_ci   NOT NULL,
+    `role`     varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NOT NULL,
+    `resource` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    `action`   varchar(8) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci   NOT NULL,
     UNIQUE KEY `uk_role_permission` (`role`, `resource`, `action`) USING BTREE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
@@ -1096,8 +1172,8 @@ DROP TABLE IF EXISTS `roles`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `roles`
 (
-    `username` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-    `role`     varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+    `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    `role`     varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
     UNIQUE KEY `idx_user_role` (`username`, `role`) USING BTREE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
@@ -1126,16 +1202,16 @@ DROP TABLE IF EXISTS `tenant_capacity`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tenant_capacity`
 (
-    `id`                bigint unsigned                  NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-    `tenant_id`         varchar(128) COLLATE utf8mb3_bin NOT NULL DEFAULT '' COMMENT 'Tenant ID',
-    `quota`             int unsigned                     NOT NULL DEFAULT '0' COMMENT '配额，0表示使用默认值',
-    `usage`             int unsigned                     NOT NULL DEFAULT '0' COMMENT '使用量',
-    `max_size`          int unsigned                     NOT NULL DEFAULT '0' COMMENT '单个配置大小上限，单位为字节，0表示使用默认值',
-    `max_aggr_count`    int unsigned                     NOT NULL DEFAULT '0' COMMENT '聚合子配置最大个数',
-    `max_aggr_size`     int unsigned                     NOT NULL DEFAULT '0' COMMENT '单个聚合数据的子配置大小上限，单位为字节，0表示使用默认值',
-    `max_history_count` int unsigned                     NOT NULL DEFAULT '0' COMMENT '最大变更历史数量',
-    `gmt_create`        datetime                         NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    `gmt_modified`      datetime                         NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
+    `id`                bigint unsigned                                        NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+    `tenant_id`         varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL DEFAULT '' COMMENT 'Tenant ID',
+    `quota`             int unsigned                                           NOT NULL DEFAULT '0' COMMENT '配额，0表示使用默认值',
+    `usage`             int unsigned                                           NOT NULL DEFAULT '0' COMMENT '使用量',
+    `max_size`          int unsigned                                           NOT NULL DEFAULT '0' COMMENT '单个配置大小上限，单位为字节，0表示使用默认值',
+    `max_aggr_count`    int unsigned                                           NOT NULL DEFAULT '0' COMMENT '聚合子配置最大个数',
+    `max_aggr_size`     int unsigned                                           NOT NULL DEFAULT '0' COMMENT '单个聚合数据的子配置大小上限，单位为字节，0表示使用默认值',
+    `max_history_count` int unsigned                                           NOT NULL DEFAULT '0' COMMENT '最大变更历史数量',
+    `gmt_create`        datetime                                               NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `gmt_modified`      datetime                                               NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
     PRIMARY KEY (`id`),
     UNIQUE KEY `uk_tenant_id` (`tenant_id`)
 ) ENGINE = InnoDB
@@ -1163,14 +1239,14 @@ DROP TABLE IF EXISTS `tenant_info`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tenant_info`
 (
-    `id`            bigint                           NOT NULL AUTO_INCREMENT COMMENT 'id',
-    `kp`            varchar(128) COLLATE utf8mb3_bin NOT NULL COMMENT 'kp',
-    `tenant_id`     varchar(128) COLLATE utf8mb3_bin DEFAULT '' COMMENT 'tenant_id',
-    `tenant_name`   varchar(128) COLLATE utf8mb3_bin DEFAULT '' COMMENT 'tenant_name',
-    `tenant_desc`   varchar(256) COLLATE utf8mb3_bin DEFAULT NULL COMMENT 'tenant_desc',
-    `create_source` varchar(32) COLLATE utf8mb3_bin  DEFAULT NULL COMMENT 'create_source',
-    `gmt_create`    bigint                           NOT NULL COMMENT '创建时间',
-    `gmt_modified`  bigint                           NOT NULL COMMENT '修改时间',
+    `id`            bigint                                                 NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `kp`            varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT 'kp',
+    `tenant_id`     varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin DEFAULT '' COMMENT 'tenant_id',
+    `tenant_name`   varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin DEFAULT '' COMMENT 'tenant_name',
+    `tenant_desc`   varchar(256) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin DEFAULT NULL COMMENT 'tenant_desc',
+    `create_source` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin  DEFAULT NULL COMMENT 'create_source',
+    `gmt_create`    bigint                                                 NOT NULL COMMENT '创建时间',
+    `gmt_modified`  bigint                                                 NOT NULL COMMENT '修改时间',
     PRIMARY KEY (`id`),
     UNIQUE KEY `uk_tenant_info_kptenantid` (`kp`, `tenant_id`),
     KEY `idx_tenant_id` (`tenant_id`)
@@ -1203,9 +1279,9 @@ DROP TABLE IF EXISTS `users`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `users`
 (
-    `username` varchar(50) COLLATE utf8mb4_general_ci  NOT NULL,
-    `password` varchar(500) COLLATE utf8mb4_general_ci NOT NULL,
-    `enabled`  tinyint(1)                              NOT NULL,
+    `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NOT NULL,
+    `password` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    `enabled`  tinyint(1)                                                    NOT NULL,
     PRIMARY KEY (`username`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
@@ -1234,4 +1310,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2022-10-10 14:08:27
+-- Dump completed on 2022-10-24 15:58:24
