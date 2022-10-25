@@ -3,7 +3,6 @@ package com.matrix.api.system;
 import cn.dev33.satoken.util.SaResult;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.matrix.api.system.entity.po.SysAdmin;
-import com.matrix.component.FeignInterceptor;
 import com.matrix.entity.vo.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

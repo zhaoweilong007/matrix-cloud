@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.matrix.config.MatrixWebAutoConfigure
+com.matrix.config.MatrixWebAutoConfigure,\
+  com.matrix.config.MatrixSwaggerAutoConfiguration

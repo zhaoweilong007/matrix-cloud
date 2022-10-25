@@ -42,7 +42,6 @@ public class SecurityAuth implements SaFilterAuthStrategy {
             return;
         }
 
-        log.info("SecurityAuth check permission...");
         //检查登录
         StpUtil.checkLogin();
         //获取用户拥有资源

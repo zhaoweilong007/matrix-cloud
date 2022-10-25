@@ -15,7 +15,7 @@ spring:
       config:
         file-extension: yaml
         shared-configs:
-          - data-id: application-common
+          - data-id: application-common.yml
             refresh: true
 logging:
   level:

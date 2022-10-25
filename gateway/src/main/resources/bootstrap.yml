@@ -13,9 +13,9 @@ spring:
       username: ${NACOS_USERNAME:nacos}
       password: ${NACOS_PASSWD:nacos}
       config:
-        file-extension: yaml
+        file-extension: yml
         shared-configs:
-          - data-id: application-common
+          - data-id: application-common.yml
             refresh: true
 logging:
   level:

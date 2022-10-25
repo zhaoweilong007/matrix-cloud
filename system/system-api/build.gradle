@@ -1,5 +1,5 @@
 dependencies {
-    api(project(":common:common-core"))
+    implementation(project(":common:common-core"))
 }
 
 bootJar {
