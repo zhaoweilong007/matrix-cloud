@@ -54,8 +54,8 @@ services:
     privileged: true
     restart: always
 
-  sentinel:
     # https://github.com/lk0423/sentinel-dashboard
+  sentinel:
     image: linking0606/sentinel-dashboard:${SENTINEL_VERSION}
     container_name: sentinel
     environment:
@@ -155,3 +155,31 @@ services:
       I18N_LOCALE: zh-CN
     depends_on:
       - elasticsearch
+
+  skywalking-oap:
+    image: apache/skywalking-oap-server:${SKYWALING_VERSION}
+    container_name: skywalking-oap
+    volumes:
+      - ./skywalking:/skywalking/ext-config
+      - ./wait-for-it.sh:/skywalking/wait-for-it.sh
+    ports:
+      - "11800:11800"
+      - "12800:12800"
+    environment:
+      TZ: Asia/Shanghai
+    #覆盖容器的entrypoint，等待nacos启动完成
+    entrypoint: /skywalking/wait-for-it.sh nacos:8848 -- bash /skywalking/docker-entrypoint.sh
+    depends_on:
+      - elasticsearch
+      - nacos
+
+  skywalking-ui:
+    image: apache/skywalking-ui:${SKYWALING_VERSION}
+    container_name: skywalking-ui
+    depends_on:
+      - skywalking-oap
+    ports:
+      - "8080:8080"
+    environment:
+      TZ: Asia/Shanghai
+      SW_OAP_ADDRESS: http://skywalking-oap:12800

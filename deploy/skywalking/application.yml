@@ -53,7 +53,7 @@ cluster:
     internalComPort: ${SW_CLUSTER_INTERNAL_COM_PORT:-1}
   nacos:
     serviceName: ${SW_SERVICE_NAME:"SkyWalking_OAP_Cluster"}
-    hostPort: ${SW_CLUSTER_NACOS_HOST_PORT:localhost:8848}
+    hostPort: ${SW_CLUSTER_NACOS_HOST_PORT:nacos:8848}
     # Nacos Configuration namespace
     namespace: ${SW_CLUSTER_NACOS_NAMESPACE:"public"}
     # Nacos auth username
@@ -133,14 +133,14 @@ storage:
   selector: ${SW_STORAGE:elasticsearch}
   elasticsearch:
     namespace: ${SW_NAMESPACE:""}
-    clusterNodes: ${SW_STORAGE_ES_CLUSTER_NODES:localhost:9200}
+    clusterNodes: ${SW_STORAGE_ES_CLUSTER_NODES:elasticsearch:9200}
     protocol: ${SW_STORAGE_ES_HTTP_PROTOCOL:"http"}
     connectTimeout: ${SW_STORAGE_ES_CONNECT_TIMEOUT:3000}
     socketTimeout: ${SW_STORAGE_ES_SOCKET_TIMEOUT:30000}
     responseTimeout: ${SW_STORAGE_ES_RESPONSE_TIMEOUT:15000}
     numHttpClientThread: ${SW_STORAGE_ES_NUM_HTTP_CLIENT_THREAD:0}
     user: ${SW_ES_USER:"elastic"}
-    password: ${SW_ES_PASSWORD:"elastic"}
+    password: ${SW_ES_PASSWORD:"changeme"}
     trustStorePath: ${SW_STORAGE_ES_SSL_JKS_PATH:""}
     trustStorePass: ${SW_STORAGE_ES_SSL_JKS_PASS:""}
     secretsManagementFile: ${SW_ES_SECRETS_MANAGEMENT_FILE:""} # Secrets management file in the properties format includes the username, password, which are managed by 3rd party tool.
@@ -166,6 +166,8 @@ storage:
     oapAnalyzer: ${SW_STORAGE_ES_OAP_ANALYZER:"{\"analyzer\":{\"oap_analyzer\":{\"type\":\"stop\"}}}"} # the oap analyzer.
     oapLogAnalyzer: ${SW_STORAGE_ES_OAP_LOG_ANALYZER:"{\"analyzer\":{\"oap_log_analyzer\":{\"type\":\"standard\"}}}"} # the oap log analyzer. It could be customized by the ES analyzer configuration to support more language log formats, such as Chinese log, Japanese log and etc.
     advanced: ${SW_STORAGE_ES_ADVANCED:""}
+    # Enable shard metrics and records indices into multi-physical indices, one index template per metric/meter aggregation function or record.
+    logicSharding: ${SW_STORAGE_ES_LOGIC_SHARDING:false}
   h2:
     driver: ${SW_STORAGE_H2_DRIVER:org.h2.jdbcx.JdbcDataSource}
     url: ${SW_STORAGE_H2_URL:jdbc:h2:mem:skywalking-oap-db;DB_CLOSE_DELAY=-1}
@@ -336,22 +338,34 @@ receiver-meter:
 receiver-otel:
   selector: ${SW_OTEL_RECEIVER:default}
   default:
-    enabledHandlers: ${SW_OTEL_RECEIVER_ENABLED_HANDLERS:"oc"}
-    enabledOcRules: ${SW_OTEL_RECEIVER_ENABLED_OC_RULES:"istio-controlplane,k8s-node,oap,vm"}
+    enabledHandlers: ${SW_OTEL_RECEIVER_ENABLED_HANDLERS:"oc,otlp"}
+    enabledOtelRules: ${SW_OTEL_RECEIVER_ENABLED_OTEL_RULES:"istio-controlplane,k8s-node,oap,vm,mysql,postgresql"}
 
 receiver-zipkin:
   selector: ${SW_RECEIVER_ZIPKIN:-}
   default:
-    # For HTTP server
+    searchableTracesTags: ${SW_ZIPKIN_SEARCHABLE_TAG_KEYS:http.method}
+    # The sample rate precision is 1/10000, should be between 0 and 10000
+    sampleRate: ${SW_ZIPKIN_SAMPLE_RATE:10000}
+    ## The below configs are for OAP collect zipkin trace from HTTP
+    enableHttpCollector: ${SW_ZIPKIN_HTTP_COLLECTOR_ENABLED:true}
     restHost: ${SW_RECEIVER_ZIPKIN_REST_HOST:0.0.0.0}
     restPort: ${SW_RECEIVER_ZIPKIN_REST_PORT:9411}
     restContextPath: ${SW_RECEIVER_ZIPKIN_REST_CONTEXT_PATH:/}
     restMaxThreads: ${SW_RECEIVER_ZIPKIN_REST_MAX_THREADS:200}
     restIdleTimeOut: ${SW_RECEIVER_ZIPKIN_REST_IDLE_TIMEOUT:30000}
     restAcceptQueueSize: ${SW_RECEIVER_ZIPKIN_REST_QUEUE_SIZE:0}
-    searchableTracesTags: ${SW_ZIPKIN_SEARCHABLE_TAG_KEYS:http.method}
-    # The sample rate precision is 1/10000, should be between 0 and 10000
-    sampleRate: ${SW_ZIPKIN_SAMPLE_RATE:10000}
+    ## The below configs are for OAP collect zipkin trace from kafka
+    enableKafkaCollector: ${SW_ZIPKIN_KAFKA_COLLECTOR_ENABLED:false}
+    kafkaBootstrapServers: ${SW_ZIPKIN_KAFKA_SERVERS:localhost:9092}
+    kafkaGroupId: ${SW_ZIPKIN_KAFKA_GROUP_ID:zipkin}
+    kafkaTopic: ${SW_ZIPKIN_KAFKA_TOPIC:zipkin}
+    # Kafka consumer config, JSON format as Properties. If it contains the same key with above, would override.
+    kafkaConsumerConfig: ${SW_ZIPKIN_KAFKA_CONSUMER_CONFIG:"{\"auto.offset.reset\":\"earliest\",\"enable.auto.commit\":true}"}
+    # The Count of the topic consumers
+    kafkaConsumers: ${SW_ZIPKIN_KAFKA_CONSUMERS:1}
+    kafkaHandlerThreadPoolSize: ${SW_ZIPKIN_KAFKA_HANDLER_THREAD_POOL_SIZE:-1}
+    kafkaHandlerThreadPoolQueueSize: ${SW_ZIPKIN_KAFKA_HANDLER_THREAD_POOL_QUEUE_SIZE:-1}
 
 receiver-browser:
   selector: ${SW_RECEIVER_BROWSER:default}
@@ -392,14 +406,14 @@ query-zipkin:
     restMaxThreads: ${SW_QUERY_ZIPKIN_REST_MAX_THREADS:200}
     restIdleTimeOut: ${SW_QUERY_ZIPKIN_REST_IDLE_TIMEOUT:30000}
     restAcceptQueueSize: ${SW_QUERY_ZIPKIN_REST_QUEUE_SIZE:0}
-    # Default look back for serviceNames, remoteServiceNames and spanNames, 1 day in millis
+    # Default look back for traces and autocompleteTags, 1 day in millis
     lookback: ${SW_QUERY_ZIPKIN_LOOKBACK:86400000}
     # The Cache-Control max-age (seconds) for serviceNames, remoteServiceNames and spanNames
     namesMaxAge: ${SW_QUERY_ZIPKIN_NAMES_MAX_AGE:300}
     ## The below config are OAP support for zipkin-lens UI
     # Default traces query max size
     uiQueryLimit: ${SW_QUERY_ZIPKIN_UI_QUERY_LIMIT:10}
-    # Default look back for search traces, 15 minutes in millis
+    # Default look back on the UI for search traces, 15 minutes in millis
     uiDefaultLookback: ${SW_QUERY_ZIPKIN_UI_DEFAULT_LOOKBACK:900000}
 
 alarm:
