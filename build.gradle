@@ -93,7 +93,7 @@ configure(javaMicroservices) {
     // 使用jib插件自动构建镜像并上传到阿里云
     jib {
         from {
-            image = "docker://openjdk:11"
+            image = "adoptopenjdk/openjdk11:ubuntu-jre-nightly"
         }
         //推送的目标镜像仓库地址
         to {
