@@ -1,0 +1,200 @@
+ERROR 2022-10-26 09:20:42.899 main IgnoreConfigInitializer : Failed to read the config file, skywalking is going to run in default config. 
+org.apache.skywalking.apm.agent.core.conf.ConfigNotFoundException: Fail to load ignore config file.
+	at org.apache.skywalking.apm.plugin.trace.ignore.conf.IgnoreConfigInitializer.loadConfigFromAgentFolder(IgnoreConfigInitializer.java:99)
+	at org.apache.skywalking.apm.plugin.trace.ignore.conf.IgnoreConfigInitializer.initialize(IgnoreConfigInitializer.java:50)
+	at org.apache.skywalking.apm.plugin.trace.ignore.TraceIgnoreExtendService.boot(TraceIgnoreExtendService.java:50)
+	at org.apache.skywalking.apm.agent.core.boot.ServiceManager.lambda$startup$2(ServiceManager.java:115)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:183)
+	at java.base/java.util.stream.SortedOps$SizedRefSortingSink.end(SortedOps.java:357)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:485)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:474)
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:150)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:173)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:497)
+	at org.apache.skywalking.apm.agent.core.boot.ServiceManager.startup(ServiceManager.java:113)
+	at org.apache.skywalking.apm.agent.core.boot.ServiceManager.boot(ServiceManager.java:45)
+	at org.apache.skywalking.apm.agent.SkyWalkingAgent.premain(SkyWalkingAgent.java:137)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at java.instrument/sun.instrument.InstrumentationImpl.loadClassAndStartAgent(InstrumentationImpl.java:513)
+	at java.instrument/sun.instrument.InstrumentationImpl.loadClassAndCallPremain(InstrumentationImpl.java:525)
+
+ERROR 2022-10-26 09:20:43.880 grpc-default-executor-1 EventReportServiceClient : Failed to report starting event. 
+org.apache.skywalking.apm.dependencies.io.grpc.StatusRuntimeException: UNAVAILABLE: io exception
+	at org.apache.skywalking.apm.dependencies.io.grpc.Status.asRuntimeException(Status.java:535)
+	at org.apache.skywalking.apm.dependencies.io.grpc.stub.ClientCalls$StreamObserverToCallListenerAdapter.onClose(ClientCalls.java:479)
+	at org.apache.skywalking.apm.dependencies.io.grpc.internal.DelayedClientCall$DelayedListener$3.run(DelayedClientCall.java:463)
+	at org.apache.skywalking.apm.dependencies.io.grpc.internal.DelayedClientCall$DelayedListener.delayOrExecute(DelayedClientCall.java:427)
+	at org.apache.skywalking.apm.dependencies.io.grpc.internal.DelayedClientCall$DelayedListener.onClose(DelayedClientCall.java:460)
+	at org.apache.skywalking.apm.dependencies.io.grpc.internal.ClientCallImpl.closeObserver(ClientCallImpl.java:562)
+	at org.apache.skywalking.apm.dependencies.io.grpc.internal.ClientCallImpl.access$300(ClientCallImpl.java:70)
+	at org.apache.skywalking.apm.dependencies.io.grpc.internal.ClientCallImpl$ClientStreamListenerImpl$1StreamClosed.runInternal(ClientCallImpl.java:743)
+	at org.apache.skywalking.apm.dependencies.io.grpc.internal.ClientCallImpl$ClientStreamListenerImpl$1StreamClosed.runInContext(ClientCallImpl.java:722)
+	at org.apache.skywalking.apm.dependencies.io.grpc.internal.ContextRunnable.run(ContextRunnable.java:37)
+	at org.apache.skywalking.apm.dependencies.io.grpc.internal.SerializingExecutor.run(SerializingExecutor.java:133)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+Caused by: org.apache.skywalking.apm.dependencies.io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: /127.0.0.1:11800
+Caused by: java.net.ConnectException: Connection refused
+	at java.base/sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at java.base/sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:777)
+	at org.apache.skywalking.apm.dependencies.io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:337)
+	at org.apache.skywalking.apm.dependencies.io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:334)
+	at org.apache.skywalking.apm.dependencies.io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:710)
+	at org.apache.skywalking.apm.dependencies.io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:658)
+	at org.apache.skywalking.apm.dependencies.io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:584)
+	at org.apache.skywalking.apm.dependencies.io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:496)
+	at org.apache.skywalking.apm.dependencies.io.netty.util.concurrent.SingleThreadEventExecutor$4.run(SingleThreadEventExecutor.java:997)
+	at org.apache.skywalking.apm.dependencies.io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at org.apache.skywalking.apm.dependencies.io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+
+INFO 2022-10-26 09:20:44.326 main AgentClassLoader : /skywalking/agent/plugins/apm-activemq-5.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.327 main AgentClassLoader : /skywalking/agent/plugins/apm-armeria-0.84.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.327 main AgentClassLoader : /skywalking/agent/plugins/apm-armeria-0.85.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.327 main AgentClassLoader : /skywalking/agent/plugins/apm-asynchttpclient-2.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.327 main AgentClassLoader : /skywalking/agent/plugins/apm-avro-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.328 main AgentClassLoader : /skywalking/agent/plugins/apm-canal-1.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.328 main AgentClassLoader : /skywalking/agent/plugins/apm-cassandra-java-driver-3.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.328 main AgentClassLoader : /skywalking/agent/plugins/apm-clickhouse-0.3.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.329 main AgentClassLoader : /skywalking/agent/plugins/apm-cxf-3.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.329 main AgentClassLoader : /skywalking/agent/plugins/apm-dubbo-2.7.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.329 main AgentClassLoader : /skywalking/agent/plugins/apm-dubbo-3.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.330 main AgentClassLoader : /skywalking/agent/plugins/apm-dubbo-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.330 main AgentClassLoader : /skywalking/agent/plugins/apm-elastic-job-2.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.330 main AgentClassLoader : /skywalking/agent/plugins/apm-elasticjob-3.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.331 main AgentClassLoader : /skywalking/agent/plugins/apm-elasticsearch-5.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.331 main AgentClassLoader : /skywalking/agent/plugins/apm-elasticsearch-6.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.331 main AgentClassLoader : /skywalking/agent/plugins/apm-elasticsearch-7.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.331 main AgentClassLoader : /skywalking/agent/plugins/apm-feign-default-http-9.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.332 main AgentClassLoader : /skywalking/agent/plugins/apm-finagle-6.25.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.332 main AgentClassLoader : /skywalking/agent/plugins/apm-grpc-1.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.332 main AgentClassLoader : /skywalking/agent/plugins/apm-guava-eventbus-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.333 main AgentClassLoader : /skywalking/agent/plugins/apm-h2-1.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.333 main AgentClassLoader : /skywalking/agent/plugins/apm-hbase-1.x-2.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.333 main AgentClassLoader : /skywalking/agent/plugins/apm-hikaricp-3.x-4.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.334 main AgentClassLoader : /skywalking/agent/plugins/apm-httpasyncclient-4.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.334 main AgentClassLoader : /skywalking/agent/plugins/apm-httpclient-3.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.334 main AgentClassLoader : /skywalking/agent/plugins/apm-httpClient-4.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.335 main AgentClassLoader : /skywalking/agent/plugins/apm-httpclient-5.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.335 main AgentClassLoader : /skywalking/agent/plugins/apm-httpclient-commons-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.335 main AgentClassLoader : /skywalking/agent/plugins/apm-hutool-http-5.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.336 main AgentClassLoader : /skywalking/agent/plugins/apm-hystrix-1.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.336 main AgentClassLoader : /skywalking/agent/plugins/apm-influxdb-2.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.336 main AgentClassLoader : /skywalking/agent/plugins/apm-jdbc-commons-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.336 main AgentClassLoader : /skywalking/agent/plugins/apm-jetty-client-9.0-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.337 main AgentClassLoader : /skywalking/agent/plugins/apm-jetty-client-9.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.337 main AgentClassLoader : /skywalking/agent/plugins/apm-jetty-server-9.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.337 main AgentClassLoader : /skywalking/agent/plugins/apm-kafka-commons-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.338 main AgentClassLoader : /skywalking/agent/plugins/apm-kafka-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.338 main AgentClassLoader : /skywalking/agent/plugins/apm-kylin-jdbc-2.6.x-3.x-4.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.338 main AgentClassLoader : /skywalking/agent/plugins/apm-lettuce-5.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.338 main AgentClassLoader : /skywalking/agent/plugins/apm-light4j-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.339 main AgentClassLoader : /skywalking/agent/plugins/apm-mariadb-2.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.339 main AgentClassLoader : /skywalking/agent/plugins/apm-mongodb-2.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.339 main AgentClassLoader : /skywalking/agent/plugins/apm-mongodb-3.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.339 main AgentClassLoader : /skywalking/agent/plugins/apm-mongodb-4.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.340 main AgentClassLoader : /skywalking/agent/plugins/apm-mssql-commons-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.340 main AgentClassLoader : /skywalking/agent/plugins/apm-mssql-jdbc-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.340 main AgentClassLoader : /skywalking/agent/plugins/apm-mssql-jtds-1.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.341 main AgentClassLoader : /skywalking/agent/plugins/apm-mybatis-3.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.341 main AgentClassLoader : /skywalking/agent/plugins/apm-mysql-5.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.341 main AgentClassLoader : /skywalking/agent/plugins/apm-mysql-6.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.342 main AgentClassLoader : /skywalking/agent/plugins/apm-mysql-8.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.342 main AgentClassLoader : /skywalking/agent/plugins/apm-mysql-commons-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.342 main AgentClassLoader : /skywalking/agent/plugins/apm-neo4j-4.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.343 main AgentClassLoader : /skywalking/agent/plugins/apm-netty-socketio-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.343 main AgentClassLoader : /skywalking/agent/plugins/apm-nutz-http-1.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.343 main AgentClassLoader : /skywalking/agent/plugins/apm-nutz-mvc-annotation-1.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.343 main AgentClassLoader : /skywalking/agent/plugins/apm-okhttp-3.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.344 main AgentClassLoader : /skywalking/agent/plugins/apm-okhttp-4.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.344 main AgentClassLoader : /skywalking/agent/plugins/apm-okhttp-common-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.344 main AgentClassLoader : /skywalking/agent/plugins/apm-play-2.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.345 main AgentClassLoader : /skywalking/agent/plugins/apm-postgresql-8.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.345 main AgentClassLoader : /skywalking/agent/plugins/apm-pulsar-2.2-2.7-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.345 main AgentClassLoader : /skywalking/agent/plugins/apm-pulsar-2.8.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.345 main AgentClassLoader : /skywalking/agent/plugins/apm-pulsar-common-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.346 main AgentClassLoader : /skywalking/agent/plugins/apm-quasar-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.346 main AgentClassLoader : /skywalking/agent/plugins/apm-rabbitmq-5.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.346 main AgentClassLoader : /skywalking/agent/plugins/apm-redisson-3.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.346 main AgentClassLoader : /skywalking/agent/plugins/apm-resttemplate-4.3.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.347 main AgentClassLoader : /skywalking/agent/plugins/apm-rocketmq-3.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.347 main AgentClassLoader : /skywalking/agent/plugins/apm-rocketmq-4.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.347 main AgentClassLoader : /skywalking/agent/plugins/apm-sentinel-1.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.348 main AgentClassLoader : /skywalking/agent/plugins/apm-servicecomb-java-chassis-2.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.348 main AgentClassLoader : /skywalking/agent/plugins/apm-sharding-sphere-3.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.348 main AgentClassLoader : /skywalking/agent/plugins/apm-sharding-sphere-4.1.0-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.349 main AgentClassLoader : /skywalking/agent/plugins/apm-shardingsphere-4.0.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.349 main AgentClassLoader : /skywalking/agent/plugins/apm-shardingsphere-5.0.0-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.349 main AgentClassLoader : /skywalking/agent/plugins/apm-solrj-7.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.350 main AgentClassLoader : /skywalking/agent/plugins/apm-spring-async-annotation-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.350 main AgentClassLoader : /skywalking/agent/plugins/apm-spring-cloud-feign-1.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.350 main AgentClassLoader : /skywalking/agent/plugins/apm-spring-cloud-feign-2.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.351 main AgentClassLoader : /skywalking/agent/plugins/apm-spring-cloud-gateway-3.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.351 main AgentClassLoader : /skywalking/agent/plugins/apm-spring-concurrent-util-4.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.351 main AgentClassLoader : /skywalking/agent/plugins/apm-spring-core-patch-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.352 main AgentClassLoader : /skywalking/agent/plugins/apm-spring-kafka-1.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.352 main AgentClassLoader : /skywalking/agent/plugins/apm-spring-kafka-2.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.352 main AgentClassLoader : /skywalking/agent/plugins/apm-spring-scheduled-annotation-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.352 main AgentClassLoader : /skywalking/agent/plugins/apm-spring-webflux-5.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.353 main AgentClassLoader : /skywalking/agent/plugins/apm-springmvc-annotation-3.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.353 main AgentClassLoader : /skywalking/agent/plugins/apm-springmvc-annotation-4.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.353 main AgentClassLoader : /skywalking/agent/plugins/apm-springmvc-annotation-5.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.354 main AgentClassLoader : /skywalking/agent/plugins/apm-springmvc-annotation-commons-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.354 main AgentClassLoader : /skywalking/agent/plugins/apm-spymemcached-2.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.354 main AgentClassLoader : /skywalking/agent/plugins/apm-struts2-2.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.355 main AgentClassLoader : /skywalking/agent/plugins/apm-tomcat-thread-pool-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.355 main AgentClassLoader : /skywalking/agent/plugins/apm-trace-ignore-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.355 main AgentClassLoader : /skywalking/agent/plugins/apm-undertow-2.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.356 main AgentClassLoader : /skywalking/agent/plugins/apm-undertow-worker-thread-pool-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.356 main AgentClassLoader : /skywalking/agent/plugins/apm-vertx-core-3.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.356 main AgentClassLoader : /skywalking/agent/plugins/apm-vertx-core-4.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.357 main AgentClassLoader : /skywalking/agent/plugins/apm-xmemcached-2.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.357 main AgentClassLoader : /skywalking/agent/plugins/apm-xxl-job-2.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.358 main AgentClassLoader : /skywalking/agent/plugins/baidu-brpc-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.358 main AgentClassLoader : /skywalking/agent/plugins/dbcp-2.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.358 main AgentClassLoader : /skywalking/agent/plugins/druid-1.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.359 main AgentClassLoader : /skywalking/agent/plugins/dubbo-2.7.x-conflict-patch-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.359 main AgentClassLoader : /skywalking/agent/plugins/dubbo-3.x-conflict-patch-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.359 main AgentClassLoader : /skywalking/agent/plugins/dubbo-conflict-patch-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.360 main AgentClassLoader : /skywalking/agent/plugins/graphql-12.x-15.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.360 main AgentClassLoader : /skywalking/agent/plugins/graphql-16plus-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.360 main AgentClassLoader : /skywalking/agent/plugins/graphql-8.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.361 main AgentClassLoader : /skywalking/agent/plugins/graphql-9.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.361 main AgentClassLoader : /skywalking/agent/plugins/jedis-2.x-3.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.361 main AgentClassLoader : /skywalking/agent/plugins/jedis-4.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.362 main AgentClassLoader : /skywalking/agent/plugins/jsonrpc4j-1.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.362 main AgentClassLoader : /skywalking/agent/plugins/micronaut-http-client-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.362 main AgentClassLoader : /skywalking/agent/plugins/micronaut-http-server-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.362 main AgentClassLoader : /skywalking/agent/plugins/motan-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.363 main AgentClassLoader : /skywalking/agent/plugins/nats-2.14.x-2.15.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.363 main AgentClassLoader : /skywalking/agent/plugins/okhttp-2.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.363 main AgentClassLoader : /skywalking/agent/plugins/resteasy-server-3.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.364 main AgentClassLoader : /skywalking/agent/plugins/resteasy-server-4.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.364 main AgentClassLoader : /skywalking/agent/plugins/sofa-rpc-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.364 main AgentClassLoader : /skywalking/agent/plugins/spring-commons-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.364 main AgentClassLoader : /skywalking/agent/plugins/spring-webflux-5.x-webclient-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.365 main AgentClassLoader : /skywalking/agent/plugins/thrift-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.365 main AgentClassLoader : /skywalking/agent/plugins/tomcat-10x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.365 main AgentClassLoader : /skywalking/agent/plugins/tomcat-7.x-8.x-plugin-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.367 main AgentClassLoader : /skywalking/agent/activations/apm-toolkit-kafka-activation-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.367 main AgentClassLoader : /skywalking/agent/activations/apm-toolkit-log4j-1.x-activation-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.367 main AgentClassLoader : /skywalking/agent/activations/apm-toolkit-log4j-2.x-activation-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.368 main AgentClassLoader : /skywalking/agent/activations/apm-toolkit-logback-1.x-activation-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.368 main AgentClassLoader : /skywalking/agent/activations/apm-toolkit-logging-common-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.368 main AgentClassLoader : /skywalking/agent/activations/apm-toolkit-meter-activation-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.368 main AgentClassLoader : /skywalking/agent/activations/apm-toolkit-opentracing-activation-8.12.0.jar loaded. 
+INFO 2022-10-26 09:20:44.369 main AgentClassLoader : /skywalking/agent/activations/apm-toolkit-trace-activation-8.12.0.jar loaded. 
+WARN 2022-10-26 09:20:45.451 main AbstractClassEnhancePluginDefine : enhance class org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController by plugin org.apache.skywalking.apm.plugin.spring.mvc.v3.define.ControllerInstrumentation is not activated. Witness class org.springframework.web.servlet.view.xslt.AbstractXsltView does not exist. 
+WARN 2022-10-26 09:20:45.451 main AbstractClassEnhancePluginDefine : enhance class org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController by plugin org.apache.skywalking.apm.plugin.spring.mvc.v4.define.ControllerInstrumentation is not activated. Witness class org.springframework.cache.interceptor.DefaultKeyGenerator does not exist. 
+WARN 2022-10-26 09:20:45.451 main AbstractClassEnhancePluginDefine : enhance class org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController by plugin org.apache.skywalking.apm.plugin.spring.mvc.v4.define.ControllerForLowVersionInstrumentation is not activated. Witness class org.springframework.cache.interceptor.DefaultKeyGenerator does not exist. 
+WARN 2022-10-26 09:20:45.462 main AbstractClassEnhancePluginDefine : enhance class org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController by plugin org.apache.skywalking.apm.plugin.spring.mvc.v5.define.reactive.ReactiveControllerInstrumentation is not activated. Witness class org.springframework.web.reactive.result.method.InvocableHandlerMethod does not exist. 
+WARN 2022-10-26 09:20:46.290 main AbstractClassEnhancePluginDefine : enhance class org.apache.catalina.core.StandardHostValve by plugin org.apache.skywalking.apm.plugin.tomcat10x.define.TomcatInstrumentation is not activated. Witness class jakarta.servlet.http.HttpServletResponse does not exist. 
+WARN 2022-10-26 09:20:48.581 main AbstractClassEnhancePluginDefine : enhance class org.springframework.web.method.HandlerMethod by plugin org.apache.skywalking.apm.plugin.spring.mvc.v3.define.HandlerMethodInstrumentation is not activated. Witness class org.springframework.web.servlet.view.xslt.AbstractXsltView does not exist. 
+WARN 2022-10-26 09:20:48.581 main AbstractClassEnhancePluginDefine : enhance class org.springframework.web.method.HandlerMethod by plugin org.apache.skywalking.apm.plugin.spring.mvc.v4.define.HandlerMethodInstrumentation is not activated. Witness class org.springframework.cache.interceptor.DefaultKeyGenerator does not exist. 
+WARN 2022-10-26 09:20:48.592 main AbstractClassEnhancePluginDefine : enhance class org.springframework.web.method.support.InvocableHandlerMethod by plugin org.apache.skywalking.apm.plugin.spring.mvc.v3.define.InvocableHandlerInstrumentation is not activated. Witness class org.springframework.web.servlet.view.xslt.AbstractXsltView does not exist. 
+WARN 2022-10-26 09:20:48.592 main AbstractClassEnhancePluginDefine : enhance class org.springframework.web.method.support.InvocableHandlerMethod by plugin org.apache.skywalking.apm.plugin.spring.mvc.v4.define.InvocableHandlerInstrumentation is not activated. Witness class org.springframework.cache.interceptor.DefaultKeyGenerator does not exist. 

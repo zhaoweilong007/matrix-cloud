@@ -1,0 +1,49 @@
+version: '3.8'
+networks:
+  default:
+    external: true
+    name: matrix_cloud
+
+
+services:
+  gateway:
+    image: registry.cn-hangzhou.aliyuncs.com/matrix-cloud/gateway:latest
+    container_name: gateway
+    ports:
+      - "9000:9000"
+    environment:
+      TZ: Asia/Shanghai
+      NACOS_SERVER_ADDRESS: nacos:8848
+      DATASOURCE_HOST: mysql:3306
+      # 使用jib时已指定，也可以不设置
+      SW_AGENT_NAME: api-gateway
+      SW_AGENT_COLLECTOR_BACKEND_SERVICES: skywalking-oap:11800
+    networks:
+      - default
+  system-server:
+    image: registry.cn-hangzhou.aliyuncs.com/matrix-cloud/system-biz:latest
+    container_name: system-server
+    ports:
+      - "9001:9001"
+    environment:
+      TZ: Asia/Shanghai
+      NACOS_SERVER_ADDRESS: nacos:8848
+      DATASOURCE_HOST: mysql:3306
+      SW_AGENT_NAME: system-server
+      SW_AGENT_COLLECTOR_BACKEND_SERVICES: skywalking-oap:11800
+    networks:
+      - default
+  doc:
+    image: registry.cn-hangzhou.aliyuncs.com/matrix-cloud/doc:latest
+    container_name: doc
+    ports:
+      - "10000:10000"
+    environment:
+      TZ: Asia/Shanghai
+      NACOS_SERVER_ADDRESS: nacos:8848
+      SW_AGENT_COLLECTOR_BACKEND_SERVICES: skywalking-oap:11800
+    networks:
+      - default
+    depends_on:
+      - gateway
+      - system-server

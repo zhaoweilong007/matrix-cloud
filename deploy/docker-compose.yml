@@ -1,9 +1,14 @@
 version: "3.8"
+
+networks:
+  matrix_cloud:
+    name: matrix_cloud
+    driver: bridge
+
 services:
   nacos:
     image: nacos/nacos-server:${NACOS_VERSION}
     container_name: nacos
-    hostname: nacos
     env_file:
       - ./env/nacos-standlone-mysql.env
     volumes:
@@ -16,10 +21,11 @@ services:
       mysql:
         condition: service_healthy
     restart: always
+    networks:
+      - matrix_cloud
 
   mysql:
     container_name: mysql
-    hostname: mysql
     build:
       context: .
       dockerfile: ./image/mysql/8/Dockerfile
@@ -36,6 +42,8 @@ services:
       timeout: 10s
       retries: 10
     restart: always
+    networks:
+      - matrix_cloud
 
   redis:
     image: redis:${REDIS_VERSION}
@@ -53,6 +61,8 @@ services:
     command: "redis-server /redis/config/redis.conf"
     privileged: true
     restart: always
+    networks:
+      - matrix_cloud
 
     # https://github.com/lk0423/sentinel-dashboard
   sentinel:
@@ -66,11 +76,12 @@ services:
     restart: always
     depends_on:
       - nacos
+    networks:
+      - matrix_cloud
 
   seata-server:
     image: seataio/seata-server:${SEATA_VERSION}
     container_name: seata-server
-    hostname: seata-server
     env_file:
       - ./env/seata.env
     environment:
@@ -85,7 +96,9 @@ services:
     restart: always
     privileged: true
     depends_on:
-      - nacos
+      - skywalking-oap
+    networks:
+      - matrix_cloud
   # 参考https://github.com/deviantony/docker-elk配置
   setup:
     build:
@@ -101,11 +114,12 @@ services:
       KIBANA_SYSTEM_PASSWORD: ${KIBANA_SYSTEM_PASSWORD:-}
     depends_on:
       - elasticsearch
+    networks:
+      - matrix_cloud
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:${ELASTIC_VERSION}
     container_name: elasticsearch
-    hostname: elasticsearch
     volumes:
       - ./elk/elasticsearch/plugins:/usr/share/elasticsearch/plugins
       - ./elk/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro,z
@@ -122,11 +136,12 @@ services:
       # Use single node discovery in order to disable production mode and avoid bootstrap checks.
       # see: https://www.elastic.co/guide/en/elasticsearch/reference/7.17/bootstrap-checks.html
       discovery.type: single-node
+    networks:
+      - matrix_cloud
 
   logstash:
     image: docker.elastic.co/logstash/logstash:${ELASTIC_VERSION}
     container_name: logstash
-    hostname: logstash
     volumes:
       - ./elk/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro,Z
       - ./elk/logstash/pipeline:/usr/share/logstash/pipeline:ro,Z
@@ -140,11 +155,12 @@ services:
       LOGSTASH_INTERNAL_PASSWORD: ${LOGSTASH_INTERNAL_PASSWORD:-}
     depends_on:
       - elasticsearch
+    networks:
+      - matrix_cloud
 
   kibana:
     image: docker.elastic.co/kibana/kibana:${ELASTIC_VERSION}
     container_name: kibana
-    hostname: kibana
     volumes:
       - ./elk/kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml:ro,Z
     ports:
@@ -155,6 +171,8 @@ services:
       I18N_LOCALE: zh-CN
     depends_on:
       - elasticsearch
+    networks:
+      - matrix_cloud
 
   skywalking-oap:
     image: apache/skywalking-oap-server:${SKYWALING_VERSION}
@@ -172,6 +190,8 @@ services:
     depends_on:
       - elasticsearch
       - nacos
+    networks:
+      - matrix_cloud
 
   skywalking-ui:
     image: apache/skywalking-ui:${SKYWALING_VERSION}
@@ -183,3 +203,5 @@ services:
     environment:
       TZ: Asia/Shanghai
       SW_OAP_ADDRESS: http://skywalking-oap:12800
+    networks:
+      - matrix_cloud

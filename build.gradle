@@ -23,11 +23,9 @@ plugins {
 wrapper.setGradleVersion("7.4.2")
 
 //定义需要构建docker的模块
-def javaMicroservices = [
-        project(':gateway'),
-        project(':system:system-biz'),
-        project(':doc')
-]
+def javaMicroservices = [project(':gateway'),
+                         project(':system:system-biz'),
+                         project(':doc')]
 
 
 allprojects {
@@ -86,11 +84,17 @@ subprojects {
     }
 }
 
+File agentFile = file '/deploy/skywalking/agent'
+
+
 configure(javaMicroservices) {
     apply plugin: 'com.google.cloud.tools.jib'
 
-// 使用jib插件自动构建镜像并上传到阿里云
+    // 使用jib插件自动构建镜像并上传到阿里云
     jib {
+        from {
+            image = "docker://openjdk:11"
+        }
         //推送的目标镜像仓库地址
         to {
             image = "${registryUrl}/${registryNamespace}/${project.name}"
@@ -104,15 +108,21 @@ configure(javaMicroservices) {
         }
         //镜像容器的配置信息
         container {
-            /**
-             * 设置jvm的启动参数
-             * user.timezone - 解决Java程序的时区问题
-             */
-//            jvmFlags = ['-Duser.timezone=Asia/Shanghai']
+            environment = [SW_AGENT_NAME: "${project.name}".toString()]
+            jvmFlags = ['-Duser.timezone=Asia/Shanghai', '-javaagent:/skywalking/agent/skywalking-agent.jar']
             creationTime = "USE_CURRENT_TIMESTAMP"
+            volumes = ['/skywalking/agent']
+        }
+        //添加skyWalking agent探针
+        extraDirectories {
+            paths {
+                path {
+                    from = agentFile
+                    into = '/skywalking/agent'
+                }
+            }
         }
     }
-
 }
 
 
