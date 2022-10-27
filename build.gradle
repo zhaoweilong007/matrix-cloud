@@ -68,11 +68,6 @@ subprojects {
     }
 
     dependencies {
-        implementation 'one.util:streamex:0.8.1'
-        implementation "cn.hutool:hutool-all:5.8.3"
-        implementation "com.google.guava:guava:31.1-jre"
-        implementation "com.google.code.gson:gson:2.9.0"
-        implementation "com.alibaba.fastjson2:fastjson2:2.0.8"
         compileOnly 'org.projectlombok:lombok:1.18.24'
         annotationProcessor 'org.projectlombok:lombok:1.18.24'
         compileOnly 'org.mapstruct:mapstruct:1.5.2.Final'

@@ -1,7 +1,7 @@
 dependencies {
     api(project(":common:common-core"))
     api('org.springframework.boot:spring-boot-starter-web')
-    api("cn.dev33:sa-token-spring-boot-starter:1.30.0")
+    api("cn.dev33:sa-token-spring-boot-starter:1.31.0")
     api 'com.github.xiaoymin:knife4j-micro-spring-boot-starter:3.0.3'
     api 'com.alibaba:druid-spring-boot-starter:1.2.11'
 }

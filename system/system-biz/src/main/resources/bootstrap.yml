@@ -18,6 +18,9 @@ spring:
           - data-id: application-common.yml
             refresh: true
 logging:
+  # 配置logstash tcp地址
+  stash:
+    address: ${LOGSTASH_ADDRESS:localhost:5000}
   level:
     com.matrix.mapper: debug
     com.matrix.api.**: debug

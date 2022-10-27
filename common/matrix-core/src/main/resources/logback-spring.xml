@@ -19,8 +19,9 @@
     <property name="PATTERN_DEFAULT"
               value="%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}} ${LOG_LEVEL_PATTERN:-%5p} ${PID:- } %tid --- [%thread]  %-40.40logger{39} : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
     <springProperty scope="context" name="LOG_FILE" source="logging.file.path"/>
-    <springProperty scope="context" name="spring.application.name" source="spring.application.name"/>
-    <contextName>${spring.application.name}-${spring.profiles.active}-logback</contextName>
+    <springProperty scope="context" name="springAppName" source="spring.application.name"/>
+    <springProperty scope="context" name="LOGSTASH_ADDRESS" source="logging.stash.address"/>
+    <contextName>${springAppName}-${spring.profiles.active}-logback</contextName>
 
 
     <!-- 文件 Appender -->
@@ -31,10 +32,10 @@
                 <Pattern>${PATTERN_DEFAULT}</Pattern>
             </layout>
         </encoder>
-        <file>${LOG_FILE}/${spring.application.name}.log</file>
+        <file>${LOG_FILE}/${springAppName}.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!-- 滚动后的日志文件名 -->
-            <fileNamePattern>${LOG_FILE}/${spring.application.name}/%d{yyyy-MM}/root-%d{yyyy-MM-dd}-%i.log.gz
+            <fileNamePattern>${LOG_FILE}/${springAppName}/%d{yyyy-MM}/root-%d{yyyy-MM-dd}-%i.log.gz
             </fileNamePattern>
             <!-- 启动服务时，是否清理历史日志，一般不建议清理 -->
             <cleanHistoryOnStart>${LOGBACK_ROLLINGPOLICY_CLEAN_HISTORY_ON_START:-false}</cleanHistoryOnStart>
@@ -64,12 +65,43 @@
         </encoder>
     </appender>
 
+    <appender name="STASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <includeCallerData>true</includeCallerData>
+        </encoder>
+
+        <destination>${LOGSTASH_ADDRESS}</destination>
+        <!-- 日志输出编码 -->
+        <encoder charset="UTF-8"
+                 class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <timestamp>
+                    <timeZone>GMT+8</timeZone>
+                </timestamp>
+                <pattern>
+                    <pattern>
+                        {
+                        "tid":"%tid",
+                        "logLevel": "%level",
+                        "serviceName": "${springAppName:-}",
+                        "pid": "${PID:-}",
+                        "thread": "%thread",
+                        "class": "%logger{40}",
+                        "message": "%message"
+                        }
+                    </pattern>
+                </pattern>
+            </providers>
+        </encoder>
+    </appender>
+
     <!-- 本地环境 -->
     <springProfile name="local">
         <root level="INFO">
             <appender-ref ref="CONSOLE"/>
             <appender-ref ref="ASYNC"/>
             <appender-ref ref="GRPC"/>
+            <appender-ref ref="STASH"/>
         </root>
     </springProfile>
     <!-- 其它环境 -->
@@ -78,6 +110,7 @@
             <appender-ref ref="CONSOLE"/>
             <appender-ref ref="ASYNC"/>
             <appender-ref ref="GRPC"/>
+            <appender-ref ref="STASH"/>
         </root>
     </springProfile>
 
