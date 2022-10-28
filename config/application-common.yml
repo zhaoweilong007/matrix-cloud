@@ -7,14 +7,14 @@ spring:
       eager: true
       transport:
         port: ${SENTINEL_PORT:8719}
-        dashboard: ${SENTINEL_DASHBOARD:localhost:8088}
+        dashboard: ${SENTINEL_DASHBOARD:sentinel:8088}
   messages:
     basename: i18n/messages
     encoding: utf-8
     fallback-to-system-locale: true
   # redis配置
   redis:
-    host: ${REDIS_HOST:192.168.2.36}
+    host: ${REDIS_HOST:redis}
     port: ${REDIS_PORT:6379}
     database: ${REDIS_DATABASE:0}
     timeout: 10s
@@ -138,7 +138,7 @@ seata:
   config:
     type: nacos
     nacos:
-      server-addr: ${NACOS_SERVER_ADDRESS:localhost:8848}
+      server-addr: ${NACOS_SERVER_ADDRESS:nacos:8848}
       username: ${NACOS_USERNAME:nacos}
       password: ${NACOS_PASSWD:nacos}
       group: SEATA_GROUP
@@ -147,7 +147,7 @@ seata:
     type: nacos
     nacos:
       application: seata-server
-      server-addr: ${NACOS_SERVER_ADDRESS:localhost:8848}
+      server-addr: ${NACOS_SERVER_ADDRESS:nacos:8848}
       group: SEATA_GROUP
       cluster: default
       username: ${NACOS_USERNAME:nacos}
@@ -165,3 +165,6 @@ management:
   endpoint:
     health:
       show-details: always
+  metrics:
+    tags:
+      application: ${spring.application.name}

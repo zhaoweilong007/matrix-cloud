@@ -13,7 +13,7 @@ spring:
       datasource:
         gw-flow:
           nacos:
-            server-addr: ${NACOS_SERVER_ADDRESS:localhost:8848}
+            server-addr: ${NACOS_SERVER_ADDRESS:nacos:8848}
             username: ${NACOS_USERNAME:nacos}
             password: ${NACOS_PASSWD:nacos}
             data-id: gateway-flow
@@ -22,7 +22,7 @@ spring:
             rule-type: gw_flow
         gw-api-group:
           nacos:
-            server-addr: ${NACOS_SERVER_ADDRESS:localhost:8848}
+            server-addr: ${NACOS_SERVER_ADDRESS:nacos:8848}
             username: ${NACOS_USERNAME:nacos}
             password: ${NACOS_PASSWD:nacos}
             data-id: gateway-api-group

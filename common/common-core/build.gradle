@@ -32,12 +32,12 @@ dependencies {
     api "com.fasterxml.jackson.datatype:jackson-datatype-jsr310"
     api 'io.swagger:swagger-annotations:1.5.22'
 
+    /*apm 监控相关*/
     api 'org.apache.skywalking:apm-toolkit-logback-1.x:8.12.0'
     api 'org.apache.skywalking:apm-toolkit-trace:8.12.0'
     api 'org.apache.skywalking:apm-toolkit-opentracing:8.12.0'
-
     api 'net.logstash.logback:logstash-logback-encoder:7.2'
-
+    api 'io.micrometer:micrometer-registry-prometheus:1.9.5'
 
     /*utils*/
     api 'one.util:streamex:0.8.1'
