@@ -35,3 +35,4 @@ out/
 /deploy/mysql/**
 /deploy/elk/elasticsearch/nodes/**
 /deploy/redis/data
+/deploy/prometheus/grafana/**
