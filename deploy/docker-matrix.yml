@@ -18,6 +18,7 @@ services:
       # 使用jib时已指定，也可以不设置
       SW_AGENT_NAME: api-gateway
       SW_AGENT_COLLECTOR_BACKEND_SERVICES: skywalking-oap:11800
+      LOGSTASH_ADDRESS: logstash:5000
     networks:
       - default
   system-server:
@@ -31,6 +32,7 @@ services:
       DATASOURCE_HOST: mysql:3306
       SW_AGENT_NAME: system-server
       SW_AGENT_COLLECTOR_BACKEND_SERVICES: skywalking-oap:11800
+      LOGSTASH_ADDRESS: logstash:5000
     networks:
       - default
   doc:
@@ -42,6 +44,7 @@ services:
       TZ: Asia/Shanghai
       NACOS_SERVER_ADDRESS: nacos:8848
       SW_AGENT_COLLECTOR_BACKEND_SERVICES: skywalking-oap:11800
+      LOGSTASH_ADDRESS: logstash:5000
     networks:
       - default
     depends_on:

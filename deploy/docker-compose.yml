@@ -70,7 +70,7 @@ services:
     container_name: sentinel
     environment:
       PARAM: -Dserver.port=8088 -Dcsp.sentinel.dashboard.server=localhost:8088 -Dproject.name=sentinel-dashboard -Ddatasource.provider=nacos -Ddatasource.provider.nacos.server-addr=nacos:8848 -Ddatasource.provider.nacos.username=nacos -Ddatasource.provider.nacos.password=nacos
-      TZ: Asia/Shanghai"
+      TZ: Asia/Shanghai
     ports:
       - "8088:8088"
     restart: always

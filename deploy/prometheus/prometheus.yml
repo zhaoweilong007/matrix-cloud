@@ -9,11 +9,11 @@ alerting:
   alertmanagers:
     - static_configs:
         - targets: [ 'alertmanager:9093' ]
-          # - alertmanager:9093
 
 # Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
 rule_files:
   - "node_down.yml"
+  - "galera.yml"
   # - "first_rules.yml"
   # - "second_rules.yml"
 
@@ -28,22 +28,44 @@ scrape_configs:
   - job_name: 'cadvisor'
     static_configs:
       - targets: [ 'cadvisor:8080' ]
+        labels:
+          instance: cadvisor
 
   - job_name: 'node-exporter'
     scrape_interval: 8s
     static_configs:
       - targets: [ 'node-exporter:9100' ]
+        labels:
+          instance: node-exporter
 
   - job_name: 'alertmanager'
     static_configs:
       - targets: [ 'alertmanager:9093' ]
+        labels:
+          instance: alertmanager
+
+  - job_name: 'mysqld'
+    static_configs:
+      - targets: [ 'mysqld-exporter:9104' ]
+        labels:
+          instance: mysql
+
+  - job_name: 'redis'
+    static_configs:
+      - targets: [ 'redis_exporter:9121' ]
+        labels:
+          instance: redis
 
   - job_name: 'gateway'
     metrics_path: '/actuator/prometheus'
     static_configs:
       - targets: [ 'gateway:9000' ]
+        labels:
+          instance: gateway
 
   - job_name: 'system-server'
     metrics_path: '/actuator/prometheus'
     static_configs:
       - targets: [ 'system-server:9001' ]
+        labels:
+          instance: system-server
