@@ -35,11 +35,18 @@ Spring cloud matrix是微服务的脚手架，整合目前主流的微服务框�
 
 ## 📌模块
 
-| 模块            | 描述   | 服务地址                            |
-|---------------|------|---------------------------------|
-| gateway       | 网关   | http://localhost:9000           |
-| system-server | 系统服务 | http://localhost:9001           |
-| doc           | 文档服务 | http://localhost:10000/doc.html |
+| 模块            | 描述    | 服务地址                            |
+|---------------|-------|---------------------------------|
+| nacos         | 注册中心  | http://localhost:8848           |
+| sentinel      | 流量卫兵  | http://localhost:8088           |
+| seata         | 分布式事务 | http://localhost:7091           |
+| skyWalking    | 链路追踪  | http://localhost:8080           |
+| elasticSearch | 搜索引擎  | http://localhost:9200           |
+| prometheus    | 监控    | http://localhost:9090           |
+| grafana       | 监控展示  | http://localhost:3000           |
+| gateway       | 网关    | http://localhost:9000           |
+| system-server | 系统服务  | http://localhost:9001           |
+| doc           | 文档服务  | http://localhost:10000/doc.html |
 
 ## ⏳功能开发进度
 
@@ -47,11 +54,12 @@ Spring cloud matrix是微服务的脚手架，整合目前主流的微服务框�
 - [x] 聚合swagger文档
 - [x] 多租户管理
 - [x] 动态路由
+- [x] 灰度发布
 - [x] 集成seata分布式事务
 - [x] 集成skyWalking分布式链路追踪
 - [x] 集成jib构建docker
 - [x] 集成prometheus监控
-- [x] 集成ELK日收集
+- [x] 集成ELK日志收集
 - [ ] 集成rocketmq消息队列
 - [ ] 集成sharding-jdbc分库分表
 - [ ] 集成工作流flowable
@@ -113,6 +121,7 @@ dependencies {
 ```
 
 matrix-core自动集成
+
 matrix-web对servlet的配置（目前只支持servlet）
 
 - 在启动类上加上`@EnableMatrix`注解
@@ -175,8 +184,8 @@ def javaMicroservices = [
 
 ### 中间件
 
-相关中间件的部署可以查看[deploy文档](/deploy/README.md)
+[推荐]()使用docker-compose一键部署，具体部署说明请看请看[readme-docker](./deploy/README-docker.md)
 
-提供docker-compose配置文件一键部署所有中间件，[docker-compose.yml](/deploy/docker-compose.yml)
+中间件的单机部署可以查看[deploy文档](/deploy/README.md)
 
-> ps: sql文件需要自行导入，deploy下[nacos.sql](/deploy/sql/nacos.sql)和[matrix.sql](/deploy/sql/matrix.sql)
+> ps: 如果是单机部署，sql文件需要自行导入，deploy下sql文件夹
