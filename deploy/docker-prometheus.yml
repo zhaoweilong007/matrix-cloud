@@ -93,3 +93,17 @@ services:
       - "--redis.password=matrix"
     networks:
       - default
+
+  elasticsearch_exporter:
+    image: prometheuscommunity/elasticsearch-exporter:latest
+    container_name: elasticsearch_exporter
+    environment:
+      ES_USERNAME: elastic
+      ES_PASSWORD: ${ELASTIC_PASSWORD}
+    command:
+      - '--es.uri=http://elasticsearch:9200'
+    restart: always
+    ports:
+      - "9114:9114"
+    networks:
+      - default

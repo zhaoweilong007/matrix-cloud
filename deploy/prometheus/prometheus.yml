@@ -56,6 +56,12 @@ scrape_configs:
         labels:
           instance: redis
 
+  - job_name: 'elasticsearch_exporter'
+    static_configs:
+      - targets: [ 'elasticsearch_exporter:9114' ]
+        labels:
+          instance: elasticsearch
+
   - job_name: 'gateway'
     metrics_path: '/actuator/prometheus'
     static_configs:
