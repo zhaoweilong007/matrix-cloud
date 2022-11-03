@@ -2,7 +2,6 @@ package com.matrix.annotation;
 
 import cn.hutool.extra.spring.EnableSpringUtil;
 import com.matrix.component.FeignInterceptor;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -23,7 +22,6 @@ import java.lang.annotation.*;
 @Documented
 @EnableDiscoveryClient
 @EnableFeignClients(defaultConfiguration = FeignInterceptor.class)
-@MapperScan("com.matrix.**.mapper")
 @EnableAsync
 @EnableScheduling
 @EnableSpringUtil

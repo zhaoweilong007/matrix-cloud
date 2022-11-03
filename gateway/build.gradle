@@ -14,3 +14,7 @@ dependencies {
     /*other*/
     implementation "cn.dev33:sa-token-reactor-spring-boot-starter:1.30.0"
 }
+
+test {
+    enabled(false)
+}

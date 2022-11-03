@@ -1,4 +1,5 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.matrix.config.MatrixExcludeConfiguration,\
 com.matrix.config.MatrixAutoConfiguration,\
 com.matrix.config.MatrixMybatisAutoConfiguration,\
 com.matrix.config.MatrixSaTokenAutoConfiguration,\

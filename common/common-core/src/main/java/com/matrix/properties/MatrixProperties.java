@@ -15,6 +15,7 @@ import java.util.List;
 @Data
 public class MatrixProperties {
 
-    private List<CacheProperties> cache;
+    private Boolean useDataSource = true;
 
+    private List<CacheProperties> cache;
 }

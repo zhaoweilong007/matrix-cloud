@@ -8,3 +8,5 @@ include 'common:matrix-core'
 include 'system'
 include 'system:system-api'
 include 'system:system-biz'
+include 'demo'
+

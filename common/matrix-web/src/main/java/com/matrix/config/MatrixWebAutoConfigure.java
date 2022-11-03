@@ -4,6 +4,7 @@ import cn.dev33.satoken.filter.SaServletFilter;
 import cn.dev33.satoken.id.SaIdUtil;
 import cn.dev33.satoken.router.SaRouter;
 import cn.dev33.satoken.util.SaResult;
+import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure;
 import com.google.common.collect.Lists;
 import com.matrix.context.TenantContextHold;
 import com.matrix.context.UserContextHolder;
@@ -14,10 +15,13 @@ import com.matrix.properties.SecurityProperties;
 import com.matrix.properties.TenantProperties;
 import com.matrix.utils.LoginHelper;
 import com.matrix.utils.ProfileUtils;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -34,6 +38,14 @@ import java.util.List;
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @Import(MatrixTenantAutoConfiguration.class)
 public class MatrixWebAutoConfigure {
+
+
+    @ConditionalOnProperty(value = "matrix.useDataSource", havingValue = "false")
+    @EnableAutoConfiguration(exclude = {DruidDataSourceAutoConfigure.class})
+    @Configuration(proxyBeanMethods = false)
+    public static class DruidExcludeConfiguration {
+
+    }
 
     @Bean
     public SpringfoxHandlerProviderBeanPostProcessor springfoxHandlerProviderBeanPostProcessor() {

@@ -1,12 +1,9 @@
 server:
-  port: 9001
+  port: 7777
 
 spring:
   application:
-    name: system-server
-  profiles:
-    include: matrix
-    active: dev
+    name: demoApp
   cloud:
     nacos:
       server-addr: ${NACOS_SERVER_ADDRESS:localhost:8848}
@@ -21,8 +18,23 @@ logging:
   # 配置logstash tcp地址
   stash:
     address: ${LOGSTASH_ADDRESS:localhost:5000}
-  level:
-    com.matrix.mapper: debug
-    com.matrix.api.**: debug
   file:
     path: /var/logs
+
+easy-es:
+  enable: false
+
+matrix:
+  xxl-job:
+    enable: false
+  useDataSource: false
+  useEs: false
+  swagger:
+    enable: false
+  tenant:
+    enable: false
+
+management:
+  health:
+    elasticsearch:
+      enabled: false

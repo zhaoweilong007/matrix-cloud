@@ -10,6 +10,8 @@ import com.matrix.component.TenantHandler;
 import com.matrix.properties.TenantProperties;
 import com.matrix.utils.LoginHelper;
 import org.apache.ibatis.reflection.MetaObject;
+import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 
@@ -23,6 +25,8 @@ import java.util.Date;
  * @since 2022/7/7 16:27
  **/
 @EnableConfigurationProperties(TenantProperties.class)
+@ConditionalOnProperty(value = "matrix.useDataSource", havingValue = "true")
+@MapperScan("com.matrix.**.mapper")
 public class MatrixMybatisAutoConfiguration {
 
     @Bean

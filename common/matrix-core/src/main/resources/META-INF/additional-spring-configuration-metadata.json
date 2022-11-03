@@ -76,6 +76,69 @@
       "defaultValue": "",
       "description": "whiteUrls.",
       "sourceType": "com.matrix.properties.SecurityProperties"
+    },
+    {
+      "name": "matrix.useDataSource",
+      "type": "java.lang.Boolean",
+      "defaultValue": true,
+      "description": "enable dataSource autoConfiguration.",
+      "sourceType": "com.matrix.properties.MatrixProperties"
+    },
+    {
+      "name": "matrix.xxl-job.enable",
+      "type": "java.lang.Boolean",
+      "defaultValue": true,
+      "description": "enable xxlJob autoConfiguration.",
+      "sourceType": "com.matrix.properties.XxlJobProperties"
+    },
+    {
+      "name": "matrix.xxl-job.adminAddresses",
+      "type": "java.lang.String",
+      "defaultValue": "http://localhost:8089/xxl-job-admin",
+      "description": "adminAddresses.",
+      "sourceType": "com.matrix.properties.XxlJobProperties"
+    },
+    {
+      "name": "matrix.xxl-job.accessToken",
+      "type": "java.lang.String",
+      "defaultValue": "default_token",
+      "description": "accessToken.",
+      "sourceType": "com.matrix.properties.XxlJobProperties"
+    },
+    {
+      "name": "matrix.xxl-job.executorAppName",
+      "type": "java.lang.String",
+      "defaultValue": "${spring.application.name}",
+      "description": "executorAppName.",
+      "sourceType": "com.matrix.properties.XxlJobProperties"
+    },
+    {
+      "name": "matrix.xxl-job.executorIp",
+      "type": "java.lang.String",
+      "defaultValue": "",
+      "description": "executorIp.",
+      "sourceType": "com.matrix.properties.XxlJobProperties"
+    },
+    {
+      "name": "matrix.xxl-job.executorPort",
+      "type": "java.lang.Integer",
+      "defaultValue": "",
+      "description": "executorPort.",
+      "sourceType": "com.matrix.properties.XxlJobProperties"
+    },
+    {
+      "name": "matrix.xxl-job.executorLogPath",
+      "type": "java.lang.String",
+      "defaultValue": "/var/xxl-job/logs",
+      "description": "executorLogPath.",
+      "sourceType": "com.matrix.properties.XxlJobProperties"
+    },
+    {
+      "name": "matrix.xxl-job.executorLogRetentionDays",
+      "type": "java.lang.Integer",
+      "defaultValue": 30,
+      "description": "executorLogRetentionDays.",
+      "sourceType": "com.matrix.properties.XxlJobProperties"
     }
   ]
 }
