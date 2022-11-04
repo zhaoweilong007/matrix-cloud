@@ -85,6 +85,13 @@
       "sourceType": "com.matrix.properties.MatrixProperties"
     },
     {
+      "name": "matrix.useEs",
+      "type": "java.lang.Boolean",
+      "defaultValue": false,
+      "description": "enable es autoConfiguration.",
+      "sourceType": "com.matrix.properties.MatrixProperties"
+    },
+    {
       "name": "matrix.xxl-job.enable",
       "type": "java.lang.Boolean",
       "defaultValue": true,

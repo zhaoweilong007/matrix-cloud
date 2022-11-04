@@ -168,3 +168,19 @@ management:
   metrics:
     tags:
       application: ${spring.application.name}
+  health:
+    elasticsearch:
+      enabled: ${matrix.useEs}
+
+matrix:
+  xxl-job:
+    enable: false
+  useDataSource: false
+  swagger:
+    enable: false
+  tenant:
+    enable: false
+  useEs: false
+
+easy-es:
+  enable: ${matrix.useEs}

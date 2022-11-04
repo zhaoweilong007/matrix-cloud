@@ -20,21 +20,3 @@ logging:
     address: ${LOGSTASH_ADDRESS:localhost:5000}
   file:
     path: /var/logs
-
-easy-es:
-  enable: false
-
-matrix:
-  xxl-job:
-    enable: false
-  useDataSource: false
-  useEs: false
-  swagger:
-    enable: false
-  tenant:
-    enable: false
-
-management:
-  health:
-    elasticsearch:
-      enabled: false

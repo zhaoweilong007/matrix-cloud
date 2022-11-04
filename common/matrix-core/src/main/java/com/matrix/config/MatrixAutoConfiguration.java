@@ -13,12 +13,11 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.matrix.component.SecurityConfigManager;
 import com.matrix.jackson.BigNumberSerializer;
 import com.matrix.properties.MatrixProperties;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
@@ -34,17 +33,8 @@ import java.util.TimeZone;
  * @author zwl
  * @since 2022/7/8 16:22
  **/
-@Import(MatrixProperties.class)
+@EnableConfigurationProperties(MatrixProperties.class)
 public class MatrixAutoConfiguration {
-
-    @Autowired
-    private NacosConfigManager configManager;
-
-    @Autowired
-    private NacosServiceManager serviceManager;
-
-    @Autowired
-    private NacosDiscoveryProperties nacosDiscoveryProperties;
 
     @Bean
     @ConfigurationProperties(prefix = "rest.template.config")
@@ -60,12 +50,12 @@ public class MatrixAutoConfiguration {
 
 
     @Bean
-    public NamingService namingService() {
+    public NamingService namingService(NacosServiceManager serviceManager, NacosDiscoveryProperties nacosDiscoveryProperties) {
         return serviceManager.getNamingService(nacosDiscoveryProperties.getNacosProperties());
     }
 
     @Bean
-    public ConfigService configService() {
+    public ConfigService configService(NacosConfigManager configManager) {
         return configManager.getConfigService();
     }
 
