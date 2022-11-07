@@ -1,5 +1,6 @@
 package com.matrix.annotation;
 
+import cn.easyes.starter.register.EsMapperScan;
 import cn.hutool.extra.spring.EnableSpringUtil;
 import com.matrix.component.FeignInterceptor;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -25,6 +26,7 @@ import java.lang.annotation.*;
 @EnableAsync
 @EnableScheduling
 @EnableSpringUtil
+@EsMapperScan("com.matrix.**.es.mapper")
 public @interface EnableMatrix {
 
 }
