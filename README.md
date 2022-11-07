@@ -31,7 +31,7 @@ Spring cloud matrix是微服务的脚手架，整合目前主流的微服务框�
 | ELK                  | 日志处理分析               | 7.17.6           |
 | prometheus           | 应用监控                 | latest           |
 
-后续会逐步整合相关框架，搭建一个分布式系统架构.....
+基础功能已开发完毕，可自定义子应用接入spring cloud matrix微服务，详情请看[#构建自定义组件说明](#构建自定义组件说明)
 
 ## 📌模块
 
@@ -110,6 +110,12 @@ gateway使用alibaba sentinel集成，支持nacos动态路由配置
 
 如需自定义组件，可按以下步骤自动接入spring cloud matrix服务
 
+构建自定义组件作为spring cloud matrix下的子应用，参考以下步骤快速接入
+
+以[demo示例](/demo)作为演示：
+
+### 1、新建模块，添加依赖
+
 - 在spring-cloud-matrix下新建模块
 - 添加以下核心配置依赖
 
@@ -123,6 +129,8 @@ dependencies {
 matrix-core自动集成
 
 matrix-web对servlet的配置（目前只支持servlet）
+
+### 2、启用注解，增加配置
 
 - 在启动类上加上`@EnableMatrix`注解
 - 新建bootstrap.yml配置文件，配置如下
@@ -154,6 +162,44 @@ logging:
 ```
 
 > 以上步骤完成可正常启动应用，自动接入所有微服务功能
+
+### matrix 配置说明
+
+默认配置说明
+
+```yaml
+matrix:
+  useEs: false
+  useDataSource: false
+  xxl-job:
+    enable: false
+    adminAddresses: http://localhost:8089/xxl-job-admin
+    accessToken: default_token #默认
+    executorAppName: ${spring.application.name}
+    executorAddress:
+    executorIp:
+    executorPort:
+    executorLogPath: /var/xxl-job/logs
+    executorLogRetentionDays: 30
+  swagger:
+    enable: false
+    name:
+    version:
+    description:
+  tenant:
+    enable: false
+    ignoreTables: # 多租户忽略的表名
+    ignore-urls: # 多租户忽略的接口地址
+  security:
+    white-urls: # 接口白名单地址
+  #设置不用key的过期时间
+  cache:
+    - name: #key名称
+      ttl: #过期ttl
+      prefix: #key前缀
+```
+
+以上是matrix的所有配置
 
 ## 部署
 
