@@ -84,6 +84,19 @@ logging:
     address: ${LOGSTASH_ADDRESS:localhost:5000}
 ```
 
+> ps: 如果本地es存储空间不足，可以启用以下配置,允许写入
+
+```
+PUT /_all/_settings
+{
+  "index": {
+    "blocks": {
+      "read_only_allow_delete": "false"
+    }
+  }
+}
+```
+
 ## skywalking
 
 skywalking-oap为服务

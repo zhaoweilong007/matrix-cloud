@@ -27,7 +27,7 @@ public class XxlJobProperties implements Serializable {
     /**
      * 调度中心地址
      */
-    private String adminAddresses = "http://localhost:8089/xxl-job-admin";
+    private String adminAddresses = "http://localhost:8090/xxl-job-admin";
 
     private String accessToken = "default_token";
 

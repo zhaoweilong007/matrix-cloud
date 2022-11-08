@@ -11,7 +11,7 @@ network.host: 0.0.0.0
 xpack.license.self_generated.type: basic
 xpack.security.enabled: true
 
-#ingest.geoip.downloader.enabled: false
+ingest.geoip.downloader.enabled: false
 #http.cors.enabled: true
 #http.cors.allow-origin: "*"
 #http.cors.allow-headers: Authorization

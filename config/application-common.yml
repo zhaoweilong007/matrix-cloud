@@ -101,7 +101,7 @@ feign:
 
 # 文档配置
 knife4j:
-  enable: ${matrix.swagger.enable:true}
+  enable: ${matrix.swagger.enable:false}
   production: false
   cors: true
 
@@ -170,17 +170,17 @@ management:
       application: ${spring.application.name}
   health:
     elasticsearch:
-      enabled: ${matrix.useEs}
+      enabled: ${matrix.useEs:false}
 
 matrix:
+  useEs: false
+  useDataSource: false
   xxl-job:
     enable: false
-  useDataSource: false
   swagger:
     enable: false
   tenant:
     enable: false
-  useEs: false
 
 easy-es:
-  enable: ${matrix.useEs}
+  enable: ${matrix.useEs:false}
