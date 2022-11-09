@@ -1,0 +1,9 @@
+matrix:
+  xxl-job:
+    enable: true
+  useEs: true
+
+easy-es:
+  address: 127.0.0.1:9200
+  username: elastic
+  password: changeme

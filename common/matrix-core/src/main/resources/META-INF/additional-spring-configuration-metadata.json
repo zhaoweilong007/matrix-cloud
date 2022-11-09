@@ -10,42 +10,42 @@
     {
       "name": "matrix.swagger.name",
       "type": "java.lang.String",
-      "defaultValue": "",
+      "defaultValue": null,
       "description": "swagger name.",
       "sourceType": "com.matrix.properties.SwaggerProperties"
     },
     {
       "name": "matrix.swagger.version",
       "type": "java.lang.String",
-      "defaultValue": "",
+      "defaultValue": null,
       "description": "swagger version.",
       "sourceType": "com.matrix.properties.SwaggerProperties"
     },
     {
       "name": "matrix.swagger.description",
       "type": "java.lang.String",
-      "defaultValue": "",
+      "defaultValue": null,
       "description": "swagger description.",
       "sourceType": "com.matrix.properties.SwaggerProperties"
     },
     {
       "name": "matrix.cache.name",
       "type": "java.lang.String",
-      "defaultValue": "",
+      "defaultValue": null,
       "description": "cache name.",
       "sourceType": "com.matrix.properties.MatrixProperties"
     },
     {
       "name": "matrix.cache.prefix",
       "type": "java.lang.String",
-      "defaultValue": "",
+      "defaultValue": null,
       "description": "cache key prefix.",
       "sourceType": "com.matrix.properties.MatrixProperties"
     },
     {
       "name": "matrix.cache.ttl",
       "type": "java.lang.String",
-      "defaultValue": "",
+      "defaultValue": null,
       "description": "cache value ttl.",
       "sourceType": "com.matrix.properties.MatrixProperties"
     },
@@ -59,21 +59,21 @@
     {
       "name": "matrix.tenant.ignoreTables",
       "type": "java.util.List",
-      "defaultValue": "",
+      "defaultValue": null,
       "description": "ignoreTables.",
       "sourceType": "com.matrix.properties.TenantProperties"
     },
     {
       "name": "matrix.tenant.ignoreUrls",
       "type": "java.util.List",
-      "defaultValue": "",
+      "defaultValue": null,
       "description": "ignoreUrls.",
       "sourceType": "com.matrix.properties.TenantProperties"
     },
     {
       "name": "matrix.security.whiteUrls",
       "type": "java.util.List",
-      "defaultValue": "",
+      "defaultValue": null,
       "description": "whiteUrls.",
       "sourceType": "com.matrix.properties.SecurityProperties"
     },
@@ -101,7 +101,7 @@
     {
       "name": "matrix.xxl-job.adminAddresses",
       "type": "java.lang.String",
-      "defaultValue": "http://localhost:8089/xxl-job-admin",
+      "defaultValue": "http://localhost:8090/xxl-job-admin",
       "description": "adminAddresses.",
       "sourceType": "com.matrix.properties.XxlJobProperties"
     },
@@ -122,14 +122,14 @@
     {
       "name": "matrix.xxl-job.executorIp",
       "type": "java.lang.String",
-      "defaultValue": "",
+      "defaultValue": null,
       "description": "executorIp.",
       "sourceType": "com.matrix.properties.XxlJobProperties"
     },
     {
       "name": "matrix.xxl-job.executorPort",
       "type": "java.lang.Integer",
-      "defaultValue": "",
+      "defaultValue": 0,
       "description": "executorPort.",
       "sourceType": "com.matrix.properties.XxlJobProperties"
     },

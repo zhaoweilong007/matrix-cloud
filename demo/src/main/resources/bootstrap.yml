@@ -4,6 +4,8 @@ server:
 spring:
   application:
     name: demoApp
+  profiles:
+    active: dev
   cloud:
     nacos:
       server-addr: ${NACOS_SERVER_ADDRESS:localhost:8848}

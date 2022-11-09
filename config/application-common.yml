@@ -172,15 +172,5 @@ management:
     elasticsearch:
       enabled: ${matrix.useEs:false}
 
-matrix:
-  useEs: false
-  useDataSource: false
-  xxl-job:
-    enable: false
-  swagger:
-    enable: false
-  tenant:
-    enable: false
-
 easy-es:
   enable: ${matrix.useEs:false}

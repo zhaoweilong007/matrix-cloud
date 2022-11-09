@@ -1,6 +1,7 @@
 package com.matrix.properties;
 
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.io.Serializable;
@@ -34,7 +35,8 @@ public class XxlJobProperties implements Serializable {
     /**
      * 执行器AppName[选填]:执行器心跳注册分组依据,为空则关闭自动注册(xxl-job executor app name)
      */
-    private String executorAppName = "${spring.application.name}";
+    @Value("${spring.application.name}")
+    private String executorAppName;
 
     /**
      * 执行器注册[选填]:优先使用该配置作为注册地址,为空时使用内嵌服务 IP:PORT 作为注册地址
@@ -52,7 +54,7 @@ public class XxlJobProperties implements Serializable {
     /**
      * 执行器端口号[选填]:小于等于0则自动获取,默认端口为9999,单机部署多个执行器时,注意要配置不同执行器端口.
      */
-    private Integer executorPort;
+    private Integer executorPort = 0;
 
     /**
      * 执行器运行日志文件存储磁盘路径[选填]:需要对该路径拥有读写权限,为空则使用默认路径.

@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
  **/
 public class MatrixExcludeConfiguration {
 
-    @ConditionalOnProperty(value = "matrix.useDataSource", havingValue = "false")
+    @ConditionalOnProperty(value = "matrix.useDataSource", havingValue = "false", matchIfMissing = true)
     @EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class, MybatisPlusAutoConfiguration.class})
     @Configuration(proxyBeanMethods = false)
     public static class DataSourceExcludeConfiguration {

@@ -40,7 +40,7 @@ import java.util.List;
 public class MatrixWebAutoConfigure {
 
 
-    @ConditionalOnProperty(value = "matrix.useDataSource", havingValue = "false")
+    @ConditionalOnProperty(value = "matrix.useDataSource", havingValue = "false", matchIfMissing = true)
     @EnableAutoConfiguration(exclude = {DruidDataSourceAutoConfigure.class})
     @Configuration(proxyBeanMethods = false)
     public static class DruidExcludeConfiguration {
