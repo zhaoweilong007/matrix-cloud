@@ -2,7 +2,6 @@ package com.matrix.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 
@@ -18,7 +17,7 @@ public class TenantProperties {
 
     public static final String TENANT_KEY = "tenant_id";
 
-    private Boolean enable = true;
+    private Boolean enable = false;
 
     private List<String> ignoreTables;
 

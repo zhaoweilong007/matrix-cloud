@@ -23,7 +23,7 @@ public class XxlJobProperties implements Serializable {
     /**
      * 是否开启xxl-job
      */
-    private Boolean enable = true;
+    private Boolean enable = false;
 
     /**
      * 调度中心地址
