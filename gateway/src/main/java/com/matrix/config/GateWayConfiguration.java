@@ -13,6 +13,7 @@ import com.matrix.properties.TenantProperties;
 import com.matrix.security.SecurityAuth;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerProperties;
 import org.springframework.cloud.gateway.route.RedisRouteDefinitionRepository;
@@ -78,6 +79,7 @@ public class GateWayConfiguration {
     }
 
     @Bean
+    @ConditionalOnProperty(prefix = "matrix.tenant", name = "enable", havingValue = "true")
     public TenantReactorFilter tenantReactorFilter(TenantProperties tenantProperties) {
         return new TenantReactorFilter(tenantProperties);
     }

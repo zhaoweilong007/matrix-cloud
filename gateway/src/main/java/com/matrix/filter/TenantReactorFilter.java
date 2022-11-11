@@ -8,6 +8,7 @@ import com.matrix.entity.vo.LoginUser;
 import com.matrix.properties.TenantProperties;
 import com.matrix.utils.LoginHelper;
 import lombok.AllArgsConstructor;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
@@ -22,6 +23,7 @@ import reactor.core.publisher.Mono;
  **/
 @AllArgsConstructor
 @Order(SaTokenConsts.ASSEMBLY_ORDER + 1)
+@EnableConfigurationProperties(TenantProperties.class)
 public class TenantReactorFilter implements WebFilter {
 
     private TenantProperties tenantProperties;
