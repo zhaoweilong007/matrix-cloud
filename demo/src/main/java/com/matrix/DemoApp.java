@@ -4,10 +4,13 @@ import cn.easyes.core.conditions.LambdaEsQueryWrapper;
 import com.matrix.annotation.EnableMatrix;
 import com.matrix.es.domain.Document;
 import com.matrix.es.mapper.DocumentMapper;
+import com.matrix.producer.CustomChannelBinder;
 import com.xxl.job.core.context.XxlJobHelper;
 import com.xxl.job.core.handler.annotation.XxlJob;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -22,7 +25,7 @@ import java.util.List;
 @SpringBootApplication
 @EnableMatrix
 @Slf4j
-public class DemoApp {
+public class DemoApp implements ApplicationRunner {
     public static void main(String[] args) {
         SpringApplication.run(DemoApp.class, args);
     }
@@ -44,5 +47,16 @@ public class DemoApp {
 
         List<Document> documents = documentMapper.selectList(new LambdaEsQueryWrapper<>());
         log.info("search list of documents:{}", documents);
+    }
+
+
+    @Autowired
+    CustomChannelBinder customChannelBinder;
+
+    @Override
+    public void run(ApplicationArguments args) {
+        for (int i = 0; i < 10; i++) {
+            customChannelBinder.streamTestMsg("第" + i + "条消息", i);
+        }
     }
 }

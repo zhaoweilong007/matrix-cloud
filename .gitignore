@@ -36,3 +36,6 @@ out/
 /deploy/elk/elasticsearch/nodes/**
 /deploy/redis/data
 /deploy/prometheus/grafana/**
+/deploy/rocketmq/data/**
+/deploy/rocketmq/broker1/logs
+/deploy/rocketmq/broker1/store
