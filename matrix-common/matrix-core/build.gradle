@@ -1,0 +1,7 @@
+dependencies {
+    api(project(':matrix-common:common-core'))
+}
+
+bootJar {
+    enabled = false
+}

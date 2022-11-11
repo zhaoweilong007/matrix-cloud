@@ -1,0 +1,4 @@
+dependencies {
+    implementation(project(":matrix-common:matrix-core"))
+    implementation(project(":matrix-common:matrix-web"))
+}

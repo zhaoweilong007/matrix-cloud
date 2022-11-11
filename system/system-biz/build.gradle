@@ -1,9 +1,0 @@
-dependencies {
-    implementation(project(":common:matrix-core"))
-    implementation(project(":common:matrix-web"))
-    implementation(project(":system:system-api"))
-}
-
-test {
-    enabled(false)
-}

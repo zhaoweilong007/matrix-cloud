@@ -1,0 +1,20 @@
+dependencies {
+    implementation(project(":matrix-common:matrix-core"))
+    implementation(project(":matrix-system:system-api"))
+
+    /*spring cloud*/
+    implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
+
+
+    /*spring cloud alibaba*/
+    implementation 'com.alibaba.cloud:spring-cloud-alibaba-sentinel-gateway'
+    implementation 'com.alibaba.csp:sentinel-datasource-nacos'
+
+
+    /*other*/
+    implementation "cn.dev33:sa-token-reactor-spring-boot-starter:1.30.0"
+}
+
+test {
+    enabled(false)
+}

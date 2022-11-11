@@ -1,7 +1,0 @@
-dependencies {
-    api(project(':common:common-core'))
-}
-
-bootJar {
-    enabled = false
-}

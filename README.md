@@ -47,9 +47,9 @@ Spring cloud matrix是微服务的脚手架，整合目前主流的微服务框�
 | grafana         | 监控展示    | http://localhost:3000                 | admin/admin       |
 | xxl-job-admin   | 分布式任务调度 | http://localhost:8090/xxl-job-admin   | admin/123456      |
 | rocketmqConsole | mq控制台   | http://localhost:19876/               | 无                 |
-| gateway         | 网关      | http://localhost:9000                 | 无                 |
-| system-server   | 系统服务    | http://localhost:9001                 | 管理员:admin/123456  |
-| doc             | 文档服务    | http://localhost:10000/doc.html       | admin/admin       |
+| matrix-gateway  | 网关      | http://localhost:9000                 | 无                 |
+| matrix-system   | 系统服务    | http://localhost:9001                 | 管理员:admin/123456  |
+| matrix-doc      | 文档服务    | http://localhost:10000/doc.html       | admin/admin       |
 
 ## ⏳功能开发进度
 
@@ -125,8 +125,8 @@ gateway使用alibaba sentinel集成，支持nacos动态路由配置
 
 ```groovy
 dependencies {
-    implementation(project(":common:matrix-core"))
-    implementation(project(":common:matrix-web"))
+    implementation(project(":matrix-common:matrix-core"))
+    implementation(project(":matrix-common:matrix-web"))
 }
 ```
 
@@ -223,9 +223,9 @@ matrix:
 ```groovy
 //定义需要构建docker的模块
 def javaMicroservices = [
-        project(':gateway'),
-        project(':system:system-biz'),
-        project(':doc'),
+        project(':matrix-gateway'),
+        project(':matrix-system:system-biz'),
+        project(':matrix-doc'),
         //添加自定义组件
         project(':youModuleName')
 ]
