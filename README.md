@@ -35,21 +35,22 @@ Spring cloud matrix是微服务的脚手架，整合目前主流的微服务框�
 
 ## 📌模块
 
-| 模块              | 描述      | 服务地址                                  | 默认用户密码            |
-|-----------------|---------|---------------------------------------|-------------------|
-| nacos           | 注册中心    | http://localhost:8848/nacos           | nacos/nacos       |
-| sentinel        | 流量卫兵    | http://localhost:8088/dashboard       | sentinel/sentinel |
-| seata           | 分布式事务   | http://localhost:7091/TransactionInfo | seata/seata       |
-| skyWalking      | 链路追踪    | http://localhost:8080/general         | 无                 |
-| elasticSearch   | 搜索引擎    | http://localhost:9200                 | elastic/changeme  |
-| kibana          | 日志分析    | http://locahost:5601                  | elastic/changeme  |
-| prometheus      | 监控      | http://localhost:9090                 | 无                 |
-| grafana         | 监控展示    | http://localhost:3000                 | admin/admin       |
-| xxl-job-admin   | 分布式任务调度 | http://localhost:8090/xxl-job-admin   | admin/123456      |
-| rocketmqConsole | mq控制台   | http://localhost:19876/               | 无                 |
-| matrix-gateway  | 网关      | http://localhost:9000                 | 无                 |
-| matrix-system   | 系统服务    | http://localhost:9001                 | 管理员:admin/123456  |
-| matrix-doc      | 文档服务    | http://localhost:10000/doc.html       | admin/admin       |
+| 模块              | 描述            | 服务地址                                  | 默认用户密码            |
+|-----------------|---------------|---------------------------------------|-------------------|
+| nacos           | 注册中心          | http://localhost:8848/nacos           | nacos/nacos       |
+| sentinel        | 流量卫兵          | http://localhost:8088/dashboard       | sentinel/sentinel |
+| seata           | 分布式事务         | http://localhost:7091/TransactionInfo | seata/seata       |
+| skyWalking      | 链路追踪          | http://localhost:8080/general         | 无                 |
+| elasticSearch   | 搜索引擎          | http://localhost:9200                 | elastic/changeme  |
+| kibana          | 日志分析          | http://locahost:5601                  | elastic/changeme  |
+| prometheus      | 监控            | http://localhost:9090                 | 无                 |
+| grafana         | 监控展示          | http://localhost:3000                 | admin/admin       |
+| xxl-job-admin   | 分布式任务调度       | http://localhost:8090/xxl-job-admin   | admin/123456      |
+| rocketmqConsole | mq控制台         | http://localhost:19876/               | 无                 |
+| matrix-gateway  | 网关            | http://localhost:9000                 | 无                 |
+| matrix-system   | 系统服务          | http://localhost:9001                 | 管理员:admin/123456  |
+| matrix-doc      | 文档服务          | http://localhost:10000/doc.html       | admin/admin       |
+| matrix-resource | OSS、SMS、Email | http://localhost:9003                 | 无                 |
 
 ## ⏳功能开发进度
 

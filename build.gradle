@@ -25,7 +25,8 @@ wrapper.setGradleVersion("7.4.2")
 //定义需要构建docker的模块
 def javaMicroservices = [project(':matrix-gateway'),
                          project(':matrix-system:system-biz'),
-                         project(':matrix-doc')]
+                         project(':matrix-doc'),
+                         project(':matrix-resource:resource-biz')]
 
 
 allprojects {

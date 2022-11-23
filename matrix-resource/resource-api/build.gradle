@@ -1,0 +1,7 @@
+dependencies {
+    implementation(project(":matrix-common:common-core"))
+}
+
+bootJar {
+    enabled = false
+}

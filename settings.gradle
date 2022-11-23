@@ -9,4 +9,6 @@ include 'matrix-system'
 include 'matrix-system:system-api'
 include 'matrix-system:system-biz'
 include 'matrix-demo'
-
+include 'matrix-resource'
+include 'matrix-resource:resource-api'
+include 'matrix-resource:resource-biz'

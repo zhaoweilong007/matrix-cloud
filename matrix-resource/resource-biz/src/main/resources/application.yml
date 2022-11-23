@@ -1,0 +1,24 @@
+server:
+  port: 9003
+
+spring:
+  application:
+    name: resource
+  profiles:
+    active: dev
+  cloud:
+    nacos:
+      server-addr: ${NACOS_SERVER_ADDRESS:localhost:8848}
+      username: ${NACOS_USERNAME:nacos}
+      password: ${NACOS_PASSWD:nacos}
+      config:
+        file-extension: yml
+        shared-configs:
+          - data-id: application-common.yml
+            refresh: true
+logging:
+  # 配置logstash tcp地址
+  stash:
+    address: ${LOGSTASH_ADDRESS:localhost:5000}
+  file:
+    path: /var/logs
