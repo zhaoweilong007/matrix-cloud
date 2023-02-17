@@ -66,6 +66,47 @@ subprojects {
             mavenBom "com.alibaba.cloud:spring-cloud-alibaba-dependencies:${springCloudAlibabaVersion}"
             mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
         }
+
+        dependencies {
+
+            dependency 'io.seata:seata-spring-boot-starter:1.5.2'
+            dependency 'com.baomidou:mybatis-plus-boot-starter:3.5.2'
+            dependency 'cn.easy-es:easy-es-boot-starter:1.0.3'
+
+            dependency "cn.dev33:sa-token-spring-boot-starter:1.31.0"
+            dependency 'com.github.xiaoymin:knife4j-micro-spring-boot-starter:3.0.3'
+            dependency 'com.alibaba:druid-spring-boot-starter:1.2.11'
+            dependency 'com.baomidou:lock4j-redisson-spring-boot-starter:2.2.2'
+            dependency "com.github.xiaoymin:knife4j-aggregation-spring-boot-starter:2.0.9"
+            dependency "cn.dev33:sa-token-reactor-spring-boot-starter:1.30.0"
+
+
+            /*other*/
+            dependency 'mysql:mysql-connector-java:8.0.30'
+            dependency "cn.dev33:sa-token-dao-redis-jackson:1.31.0"
+            dependency "cn.dev33:sa-token-jwt:1.31.0"
+            dependency "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.4"
+            dependency 'io.swagger:swagger-annotations:1.5.22'
+            dependency 'com.xuxueli:xxl-job-core:2.3.1'
+
+
+            /*apm 监控相关*/
+            dependency 'org.apache.skywalking:apm-toolkit-logback-1.x:8.12.0'
+            dependency 'org.apache.skywalking:apm-toolkit-trace:8.12.0'
+            dependency 'org.apache.skywalking:apm-toolkit-opentracing:8.12.0'
+            dependency 'net.logstash.logback:logstash-logback-encoder:7.2'
+            dependency 'io.micrometer:micrometer-registry-prometheus:1.9.5'
+
+            /*utils*/
+            dependency 'one.util:streamex:0.8.1'
+            dependency "cn.hutool:hutool-all:5.8.3"
+            dependency "com.google.guava:guava:31.1-jre"
+            dependency "com.google.code.gson:gson:2.9.0"
+            dependency "com.alibaba.fastjson2:fastjson2:2.0.8"
+            dependency 'org.apache.commons:commons-pool2:2.11.1'
+            dependency 'com.github.ben-manes.caffeine:caffeine:3.1.1'
+            dependency 'com.alibaba:transmittable-thread-local:2.13.2'
+        }
     }
 
     dependencies {

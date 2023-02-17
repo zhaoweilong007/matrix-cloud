@@ -1,10 +1,10 @@
 dependencies {
     api(project(":matrix-common:common-core"))
     api('org.springframework.boot:spring-boot-starter-web')
-    api("cn.dev33:sa-token-spring-boot-starter:1.31.0")
-    api 'com.github.xiaoymin:knife4j-micro-spring-boot-starter:3.0.3'
-    api 'com.alibaba:druid-spring-boot-starter:1.2.11'
-    api 'com.baomidou:lock4j-redisson-spring-boot-starter:2.2.2'
+    api("cn.dev33:sa-token-spring-boot-starter")
+    api 'com.github.xiaoymin:knife4j-micro-spring-boot-starter'
+    api 'com.alibaba:druid-spring-boot-starter'
+    api 'com.baomidou:lock4j-redisson-spring-boot-starter'
 }
 
 bootJar {
