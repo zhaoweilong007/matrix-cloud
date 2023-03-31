@@ -23,7 +23,9 @@ public enum BusinessErrorType implements ErrorType {
 
     USER_EXISTS(4001, "用户已存在"),
     USER_NOT_EXISTS(4001, "用户不存在"),
-    USER_HAS_BEEN_LOCKED(4002, "用户已被锁定");
+    USER_HAS_BEEN_LOCKED(4002, "用户已被锁定"),
+
+    UPLOAD_ERROR(5000,"上传失败");
 
 
     private final Integer code;

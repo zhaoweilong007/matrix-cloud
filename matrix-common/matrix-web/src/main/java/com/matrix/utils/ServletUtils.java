@@ -1,6 +1,7 @@
 package com.matrix.utils;
 
 import cn.hutool.core.convert.Convert;
+import cn.hutool.core.lang.Assert;
 import cn.hutool.extra.servlet.ServletUtil;
 import cn.hutool.http.HttpStatus;
 import lombok.experimental.UtilityClass;
@@ -108,6 +109,17 @@ public class ServletUtils extends ServletUtil {
     }
 
     public static String getHeader(HttpServletRequest request, String name) {
+        String value = request.getHeader(name);
+        if (StringUtils.isEmpty(value)) {
+            return StringUtils.EMPTY;
+        }
+        return urlDecode(value);
+    }
+
+    public static String getHeader(String name) {
+        final RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+        final HttpServletRequest request = (HttpServletRequest) requestAttributes;
+        Assert.notNull(request);
         String value = request.getHeader(name);
         if (StringUtils.isEmpty(value)) {
             return StringUtils.EMPTY;
