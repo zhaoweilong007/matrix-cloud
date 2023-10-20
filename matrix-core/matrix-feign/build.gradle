@@ -1,0 +1,11 @@
+dependencies {
+    api project(':matrix-core:matrix-auto')
+    api project(':matrix-core:matrix-validator')
+    api('org.springframework.cloud:spring-cloud-starter-openfeign')
+    api('com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-discovery')
+    api 'org.springframework.cloud:spring-cloud-starter-loadbalancer'
+    api "cn.dev33:sa-token-core"
+
+    compileOnly 'net.dreamlu:mica-auto'
+    annotationProcessor "net.dreamlu:mica-auto"
+}

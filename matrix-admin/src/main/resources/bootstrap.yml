@@ -1,0 +1,19 @@
+server:
+  port: 9002
+
+spring:
+  boot:
+    admin:
+      discovery:
+        ignored-services:
+          - matrix-admin
+  security:
+    user:
+      name: ${ADMIN_USERNAME:admin}
+      password: ${ADMIN_PASSWORD:admin}
+  application:
+    name: matrix-admin
+  profiles:
+    active: ${PROFILE:dev}
+  codec:
+    max-in-memory-size: 2097152

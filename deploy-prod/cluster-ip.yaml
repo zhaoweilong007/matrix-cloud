@@ -1,0 +1,44 @@
+version: "3.8"
+services:
+  nacos1:
+    image: nacos/nacos-server:${NACOS_VERSION}
+    container_name: nacos1
+    volumes:
+      - ./cluster-logs/nacos1:/home/nacos/logs
+    ports:
+      - "7848:7848"
+      - "8848:8848"
+      - "9848:9848"
+      - "9849:9849"
+    env_file:
+      - ./env/nacos-ip.env
+    restart: always
+
+  nacos2:
+    image: nacos/nacos-server:${NACOS_VERSION}
+    container_name: nacos2
+    volumes:
+      - ./cluster-logs/nacos2:/home/nacos/logs
+    ports:
+      - "7848:7848"
+      - "8848:8848"
+      - "9848:9848"
+      - "9849:9849"
+    env_file:
+      - ./env/nacos-ip.env
+    restart: always
+
+  nacos3:
+    image: nacos/nacos-server:${NACOS_VERSION}
+    container_name: nacos3
+    volumes:
+      - ./cluster-logs/nacos3:/home/nacos/logs
+    ports:
+      - "7848:7848"
+      - "8848:8848"
+      - "9848:9848"
+      - "9849:9849"
+    env_file:
+      - ./env/nacos-ip.env
+    restart: always
+

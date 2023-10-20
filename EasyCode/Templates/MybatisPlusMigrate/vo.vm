@@ -1,0 +1,31 @@
+##导入宏定义
+$!{define.vm}
+$!{mybatisCodehelper.vm}
+
+#set($voSavePath = $tool.append(${javamodelSrcFolder},"/",${voPackageName.replace(".","/")}))
+
+$!callback.setSavePath($voSavePath)
+$!callback.setFileName($tool.append($tableInfo.name,"Vo", ".java"))
+
+##自动导入包（全局变量）
+package ${voPackageName};
+$!autoImport
+import java.io.Serializable;
+import lombok.Data;
+import io.swagger.v3.oas.annotations.media.Schema;
+import java.time.LocalDateTime;
+
+##表注释（宏定义）
+#tableComment("表实体类")
+@Data
+@Schema(description = "${tableInfo.comment}")
+public class $!{tableInfo.name}Vo  {
+#foreach($column in $tableInfo.fullColumn)
+
+@Schema(description = "${column.comment}")
+private $!{tool.getClsNameByFullName($column.type)} $!{column.name};
+#end
+
+
+
+}

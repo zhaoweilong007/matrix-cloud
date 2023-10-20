@@ -1,0 +1,6 @@
+dependencies {
+    api project(":matrix-core:matrix-auto")
+    api 'com.github.xiaoymin:knife4j-openapi3-jakarta-spring-boot-starter'
+    compileOnly 'net.dreamlu:mica-auto'
+    annotationProcessor "net.dreamlu:mica-auto"
+}

@@ -1,0 +1,10 @@
+dependencies {
+    api(project(":matrix-core:matrix-auto"))
+    api(project(":matrix-core:matrix-redis"))
+    api "cn.dev33:sa-token-core"
+    api "cn.dev33:sa-token-jwt"
+    api "cn.dev33:sa-token-spring-boot3-starter"
+
+    compileOnly 'net.dreamlu:mica-auto'
+    annotationProcessor "net.dreamlu:mica-auto"
+}

@@ -1,0 +1,182 @@
+version: '3.8'
+
+networks:
+  matrix_cloud:
+    name: matrix_cloud
+    driver: bridge
+
+services:
+  sentinel:
+    image: 172.18.157.251:8888/matrix-cloud/sentinel-dashboard
+    container_name: sentinel
+    environment:
+      PARAM: -Dserver.port=8088 -Dcsp.sentinel.dashboard.server=172.18.157.251:8088 -Dsentinel.dashboard.auth.password=matrix@!@#2023 -Dproject.name=sentinel-dashboard -Ddatasource.provider=nacos -Ddatasource.provider.nacos.server-addr=172.18.157.251:8848 -Ddatasource.provider.nacos.username=nacos -Ddatasource.provider.nacos.password=matrix@!@#2023 -Ddatasource.provider.nacos.namespace=prod
+      TZ: Asia/Shanghai
+    ports:
+      - "8088:8088"
+    restart: always
+    networks:
+      - matrix_cloud
+
+  xxl-job-admin:
+    image: xuxueli/xxl-job-admin:${XXL_JOB_VERSION}
+    container_name: xxl-job-admin
+    volumes:
+      - ./xxl-job/logs:/data/applogs
+      - ./xxl-job/application.properties:/application.properties
+    environment:
+      TZ: Asia/Shanghai
+      PARAMS: --spring.config.location=/application.properties
+      JAVA_OPTS: -Xmx512m
+    ports:
+      - "8090:8080"
+    networks:
+      - matrix_cloud
+    restart: always
+
+  seata-server:
+    image: seataio/seata-server:${SEATA_VERSION}
+    container_name: seata-server
+    env_file:
+      - ./env/seata.env
+    environment:
+      # 时区上海
+      TZ: Asia/Shanghai
+    ports:
+      - "8091:8091"
+      - "7091:7091"
+    volumes:
+      - ./seata/application.yml:/seata-server/resources/application.yml
+    restart: always
+    privileged: true
+    networks:
+      - matrix_cloud
+
+  es:
+    image: elasticsearch:${ELASTIC_VERSION}
+    container_name: es
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      # 设置集群名称
+      cluster.name: elasticsearch
+      # 以单一节点模式启动
+      discovery.type: single-node
+      ES_JAVA_OPTS: "-Xms1g -Xmx1g"
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:-}
+    volumes:
+      - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro,z
+      - ./elasticsearch/plugins:/usr/share/elasticsearch/plugins
+      - ./elasticsearch/data:/usr/share/elasticsearch/data
+      - ./elasticsearch/logs:/usr/share/elasticsearch/logs
+    networks:
+      - matrix_cloud
+    restart: always
+
+  setup:
+    profiles:
+      - setup
+    build:
+      context: setup/
+      args:
+        ELASTIC_VERSION: ${ELASTIC_VERSION}
+    init: true
+    volumes:
+      - ./setup/entrypoint.sh:/entrypoint.sh:ro,Z
+      - ./setup/lib.sh:/lib.sh:ro,Z
+      - ./setup/roles:/roles:ro,Z
+    environment:
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:-}
+    networks:
+      - matrix_cloud
+    depends_on:
+      - es
+
+  sky-oap:
+    image: apache/skywalking-oap-server:${SKYWALING_VERSION}
+    container_name: sky-oap
+    volumes:
+      - ./skywalking:/skywalking/ext-config
+    ports:
+      - "11800:11800"
+      - "12800:12800"
+    environment:
+      TZ: Asia/Shanghai
+    depends_on:
+      - es
+    networks:
+      - matrix_cloud
+    restart: always
+
+  sky-ui:
+    image: apache/skywalking-ui:${SKYWALING_UI_VERSION}
+    container_name: sky-ui
+    depends_on:
+      - sky-oap
+    ports:
+      - "9080:8080"
+    environment:
+      TZ: Asia/Shanghai
+      SW_OAP_ADDRESS: http://sky-oap:12800
+    networks:
+      - matrix_cloud
+    restart: always
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/rules:/etc/prometheus/rules
+    ports:
+      - "9090:9090"
+    restart: always
+    networks:
+      - matrix_cloud
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    volumes:
+      - ./prometheus/grafana/data:/var/lib/grafana
+    depends_on:
+      - prometheus
+    ports:
+      - "3000:3000"
+    restart: always
+    user: "0"
+    networks:
+      - matrix_cloud
+
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: node-exporter
+    ports:
+      - "9100:9100"
+    restart: always
+    networks:
+      - matrix_cloud
+
+  alertmanager:
+    image: prom/alertmanager:latest
+    container_name: alertmanager
+    ports:
+      - "9093:9093"
+    volumes:
+      - ./prometheus/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    restart: always
+    networks:
+      - matrix_cloud
+
+  dingtalk:
+    image: timonwong/prometheus-webhook-dingtalk:v2.1.0
+    container_name: dingtalk
+    ports:
+      - "8060:8060"
+    volumes:
+      - ./dingtalk/config.yml:/etc/prometheus-webhook-dingtalk/config.yml
+    restart: always
+    networks:
+      - matrix_cloud
+

@@ -1,0 +1,92 @@
+apply plugin: "java-platform"
+apply from: "${rootProject.projectDir}/version.gradle"
+
+javaPlatform {
+    allowDependencies()
+}
+
+
+dependencies {
+    constraints {
+        /**
+         * springboot
+         */
+        api "io.seata:seata-spring-boot-starter:$seataVerson"
+        api "com.baomidou:mybatis-plus-boot-starter:$mybatisPlusVersion"
+        api "cn.easy-es:easy-es-boot-starter:$esBootVersion"
+        api "org.redisson:redisson-spring-boot-starter:$redissonVersion"
+        api "com.baomidou:lock4j-redisson-spring-boot-starter:$lock4jVersion"
+        api "com.alibaba:druid-spring-boot-starter:$druidVersion"
+        api "cn.dev33:sa-token-spring-boot3-starter:$saTokenVersion"
+        api "cn.dev33:sa-token-reactor-spring-boot3-starter:$saTokenVersion"
+        api "com.github.yulichang:mybatis-plus-join-boot-starter:$mybaitsPlusJoinVersion"
+        api "cn.zhxu:bean-searcher-boot-starter:$beanSearchVersion"
+        api "de.codecentric:spring-boot-admin-starter-server:$adminServerVersion"
+        api "com.github.xiaoymin:knife4j-openapi3-jakarta-spring-boot-starter:$knife4jVersion"
+        api "com.github.xiaoymin:knife4j-gateway-spring-boot-starter:$knife4jVersion"
+        api "com.baomidou:dynamic-datasource-spring-boot3-starter:$dynamicDatasourceVersion"
+        api "com.fhs-opensource:easy-trans-spring-boot-starter:$easyTransVersion"
+        // https://mvnrepository.com/artifact/org.dromara.sms4j/sms4j-spring-boot-starter
+        api "org.dromara.sms4j:sms4j-spring-boot-starter:$sms4jVersion"
+
+        /*other*/
+        api "mysql:mysql-connector-java:$mysqlConnectorVersion"
+        api "com.alibaba:druid:$druidVersion"
+        api "com.alibaba.csp:sentinel-core:$sentinelVersion"
+        api "cn.dev33:sa-token-redisson-jackson2:$saTokenVersion"
+        api "cn.dev33:sa-token-jwt:$saTokenVersion"
+        api "cn.dev33:sa-token-core:$saTokenVersion"
+        api "com.xuxueli:xxl-job-core:$xxlJobVersion"
+        api "cn.zhxu:bean-searcher:$beanSearchVersion"
+        api "com.fhs-opensource:easy-trans-mybatis-plus-extend:$easyTransVersion"
+        api "com.fhs-opensource:easy-trans-anno:$easyTransVersion"
+
+
+        /*apm 监控相关*/
+        api "org.apache.skywalking:apm-toolkit-logback-1.x:$apmVersion"
+        api "org.apache.skywalking:apm-toolkit-trace:$apmVersion"
+        api "org.apache.skywalking:apm-toolkit-opentracing:$apmVersion"
+        api "io.micrometer:micrometer-registry-prometheus:$prometheusVersion"
+
+        /*utils*/
+        api "one.util:streamex:$streamexVersion"
+        api "cn.hutool:hutool-all:$hutoolVersion"
+        api "com.google.guava:guava:$guavaVersion"
+        api "com.google.code.gson:gson:$gsonVersion"
+        api "com.alibaba.fastjson2:fastjson2:$fastjson2Version"
+        api "org.apache.commons:commons-pool2:$commonspoolVersion"
+        api "com.github.ben-manes.caffeine:caffeine:$caffeineVersion"
+        api "com.alibaba:transmittable-thread-local:$transmittableVerison"
+        api "org.apache.commons:commons-lang3:$commonsLang3Version"
+        api "org.apache.commons:commons-collections4:$commonsCollections4Version"
+        api "com.alibaba:easyexcel:$easyexcelVersion"
+        api "eu.bitwalker:UserAgentUtils:$UserAgentVerison"
+        api "org.bouncycastle:bcpkix-jdk15on:$bcpkixVersion"
+        api "org.apache.httpcomponents.client5:httpclient5:$httpClientVersion"
+
+        api "io.swagger.core.v3:swagger-annotations:$swaggerVerison"
+        api "io.swagger.core.v3:swagger-models:$swaggerVerison"
+        api "com.baomidou:mybatis-plus-extension:$mybatisPlusVersion"
+        api "com.baomidou:mybatis-plus-generator:$mybatisPlusVersion"
+        api "com.baomidou:mybatis-plus-annotation:$mybatisPlusVersion"
+        api "com.baomidou:mybatis-plus-core:$mybatisPlusVersion"
+
+        api "io.vavr:vavr:$vavrVerison"
+        api "org.jooq:jool:$joolVersion"
+        api "org.joda:joda-money:$jodaMoneyVersion"
+        api "jakarta.servlet:jakarta.servlet-api:$servletVersion"
+        api "jakarta.validation:jakarta.validation-api:$validatorVersion"
+        api "io.github.biezhi:TinyPinyin:$pinyinVersion"
+
+
+        api "org.projectlombok:lombok:$lombokVersion"
+
+        /**
+         * 第三方sdk
+         */
+        api "com.aliyun.openservices:ons-client:$onsClientVersion"
+        api "com.github.binarywang:wx-java-miniapp-spring-boot-starter:$WxVersion"
+
+
+    }
+}

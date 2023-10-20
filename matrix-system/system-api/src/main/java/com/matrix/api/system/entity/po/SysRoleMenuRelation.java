@@ -21,6 +21,5 @@ public class SysRoleMenuRelation extends TenantPo<SysRoleMenuRelation> {
     private Long menuId;
 
 
-
 }
 

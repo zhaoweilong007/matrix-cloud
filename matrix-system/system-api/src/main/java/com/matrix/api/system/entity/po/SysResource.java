@@ -24,7 +24,5 @@ public class SysResource extends TenantPo<SysResource> {
     private Long categoryId;
 
 
-
-
 }
 

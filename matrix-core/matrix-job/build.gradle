@@ -1,0 +1,6 @@
+dependencies {
+    api project(':matrix-core:matrix-auto')
+    api 'net.dreamlu:mica-jobs'
+    compileOnly 'net.dreamlu:mica-auto'
+    annotationProcessor "net.dreamlu:mica-auto"
+}

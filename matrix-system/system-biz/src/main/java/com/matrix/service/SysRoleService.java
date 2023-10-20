@@ -19,12 +19,12 @@ public interface SysRoleService extends IService<SysRole> {
     Boolean update(SysRoleDto sysRoleDto);
 
 
-
-    Boolean assignRole(Long userId,List<Long> roleIds);
+    Boolean assignRole(Long userId, List<Long> roleIds);
 
 
     /**
      * 获取角色列表
+     *
      * @param id
      * @return
      */

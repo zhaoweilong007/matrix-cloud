@@ -1,20 +1,27 @@
+springBoot {
+    buildInfo()
+}
+bootJar {
+    enabled = true
+}
+
 dependencies {
-    implementation(project(":matrix-common:matrix-core"))
-    implementation(project(":matrix-system:system-api"))
+    implementation project(':matrix-core:matrix-strategy')
+    implementation project(':matrix-core:matrix-config')
+    implementation project(':matrix-core:matrix-feign')
+    implementation project(':matrix-core:matrix-sentinel')
+    implementation project(':matrix-core:matrix-redis')
+    implementation project(':matrix-core:matrix-log')
+    implementation project(':matrix-core:matrix-prometheus')
+    implementation(project(":matrix-core:matrix-auth")) {
+        exclude group: "cn.dev33", module: "sa-token-spring-boot3-starter"
+    }
 
     /*spring cloud*/
     implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
-
-
     /*spring cloud alibaba*/
     implementation 'com.alibaba.cloud:spring-cloud-alibaba-sentinel-gateway'
-    implementation 'com.alibaba.csp:sentinel-datasource-nacos'
-
-
-    /*other*/
-    implementation "cn.dev33:sa-token-reactor-spring-boot-starter"
-}
-
-test {
-    enabled(false)
+    /*spring boot*/
+    implementation "cn.dev33:sa-token-reactor-spring-boot3-starter"
+    implementation 'com.github.xiaoymin:knife4j-gateway-spring-boot-starter'
 }

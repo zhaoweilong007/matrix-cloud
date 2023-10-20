@@ -1,0 +1,10 @@
+dependencies {
+    api project(':matrix-core:matrix-auto')
+
+    compileOnly project(':matrix-core:matrix-redis')
+    compileOnly 'org.springframework:spring-web'
+    compileOnly 'org.aspectj:aspectjweaver'
+    compileOnly 'cn.dev33:sa-token-core'
+    compileOnly 'net.dreamlu:mica-auto'
+    annotationProcessor "net.dreamlu:mica-auto"
+}

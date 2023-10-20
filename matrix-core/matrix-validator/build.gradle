@@ -1,0 +1,7 @@
+dependencies {
+    implementation project(':matrix-core:matrix-common')
+    api('org.springframework.boot:spring-boot-starter-validation')
+
+    compileOnly 'net.dreamlu:mica-auto'
+    annotationProcessor "net.dreamlu:mica-auto"
+}

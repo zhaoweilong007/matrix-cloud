@@ -1,0 +1,15 @@
+springBoot {
+    buildInfo()
+}
+bootJar {
+    enabled = true
+}
+dependencies {
+    implementation 'de.codecentric:spring-boot-admin-starter-server'
+    implementation('org.springframework.boot:spring-boot-starter-web')
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation('org.springframework.boot:spring-boot-starter-actuator')
+    implementation(project(':matrix-core:matrix-config'))
+    implementation('com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-discovery')
+
+}

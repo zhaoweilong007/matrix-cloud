@@ -1,0 +1,6 @@
+dependencies {
+    api project(':matrix-core:matrix-common')
+    api 'org.springframework.boot:spring-boot-starter-test'
+    api 'org.mockito:mockito-inline:5.2.0'
+    api 'uk.co.jemos.podam:podam:8.0.0.RELEASE'
+}

@@ -11,7 +11,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @since ${DATE} ${TIME}
  **/
 @SpringBootApplication
-@EnableMatrix
+@EnableDiscoveryClient
+@EnableFeign
 public class SystemApp {
     public static void main(String[] args) {
         SpringApplication.run(SystemApp.class, args);

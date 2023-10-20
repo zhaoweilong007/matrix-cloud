@@ -1,0 +1,35 @@
+##导入宏定义
+$!{define.vm}
+
+##定义初始变量
+$!{mybatisCodehelper.vm}
+#set($apiName = $tool.append($tableInfo.name, "Api"))
+##设置回调
+#set($apiSavePath = $tool.append(${apiSrcFolder},"/",${apiPackageName.replace(".","/")}))
+
+$!callback.setSavePath($apiSavePath)
+$!callback.setFileName($tool.append($apiName, ".java"))
+
+#set($daoName = $tool.append($tableInfo.name, ${daoSuffix}))
+#set($serviceName = $tool.append($tableInfo.name, "Service"))
+#set($voName = $tool.append($tableInfo.name, "Vo"))
+#set($dtoName = $tool.append($tableInfo.name, "QueryDto"))
+
+
+package $!{apiPackageName};
+import $!{modelPackageName}.$!{tableInfo.name};
+import $!{voPackageName}.$!{tableInfo.name}Vo;
+import $!{dtoPackageName}.$!{tableInfo.name}QueryDto;
+import com.matrix.api.api.IBaseFeignClient;
+import com.matrix.common.constant.ServerNameConstants;
+import org.springframework.cloud.openfeign.FeignClient;
+
+
+##表注释（宏定义）
+#tableComment("表服务接口")
+@FeignClient(contextId = "$!{apiName}", value = ServerNameConstants.SYSTEM, path = $!{apiName}.PREFIX)
+public interface $!{apiName} extends IBaseFeignClient<$!tableInfo.name,$!voName,$!dtoName> {
+
+String PREFIX = "/$!{tableInfo.name}";
+
+}

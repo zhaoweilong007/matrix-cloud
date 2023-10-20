@@ -1,0 +1,19 @@
+route:
+  # 接收到告警后到自定义分组
+  group_by: [ "alertname" ]
+  # 分组创建后初始化等待时长
+  group_wait: 30s
+  # 告警信息发送之前的等待时长
+  group_interval: 30s
+  # 重复报警的间隔时长
+  repeat_interval: 3m
+  # 默认消息接收
+  receiver: "dingtalk"
+
+receivers:
+  # 钉钉
+  - name: 'dingtalk'
+    webhook_configs:
+      # prometheus-webhook-dingtalk服务的地址
+      - url: http://dingtalk:8060/dingtalk/webhook_mention_all/send
+        send_resolved: true

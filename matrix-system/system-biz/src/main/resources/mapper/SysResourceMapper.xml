@@ -34,12 +34,12 @@
     <select id="getResourceByAdminId" resultMap="BaseResultMap">
         select *
         from sys_resource sr
-                 left join (select srrr.resource_id
-                            from sys_role_resource_relation srrr
-                                     left join sys_admin_role_relation sarr
-                                               on srrr.role_id = sarr.role_id
-                            where sarr.admin_id = #{adminId}) res
-                           on res.resource_id = sr.id
+        left join (select srrr.resource_id
+        from sys_role_resource_relation srrr
+        left join sys_admin_role_relation sarr
+        on srrr.role_id = sarr.role_id
+        where sarr.admin_id = #{adminId}) res
+        on res.resource_id = sr.id
         where sr.deleted = 0
         group by sr.id
     </select>
@@ -47,9 +47,9 @@
     <select id="getResourceByRoleId" resultMap="BaseResultMap">
         select sr.*
         from sys_resource sr
-                 left join sys_role_resource_relation srrr on sr.id = srrr.resource_id
+        left join sys_role_resource_relation srrr on sr.id = srrr.resource_id
         where srrr.role_id = #{roleId}
-          and sr.deleted = 0
+        and sr.deleted = 0
         group by sr.id
     </select>
 

@@ -1,0 +1,23 @@
+# 详细配置参考官方 http://seata.io/zh-cn/docs/user/configurations.html
+seata:
+  tx-service-group: ${spring.application.name}-group
+  config:
+    type: nacos
+    nacos:
+      server-addr: ${spring.cloud.nacos.server-addr}
+      group: SEATA_GROUP
+      namespace: ${spring.profiles.active}
+      username: nacos
+      password: nacos
+      data-id: seataServer.properties
+  registry:
+    type: nacos
+    nacos:
+      application: seata-server
+      server-addr: ${spring.cloud.nacos.server-addr}
+      group: SEATA_GROUP
+      namespace: ${spring.profiles.active}
+      username: nacos
+      password: nacos
+
+

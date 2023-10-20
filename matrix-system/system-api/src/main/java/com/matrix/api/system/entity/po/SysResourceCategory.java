@@ -20,6 +20,5 @@ public class SysResourceCategory extends TenantPo<SysResourceCategory> {
     private Integer sort;
 
 
-
 }
 
