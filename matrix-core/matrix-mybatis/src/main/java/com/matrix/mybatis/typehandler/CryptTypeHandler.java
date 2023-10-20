@@ -1,6 +1,6 @@
 package com.matrix.mybatis.typehandler;
 
-import com.matrix.mybatis.utils.UnicodeCryptUtil;
+import com.open.capacity.db.utils.UnicodeCryptUtil;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedTypes;

@@ -6,24 +6,22 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.servlet.JakartaServletUtil;
 import com.alibaba.fastjson2.JSON;
 import com.matrix.common.constant.CommonConstants;
-import com.matrix.common.result.R;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.net.URLEncoder;
-import java.util.Objects;
 import org.springframework.http.MediaType;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.util.Objects;
+
 /**
  * 客户端工具类
  */
 public class ServletUtils extends JakartaServletUtil {
-
-    public static final String REQUEST_ATTRIBUTE_COMMON_RESULT = "common_result";
 
 
     public static Long getUserIdByRequestHead() {
@@ -127,13 +125,5 @@ public class ServletUtils extends JakartaServletUtil {
     public static boolean isServlet() {
         final RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
         return requestAttributes != null;
-    }
-
-    public static void setCommonResult(HttpServletRequest request, R<?> body) {
-        request.setAttribute(REQUEST_ATTRIBUTE_COMMON_RESULT, body);
-    }
-
-    public static R<?> getCommonResult(HttpServletRequest request) {
-        return (R<?>) request.getAttribute(REQUEST_ATTRIBUTE_COMMON_RESULT);
     }
 }

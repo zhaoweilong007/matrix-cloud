@@ -5,17 +5,18 @@ import com.matrix.common.constant.CacheConstants;
 import com.matrix.common.model.SysDictDataVo;
 import com.matrix.common.result.R;
 import com.matrix.common.service.IDictService;
+import com.matrix.common.util.StreamUtils;
+import com.matrix.common.util.StringUtils;
 import com.matrix.common.util.VUtils;
-import com.matrix.common.util.collection.StreamUtils;
-import com.matrix.common.util.string.StringUtils;
 import com.matrix.redis.utils.RedisUtils;
 import com.matrix.translation.api.client.IRemoteDictService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 /**
  * 字典服务服务

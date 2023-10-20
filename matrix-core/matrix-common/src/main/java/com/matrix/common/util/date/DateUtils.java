@@ -1,200 +1,198 @@
 package com.matrix.common.util.date;
 
-import java.lang.management.ManagementFactory;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.date.LocalDateTimeUtil;
+
+import java.time.*;
 import java.util.Calendar;
 import java.util.Date;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-import org.apache.commons.lang3.time.DateFormatUtils;
 
 /**
  * 时间工具类
  */
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
-
-    public static final String YYYY = "yyyy";
-
-    public static final String YYYY_MM = "yyyy-MM";
-
-    public static final String YYYYMMDD = "yyyyMMdd";
-
-    public static final String YYYY_MM_DD = "yyyy-MM-dd";
-
-    public static final String BIAS_YYYYMMDD = "yyyy/MM/dd";
-
-    public static final String YYYYMMDDHHMMSS = "yyyyMMddHHmmss";
-
-    public static final String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";
-
-    private static final String[] PARSE_PATTERNS = {
-        "yyyy-MM-dd", "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm", "yyyy-MM",
-        "yyyy/MM/dd", "yyyy/MM/dd HH:mm:ss", "yyyy/MM/dd HH:mm", "yyyy/MM",
-        "yyyy.MM.dd", "yyyy.MM.dd HH:mm:ss", "yyyy.MM.dd HH:mm", "yyyy.MM"};
+public class DateUtils {
 
     /**
-     * 获取当前Date型日期
+     * 时区 - 默认
+     */
+    public static final String TIME_ZONE_DEFAULT = "GMT+8";
+
+    /**
+     * 秒转换成毫秒
+     */
+    public static final long SECOND_MILLIS = 1000;
+
+    public static final String FORMAT_YEAR_MONTH_DAY_HOUR_MINUTE_SECOND = "yyyy-MM-dd HH:mm:ss";
+
+    /**
+     * 将 LocalDateTime 转换成 Date
      *
-     * @return Date() 当前日期
+     * @param date LocalDateTime
+     * @return LocalDateTime
      */
-    public static Date getNowDate() {
-        return new Date();
+    public static Date of(LocalDateTime date) {
+        // 将此日期时间与时区相结合以创建 ZonedDateTime
+        ZonedDateTime zonedDateTime = date.atZone(ZoneId.systemDefault());
+        // 本地时间线 LocalDateTime 到即时时间线 Instant 时间戳
+        Instant instant = zonedDateTime.toInstant();
+        // UTC时间(世界协调时间,UTC + 00:00)转北京(北京,UTC + 8:00)时间
+        return Date.from(instant);
     }
 
     /**
-     * 获取当前日期, 默认格式为yyyy-MM-dd
+     * 将 Date 转换成 LocalDateTime
      *
-     * @return String
+     * @param date Date
+     * @return LocalDateTime
      */
-    public static String getDate() {
-        return dateTimeNow(YYYY_MM_DD);
+    public static LocalDateTime of(Date date) {
+        // 转为时间戳
+        Instant instant = date.toInstant();
+        // UTC时间(世界协调时间,UTC + 00:00)转北京(北京,UTC + 8:00)时间
+        return LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
     }
 
-    public static String getTime() {
-        return dateTimeNow(YYYY_MM_DD_HH_MM_SS);
+    public static Date addTime(Duration duration) {
+        return new Date(System.currentTimeMillis() + duration.toMillis());
     }
 
-    public static String dateTimeNow() {
-        return dateTimeNow(YYYYMMDDHHMMSS);
+    public static boolean isExpired(Date time) {
+        return System.currentTimeMillis() > time.getTime();
     }
 
-    public static String dateTimeNow(final String format) {
-        return parseDateToStr(format, new Date());
+    public static boolean isExpired(LocalDateTime time) {
+        LocalDateTime now = LocalDateTime.now();
+        return now.isAfter(time);
     }
 
-    public static String date(final Date date) {
-        return parseDateToStr(YYYY, date);
-    }
-
-    public static String dateTime(final Date date) {
-        return parseDateToStr(YYYY_MM_DD, date);
-    }
-
-    public static String dateTimeNum(final Date date) {
-        return parseDateToStr(YYYYMMDD, date);
-    }
-
-    public static String parseDateToStr(final String format, final Date date) {
-        return new SimpleDateFormat(format).format(date);
-    }
-
-    public static Date dateTime(final String format, final String ts) {
-        try {
-            return new SimpleDateFormat(format).parse(ts);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
+    public static long diff(Date endTime, Date startTime) {
+        return endTime.getTime() - startTime.getTime();
     }
 
     /**
-     * 日期路径 即年/月/日 如2018/08/08
+     * 创建指定时间
+     *
+     * @param year  年
+     * @param mouth 月
+     * @param day   日
+     * @return 指定时间
      */
-    public static String datePath() {
-        Date now = new Date();
-        return DateFormatUtils.format(now, "yyyy/MM/dd");
+    public static Date buildTime(int year, int mouth, int day) {
+        return buildTime(year, mouth, day, 0, 0, 0);
+    }
+
+    public static LocalDateTime buildLocalDateTime(int year, int mouth, int day) {
+        return LocalDateTime.of(year, mouth, day, 0, 0, 0);
     }
 
     /**
-     * 日期路径 即年/月/日 如20180808
+     * 创建指定时间
+     *
+     * @param year   年
+     * @param mouth  月
+     * @param day    日
+     * @param hour   小时
+     * @param minute 分钟
+     * @param second 秒
+     * @return 指定时间
      */
-    public static String dateTime() {
-        Date now = new Date();
-        return DateFormatUtils.format(now, "yyyyMMdd");
-    }
-
-    /**
-     * 日期型字符串转化为日期 格式
-     */
-    public static Date parseDate(Object str) {
-        if (str == null) {
-            return null;
-        }
-        try {
-            return parseDate(str.toString(), PARSE_PATTERNS);
-        } catch (ParseException e) {
-            return null;
-        }
-    }
-
-    /**
-     * 获取服务器启动时间
-     */
-    public static Date getServerStartDate() {
-        long time = ManagementFactory.getRuntimeMXBean().getStartTime();
-        return new Date(time);
-    }
-
-    /**
-     * 计算两个时间差
-     */
-    public static String getDatePoor(Date endDate, Date nowDate) {
-        long nd = 1000 * 24 * 60 * 60;
-        long nh = 1000 * 60 * 60;
-        long nm = 1000 * 60;
-        // long ns = 1000;
-        // 获得两个时间的毫秒时间差异
-        long diff = endDate.getTime() - nowDate.getTime();
-        // 计算差多少天
-        long day = diff / nd;
-        // 计算差多少小时
-        long hour = diff % nd / nh;
-        // 计算差多少分钟
-        long min = diff % nd % nh / nm;
-        // 计算差多少秒//输出结果
-        // long sec = diff % nd % nh % nm / ns;
-        return day + "天" + hour + "小时" + min + "分钟";
-    }
-
-    /**
-     * 增加 LocalDateTime ==> Date
-     */
-    public static Date toDate(LocalDateTime temporalAccessor) {
-        ZonedDateTime zdt = temporalAccessor.atZone(ZoneId.systemDefault());
-        return Date.from(zdt.toInstant());
-    }
-
-    /**
-     * 增加 LocalDate ==> Date
-     */
-    public static Date toDate(LocalDate temporalAccessor) {
-        LocalDateTime localDateTime = LocalDateTime.of(temporalAccessor, LocalTime.of(0, 0, 0));
-        ZonedDateTime zdt = localDateTime.atZone(ZoneId.systemDefault());
-        return Date.from(zdt.toInstant());
-    }
-
-    /**
-     * 计算并返回当天的零点零分零秒Date对象
-     */
-    public static Date getStartOfToday() {
-        Calendar calendar = Calendar.getInstance(); // 获取当前日期
-        calendar.set(Calendar.HOUR_OF_DAY, 0); // 设置小时为0点
-        calendar.set(Calendar.MINUTE, 0); // 设置分钟为0分
-        calendar.set(Calendar.SECOND, 0); // 设置秒数为0秒
+    public static Date buildTime(int year, int mouth, int day,
+                                 int hour, int minute, int second) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, mouth - 1);
+        calendar.set(Calendar.DAY_OF_MONTH, day);
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
+        calendar.set(Calendar.SECOND, second);
+        calendar.set(Calendar.MILLISECOND, 0); // 一般情况下，都是 0 毫秒
         return calendar.getTime();
     }
 
-    /**
-     * 计算并返回X天后的Date对象
-     */
-    public static Date plusDays(Date date, Integer days) {
-        LocalDateTime localDateTime = dateToLocalDateTime(date).plusDays(days);
-        return toDate(localDateTime);
+    public static Date max(Date a, Date b) {
+        if (a == null) {
+            return b;
+        }
+        if (b == null) {
+            return a;
+        }
+        return a.compareTo(b) > 0 ? a : b;
+    }
+
+    public static LocalDateTime max(LocalDateTime a, LocalDateTime b) {
+        if (a == null) {
+            return b;
+        }
+        if (b == null) {
+            return a;
+        }
+        return a.isAfter(b) ? a : b;
+    }
+
+    public static boolean beforeNow(Date date) {
+        return date.getTime() < System.currentTimeMillis();
+    }
+
+    public static boolean afterNow(Date date) {
+        return date.getTime() >= System.currentTimeMillis();
+    }
+
+    public static boolean afterNow(LocalDateTime localDateTime) {
+        return localDateTime.isAfter(LocalDateTime.now());
     }
 
     /**
-     * 将 Date 转为 LocalDateTime
+     * 计算当期时间相差的日期
      *
-     * @param date
-     * @return java.time.LocalDateTime;
+     * @param field  日历字段.<br/>eg:Calendar.MONTH,Calendar.DAY_OF_MONTH,<br/>Calendar.HOUR_OF_DAY等.
+     * @param amount 相差的数值
+     * @return 计算后的日志
      */
-    public static LocalDateTime dateToLocalDateTime(Date date) {
-        return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+    public static Date addDate(int field, int amount) {
+        return addDate(null, field, amount);
     }
+
+    /**
+     * 计算当期时间相差的日期
+     *
+     * @param date   设置时间
+     * @param field  日历字段 例如说，{@link Calendar#DAY_OF_MONTH} 等
+     * @param amount 相差的数值
+     * @return 计算后的日志
+     */
+    public static Date addDate(Date date, int field, int amount) {
+        if (amount == 0) {
+            return date;
+        }
+        Calendar c = Calendar.getInstance();
+        if (date != null) {
+            c.setTime(date);
+        }
+        c.add(field, amount);
+        return c.getTime();
+    }
+
+    /**
+     * 是否今天
+     *
+     * @param date 日期
+     * @return 是否
+     */
+    public static boolean isToday(Date date) {
+        if (date == null) {
+            return false;
+        }
+        return DateUtil.isSameDay(date, new Date());
+    }
+
+    /**
+     * 是否今天
+     *
+     * @param date 日期
+     * @return 是否
+     */
+    public static boolean isToday(LocalDateTime date) {
+        return LocalDateTimeUtil.isSameDay(date, LocalDateTime.now());
+    }
+
 }

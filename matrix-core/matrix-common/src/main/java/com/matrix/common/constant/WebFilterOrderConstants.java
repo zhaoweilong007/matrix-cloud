@@ -33,7 +33,5 @@ public interface WebFilterOrderConstants {
      */
     int TENANT_SECURITY_FILTER = -96;
 
-    int API_ACCESS_LOG_FILTER = -100;
-
 
 }

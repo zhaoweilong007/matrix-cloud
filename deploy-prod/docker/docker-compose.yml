@@ -43,6 +43,20 @@ services:
     volumes:
       - ${APP_LOG_PATH}:${APP_LOG_PATH}
     restart: always
+  matrix-house:
+    image: ${REGISTER_URL}/matrix-cloud/matrix-house-biz:${VERSION}
+    container_name: matrix-house
+    ports:
+      - "9005:9005"
+      - "9105:9105"
+      - "9205:9205"
+    env_file:
+      - ./prod.env
+    environment:
+      SW_AGENT_NAME: "matrix-cloud::house"
+    volumes:
+      - ${APP_LOG_PATH}:${APP_LOG_PATH}
+    restart: always
   matrix-admin:
     image: ${REGISTER_URL}/matrix-cloud/matrix-admin:${VERSION}
     container_name: matrix-admin

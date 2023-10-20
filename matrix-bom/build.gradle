@@ -12,11 +12,11 @@ dependencies {
          * springboot
          */
         api "io.seata:seata-spring-boot-starter:$seataVerson"
-        api "com.baomidou:mybatis-plus-spring-boot3-starter:$mybatisPlusVersion"
+        api "com.baomidou:mybatis-plus-boot-starter:$mybatisPlusVersion"
         api "cn.easy-es:easy-es-boot-starter:$esBootVersion"
         api "org.redisson:redisson-spring-boot-starter:$redissonVersion"
         api "com.baomidou:lock4j-redisson-spring-boot-starter:$lock4jVersion"
-        api "com.alibaba:druid-spring-boot-3-starter:$druidVersion"
+        api "com.alibaba:druid-spring-boot-starter:$druidVersion"
         api "cn.dev33:sa-token-spring-boot3-starter:$saTokenVersion"
         api "cn.dev33:sa-token-reactor-spring-boot3-starter:$saTokenVersion"
         api "com.github.yulichang:mybatis-plus-join-boot-starter:$mybaitsPlusJoinVersion"
@@ -30,6 +30,8 @@ dependencies {
         api "org.dromara.sms4j:sms4j-spring-boot-starter:$sms4jVersion"
 
         /*other*/
+        api "mysql:mysql-connector-java:$mysqlConnectorVersion"
+        api "com.alibaba:druid:$druidVersion"
         api "com.alibaba.csp:sentinel-core:$sentinelVersion"
         api "cn.dev33:sa-token-redisson-jackson2:$saTokenVersion"
         api "cn.dev33:sa-token-jwt:$saTokenVersion"
@@ -59,10 +61,11 @@ dependencies {
         api "org.apache.commons:commons-collections4:$commonsCollections4Version"
         api "com.alibaba:easyexcel:$easyexcelVersion"
         api "eu.bitwalker:UserAgentUtils:$UserAgentVerison"
+        api "org.bouncycastle:bcpkix-jdk15on:$bcpkixVersion"
         api "org.apache.httpcomponents.client5:httpclient5:$httpClientVersion"
 
-        api "io.swagger.core.v3:swagger-annotations-jakarta:$swaggerVerison"
-        api "io.swagger.core.v3:swagger-models-jakarta:$swaggerVerison"
+        api "io.swagger.core.v3:swagger-annotations:$swaggerVerison"
+        api "io.swagger.core.v3:swagger-models:$swaggerVerison"
         api "com.baomidou:mybatis-plus-extension:$mybatisPlusVersion"
         api "com.baomidou:mybatis-plus-generator:$mybatisPlusVersion"
         api "com.baomidou:mybatis-plus-annotation:$mybatisPlusVersion"
@@ -74,6 +77,8 @@ dependencies {
         api "jakarta.servlet:jakarta.servlet-api:$servletVersion"
         api "jakarta.validation:jakarta.validation-api:$validatorVersion"
         api "io.github.biezhi:TinyPinyin:$pinyinVersion"
+
+
         api "org.projectlombok:lombok:$lombokVersion"
 
         /**
@@ -81,5 +86,7 @@ dependencies {
          */
         api "com.aliyun.openservices:ons-client:$onsClientVersion"
         api "com.github.binarywang:wx-java-miniapp-spring-boot-starter:$WxVersion"
+
+
     }
 }

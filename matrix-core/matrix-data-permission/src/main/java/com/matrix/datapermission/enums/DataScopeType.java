@@ -1,6 +1,6 @@
 package com.matrix.datapermission.enums;
 
-import com.matrix.common.util.string.StringUtils;
+import com.matrix.common.util.StringUtils;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

@@ -10,8 +10,6 @@ import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 
-import java.util.Map;
-
 /**
  * easy-trans配置
  *
@@ -34,21 +32,7 @@ public class TransConfig {
     @Bean
     @ConditionalOnMissingBean
     public DataSourceSetter dataSourceSetter() {
-        return new DataSourceSetter() {
-            @Override
-            public void setDataSource(String s) {
-
-            }
-
-            @Override
-            public Map<Object, Object> getContext() {
-                return Map.of();
-            }
-
-            @Override
-            public void setContext(Map<Object, Object> map) {
-
-            }
+        return datasourceName -> {
         };
     }
 }

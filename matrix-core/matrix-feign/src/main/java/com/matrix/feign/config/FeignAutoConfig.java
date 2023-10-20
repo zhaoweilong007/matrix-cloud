@@ -4,7 +4,6 @@ import cn.dev33.satoken.same.SaSameUtil;
 import cn.hutool.core.util.StrUtil;
 import com.matrix.common.constant.CommonConstants;
 import com.matrix.common.context.TenantContextHolder;
-import com.matrix.common.request.CacheRequestBodyWrapper;
 import feign.RequestInterceptor;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
@@ -15,7 +14,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author ZhaoWeiLong
@@ -50,27 +48,17 @@ public class FeignAutoConfig {
             ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder
                     .getRequestAttributes();
             if (attributes != null) {
-                final HttpServletRequest httpServletRequest = attributes.getRequest();
-                if (httpServletRequest instanceof CacheRequestBodyWrapper request) {
-                    final Map<String, String> headerMap = request.getHeaderMap();
-                    headerMap.forEach((headerName, headerValue) -> {
+                HttpServletRequest request = attributes.getRequest();
+                Enumeration<String> headerNames = request.getHeaderNames();
+                if (headerNames != null) {
+                    String headerName;
+                    String headerValue;
+                    while (headerNames.hasMoreElements()) {
+                        headerName = headerNames.nextElement();
                         String header = StrUtil.getContainsStrIgnoreCase(headerName, array);
                         if (header != null) {
+                            headerValue = request.getHeader(headerName);
                             requestTemplate.header(header, headerValue);
-                        }
-                    });
-                } else {
-                    Enumeration<String> headerNames = httpServletRequest.getHeaderNames();
-                    if (headerNames != null) {
-                        String headerName;
-                        String headerValue;
-                        while (headerNames.hasMoreElements()) {
-                            headerName = headerNames.nextElement();
-                            String header = StrUtil.getContainsStrIgnoreCase(headerName, array);
-                            if (header != null) {
-                                headerValue = httpServletRequest.getHeader(headerName);
-                                requestTemplate.header(header, headerValue);
-                            }
                         }
                     }
                 }

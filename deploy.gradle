@@ -1,8 +1,8 @@
 def microservices = [
         project(':matrix-admin'),
         project(':matrix-gateway'),
-//        project(':matrix-system:system-biz'),
-//        project(':matrix-resource:resource-biz')
+//        project(':matrix-system:matrix-system-biz'),
+//        project(':matrix-resource:matrix-resource-biz')
 ]
 
 switch (PROFILE) {

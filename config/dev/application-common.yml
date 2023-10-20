@@ -19,12 +19,12 @@ spring:
       discovery:
         metadata:
           user.name: matrix
-          user.password: 123456
+          user.password: matrix
     sentinel:
       eager: true
       transport:
         # 添加sentinel的控制台地址
-        dashboard: ${SENTINEL_DASHBOARD:}
+        dashboard: 192.168.31.20:8088
       scg:
         fallback:
           content-type: application/json
@@ -53,16 +53,14 @@ spring:
       fail_on_unknown_properties: false
   data:
     mongodb:
-      uri: mongodb://${MONGODB_USERNAME:}:${MONGODB_PASSWORD:}@${MONGODB_URL:}/fangdx?maxPoolSize=${spring.data.mongodb.max-pool-size}&minPoolSize=${spring.data.mongodb.min-pool-size}&maxIdleTimeMS=${spring.data.mongodb.max-idle-time}&connectTimeoutMS=${spring.data.mongodb.connect-timeout}&socketTimeoutMS=${spring.data.mongodb.socket-timeout}
-      max-pool-size: 10
-      min-pool-size: 0
-      max-idle-time: 60000
-      connect-timeout: 5000
-      socket-timeout: 5000
+      host: 192.168.31.20
+      port: 37017
+      database: matrix
+      authentication-database: matrix
+      username: matrix
+      password: matrix
 
 mybatis-plus:
-  encryptor:
-    password: ${ENCRYPTOR:}
   mapperPackage: com.matrix.**.mapper
   global-config:
     db-config:
@@ -80,10 +78,9 @@ mybatis-plus:
     default-enum-type-handler: org.apache.ibatis.type.EnumOrdinalTypeHandler
     typeEnumsPackage: com.matrix.**.enums
   check-config-location: false
-  type-aliases-package: com.matrix.**.entity,com.matrix.**.vo
+  type-aliases-package: com.matrix.**.domain,com.matrix.**.entity,com.matrix.**.vo,,com.matrix.**.model
 
-mybatis-plus-join:
-  banner: false # 关闭控制台的 Banner 打印
+
 
 ---
 spring:
@@ -101,11 +98,11 @@ redisson:
   nettyThreads: 8
   masterSlaveServersConfig:
     enable: true
-    database: ${REDIS_DATABASE:}
-    password: ${REDIS_PASSWORD:}
-    masterAddress: ${REDIS_MASTER_ADDR:}
+    database: 1
+    password: hAdf%)]dltd
+    masterAddress: redis://192.168.31.20:7379
     slaveAddresses:
-      - ${REDIS_SLAVE_ADDR:}
+      - redis://192.168.31.19:7379
     # 客户端名称
     clientName: ${spring.application.name}
     # master最小空闲连接数
@@ -160,7 +157,7 @@ sa-token:
   # Same-Token的有效期 (单位: 秒)
   same-token-timeout: -1
   # 是否允许同一账号并发登录 (为true时允许一起登录, 为false时新登录挤掉旧登录)
-  is-concurrent: true
+  is-concurrent: false
   # 是否尝试从header里读取token
   is-read-header: true
   # 是否尝试从cookie里读取token
@@ -210,8 +207,8 @@ xxl:
   job:
     enabled: true
     admin:
-      address: ${XXL_JOB_ADDR:}
-      access-token: ${XXL_JOB_TOKEN:}
+      address: http://192.168.31.20:8090/xxl-job-admin
+      access-token: default_token
     executor:
       app-name: ${spring.application.name}
       log-retention-days: 30
@@ -250,26 +247,26 @@ lock4j:
 
 wx:
   miniapp:
-    appid:
-    secret:
+    appid: xxxxxxxxxxxxx
+    secret: xxxxxxxxxxxxx
     config-storage:
       type: redisson
       key-prefix: wa
       http-client-type: httpclient
 
 
-aliyun:
-  oss:
-    prefix:
+
 
 #易盾检测配置
 yidun:
-  secretId:
-  secretKey:
-  businessId:
-  imgBusinessId:
-  textCallBack:
-  imgCallBack:
+  secretId: xxxxxxxxxxxxx
+  secretKey: xxxxxxxxxxxxx
+  businessId: xxxxxxxxxxxxx
+  imgBusinessId: xxxxxxxxxxxxx
+  dataIdPrefix: test
+  textCallBack: http://localhost:9001/resource/yidun/callback/text
+  imgCallBack: http://localhost:9001/resource/yidun/callback/image
+
 
 
 #beanSearch配置
@@ -281,6 +278,7 @@ bean-searcher:
       page: pageNum
       size: pageSize
       start: 1
+
 
 
 easy-trans:
@@ -301,21 +299,18 @@ easy-trans:
 
 
 matrix:
-  access-log: false
   load-balance:
     gray:
       enabled: true
-      defaultVersion: 1.0
+      defaultVersion: 3.0.0
       chooser: com.matrix.feign.chooser.ProfileRuleChooser
       ips:
+        - 192.168.31.19
   monitor:
     traceEnable: true
     metricsEnable: true
-  mq:
-    enabled: false
-    onsAddr: ${MQ_ONSADDR:}
-  swagger:
-    enabled: ${SWAGGER_ENABLED:false}
+
+
 
 logging:
   level:

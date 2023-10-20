@@ -1,8 +1,8 @@
 package com.matrix.web.handler;
 
 import com.matrix.common.result.R;
-import com.matrix.common.util.spring.MessageUtils;
-import com.matrix.common.util.string.StringUtils;
+import com.matrix.common.util.MessageUtils;
+import com.matrix.common.util.StringUtils;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;

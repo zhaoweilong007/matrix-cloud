@@ -1,8 +1,8 @@
 package com.matrix.common.exception.base;
 
 import com.matrix.common.enums.SystemErrorTypeEnum;
-import com.matrix.common.util.spring.MessageUtils;
-import com.matrix.common.util.string.StringUtils;
+import com.matrix.common.util.MessageUtils;
+import com.matrix.common.util.StringUtils;
 import lombok.Getter;
 import net.dreamlu.mica.core.result.IResultCode;
 

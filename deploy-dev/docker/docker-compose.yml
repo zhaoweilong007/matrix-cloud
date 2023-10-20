@@ -46,6 +46,21 @@ services:
     volumes:
       - ${APP_LOG_PATH}:${APP_LOG_PATH}
     restart: always
+  matrix-house:
+    image: ${REGISTER_URL}/matrix-cloud/matrix-house-biz:${VERSION}
+    container_name: matrix-house
+    ports:
+      - "9005:9005"
+      - "9105:9105"
+      - "9205:9205"
+      - "5005:5000"
+    env_file:
+      - ./dev.env
+    environment:
+      SW_AGENT_NAME: "matrix-cloud::house"
+    volumes:
+      - ${APP_LOG_PATH}:${APP_LOG_PATH}
+    restart: always
   matrix-admin:
     image: ${REGISTER_URL}/matrix-cloud/matrix-admin:${VERSION}
     container_name: matrix-admin
@@ -59,6 +74,21 @@ services:
       - "5002:5000"
     env_file:
       - ./dev.env
+    volumes:
+      - ${APP_LOG_PATH}:${APP_LOG_PATH}
+    restart: always
+  matrix-user-behavior:
+    image: ${REGISTER_URL}/matrix-cloud/matrix-user-behavior-biz:${VERSION}
+    container_name: matrix-user-behavior
+    ports:
+      - "9006:9006"
+      - "9106:9106"
+      - "9206:9206"
+      - "5006:5000"
+    env_file:
+      - ./dev.env
+    environment:
+      SW_AGENT_NAME: "matrix-cloud::user-behavior"
     volumes:
       - ${APP_LOG_PATH}:${APP_LOG_PATH}
     restart: always

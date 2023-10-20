@@ -13,7 +13,6 @@ dependencies {
     implementation project(':matrix-core:matrix-redis')
     implementation project(':matrix-core:matrix-log')
     implementation project(':matrix-core:matrix-prometheus')
-    implementation project(':matrix-core:matrix-test')
     implementation(project(":matrix-core:matrix-auth")) {
         exclude group: "cn.dev33", module: "sa-token-spring-boot3-starter"
     }

@@ -61,6 +61,13 @@ public interface UserConstants {
     String ADMIN_ROLE_KEY = "admin";
 
     /**
+     * 默认头像
+     */
+    String DEFAULT_AVATAR_M = "mini-programs-icon/xftSecondHandHouses/common/matrix_author_m_img.png";
+
+    String DEFAULT_AVATAR_F = "mini-programs-icon/xftSecondHandHouses/common/matrix_author_w_img.png";
+
+    /**
      * 默认租户id
      */
     Long DEFAULT_TENANT = 0L;

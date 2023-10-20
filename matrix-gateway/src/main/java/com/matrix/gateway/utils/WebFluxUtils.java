@@ -1,18 +1,10 @@
 package com.matrix.gateway.utils;
 
-import static org.springframework.cloud.gateway.support.ServerWebExchangeUtils.GATEWAY_ORIGINAL_REQUEST_URL_ATTR;
-
 import cn.hutool.core.util.ObjectUtil;
 import com.matrix.common.result.R;
+import com.matrix.common.util.StringUtils;
 import com.matrix.common.util.json.JsonUtils;
-import com.matrix.common.util.string.StringUtils;
 import com.matrix.gateway.filter.GlobalCacheRequestFilter;
-import java.net.URI;
-import java.nio.CharBuffer;
-import java.nio.charset.StandardCharsets;
-import java.util.LinkedHashSet;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Function;
 import org.springframework.cloud.gateway.support.ServerWebExchangeUtils;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferUtils;
@@ -25,6 +17,15 @@ import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.net.URI;
+import java.nio.CharBuffer;
+import java.nio.charset.StandardCharsets;
+import java.util.LinkedHashSet;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
+
+import static org.springframework.cloud.gateway.support.ServerWebExchangeUtils.GATEWAY_ORIGINAL_REQUEST_URL_ATTR;
 
 /**
  * WebFlux 工具类

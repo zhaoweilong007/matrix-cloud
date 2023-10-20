@@ -4,7 +4,7 @@ import cn.hutool.captcha.generator.CodeGenerator;
 import cn.hutool.core.math.Calculator;
 import cn.hutool.core.util.CharUtil;
 import cn.hutool.core.util.RandomUtil;
-import com.matrix.common.util.string.StringUtils;
+import com.matrix.common.util.StringUtils;
 
 /**
  * 无符号计算生成器

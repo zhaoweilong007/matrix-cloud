@@ -1,7 +1,7 @@
 package com.matrix.common.service;
 
 
-import com.matrix.common.util.string.StringUtils;
+import com.matrix.common.util.StringUtils;
 
 /**
  * 字典服务服务

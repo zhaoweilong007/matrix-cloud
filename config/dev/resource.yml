@@ -3,56 +3,39 @@ spring:
     dynamic:
       datasource:
         master:
-          url: jdbc:mysql://${DATASOURCE_HOST:192.168.31.20:4306}/fdx?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&rewriteBatchedStatements=true&allowMultiQueries=true
-          username: ${DATASOURCE_USERNAME:root}
-          password: ${DATASOURCE_PASSWORD:matrix}
+          url: jdbc:mysql://${DATASOURCE_HOST:192.168.31.20:4306}/matrix?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&rewriteBatchedStatements=true&allowMultiQueries=true
+          username: ${DATASOURCE_USERNAME:matrix}
+          password: ${DATASOURCE_PASSWORD:123456}
           driver-class-name: com.mysql.cj.jdbc.Driver
 
-
 sms:
-  smsValidateIgnore:
   isPrint: false
   config-type: yaml
   blends:
-    alibaba:
+    xxx:
       supplier: alibaba
-      access-key-id:
-      access-key-secret:
-      signature:
-
-
+      access-key-id: xxxxxxxxxxxxx
+      access-key-secret: xxxxxxxxxxxxx
+      signature: xxxxxxxxxxxxx
 jpush:
-  config:
-    TEST:
-      appKey:
-      masterSecret:
-      apnsProduction:
-      privateKey:
+  masterSecret: xxxxxxxxxxxxx
+  appKey: xxxxxxxxxxxxx
+  apnsProduction: false
+  privateKey: xxxxxxxxxxxxx
 aliyun:
   oss:
-    accessKeyId:
-    accessKeySecret:
-    endpoint:
-    bucketName:
-    prefix:
+    accessKeyId: xxxxxxxxxxxxx
+    accessKeySecret: xxxxxxxxxxxxx
+    endpoint: https://oss-cn-shenzhen.aliyuncs.com
+    bucketName: xxxxxxxxxxxxx
+    prefix: xxxxxxxxxxxxx
 matrix:
   tenant:
-    enable: true
-  ignoreTables:
-    - sys_contact_log
-  ignore-urls:
-    - /resource/ip/**
+    enable: false
   swagger:
     enabled: true
     title: 资源服务
-    version: 1.0
+    version: 0.0.1
     description: oss、sms、email、jpush服务
-    contact-user: zwl
+    contact-user: zkl
     contact-url: http://localhost:9003/v3/api-docs
-  mq:
-    enabled: false
-    onsAddr:
-    accessKey:
-    secretKey:
-    producers:
-    consumers:

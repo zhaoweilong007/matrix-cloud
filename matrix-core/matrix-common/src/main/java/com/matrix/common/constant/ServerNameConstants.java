@@ -11,4 +11,9 @@ public interface ServerNameConstants {
     String RESOURCE = "matrix-resource";
 
     String SYSTEM = "matrix-system";
+
+    String HOUSE = "matrix-house";
+
+    String USERBEHAVIOR = "matrix-userbehavior";
+
 }

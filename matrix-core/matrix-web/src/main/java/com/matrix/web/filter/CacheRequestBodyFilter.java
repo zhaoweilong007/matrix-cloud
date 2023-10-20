@@ -1,6 +1,5 @@
 package com.matrix.web.filter;
 
-import com.matrix.common.request.CacheRequestBodyWrapper;
 import com.matrix.common.util.servlet.ServletUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

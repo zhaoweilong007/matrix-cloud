@@ -1,18 +1,9 @@
 spring:
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
       web-stat-filter:
         enabled: true
-        # 排除路径
-        exclusions: .js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*
-        # 开启session统计
-        session-stat-enable: true
-        # session统计的最大个数
-        session-stat-max-count: 100
-        # 过滤路径
-        url-pattern: /*
       stat-view-servlet:
         enabled: true
         allow:
@@ -29,7 +20,13 @@ spring:
           enabled: true
           config:
             multi-statement-allow: true
-      filters: stat,wall,slf4j
+        slf4j:
+          enabled: true
+          statement-create-after-log-enabled: false
+          statement-log-enabled: false
+          statement-executable-sql-log-enable: true
+          statement-log-error-enabled: true
+          result-set-log-enabled: false
     dynamic:
       primary: master
       seata: true

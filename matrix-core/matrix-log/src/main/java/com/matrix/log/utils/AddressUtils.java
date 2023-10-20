@@ -2,8 +2,8 @@ package com.matrix.log.utils;
 
 import cn.hutool.core.net.NetUtil;
 import cn.hutool.http.HtmlUtil;
-import com.matrix.common.util.spring.SpringUtils;
-import com.matrix.common.util.string.StringUtils;
+import com.matrix.common.util.SpringUtils;
+import com.matrix.common.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import net.dreamlu.mica.ip2region.core.Ip2regionSearcher;
 

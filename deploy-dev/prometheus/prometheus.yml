@@ -44,18 +44,6 @@ scrape_configs:
         labels:
           instance: alertmanager
 
-  - job_name: 'mysqld'
-    static_configs:
-      - targets: [ 'mysqld-exporter:9104' ]
-        labels:
-          instance: mysql
-
-  - job_name: 'redis'
-    static_configs:
-      - targets: [ 'redis_exporter:9121' ]
-        labels:
-          instance: redis
-
   - job_name: 'gateway'
     metrics_path: '/actuator/prometheus'
     static_configs:
@@ -63,8 +51,8 @@ scrape_configs:
         labels:
           instance: gateway
     basic_auth:
-      username: ''
-      password: ""
+      username: 'fangdx'
+      password: "WzQOqJ4j7NudawWDB4I4dUUdXSESe4m6rR8V8hjOcagXTH18mF"
 
   - job_name: 'resource'
     metrics_path: '/actuator/prometheus'
@@ -73,8 +61,8 @@ scrape_configs:
         labels:
           instance: resource
     basic_auth:
-      username: ''
-      password: ""
+      username: 'fangdx'
+      password: "WzQOqJ4j7NudawWDB4I4dUUdXSESe4m6rR8V8hjOcagXTH18mF"
 
   - job_name: 'system'
     metrics_path: '/actuator/prometheus'
@@ -83,5 +71,25 @@ scrape_configs:
         labels:
           instance: system
     basic_auth:
-      username: ''
-      password: ""
+      username: 'fangdx'
+      password: "WzQOqJ4j7NudawWDB4I4dUUdXSESe4m6rR8V8hjOcagXTH18mF"
+
+  - job_name: 'house'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ '192.168.31.32:9005' ]
+        labels:
+          instance: house
+    basic_auth:
+      username: 'fangdx'
+      password: "WzQOqJ4j7NudawWDB4I4dUUdXSESe4m6rR8V8hjOcagXTH18mF"
+
+  - job_name: 'user-behavior'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ '192.168.31.32:9006' ]
+        labels:
+          instance: user-behavior
+    basic_auth:
+      username: 'fangdx'
+      password: "WzQOqJ4j7NudawWDB4I4dUUdXSESe4m6rR8V8hjOcagXTH18mF"

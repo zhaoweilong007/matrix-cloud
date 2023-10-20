@@ -1,4 +1,4 @@
-package com.matrix.mybatis.utils;
+package com.open.capacity.db.utils;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;

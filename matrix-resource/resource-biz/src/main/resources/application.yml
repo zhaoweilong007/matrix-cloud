@@ -1,0 +1,14 @@
+server:
+  port: 9003
+
+spring:
+  application:
+    name: fdx-resource
+  profiles:
+    active: ${PROFILE:dev}
+logging:
+  # 配置logstash tcp地址
+  stash:
+    address: ${LOGSTASH_ADDRESS:localhost:5000}
+  file:
+    path: /var/logs

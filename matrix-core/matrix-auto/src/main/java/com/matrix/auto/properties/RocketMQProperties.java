@@ -1,13 +1,14 @@
 package com.matrix.auto.properties;
 
 import com.aliyun.openservices.ons.api.PropertyKeyConst;
-import com.matrix.common.util.string.StringUtils;
-import java.util.List;
-import java.util.Properties;
+import com.matrix.common.util.StringUtils;
 import lombok.Data;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.util.CollectionUtils;
+
+import java.util.List;
+import java.util.Properties;
 
 /**
  * rocketMq配置 支持多生产者、多消费者组

@@ -1,6 +1,7 @@
 package com.matrix.mybatis.base;
 
 import cn.hutool.core.lang.Assert;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.matrix.api.api.IBaseFeignClient;
@@ -9,16 +10,21 @@ import com.matrix.common.enums.BusinessErrorTypeEnum;
 import com.matrix.common.enums.SystemErrorTypeEnum;
 import com.matrix.common.exception.ServiceException;
 import com.matrix.common.result.R;
+import com.matrix.common.util.IndistUtils;
+import com.matrix.common.util.StringUtils;
+import com.matrix.common.vo.PageMultParam;
 import com.matrix.common.vo.PageParam;
 import com.matrix.common.vo.PageResult;
 import com.matrix.mybatis.service.IRootService;
 import com.matrix.validator.group.AddGroup;
 import com.matrix.validator.group.EditGroup;
-import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.Map;
 
 /**
  * 基础通用controller
@@ -31,7 +37,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public abstract class BaseController<S extends IRootService<T, V>, T extends BaseIdEntity, V, Q extends PageParam> implements IBaseFeignClient<T, V, Q> {
 
 
-    @Resource
+    @Autowired
     public S service;
 
     /**
@@ -113,5 +119,51 @@ public abstract class BaseController<S extends IRootService<T, V>, T extends Bas
     public R<Boolean> deleteById(@RequestParam Long id) {
         final boolean remove = service.removeById(id);
         return remove ? R.success() : R.fail(SystemErrorTypeEnum.OPERATE_FAIL);
+    }
+
+    /**
+     * 分页参数转换,单独抽出来处理
+     *
+     * @param param
+     * @return
+     */
+    public PageMultParam<Map<String, Object>> proPageParam(Map<String, Object> param) {
+
+        PageMultParam<Map<String, Object>> page = new PageMultParam<>();
+
+        //关闭分页忧化,否则查询总数与查询列表数据时sql不一致
+        page.setOptimizeCountSql(false);
+
+        //设置默认分布参数
+        page.setPageNum(1);
+        page.setPageSize(10);
+
+        if (IndistUtils.isNotEmpty(param.get("pageNum"))) {
+            page.setPageNum((Integer) param.get("pageNum"));
+        }
+
+        if (IndistUtils.isNotEmpty(param.get("pageSize"))) {
+            Integer pageSize = Integer.parseInt(String.valueOf(param.get("pageSize")));
+            page.setPageSize(pageSize > 100 ? 100 : pageSize);
+        }
+
+        param.remove("pageNum");
+        param.remove("pageSize");
+
+        //配置排序规则
+        if (null != param.get("sort")) {
+            String sortField = String.valueOf(param.get("sort"));
+            if (StringUtils.isNotEmpty(sortField)) {
+                param.put("sort", StrUtil.toUnderlineCase(sortField));
+
+                if (null == param.get("order")) {
+                    param.put("order", "desc");
+                }
+            }
+        }
+
+        page.setData(param);
+
+        return page;
     }
 }

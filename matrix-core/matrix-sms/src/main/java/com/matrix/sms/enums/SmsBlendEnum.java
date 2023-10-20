@@ -11,11 +11,12 @@ import java.util.Objects;
  **/
 public enum SmsBlendEnum {
 
-    ALIYUN();
+    XFT(),
 
+    TTMF();
 
     public static SmsBlendEnum ofName(String name) {
         return Arrays.stream(values()).filter(smsBlendEnum -> Objects.equals(smsBlendEnum.name(), name)).findFirst()
-            .orElse(null);
+                .orElse(SmsBlendEnum.TTMF);
     }
 }
