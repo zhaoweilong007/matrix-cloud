@@ -20,6 +20,5 @@ public class SysAdminRoleRelation extends TenantPo<SysAdminRoleRelation> {
     private Long roleId;
 
 
-
 }
 

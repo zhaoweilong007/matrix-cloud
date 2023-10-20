@@ -3,19 +3,9 @@ server:
 
 spring:
   application:
-    name: resource
+    name: fdx-resource
   profiles:
-    active: dev
-  cloud:
-    nacos:
-      server-addr: ${NACOS_SERVER_ADDRESS:localhost:8848}
-      username: ${NACOS_USERNAME:nacos}
-      password: ${NACOS_PASSWD:nacos}
-      config:
-        file-extension: yml
-        shared-configs:
-          - data-id: application-common.yml
-            refresh: true
+    active: ${PROFILE:dev}
 logging:
   # 配置logstash tcp地址
   stash:

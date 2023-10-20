@@ -22,14 +22,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(EmailAPI.PREFIX)
 public class EmailController implements EmailAPI {
 
-  @Autowired
-  private JavaMailSender mailSender;
+    @Autowired
+    private JavaMailSender mailSender;
 
 
-  @Override
-  public Result sendEmail(@RequestBody MailMessageReq mailMessageReq) {
-    mailSender.send(ResourceConvert.INSTANCE.convert(mailMessageReq));
-    return Result.success();
-  }
+    @Override
+    public Result sendEmail(@RequestBody MailMessageReq mailMessageReq) {
+        mailSender.send(ResourceConvert.INSTANCE.convert(mailMessageReq));
+        return Result.success();
+    }
 
 }

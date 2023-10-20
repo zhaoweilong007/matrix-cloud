@@ -1,0 +1,33 @@
+##导入宏定义
+$!{define.vm}
+$!{mybatisCodehelper.vm}
+
+#set($entitySavePath = $tool.append(${javamodelSrcFolder},"/",${modelPackageName.replace(".","/")}))
+
+$!callback.setSavePath($entitySavePath)
+$!callback.setFileName($tool.append($tableInfo.name, ".java"))
+
+##自动导入包（全局变量）
+package ${modelPackageName};
+    $!autoImport
+import lombok.Data;
+import com.matrix.common.entity.BaseEntity;
+import com.baomidou.mybatisplus.annotation.TableName;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+
+##表注释（宏定义）
+#tableComment("表实体类")
+@Data
+@TableName("$!{tableInfo.obj.name}")
+@Schema(description = "${tableInfo.comment}")
+public class $!{tableInfo.name} extends BaseEntity{
+#foreach($column in $tableInfo.fullColumn)
+
+@Schema(description = "${column.comment}")
+private $!{tool.getClsNameByFullName($column.type)} $!{column.name};
+#end
+
+
+
+}

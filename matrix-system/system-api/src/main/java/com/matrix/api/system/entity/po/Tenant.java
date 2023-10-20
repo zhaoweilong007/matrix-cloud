@@ -22,24 +22,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @TableName(value = "sys_tenant")
 public class Tenant extends BasePo<Tenant> {
+    public static final String COL_ID = "id";
+    public static final String COL_STATUS = "status";
+    public static final String COL_TENANT_NAME = "tenant_name";
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
-
     /**
      * 租户状态：启用、禁用
      */
     @TableField(value = "`status`")
     private Integer status;
-
     /**
      * 租户名称
      */
     @TableField(value = "tenant_name")
     private String tenantName;
-
-    public static final String COL_ID = "id";
-
-    public static final String COL_STATUS = "status";
-
-    public static final String COL_TENANT_NAME = "tenant_name";
 }

@@ -1,0 +1,22 @@
+filebeat.inputs:
+  - type: log
+    enabled: true
+    paths:
+      - /data/logs/big_log/big_bus.log
+      - /data/logs/big_log/coll_api.log
+    multiline:
+      pattern: '^[0-9]{4}-[0-9]{2}-[0-9]{2}'
+      negate: true
+      match: after
+
+output.kafka:
+  enabled: true
+  hosts: [ "192.168.31.20:9092" ]
+  topic: test
+
+processors:
+  - drop_fields:
+      fields: [ "@timestamp", "beat", "input", "offset", "host", "source", "prospector", "tags", "ecs" ]
+
+logging.level: error
+name: 192.168.31.32

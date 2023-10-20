@@ -40,21 +40,21 @@
     <select id="getMenuByAdminId" resultMap="BaseResultMap">
         select m.*
         from sys_menu m
-                 left join(select r.admin_id, m.menu_id
-                           from sys_admin_role_relation r
-                                    left join sys_role_menu_relation m on r.role_id = m.role_id) res
-                          on m.id = res.menu_id
+        left join(select r.admin_id, m.menu_id
+        from sys_admin_role_relation r
+        left join sys_role_menu_relation m on r.role_id = m.role_id) res
+        on m.id = res.menu_id
         where res.admin_id = #{adminId}
-          and m.deleted = 0
+        and m.deleted = 0
         group by m.id
     </select>
 
     <select id="getMenuByRoleId" resultMap="BaseResultMap">
         select m.*
         from sys_menu m
-                 left join sys_role_menu_relation srmr on m.id = srmr.menu_id
+        left join sys_role_menu_relation srmr on m.id = srmr.menu_id
         where srmr.role_id = #{roleId}
-          and m.deleted = 0
+        and m.deleted = 0
         group by m.id
     </select>
 </mapper>

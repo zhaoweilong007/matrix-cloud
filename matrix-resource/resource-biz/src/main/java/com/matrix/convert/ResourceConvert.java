@@ -13,11 +13,12 @@ import org.springframework.mail.SimpleMailMessage;
 @Mapper
 public interface ResourceConvert {
 
-  ResourceConvert INSTANCE = Mappers.getMapper(ResourceConvert.class);
+    ResourceConvert INSTANCE = Mappers.getMapper(ResourceConvert.class);
 
 
-  FileInfo convert(cn.xuyanwu.spring.file.storage.FileInfo fileInfo);
-  SimpleMailMessage convert(MailMessageReq mailMessageReq);
+    FileInfo convert(cn.xuyanwu.spring.file.storage.FileInfo fileInfo);
+
+    SimpleMailMessage convert(MailMessageReq mailMessageReq);
 
 
 }

@@ -1,0 +1,106 @@
+global:
+  #每15s采集一次数据
+  scrape_interval: 30s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+  #每15s做一次告警检测
+  evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
+  # 每次 收集数据的 超时时间
+  scrape_timeout: 10s
+  # scrape_timeout is set to the global default (10s).
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: [ 'alertmanager:9093' ]
+
+# Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
+rule_files:
+  - "rules/*.yml"
+
+# A scrape configuration containing exactly one endpoint to scrape:
+# Here it's Prometheus itself.
+scrape_configs:
+  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: [ 'prometheus:9090' ]
+
+
+  - job_name: 'node-exporter'
+    scrape_interval: 8s
+    static_configs:
+      - targets: [ 'node-exporter:9100' ]
+        labels:
+          instance: node-exporter
+
+  - job_name: 'alertmanager'
+    static_configs:
+      - targets: [ 'alertmanager:9093' ]
+        labels:
+          instance: alertmanager
+
+
+  - job_name: 'gateway'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ '172.18.157.252:9001' ]
+        labels:
+          instance: gateway@ecs005
+      - targets: [ '172.18.157.253:9001' ]
+        labels:
+          instance: gateway@ecs006
+    basic_auth:
+      username: 'matrix'
+      password: "WzQOqJ4j7NudawWDB4I4dUUdXSESe4m6rR8V8hjOcagXTH18mF"
+
+  - job_name: 'resource'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ '172.18.157.252:9003' ]
+        labels:
+          instance: resource@ecs005
+      - targets: [ '172.18.157.253:9003' ]
+        labels:
+          instance: resource@ecs006
+    basic_auth:
+      username: 'matrix'
+      password: "WzQOqJ4j7NudawWDB4I4dUUdXSESe4m6rR8V8hjOcagXTH18mF"
+
+  - job_name: 'system'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ '172.18.157.252:9004' ]
+        labels:
+          instance: system@ecs005
+      - targets: [ '172.18.157.253:9004' ]
+        labels:
+          instance: system@ecs006
+    basic_auth:
+      username: 'matrix'
+      password: "WzQOqJ4j7NudawWDB4I4dUUdXSESe4m6rR8V8hjOcagXTH18mF"
+
+  - job_name: 'house'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ '172.18.157.252:9005' ]
+        labels:
+          instance: house@ecs005
+      - targets: [ '172.18.157.253:9005' ]
+        labels:
+          instance: house@ecs006
+    basic_auth:
+      username: 'matrix'
+      password: "WzQOqJ4j7NudawWDB4I4dUUdXSESe4m6rR8V8hjOcagXTH18mF"
+
+  - job_name: 'user-behavior'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ '172.18.157.252:9006' ]
+        labels:
+          instance: user-behavior@ecs005
+      - targets: [ '172.18.157.253:9006' ]
+        labels:
+          instance: user-behavior@ecs006
+    basic_auth:
+      username: 'matrix'
+      password: "WzQOqJ4j7NudawWDB4I4dUUdXSESe4m6rR8V8hjOcagXTH18mF"

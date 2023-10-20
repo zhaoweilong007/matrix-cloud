@@ -1,0 +1,88 @@
+version: '3.8'
+services:
+  matrix-gateway:
+    image: ${REGISTER_URL}/matrix-cloud/matrix-gateway:${VERSION}
+    container_name: matrix-gateway
+    ports:
+      - "9001:9001"
+      - "9101:9101"
+      - "9201:9201"
+    env_file:
+      - ./prod.env
+    environment:
+      SW_AGENT_NAME: "matrix-cloud::gateway"
+    volumes:
+      - ${APP_LOG_PATH}:${APP_LOG_PATH}
+      - /data/logs/big_log:/data/logs/big_log
+    restart: always
+  matrix-resource:
+    image: ${REGISTER_URL}/matrix-cloud/matrix-resource-biz:${VERSION}
+    container_name: matrix-resource
+    ports:
+      - "9003:9003"
+      - "9103:9103"
+      - "9203:9203"
+    env_file:
+      - ./prod.env
+    environment:
+      SW_AGENT_NAME: "matrix-cloud::resource"
+    volumes:
+      - ${APP_LOG_PATH}:${APP_LOG_PATH}
+    restart: always
+  matrix-system:
+    image: ${REGISTER_URL}/matrix-cloud/matrix-system-biz:${VERSION}
+    container_name: matrix-system
+    ports:
+      - "9004:9004"
+      - "9104:9104"
+      - "9204:9204"
+    env_file:
+      - ./prod.env
+    environment:
+      SW_AGENT_NAME: "matrix-cloud::system"
+    volumes:
+      - ${APP_LOG_PATH}:${APP_LOG_PATH}
+    restart: always
+  matrix-house:
+    image: ${REGISTER_URL}/matrix-cloud/matrix-house-biz:${VERSION}
+    container_name: matrix-house
+    ports:
+      - "9005:9005"
+      - "9105:9105"
+      - "9205:9205"
+    env_file:
+      - ./prod.env
+    environment:
+      SW_AGENT_NAME: "matrix-cloud::house"
+    volumes:
+      - ${APP_LOG_PATH}:${APP_LOG_PATH}
+    restart: always
+  matrix-admin:
+    image: ${REGISTER_URL}/matrix-cloud/matrix-admin:${VERSION}
+    container_name: matrix-admin
+    environment:
+      ADMIN_USERNAME: matrix
+      ADMIN_PASSWORD: AjGKbO2d8D3G82fr2emYtmROr3FmeUTMN5gIaFrRoRs3IWKXRZ
+    ports:
+      - "9002:9002"
+      - "9102:9102"
+      - "9202:9202"
+    env_file:
+      - ./prod.env
+    volumes:
+      - ${APP_LOG_PATH}:${APP_LOG_PATH}
+    restart: always
+  matrix-user-behavior:
+    image: ${REGISTER_URL}/matrix-cloud/matrix-user-behavior-biz:${VERSION}
+    container_name: matrix-user-behavior
+    ports:
+      - "9006:9006"
+      - "9106:9106"
+      - "9206:9206"
+    env_file:
+      - ./prod.env
+    environment:
+      SW_AGENT_NAME: "matrix-cloud::user-behavior"
+    volumes:
+      - ${APP_LOG_PATH}:${APP_LOG_PATH}
+    restart: always

@@ -1,0 +1,97 @@
+version: '3.8'
+
+networks:
+  matrix_cloud:
+    name: matrix_cloud
+    driver: bridge
+
+services:
+  #https://github.com/alibaba/nacos/releases
+  #https://nacos.io/zh-cn/blog/announcement-token-secret-key.html
+  nacos:
+    image: nacos/nacos-server:${NACOS_VERSION}
+    container_name: nacos
+    env_file:
+      - ./env/nacos-standlone-mysql.env
+    volumes:
+      - ./log/nacos:/home/nacos/logs
+    ports:
+      - "8848:8848"
+      - "9848:9848"
+      - "9555:9555"
+    depends_on:
+      mysql:
+        condition: service_started
+    restart: always
+    networks:
+      - matrix_cloud
+
+  mysql:
+    container_name: mysql_ex
+    build:
+      context: .
+      dockerfile: ./image/mysql/8/Dockerfile
+    image: example/mysql:8.0.30
+    env_file:
+      - ./env/mysql.env
+    volumes:
+      - ./mysql:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    restart: always
+    networks:
+      - matrix_cloud
+
+
+  sentinel:
+    image: matrix/sentinel-dashboard
+    container_name: sentinel
+    environment:
+      PARAM: -Dserver.port=8088 -Dcsp.sentinel.dashboard.server=localhost:8088 -Dproject.name=sentinel-dashboard -Ddatasource.provider=nacos -Ddatasource.provider.nacos.server-addr=nacos:8848 -Ddatasource.provider.nacos.username=nacos -Ddatasource.provider.nacos.password=nacos -Ddatasource.provider.nacos.namespace=dev
+      TZ: Asia/Shanghai
+    ports:
+      - "8088:8088"
+    restart: always
+    depends_on:
+      - nacos
+    networks:
+      - matrix_cloud
+
+  xxl-job-admin:
+    image: xuxueli/xxl-job-admin:${XXL_JOB_VERSION}
+    container_name: xxl-job-admin
+    volumes:
+      - ./log:/data/applogs
+      - ./xxl-job/application.properties:/application.properties
+    environment:
+      TZ: Asia/Shanghai
+      PARAMS: --spring.config.location=/application.properties
+      JAVA_OPTS: -Xmx512m
+    ports:
+      - 8090:8080
+    depends_on:
+      - mysql
+    networks:
+      - matrix_cloud
+    restart: always
+
+  seata-server:
+    image: seataio/seata-server:${SEATA_VERSION}
+    container_name: seata-server
+    env_file:
+      - ./env/seata.env
+    environment:
+      # 时区上海
+      TZ: Asia/Shanghai
+    ports:
+      - "8091:8091"
+      - "7091:7091"
+    volumes:
+      - ./seata/application.yml:/seata-server/resources/application.yml
+    restart: always
+    privileged: true
+    depends_on:
+      - nacos
+      - mysql
+    networks:
+      - matrix_cloud

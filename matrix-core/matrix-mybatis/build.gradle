@@ -1,0 +1,17 @@
+dependencies {
+    api(project(":matrix-core:matrix-auto"))
+    api 'mysql:mysql-connector-java'
+    api 'com.alibaba:druid-spring-boot-starter'
+    api 'com.github.yulichang:mybatis-plus-join-boot-starter'
+    api('com.baomidou:mybatis-plus-boot-starter')
+    api "com.baomidou:dynamic-datasource-spring-boot3-starter"
+    api 'cn.zhxu:bean-searcher-boot-starter'
+
+    implementation(project(":matrix-core:matrix-lock"))
+    implementation(project(":matrix-core:matrix-api"))
+
+    compileOnly "com.alibaba.csp:sentinel-core"
+    compileOnly "io.micrometer:micrometer-core"
+    compileOnly 'net.dreamlu:mica-auto'
+    annotationProcessor "net.dreamlu:mica-auto"
+}

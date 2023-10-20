@@ -1,0 +1,32 @@
+##导入宏定义
+$!{define.vm}
+$!{mybatisCodehelper.vm}
+
+#set($dtoSavePath = $tool.append(${javamodelSrcFolder},"/",${dtoPackageName.replace(".","/")}))
+
+$!callback.setSavePath($dtoSavePath)
+$!callback.setFileName($tool.append($tableInfo.name,"QueryDto", ".java"))
+
+##自动导入包（全局变量）
+package ${dtoPackageName};
+$!autoImport
+import java.io.Serializable;
+import lombok.Data;
+import io.swagger.v3.oas.annotations.media.Schema;
+import com.matrix.common.vo.PageParam;
+import java.time.LocalDateTime;
+
+##表注释（宏定义）
+#tableComment("表实体类")
+@Data
+@Schema(description = "${tableInfo.comment}")
+public class $!{tableInfo.name}QueryDto extends PageParam{
+#foreach($column in $tableInfo.fullColumn)
+
+@Schema(description = "${column.comment}")
+private $!{tool.getClsNameByFullName($column.type)} $!{column.name};
+#end
+
+
+
+}

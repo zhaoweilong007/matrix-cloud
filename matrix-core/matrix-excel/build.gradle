@@ -1,0 +1,5 @@
+dependencies {
+    api(project(":matrix-core:matrix-common"))
+    api(project(":matrix-core:matrix-validator"))
+    api 'com.alibaba:easyexcel'
+}

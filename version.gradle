@@ -1,0 +1,66 @@
+/**
+ * @author zhaoWeiLong
+ * @description 统一版本管理
+ */
+ext {
+    //https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-dependencies
+    springCloudVersion = "2022.0.4"
+    //https://mvnrepository.com/artifact/com.alibaba.cloud/spring-cloud-alibaba-dependencies
+    springCloudAlibabaVersion = '2022.0.0.0'
+
+    micaVersion = '3.1.3'
+    lombokVersion = "1.18.30"
+    mapstructPlusVersion = "1.3.5"
+
+    //springboot相关
+    seataVerson = '1.7.1'
+    mybatisPlusVersion = '3.5.3.2'
+    mybaitsPlusJoinVersion = '1.4.6'
+    esBootVersion = '2.0.0-beta1'
+    beanSearchVersion = '4.2.4'
+    redissonVersion = '3.23.5'
+    lock4jVersion = '2.2.5'
+    druidVersion = '1.2.20'
+    saTokenVersion = '1.37.0'
+    adminServerVersion = '3.1.6'
+    knife4jVersion = '4.3.0'
+    dynamicDatasourceVersion = '4.1.3'
+    easyTransVersion = '2.2.7'
+    sms4jVersion = '3.0.2'
+
+    /*其他*/
+    mysqlConnectorVersion = '8.0.33'
+    sentinelVersion = '1.8.6'
+    xxlJobVersion = '2.4.0'
+    apmVersion = '9.0.0'
+    prometheusVersion = '1.11.3'
+
+    /*utils相关*/
+    streamexVersion = '0.8.1'
+    hutoolVersion = '5.8.22'
+    guavaVersion = '31.1-jre'
+    gsonVersion = '2.10.1'
+    fastjson2Version = '2.0.38'
+    commonspoolVersion = '2.11.1'
+    caffeineVersion = '3.1.1'
+    transmittableVerison = '2.13.2'
+    commonsLang3Version = '3.12.0'
+    commonsCollections4Version = '4.4'
+    easyexcelVersion = '3.3.2'
+    UserAgentVerison = '1.21'
+    vavrVerison = '0.10.4'
+    joolVersion = '0.9.15'
+    jodaMoneyVersion = '1.0.3'
+    servletVersion = '6.0.0'
+    validatorVersion = '3.0.2'
+    swaggerVerison = '2.2.8'
+    bcpkixVersion = '1.69'
+    httpClientVersion = '5.2.1'
+    pinyinVersion = '2.0.3.RELEASE'
+
+    /*第三方sdk*/
+    onsClientVersion = '1.8.8.8.Final'
+    WxVersion = '4.5.0'
+
+
+}

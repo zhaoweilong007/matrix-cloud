@@ -1,0 +1,10 @@
+dependencies {
+    api project(':matrix-core:matrix-auto')
+    api project(':matrix-core:matrix-mybatis')
+
+    compileOnly 'org.aspectj:aspectjweaver'
+
+    compileOnly 'net.dreamlu:mica-auto'
+    annotationProcessor "net.dreamlu:mica-auto"
+    testCompileOnly(project(":matrix-core:matrix-test"))
+}

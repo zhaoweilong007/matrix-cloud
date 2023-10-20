@@ -1,0 +1,320 @@
+server:
+  shutdown: graceful
+
+spring:
+  lifecycle:
+    timeout-per-shutdown-phase: 10s
+  main:
+    allow-bean-definition-overriding: true
+    allow-circular-references: true
+
+  servlet:
+    multipart:
+      # 整个请求大小限制
+      max-request-size: 20MB
+      # 上传单个文件大小限制
+      max-file-size: 100MB
+  cloud:
+    nacos:
+      discovery:
+        metadata:
+          user.name: matrix
+          user.password: matrix
+    sentinel:
+      eager: true
+      transport:
+        # 添加sentinel的控制台地址
+        dashboard: 192.168.31.20:8088
+      scg:
+        fallback:
+          content-type: application/json
+          mode: response
+          response-status: 429
+          response-body: '{"code":429,"success":false,"message":"请求太频繁，请稍后重试"}'
+  mvc:
+    format:
+      date-time: yyyy-MM-dd HH:mm:ss
+    throw-exception-if-no-handler-found: true
+    static-path-pattern: /statics/**
+  messages:
+    basename: i18n/messages
+    encoding: utf-8
+    fallback-to-system-locale: true
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+    serialization:
+      # 格式化输出
+      INDENT_OUTPUT: false
+      # 忽略无法转换的对象
+      fail_on_empty_beans: false
+    deserialization:
+      # 允许对象忽略json中不存在的属性
+      fail_on_unknown_properties: false
+  data:
+    mongodb:
+      host: 192.168.31.20
+      port: 37017
+      database: matrix
+      authentication-database: matrix
+      username: matrix
+      password: matrix
+
+mybatis-plus:
+  mapperPackage: com.matrix.**.mapper
+  global-config:
+    db-config:
+      id-type: assign_id
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+      insert-strategy: not_null
+      update-strategy: not_null
+      where-strategy: not_null
+  configuration:
+    map-underscore-to-camel-case: true
+    call-setters-on-nulls: true
+    auto-mapping-behavior: full
+    default-enum-type-handler: org.apache.ibatis.type.EnumOrdinalTypeHandler
+    typeEnumsPackage: com.matrix.**.enums
+  check-config-location: false
+  type-aliases-package: com.matrix.**.domain,com.matrix.**.entity,com.matrix.**.vo,,com.matrix.**.model
+
+
+
+---
+spring:
+  redis:
+    redisson:
+      # 使用主从配置
+      config: |
+        masterSlaveServersConfig:
+
+
+redisson:
+  # 线程池数量
+  threads: 4
+  # Netty线程池数量
+  nettyThreads: 8
+  masterSlaveServersConfig:
+    enable: true
+    database: 1
+    password: hAdf%)]dltd
+    masterAddress: redis://192.168.31.20:7379
+    slaveAddresses:
+      - redis://192.168.31.19:7379
+    # 客户端名称
+    clientName: ${spring.application.name}
+    # master最小空闲连接数
+    masterConnectionMinimumIdleSize: 4
+    # master连接池大小
+    masterConnectionPoolSize: 8
+    # slave最小空闲连接数
+    slaveConnectionMinimumIdleSize: 4
+    # slave连接池大小
+    slaveConnectionPoolSize: 8
+    # 连接空闲超时，单位：毫秒
+    idleConnectionTimeout: 10000
+    # 命令等待超时，单位：毫秒
+    timeout: 8000
+    # 发布和订阅连接池大小
+    subscriptionConnectionPoolSize: 4
+    # 读取模式
+    readMode: "SLAVE"
+    # 订阅模式
+    subscriptionMode: "MASTER"
+
+#feign配置
+feign:
+  sentinel:
+    enabled: true
+  client:
+    config:
+      default:
+        connect-timeout: 5000
+        read-timeout: 5000
+        logger-level: basic
+  compression:
+    request:
+      enabled: false
+    response:
+      enabled: false
+  metrics:
+    enabled: true
+
+#token认证配置
+sa-token:
+  # jwt秘钥
+  jwt-secret-key: qpufihmnjkzghgrfmnkvmzjyquiepvnhftsgq
+  # token名称 (同时也是cookie名称)
+  token-name: Authorization
+  # token有效期 一个月 单位: 秒
+  timeout: 2592000
+  # token临时有效期 (指定时间无操作就过期) 单位: 秒
+  active-timeout: -1
+  # 开启内网服务调用鉴权
+  check-same-token: true
+  # Same-Token的有效期 (单位: 秒)
+  same-token-timeout: -1
+  # 是否允许同一账号并发登录 (为true时允许一起登录, 为false时新登录挤掉旧登录)
+  is-concurrent: false
+  # 是否尝试从header里读取token
+  is-read-header: true
+  # 是否尝试从cookie里读取token
+  is-read-cookie: false
+  #是否从body读取请求头
+  is-read-body: false
+  # token前缀
+  token-prefix: "Bearer"
+  # 是否输出操作日志
+  is-log: false
+  # basic认证用户名密码
+  basic: ${spring.cloud.nacos.discovery.metadata.user.name}:${spring.cloud.nacos.discovery.metadata.user.password}
+
+
+# 端点配置
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+
+# knife4j的增强配置
+knife4j:
+  enable: true
+  production: false
+  setting:
+    language: zh_cn
+
+
+# springdoc-openapi项目配置
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
+  group-configs:
+    - group: ${spring.application.name}
+      paths-to-match: '/**'
+
+#分布式定时任务
+xxl:
+  job:
+    enabled: true
+    admin:
+      address: http://192.168.31.20:8090/xxl-job-admin
+      access-token: default_token
+    executor:
+      app-name: ${spring.application.name}
+      log-retention-days: 30
+      log-path: ${APP_LOG_PATH:/var/logs}/${spring.application.name}/xxlJob
+
+#分布式事务配置
+seata:
+  tx-service-group: ${spring.application.name}-group
+  config:
+    type: nacos
+    nacos:
+      server-addr: ${spring.cloud.nacos.server-addr}
+      group: SEATA_GROUP
+      namespace: ${spring.profiles.active}
+      username: nacos
+      password: nacos
+      data-id: seataServer.properties
+  registry:
+    type: nacos
+    nacos:
+      application: seata-server
+      server-addr: ${spring.cloud.nacos.server-addr}
+      group: SEATA_GROUP
+      namespace: ${spring.profiles.active}
+      username: nacos
+      password: nacos
+
+
+
+# 分布式锁 lock4j 全局配置
+lock4j:
+  # 获取分布式锁超时时间，默认为 3000 毫秒
+  acquire-timeout: 3000
+  # 分布式锁的超时时间，默认为 30 秒
+  expire: 30000
+
+wx:
+  miniapp:
+    appid: xxxxxxxxxxxxx
+    secret: xxxxxxxxxxxxx
+    config-storage:
+      type: redisson
+      key-prefix: wa
+      http-client-type: httpclient
+
+
+
+
+#易盾检测配置
+yidun:
+  secretId: xxxxxxxxxxxxx
+  secretKey: xxxxxxxxxxxxx
+  businessId: xxxxxxxxxxxxx
+  imgBusinessId: xxxxxxxxxxxxx
+  dataIdPrefix: test
+  textCallBack: http://localhost:9001/resource/yidun/callback/text
+  imgCallBack: http://localhost:9001/resource/yidun/callback/image
+
+
+
+#beanSearch配置
+bean-searcher:
+  params:
+    pagination:
+      max-allowed-size: 100
+      default-size: 10
+      page: pageNum
+      size: pageSize
+      start: 1
+
+
+
+easy-trans:
+  #启用redis缓存 如果不用redis请设置为false
+  is-enable-redis: true
+  #启用全局翻译(拦截所有responseBody进行自动翻译)，如果对于性能要求很高可关闭此配置
+  is-enable-global: true
+  #启用平铺模式
+  is-enable-tile: true
+  #字典缓存放到redis 微服务模式请开启
+  dict-use-redis: true
+  # ruoyi相关的请开启
+  is-enable-map-result: true
+  # 启用多数据源
+  multiple-data-sources: true
+  mp-new: true
+
+
+
+matrix:
+  load-balance:
+    gray:
+      enabled: true
+      defaultVersion: 3.0.0
+      chooser: com.matrix.feign.chooser.ProfileRuleChooser
+      ips:
+        - 192.168.31.19
+  monitor:
+    traceEnable: true
+    metricsEnable: true
+
+
+
+logging:
+  level:
+    com.alibaba.cloud.seata: error
+    org.springframework.cloud.openfeign: warn
+    com.alibaba.nacos: warn
+    org.springframework: warn

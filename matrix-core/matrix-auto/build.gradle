@@ -1,0 +1,12 @@
+dependencies {
+    api(project(":matrix-core:matrix-common"))
+    api 'org.springframework.cloud:spring-cloud-starter'
+    api('org.springframework.boot:spring-boot-configuration-processor')
+
+
+    compileOnly 'net.dreamlu:mica-auto'
+    annotationProcessor "net.dreamlu:mica-auto"
+    annotationProcessor('org.springframework.boot:spring-boot-configuration-processor')
+    compileOnly 'com.aliyun.openservices:ons-client'
+
+}

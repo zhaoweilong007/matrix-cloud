@@ -1,0 +1,10 @@
+//依赖太多的情况下可直接引入该模块
+dependencies {
+    api(project(":matrix-core:matrix-common"))
+    api(project(":matrix-core:matrix-validator"))
+    api(project(":matrix-core:matrix-translation"))
+    api(project(":matrix-core:matrix-feign"))
+    api(project(":matrix-core:matrix-excel"))
+    api(project(":matrix-core:matrix-swagger"))
+    api "cn.zhxu:bean-searcher"
+}

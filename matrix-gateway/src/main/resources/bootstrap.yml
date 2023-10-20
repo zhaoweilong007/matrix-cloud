@@ -1,22 +1,11 @@
 server:
-  port: 9000
+  port: 9001
 
 spring:
   application:
-    name: api-gateway
+    name: matrix-gateway
   profiles:
-    include: matrix
-    active: dev
-  cloud:
-    nacos:
-      server-addr: ${NACOS_SERVER_ADDRESS:localhost:8848}
-      username: ${NACOS_USERNAME:nacos}
-      password: ${NACOS_PASSWD:nacos}
-      config:
-        file-extension: yml
-        shared-configs:
-          - data-id: application-common.yml
-            refresh: true
+    active: ${PROFILE:dev}
 logging:
   # 配置logstash tcp地址
   stash:

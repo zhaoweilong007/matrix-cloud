@@ -1,0 +1,12 @@
+dependencies {
+    api project(':matrix-core:matrix-mybatis')
+    api project(':matrix-core:matrix-redis')
+    implementation project(':matrix-core:matrix-feign')
+    implementation project(':matrix-core:matrix-job')
+    implementation project(':matrix-core:matrix-mq')
+
+    compileOnly 'org.aspectj:aspectjweaver'
+    compileOnly 'org.springframework:spring-web'
+    compileOnly 'net.dreamlu:mica-auto'
+    annotationProcessor "net.dreamlu:mica-auto"
+}

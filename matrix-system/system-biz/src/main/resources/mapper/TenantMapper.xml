@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.matrix.mapper.TenantMapper">
-  <resultMap id="BaseResultMap" type="com.matrix.api.system.entity.po.Tenant">
-    <!--@mbg.generated-->
-    <!--@Table sys_tenant-->
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="status" jdbcType="INTEGER" property="status" />
-    <result column="tenant_name" jdbcType="VARCHAR" property="tenantName" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    <!--@mbg.generated-->
-    id, `status`, tenant_name
-  </sql>
+    <resultMap id="BaseResultMap" type="com.matrix.api.system.entity.po.Tenant">
+        <!--@mbg.generated-->
+        <!--@Table sys_tenant-->
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="tenant_name" jdbcType="VARCHAR" property="tenantName"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, `status`, tenant_name
+    </sql>
 </mapper>

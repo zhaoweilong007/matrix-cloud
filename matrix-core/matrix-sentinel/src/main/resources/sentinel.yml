@@ -1,0 +1,57 @@
+spring:
+  cloud:
+    sentinel:
+      # 持久化配置
+      datasource:
+        #流控规则
+        flow:
+          nacos:
+            server-addr: ${spring.cloud.nacos.server-addr:localhost:8848}
+            namespace: ${spring.profiles.active}
+            username: ${spring.cloud.nacos.username:nacos}
+            password: ${spring.cloud.nacos.username:nacos}
+            groupId: SENTINEL_GROUP
+            dataId: sentinel_rule_config-${spring.application.name}-flow-rules
+            # 规则类型，取值见：
+            # org.springframework.cloud.alibaba.sentinel.datasource.RuleType
+            rule-type: flow
+        #熔断降级
+        degrade:
+          nacos:
+            server-addr: ${spring.cloud.nacos.server-addr:localhost:8848}
+            namespace: ${spring.profiles.active}
+            username: ${spring.cloud.nacos.username:nacos}
+            password: ${spring.cloud.nacos.username:nacos}
+            groupId: SENTINEL_GROUP
+            dataId: sentinel_rule_config-${spring.application.name}-degrade-rules
+            rule-type: degrade
+        #系统规则
+        system:
+          nacos:
+            server-addr: ${spring.cloud.nacos.server-addr:localhost:8848}
+            namespace: ${spring.profiles.active}
+            username: ${spring.cloud.nacos.username:nacos}
+            password: ${spring.cloud.nacos.username:nacos}
+            groupId: SENTINEL_GROUP
+            dataId: sentinel_rule_config-${spring.application.name}-system-rules
+            rule-type: system
+        #授权规则
+        authority:
+          nacos:
+            server-addr: ${spring.cloud.nacos.server-addr:localhost:8848}
+            namespace: ${spring.profiles.active}
+            username: ${spring.cloud.nacos.username:nacos}
+            password: ${spring.cloud.nacos.username:nacos}
+            groupId: SENTINEL_GROUP
+            dataId: sentinel_rule_config-${spring.application.name}-authority-rules
+            rule-type: authority
+        #参数规则
+        param-flow:
+          nacos:
+            server-addr: ${spring.cloud.nacos.server-addr:localhost:8848}
+            namespace: ${spring.profiles.active}
+            username: ${spring.cloud.nacos.username:nacos}
+            password: ${spring.cloud.nacos.username:nacos}
+            groupId: SENTINEL_GROUP
+            dataId: sentinel_rule_config-${spring.application.name}-param-rules
+            rule-type: param-flow

@@ -1,0 +1,7 @@
+dependencies {
+    api(project(":matrix-core:matrix-auto"))
+    api 'com.aliyun.oss:aliyun-sdk-oss:3.15.1'
+    api 'org.springframework:spring-web'
+    compileOnly 'net.dreamlu:mica-auto'
+    annotationProcessor "net.dreamlu:mica-auto"
+}

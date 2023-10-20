@@ -1,0 +1,19 @@
+dependencies {
+    api project(":matrix-core:matrix-auto")
+    api project(":matrix-core:matrix-validator")
+    api 'net.dreamlu:mica-xss'
+    /**
+     * springBoot
+     */
+    api('org.springframework.boot:spring-boot-starter-web')
+    api('org.springframework.boot:spring-boot-starter-actuator')
+    /**
+     * springCloud
+     */
+    api('com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-discovery')
+
+    api('org.springframework.cloud:spring-cloud-starter-openfeign')
+
+    compileOnly 'net.dreamlu:mica-auto'
+    annotationProcessor "net.dreamlu:mica-auto"
+}

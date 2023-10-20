@@ -1,170 +1,99 @@
 buildscript {
+    wrapper {
+        gradleVersion = GRADLE_VERSION
+    }
     ext {
         //https://plugins.gradle.org/plugin/org.springframework.boot
-        springBootVersion = '3.0.5'
-        //https://mvnrepository.com/artifact/com.alibaba.cloud/spring-cloud-alibaba-dependencies
-        springCloudAlibabaVersion = '2022.0.0.0.RC1'
-        //https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-dependencies
-        springCloudVersion = '2022.0.2'
-        //阿里云仓库地址
-        registryUrl = 'registry.cn-hangzhou.aliyuncs.com'
-        //阿里云仓库名
-        registryNamespace = 'matrix-cloud'
-        //阿里云仓库用户名及密码
-        registryUsername = ''
-        registryPassword = ''
+        springBootVersion = '3.1.4'
+        commons = (subprojects - project(":matrix-bom"))
     }
 }
 
+
 plugins {
-    id("org.springframework.boot") version "${springBootVersion}" apply false
-    id("io.spring.dependency-management") version "1.1.0" apply false
-    id("com.google.cloud.tools.jib") version "3.3.1" apply false
+    id 'java-platform'
+    id "org.springframework.boot" version "${springBootVersion}" apply false
+    id "io.spring.dependency-management" version "1.1.0" apply false
+    id "com.google.cloud.tools.jib" version "3.3.2" apply false
 }
-
-
-wrapper.setGradleVersion("8.1")
-
-//定义需要构建docker的模块
-def javaMicroservices = [project(':matrix-gateway'),
-                         project(':matrix-system:system-biz'),
-                         project(':matrix-doc'),
-                         project(':matrix-resource:resource-biz')]
 
 
 allprojects {
-    group = 'com.matrix'
-    //前两位为spring cloud版本号 后一位为项目版本号
-    version = '0.2.1'
-    description = "spring cloud matrix project for"
+    group = GROUP
+    version = VERSION
 
     repositories {
-        //本地仓库
         mavenLocal()
+        //腾讯云
+        maven {
+            allowInsecureProtocol = true
+            url 'http://mirrors.cloud.tencent.com/nexus/repository/maven-public/'
+        }
+        //华为云
+        maven { url 'https://repo.huaweicloud.com/repository/maven/' }
         //阿里云
-        maven {
-            url 'https://maven.aliyun.com/nexus/content/groups/public/'
-        }
-        //中央仓库
+        maven { url 'https://maven.aliyun.com/repository/central' }
+        maven { url "https://maven.aliyun.com/repository/public" }
+        maven { url "https://maven.aliyun.com/repository/gradle-plugin" }
         mavenCentral()
-        //gradle插件
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
     }
 }
 
 
-subprojects {
+configure(commons) {
     apply plugin: 'idea'
     apply plugin: 'java'
     apply plugin: 'java-library'
     apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
+    apply from: "${rootProject.projectDir}/version.gradle"
 
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
+
+    compileJava {
+        options.encoding = "UTF-8"
+        options.compilerArgs << "-parameters"
+    }
 
     dependencyManagement {
         imports {
             mavenBom "com.alibaba.cloud:spring-cloud-alibaba-dependencies:${springCloudAlibabaVersion}"
             mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-        }
-
-        dependencies {
-
-            dependency 'io.seata:seata-spring-boot-starter:1.7.0-native-rc2'
-            dependency 'com.baomidou:mybatis-plus-boot-starter:3.5.3.1'
-            dependency 'cn.easy-es:easy-es-boot-starter:2.0.0-beta1'
-
-            dependency 'com.github.xiaoymin:knife4j-micro-spring-boot-starter:3.0.3'
-            dependency 'com.alibaba:druid-spring-boot-starter:1.2.17'
-            dependency 'com.baomidou:lock4j-redisson-spring-boot-starter:2.2.4'
-            dependency "com.github.xiaoymin:knife4j-aggregation-spring-boot-starter:2.0.9"
-            dependency "cn.dev33:sa-token-spring-boot-starter:1.34.0"
-            dependency "cn.dev33:sa-token-reactor-spring-boot-starter:1.34.0"
-
-
-            /*other*/
-            dependency 'com.mysql:mysql-connector-j:8.0.32'
-            dependency "cn.dev33:sa-token-dao-redis-jackson:1.34.0"
-            dependency "cn.dev33:sa-token-jwt:1.34.0"
-            dependency "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.14.2"
-            dependency 'io.swagger:swagger-annotations:1.5.22'
-            dependency 'com.xuxueli:xxl-job-core:2.4.0'
-
-
-            /*apm 监控相关*/
-            dependency 'org.apache.skywalking:apm-toolkit-logback-1.x:8.15.0'
-            dependency 'org.apache.skywalking:apm-toolkit-trace:8.15.0'
-            dependency 'org.apache.skywalking:apm-toolkit-opentracing:8.15.0'
-            dependency 'net.logstash.logback:logstash-logback-encoder:7.3'
-            dependency 'io.micrometer:micrometer-registry-prometheus:1.10.6'
-
-            /*utils*/
-            dependency 'one.util:streamex:0.8.1'
-            dependency "cn.hutool:hutool-all:5.8.17"
-            dependency "com.google.guava:guava:31.1-jre"
-            dependency "com.google.code.gson:gson:2.10.1"
-            dependency "com.alibaba.fastjson2:fastjson2:2.0.27"
-            dependency 'org.apache.commons:commons-pool2:2.11.1'
-            dependency 'com.github.ben-manes.caffeine:caffeine:3.1.1'
-            dependency 'com.alibaba:transmittable-thread-local:2.13.2'
+            mavenBom "net.dreamlu:mica-bom:${micaVersion}"
         }
     }
 
     dependencies {
-        compileOnly 'org.projectlombok:lombok:1.18.26'
-        annotationProcessor 'org.projectlombok:lombok:1.18.26'
-        compileOnly 'org.mapstruct:mapstruct:1.5.3.Final'
-        annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
-        annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+        implementation platform(project(":matrix-bom"))
+
+        annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+        compileOnly "org.springframework.boot:spring-boot-configuration-processor"
+
+        compileOnly "org.projectlombok:lombok:${lombokVersion}"
+        testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
+
+        annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+        annotationProcessor "org.projectlombok:lombok-mapstruct-binding:0.2.0"
+        testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+
+        implementation "io.github.linpeilie:mapstruct-plus-spring-boot-starter:${mapstructPlusVersion}"
+        annotationProcessor "io.github.linpeilie:mapstruct-plus-processor:${mapstructPlusVersion}"
+        testAnnotationProcessor "io.github.linpeilie:mapstruct-plus-processor:${mapstructPlusVersion}"
     }
     test {
+        enabled = false
         useJUnitPlatform()
     }
-}
 
-File agentFile = file '/deploy/skywalking/agent'
-
-
-configure(javaMicroservices) {
-    apply plugin: 'com.google.cloud.tools.jib'
-
-    // 使用jib插件自动构建镜像并上传到阿里云
-    jib {
-        from {
-            image = "adoptopenjdk/openjdk11:ubuntu-jre-nightly"
-        }
-        //推送的目标镜像仓库地址
-        to {
-            image = "${registryUrl}/${registryNamespace}/${project.name}"
-            //镜像tag
-            tags = ["latest", "${project.version}".toString()]
-            //身份认证信息
-            auth {
-                username = "${registryUsername}"
-                password = "${registryPassword}"
-            }
-        }
-        //镜像容器的配置信息
-        container {
-            environment = [SW_AGENT_NAME: "${project.name}".toString()]
-            jvmFlags = ['-Duser.timezone=Asia/Shanghai', '-javaagent:/skywalking/agent/skywalking-agent.jar']
-            creationTime = "USE_CURRENT_TIMESTAMP"
-            volumes = ['/skywalking/agent']
-        }
-        //添加skyWalking agent探针
-        extraDirectories {
-            paths {
-                path {
-                    from = agentFile
-                    into = '/skywalking/agent'
-                }
-            }
-        }
+    bootJar {
+        enabled = false
     }
+
+    compileJava.dependsOn(processResources)
 }
+
+apply from: "${rootProject.projectDir}/deploy.gradle"
 
 
 

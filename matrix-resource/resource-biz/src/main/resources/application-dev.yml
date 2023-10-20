@@ -1,10 +1,3 @@
-matrix:
-  swagger:
-    enable: true
-    name: resource
-    description: 资源服务
-    version: 1.0
-
 # email配置
 ---
 spring:
