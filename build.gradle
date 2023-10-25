@@ -4,7 +4,7 @@ buildscript {
     }
     ext {
         //https://plugins.gradle.org/plugin/org.springframework.boot
-        springBootVersion = '3.1.4'
+        springBootVersion = '3.1.5'
         commons = (subprojects - project(":matrix-bom"))
     }
 }
