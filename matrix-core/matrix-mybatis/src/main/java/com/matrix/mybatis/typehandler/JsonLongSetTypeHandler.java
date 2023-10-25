@@ -1,4 +1,4 @@
-package com.matrix.mybatis.type;
+package com.matrix.mybatis.typehandler;
 
 import com.baomidou.mybatisplus.extension.handlers.AbstractJsonTypeHandler;
 import com.fasterxml.jackson.core.type.TypeReference;
