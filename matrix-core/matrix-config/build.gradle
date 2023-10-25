@@ -1,7 +1,7 @@
 dependencies {
     api('com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-config')
     api 'org.springframework.cloud:spring-cloud-starter-bootstrap'
-
+    api 'com.alibaba.nacos:logback-adapter:1.0.0'
     compileOnly 'net.dreamlu:mica-auto'
     annotationProcessor "net.dreamlu:mica-auto"
 }

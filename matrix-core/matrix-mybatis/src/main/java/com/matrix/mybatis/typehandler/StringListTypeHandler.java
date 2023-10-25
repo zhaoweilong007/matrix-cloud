@@ -1,4 +1,4 @@
-package com.matrix.mybatis.type;
+package com.matrix.mybatis.typehandler;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;

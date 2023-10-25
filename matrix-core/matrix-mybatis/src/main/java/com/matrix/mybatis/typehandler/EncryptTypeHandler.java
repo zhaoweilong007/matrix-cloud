@@ -1,4 +1,4 @@
-package com.matrix.mybatis.type;
+package com.matrix.mybatis.typehandler;
 
 import cn.hutool.core.lang.Assert;
 import cn.hutool.crypto.SecureUtil;

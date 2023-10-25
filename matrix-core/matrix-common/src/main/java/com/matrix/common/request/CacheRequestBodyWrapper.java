@@ -1,16 +1,19 @@
-package com.matrix.web.filter;
+package com.matrix.common.request;
 
 import cn.hutool.extra.servlet.JakartaServletUtil;
 import jakarta.servlet.ReadListener;
 import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletRequestWrapper;
+import lombok.Getter;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Request Body 缓存 Wrapper
@@ -21,17 +24,17 @@ public class CacheRequestBodyWrapper extends HttpServletRequestWrapper {
      * 缓存的内容
      */
     private final byte[] body;
-    private final Enumeration<String> headerNames;
+    @Getter
+    private final Map<String, String> headerMap = new HashMap<>();
 
     public CacheRequestBodyWrapper(HttpServletRequest request) {
         super(request);
         body = JakartaServletUtil.getBodyBytes(request);
-        this.headerNames = request.getHeaderNames();
-    }
-
-    @Override
-    public Enumeration<String> getHeaderNames() {
-        return this.headerNames;
+        final Enumeration<String> headerNames = request.getHeaderNames();
+        while (headerNames.hasMoreElements()) {
+            String headerName = headerNames.nextElement();
+            headerMap.put(headerName, request.getHeader(headerName));
+        }
     }
 
     @Override
