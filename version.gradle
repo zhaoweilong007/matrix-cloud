@@ -38,7 +38,7 @@ ext {
     /*utils相关*/
     streamexVersion = '0.8.1'
     hutoolVersion = '5.8.22'
-    guavaVersion = '31.1-jre'
+    guavaVersion = '32.1.3-jre'
     gsonVersion = '2.10.1'
     fastjson2Version = '2.0.38'
     commonspoolVersion = '2.11.1'
