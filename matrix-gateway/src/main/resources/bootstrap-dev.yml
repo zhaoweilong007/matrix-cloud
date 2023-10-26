@@ -1,0 +1,4 @@
+logging:
+  level:
+    com.matrix.mapper: debug
+    com.matrix.api.**: debug

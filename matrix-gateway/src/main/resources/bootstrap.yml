@@ -6,12 +6,6 @@ spring:
     name: matrix-gateway
   profiles:
     active: ${PROFILE:dev}
-logging:
-  # 配置logstash tcp地址
-  stash:
-    address: ${LOGSTASH_ADDRESS:localhost:5000}
-  level:
-    com.matrix.mapper: debug
-    com.matrix.api.**: debug
-  file:
-    path: /var/logs
+  config:
+    import:
+      - optional:nacos:application-common.yml
