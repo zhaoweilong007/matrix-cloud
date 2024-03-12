@@ -1,4 +1,4 @@
-rootProject.name = 'spring-cloud-matrix'
+rootProject.name = 'matrix-cloud'
 include 'matrix-gateway'
 include 'matrix-doc'
 include 'matrix-common'
