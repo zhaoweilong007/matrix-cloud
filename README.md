@@ -2,7 +2,7 @@
 
 ## ✨介绍
 
-Spring cloud matrix是微服务的脚手架，整合目前主流的微服务框架
+matrix cloud是微服务的脚手架，基于SpringCLoud、SpringCloudAlibaba体系构建，可快速接入微服务
 
 ### 🔨项目环境
 
@@ -31,7 +31,7 @@ Spring cloud matrix是微服务的脚手架，整合目前主流的微服务框�
 | ELK                  | 日志处理分析               | 7.17.6           |
 | prometheus           | 应用监控                 | latest           |
 
-基础功能已开发完毕，可自定义子应用接入spring cloud matrix微服务，详情请看[#构建自定义组件说明](#构建自定义组件说明)
+基础功能已开发完毕，可自定义子应用接入微服务，详情请看[#构建自定义组件说明](#构建自定义组件说明)
 
 ## 📌模块
 
