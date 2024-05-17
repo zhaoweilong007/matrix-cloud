@@ -1,6 +1,0 @@
-dependencies {
-    api(project(":matrix-core:matrix-auto"))
-    api 'org.springframework.boot:spring-boot-starter-mail'
-    compileOnly 'net.dreamlu:mica-auto'
-    annotationProcessor "net.dreamlu:mica-auto"
-}

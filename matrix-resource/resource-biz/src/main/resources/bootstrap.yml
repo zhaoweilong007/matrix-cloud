@@ -8,7 +8,6 @@ spring:
     active: ${PROFILE:dev}
   config:
     import:
-      - optional:nacos:env.properties
       - optional:nacos:application-common.yml
       - optional:nacos:datasource.yml
 

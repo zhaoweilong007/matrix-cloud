@@ -19,7 +19,7 @@ spring:
       discovery:
         metadata:
           user.name: matrix
-          user.password: matrix
+          user.password: 123456
     sentinel:
       eager: true
       transport:
@@ -53,14 +53,16 @@ spring:
       fail_on_unknown_properties: false
   data:
     mongodb:
-      host: 192.168.31.20
+      host: mongodb
       port: 37017
       database: matrix
       authentication-database: matrix
-      username: matrix
+      username: root
       password: matrix
 
 mybatis-plus:
+  encryptor:
+    password: GNGMTgM5NxHm6SCM
   mapperPackage: com.matrix.**.mapper
   global-config:
     db-config:
@@ -78,9 +80,10 @@ mybatis-plus:
     default-enum-type-handler: org.apache.ibatis.type.EnumOrdinalTypeHandler
     typeEnumsPackage: com.matrix.**.enums
   check-config-location: false
-  type-aliases-package: com.matrix.**.domain,com.matrix.**.entity,com.matrix.**.vo,,com.matrix.**.model
+  type-aliases-package: com.matrix.**.entity,com.matrix.**.vo
 
-
+mybatis-plus-join:
+  banner: false # 关闭控制台的 Banner 打印
 
 ---
 spring:
@@ -157,7 +160,7 @@ sa-token:
   # Same-Token的有效期 (单位: 秒)
   same-token-timeout: -1
   # 是否允许同一账号并发登录 (为true时允许一起登录, 为false时新登录挤掉旧登录)
-  is-concurrent: false
+  is-concurrent: true
   # 是否尝试从header里读取token
   is-read-header: true
   # 是否尝试从cookie里读取token
@@ -247,25 +250,37 @@ lock4j:
 
 wx:
   miniapp:
-    appid: xxxxxxxxxxxxx
-    secret: xxxxxxxxxxxxx
+    appid:
+    secret:
     config-storage:
       type: redisson
       key-prefix: wa
       http-client-type: httpclient
 
 
+aliyun:
+  oss:
+    prefix:
+
+
+# 腾讯元im配置
+tencent:
+  im:
+    key:
+    sdkappid:
+    adminAcount:
+    serviceImId:
+
 
 
 #易盾检测配置
 yidun:
-  secretId: xxxxxxxxxxxxx
-  secretKey: xxxxxxxxxxxxx
-  businessId: xxxxxxxxxxxxx
-  imgBusinessId: xxxxxxxxxxxxx
-  dataIdPrefix: test
-  textCallBack: http://localhost:9001/resource/yidun/callback/text
-  imgCallBack: http://localhost:9001/resource/yidun/callback/image
+  secretId:
+  secretKey:
+  businessId:
+  imgBusinessId:
+  textCallBack:
+  imgCallBack:
 
 
 
@@ -299,18 +314,17 @@ easy-trans:
 
 
 matrix:
+  access-log: false
   load-balance:
     gray:
       enabled: true
-      defaultVersion: 3.0.0
+      defaultVersion: 1.0
       chooser: com.matrix.feign.chooser.ProfileRuleChooser
       ips:
         - 192.168.31.19
   monitor:
     traceEnable: true
     metricsEnable: true
-
-
 
 logging:
   level:

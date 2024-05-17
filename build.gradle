@@ -4,19 +4,30 @@ buildscript {
     }
     ext {
         //https://plugins.gradle.org/plugin/org.springframework.boot
-        springBootVersion = '3.1.5'
+        springBootVersion = '3.1.10'
         commons = (subprojects - project(":matrix-bom"))
     }
 }
 
 
 plugins {
+    id 'base'
+    id "org.sonarqube" version "4.2.1.3168"
     id 'java-platform'
     id "org.springframework.boot" version "${springBootVersion}" apply false
     id "io.spring.dependency-management" version "1.1.0" apply false
-    id "com.google.cloud.tools.jib" version "3.3.2" apply false
+    id "com.google.cloud.tools.jib" version "3.4.1" apply false
 }
 
+
+sonar {
+    properties {
+        property "sonar.projectKey", "xxxxxxx"
+        property "sonar.projectName", "matrix-cloud"
+        property "sonar.host.url", "http://192.168.31.19:9000"
+        property "sonar.token", "xxxxxx"
+    }
+}
 
 allprojects {
     group = GROUP
@@ -43,6 +54,7 @@ allprojects {
 configure(commons) {
     apply plugin: 'idea'
     apply plugin: 'java'
+    apply plugin: 'org.sonarqube'
     apply plugin: 'java-library'
     apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
@@ -53,7 +65,6 @@ configure(commons) {
 
     compileJava {
         options.encoding = "UTF-8"
-        options.compilerArgs << "-parameters"
     }
 
     dependencyManagement {
@@ -70,17 +81,18 @@ configure(commons) {
         annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
         compileOnly "org.springframework.boot:spring-boot-configuration-processor"
 
-        compileOnly "org.projectlombok:lombok:${lombokVersion}"
-        testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
+        compileOnly "org.projectlombok:lombok"
+        testCompileOnly "org.projectlombok:lombok"
 
-        annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+        annotationProcessor "org.projectlombok:lombok"
         annotationProcessor "org.projectlombok:lombok-mapstruct-binding:0.2.0"
-        testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+        testAnnotationProcessor "org.projectlombok:lombok"
 
         implementation "io.github.linpeilie:mapstruct-plus-spring-boot-starter:${mapstructPlusVersion}"
         annotationProcessor "io.github.linpeilie:mapstruct-plus-processor:${mapstructPlusVersion}"
         testAnnotationProcessor "io.github.linpeilie:mapstruct-plus-processor:${mapstructPlusVersion}"
     }
+
     test {
         enabled = false
         useJUnitPlatform()
@@ -90,6 +102,8 @@ configure(commons) {
         enabled = false
     }
 
+    compileJava.options.compilerArgs.add '-parameters'
+    compileTestJava.options.compilerArgs.add '-parameters'
     compileJava.dependsOn(processResources)
 }
 
