@@ -4,7 +4,6 @@ import cn.hutool.extra.spring.EnableSpringUtil;
 import com.matrix.common.constant.WebFilterOrderConstants;
 import com.matrix.web.exception.GlobalExceptionHandler;
 import com.matrix.web.filter.CacheRequestBodyFilter;
-import com.matrix.web.filter.UserDeviceFilter;
 import jakarta.servlet.Filter;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -63,8 +62,4 @@ public class WebAutoConfig implements WebMvcConfigurer {
         return new GlobalExceptionHandler();
     }
 
-    @Bean
-    public FilterRegistrationBean<UserDeviceFilter> userDeviceFilter() {
-        return createFilterBean(new UserDeviceFilter(), WebFilterOrderConstants.USER_DEVICE_FILETER);
-    }
 }

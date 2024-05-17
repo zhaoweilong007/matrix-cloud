@@ -1,10 +1,7 @@
 dependencies {
     api(project(":matrix-core:matrix-auto"))
-
-    api "com.alibaba.fastjson2:fastjson2"
     api 'cn.jpush.api:jpush-client:3.5.5'
     api 'cn.jpush.api:jiguang-common:1.1.4'
-    api 'commons-beanutils:commons-beanutils:1.9.4'
     compileOnly 'net.dreamlu:mica-auto'
     annotationProcessor "net.dreamlu:mica-auto"
 }

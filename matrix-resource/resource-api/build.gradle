@@ -1,5 +1,6 @@
 dependencies {
-    implementation(project(":matrix-common:common-core"))
+    api project(':matrix-core:matrix-api')
+
 }
 
 bootJar {

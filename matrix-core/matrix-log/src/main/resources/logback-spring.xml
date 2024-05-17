@@ -22,7 +22,7 @@
     </springProfile>
 
     <!-- 正式环境 -->
-    <springProfile name="prod">
+    <springProfile name="pre,prod">
         <root level="INFO">
             <appender-ref ref="console"/>
             <appender-ref ref="sky_log"/>
