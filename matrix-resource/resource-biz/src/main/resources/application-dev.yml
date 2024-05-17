@@ -1,12 +1,38 @@
 # email配置
----
+logging:
+  level:
+    cn.zhxu.bs: DEBUG
+    com.alibaba.cloud.seata: warn
+    org.springframework.cloud.openfeign: warn
+    com.alibaba.nacos: warn
+    org.springframework: warn
+
 spring:
-  mail:
-    host:
-    port:
-    username:
-    password:
-    test-connection: true
+  datasource:
+    dynamic:
+      datasource:
+        master:
+          url: jdbc:mysql://${DATASOURCE_HOST:192.168.31.20:4306}/fdx?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&rewriteBatchedStatements=true&allowMultiQueries=true
+          username: ${DATASOURCE_USERNAME:fangdx}
+          password: ${DATASOURCE_PASSWORD:UeD:oW-eC|u}
+          driver-class-name: com.mysql.cj.jdbc.Driver
+
+
+matrix:
+  tenant:
+    enable: true
+  ignoreTables:
+  ignore-urls:
+  swagger:
+    enabled: true
+    title: 资源服务
+    version: 1.0
+    description: oss、sms、email、jpush服务
+    contact-user: zwl
+    contact-url: http://localhost:9003/v3/api-docs
+  mq:
+    enabled: false
+
 
 # oss配置
 ---

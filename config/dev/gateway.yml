@@ -23,23 +23,18 @@ security:
       - /code
       - /v3/api-docs/**
       - /*/v3/api-docs/**
+      - /csrf
       - /webjars/**
       - /system/auth/**
-      - /resource/**
-      - /system/notify/subscribe/**
-      - /system/broadcast/**
-      - /system/subway/selectList
-      - /system/searchConfig/selectConfigMap
-      - /system/sys/sysDict/types
-      - /system/sys/config/queryByConfigKey
-      - /system/sys/region/selectTreeByType
+
+
 spring:
   cloud:
     sentinel:
       datasource:
         gw_flow:
           nacos:
-            server-addr: ${NACOS_SERVER_ADDRESS:192.168.31.20:8848}
+            server-addr: ${NACOS_SERVER_ADDRESS:nacos:8848}
             namespace: ${spring.profiles.active}
             username: ${NACOS_USERNAME:nacos}
             password: ${NACOS_PASSWD:nacos}
@@ -49,7 +44,7 @@ spring:
             rule-type: gw_flow
         gw-api-group:
           nacos:
-            server-addr: ${NACOS_SERVER_ADDRESS:192.168.31.20:8848}
+            server-addr: ${NACOS_SERVER_ADDRESS:nacos:8848}
             namespace: ${spring.profiles.active}
             username: ${NACOS_USERNAME:nacos}
             password: ${NACOS_PASSWD:nacos}
@@ -59,10 +54,17 @@ spring:
             rule-type: gw_api_group
     gateway:
       allowOrigins:
-        - http://192.168.31.79:8889
-        - http://192.168.31.32:8889
-        - http://192.168.31.32:9001
+        - http://localhost:8891
         - http://127.0.0.1:3000
+        - http://localhost:3000
+        - http://localhost:8889
+        - http://localhost:8080
+        - http://127.0.0.1:8848
+
+      httpclient:
+        connect-timeout: 5000
+        response-timeout: 60s
+
       requestLog: true
       discovery:
         locator:
@@ -87,6 +89,9 @@ spring:
             - Path=/resource/**
           filters:
             - StripPrefix=1
+
+
+
 knife4j:
   gateway:
     enabled: true
@@ -102,6 +107,9 @@ knife4j:
         service-name: matrix-resource
         context-path: resource
         order: 2
+
+
+
 feign:
   sentinel:
     enabled: true

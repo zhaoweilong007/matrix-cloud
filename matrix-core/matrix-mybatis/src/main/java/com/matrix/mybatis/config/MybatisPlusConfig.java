@@ -12,7 +12,6 @@ import com.matrix.common.context.LoginUserContextHolder;
 import com.matrix.common.entity.BaseEntity;
 import com.matrix.common.model.login.LoginUser;
 import com.matrix.common.util.servlet.ServletUtils;
-import com.matrix.mybatis.injector.MateSqlInjector;
 import io.vavr.control.Option;
 import org.apache.ibatis.reflection.MetaObject;
 import org.mybatis.spring.annotation.MapperScan;
@@ -48,13 +47,6 @@ public class MybatisPlusConfig {
         mybatisPlusInterceptor.addInnerInterceptor(new BlockAttackInnerInterceptor());
         return mybatisPlusInterceptor;
     }
-
-    @Bean
-    public MateSqlInjector mateSqlInjector() {
-        return new MateSqlInjector();
-    }
-
-
     /**
      * 使用网卡信息绑定雪花生成器
      * 防止集群雪花ID重复

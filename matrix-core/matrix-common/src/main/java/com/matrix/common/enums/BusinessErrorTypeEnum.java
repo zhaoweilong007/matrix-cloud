@@ -94,8 +94,12 @@ public enum BusinessErrorTypeEnum implements IResultCode {
 
     JPUSH_TOKEN_INVALID(5002, "一键登陆无效或过期"),
     MOBILE_IS_BINDING(5003, "手机号已经绑定无法重复绑定"),
-    ERROR_APPLE_TOKEN_FAIL(5004, "苹果授权失败");
+    ERROR_APPLE_TOKEN_FAIL(5004, "苹果授权失败"),
 
+
+    OCR_CALL_ERROR(6005, "OCR识别异常"),
+    OCR_QUALITY_ERROR(6006, "图片质量不清晰"),
+    OCR_BORDER_CODE_ERROR(6007, "身份证边框不完整");
 
     public final int code;
     public final String msg;

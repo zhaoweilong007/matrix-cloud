@@ -1,8 +1,8 @@
-# matrix cloud
+# Matrix-Cloud
 
 ## ✨介绍
 
-matrix cloud是微服务的脚手架，基于SpringCLoud、SpringCloudAlibaba体系构建，可快速接入微服务
+Matrix-Cloud是微服务的脚手架，整合目前主流的微服务框架
 
 ### 🔨项目环境
 
@@ -10,47 +10,44 @@ matrix cloud是微服务的脚手架，基于SpringCLoud、SpringCloudAlibaba体
 
 - jdk11
 - gradle7.4.2
-- mysql8.0.x
-- redis6.0.x
-- elasticSearch7.17.6
 
 ### 📝技术选型
 
 | 技术框架                 | 描述                   | 版本               |
 |----------------------|----------------------|------------------|
-| spring cloud alibaba | spring cloud alibaba | 2021.0.4.0       |
-| spring cloud         | spring cloud         | 2021.0.4         |
-| spring boot          | spring boot          | 2.6.11           |
-| nacos                | 服务注册发现               | 2.1.0            |
+| spring cloud alibaba | spring cloud alibaba | 2022.0.0.0       |
+| spring cloud         | spring cloud         | 2022.0.4         |
+| spring boot          | spring boot          | 3.1.10           |
+| nacos                | 服务注册发现               | 2.2.1            |
 | spring cloud gateway | 网关                   | 依赖spring cloud版本 |
 | sentinel             | 熔断限流                 | 1.8.5            |
-| sa-Token             | 权限认证                 | 1.30.0           |
-| seata                | 分布式事务                | 1.5.2            |
+| sa-Token             | 权限认证                 | 1.37.0           |
+| seata                | 分布式事务                | 1.7.1            |
 | rocketmq             | 消息队列                 | 4.9.4            |
 | skywalking           | 分布式链路追踪              | 9.2.0            |
 | ELK                  | 日志处理分析               | 7.17.6           |
 | prometheus           | 应用监控                 | latest           |
 
-基础功能已开发完毕，可自定义子应用接入微服务，详情请看[#构建自定义组件说明](#构建自定义组件说明)
+基础功能已开发完毕，可自定义子应用接入spring cloud matrix微服务，详情请看[#构建自定义组件说明](#构建自定义组件说明)
 
 ## 📌模块
 
-| 模块              | 描述            | 服务地址                                  | 默认用户密码            |
-|-----------------|---------------|---------------------------------------|-------------------|
-| nacos           | 注册中心          | http://localhost:8848/nacos           | nacos/nacos       |
-| sentinel        | 流量卫兵          | http://localhost:8088/dashboard       | sentinel/sentinel |
-| seata           | 分布式事务         | http://localhost:7091/TransactionInfo | seata/seata       |
-| skyWalking      | 链路追踪          | http://localhost:8080/general         | 无                 |
-| elasticSearch   | 搜索引擎          | http://localhost:9200                 | elastic/changeme  |
-| kibana          | 日志分析          | http://locahost:5601                  | elastic/changeme  |
-| prometheus      | 监控            | http://localhost:9090                 | 无                 |
-| grafana         | 监控展示          | http://localhost:3000                 | admin/admin       |
-| xxl-job-admin   | 分布式任务调度       | http://localhost:8090/xxl-job-admin   | admin/123456      |
-| rocketmqConsole | mq控制台         | http://localhost:19876/               | 无                 |
-| matrix-gateway  | 网关            | http://localhost:9000                 | 无                 |
-| matrix-system   | 系统服务          | http://localhost:9001                 | 管理员:admin/123456  |
-| matrix-doc      | 文档服务          | http://localhost:10000/doc.html       | admin/admin       |
-| matrix-resource | OSS、SMS、Email | http://localhost:9003                 | 无                 |
+| 模块              | 描述                | 服务地址                                  | 默认用户密码            |
+|-----------------|-------------------|---------------------------------------|-------------------|
+| nacos           | 注册中心              | http://localhost:8848/nacos           | nacos/nacos       |
+| sentinel        | 流量卫兵              | http://localhost:8088/dashboard       | sentinel/sentinel |
+| seata           | 分布式事务             | http://localhost:7091/TransactionInfo | seata/seata       |
+| skyWalking      | 链路追踪              | http://localhost:8080/general         | 无                 |
+| elasticSearch   | 搜索引擎              | http://localhost:9200                 | elastic/changeme  |
+| kibana          | 日志分析              | http://locahost:5601                  | elastic/changeme  |
+| prometheus      | 监控                | http://localhost:9090                 | 无                 |
+| grafana         | 监控展示              | http://localhost:3000                 | admin/admin       |
+| xxl-job-admin   | 分布式任务调度           | http://localhost:8090/xxl-job-admin   | admin/123456      |
+| rocketmqConsole | mq控制台             | http://localhost:19876/               | 无                 |
+| matrix-gateway  | 网关                | http://localhost:9000                 | 无                 |
+| matrix-gateway  | spring boot admin | http://localhost:9001                 | admin/admin       |
+| matrix-system   | 系统服务              | http://localhost:9002                 | 管理员:admin/123456  |
+| matrix-resource | OSS、SMS、Email     | http://localhost:9003                 | 无                 |
 
 ## ⏳功能开发进度
 
@@ -69,42 +66,148 @@ matrix cloud是微服务的脚手架，基于SpringCLoud、SpringCloudAlibaba体
 - [ ] 集成sharding-jdbc分库分表
 - [ ] 集成工作流flowable
 
-## Common组件
+## 公共组件说明
 
-- common-core
+- [matrix-bom](matrix-bom)
+
+依赖统一版本管理，具体版本号请看：[version.gradle](version.gradle)
+
+- [matrix-api](matrix-core%2Fmatrix-api)
+
+子服务api接口依赖，提供子服务间调用基础功能
+
+- [matrix-auth](matrix-core%2Fmatrix-auth)
+
+权限认证相关功能
+
+- [matrix-auto](matrix-core%2Fmatrix-auto)
+
+相关配置类，其他自动装配组件使用下引用
+
+- [matrix-common](matrix-core%2Fmatrix-common)
 
 > 公共组件，提供基础的工具类和通用的工具类
 
-> 集成nacos服务注册发现，配置中心
+- [matrix-config](matrix-core%2Fmatrix-config)
+
+公共的nacos配置，默认自动读取[bootstrap.properties](matrix-core%2Fmatrix-config%2Fsrc%2Fmain%2Fresources%2Fbootstrap.properties)
+可通过环境变量指定
+
+- [matrix-data-permission](matrix-core%2Fmatrix-data-permission)
+
+数据权限相关功能，基于注解的数据权限隔离
+
+- [matrix-es](matrix-core%2Fmatrix-es)
+
+集成elasticSearch，提供es的相关操作
+
+- [matrix-excel](matrix-core%2Fmatrix-excel)
+
+通用的excel操作，提供导入导出功能
+
+- [matrix-feign](matrix-core%2Fmatrix-feign)
+
+集成openfeign，支持版本号负载均衡
+
+- [matrix-idempotent](matrix-core%2Fmatrix-idempotent)
+
+幂等性校验
+
+- [matrix-job](matrix-core%2Fmatrix-job)
+
+集成xxl-job，提供分布式任务调度功能
+
+- [matrix-jpush](matrix-core%2Fmatrix-jpush)
+
+集成极光推送，提供推送功能
+
+- [matrix-lock](matrix-core%2Fmatrix-lock)
+
+分布式锁相关功能
+
+- [matrix-log](matrix-core%2Fmatrix-log)
+
+公共日志配置，记录操作日志
+
+- [matrix-mongodb](matrix-core%2Fmatrix-mongodb)
+
+集成mongodb，提供mongodb的相关操作
+
+- [matrix-mq](matrix-core%2Fmatrix-mq)
+
+集成aliyun rocketMq，提供rocketmq的相关操作
+
+- [matrix-mybatis](matrix-core%2Fmatrix-mybatis)
+
+集成mybatis，提供mybatis的相关操作
+
+- [matrix-oss](matrix-core%2Fmatrix-oss)
+
+oss对象存储相关
+
+- [matrix-prometheus](matrix-core%2Fmatrix-prometheus)
+
+服务监控相关
+
+- [matrix-redis](matrix-core%2Fmatrix-redis)
+
+redis相关操作
+
+- [matrix-seata](matrix-core%2Fmatrix-seata)
+
+集成seata分布式事务
+
+- [matrix-sensitive](matrix-core%2Fmatrix-sensitive)
+
+敏感数据脱敏
+
+- [matrix-sentinel](matrix-core%2Fmatrix-sentinel)
+
+集成sentinel，提供限流、熔断、降级、热点key、系统保护等能力
+
+支持动态读取nacos实现实时配置
+
+- [matrix-sms](matrix-core%2Fmatrix-sms)
+
+短信功能
+
+- [matrix-strategy](matrix-core%2Fmatrix-strategy)
+
+策略组件
+
+- [matrix-swagger](matrix-core%2Fmatrix-swagger)
+
+集成swagger，提供swagger文档聚合
+
+- [matrix-tenant](matrix-core%2Fmatrix-tenant)
+
+多租户组件
+
+- [matrix-test](matrix-core%2Fmatrix-test)
+  测试组件
+
+- [matrix-translation](matrix-core%2Fmatrix-translation)
+  翻译相关，字典翻译、字段id>name翻译
+
+
+- [matrix-validator](matrix-core%2Fmatrix-validator)
+  校验组件
+
+- [matrix-web](matrix-core%2Fmatrix-web)
+
+web组件，提供对servlet服务的支持及相关配置
+
+- ps:
 
 > 在SpringBoot 2.4.x的版本之后，对于bootstrap.properties/bootstrap.yaml配置文件 的支持
-
-> 集成openfeign
-
 > Spring Cloud 2020版本以后，默认移除了对Netflix的依赖，其中就包括Ribbon，官方默认推荐使用Spring Cloud
 > Loadbalancer正式替换Ribbon，并成为了Spring Cloud负载均衡器的唯一实现
 
-> 集成sentinel的支持
-
-> 集成knife4j的支持
-
-- matrix-core
-
-> 对common-core提供的的自动配置
-
-- matrix-web
-
-> 提供对servlet服务的支持及相关配置
-
-## system-server
+## matrix-system
 
 ### 路由管理
 
-gateway使用alibaba sentinel集成，支持nacos动态路由配置
-
-> ps:在gateway网关集成sentinel时，需要添加JVM参数`-Dcsp.sentinel.app.type=1`,将应用识别为网关，否则看不到api管理页面
-
-通过nacos监听配置，使用`RouteDefinitionWriter`更新网关路由配置，实现动态路由配置
+- 基于nacos的配置，修改后可使路由实时生效
 
 ### 权限管理
 
@@ -226,7 +329,6 @@ matrix:
 def javaMicroservices = [
         project(':matrix-gateway'),
         project(':matrix-system:system-biz'),
-        project(':matrix-doc'),
         //添加自定义组件
         project(':youModuleName')
 ]

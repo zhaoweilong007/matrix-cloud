@@ -1,17 +1,26 @@
 dependencies {
-    implementation(project(":matrix-common:matrix-core"))
-    implementation(project(":matrix-common:matrix-web"))
-    implementation(project(":matrix-resource:resource-api"))
-    implementation 'org.springframework.boot:spring-boot-starter-mail'
-    implementation 'cn.xuyanwu:spring-file-storage:0.5.0'
-    implementation 'com.huaweicloud:esdk-obs-java:3.22.3.1'
-    implementation 'com.aliyun.oss:aliyun-sdk-oss:3.15.1'
-    implementation 'com.qiniu:qiniu-java-sdk:7.11.0'
-    implementation 'com.qcloud:cos_api:5.6.98'
-    implementation 'com.baidubce:bce-java-sdk:0.10.218'
-    implementation 'com.upyun:java-sdk:4.2.3'
-    implementation 'io.minio:minio:8.4.3'
-    implementation 'commons-net:commons-net:3.8.0'
-    implementation 'com.jcraft:jsch:0.1.55'
-    implementation 'cn.hutool:hutool-extra:5.8.5'
+    api project(':matrix-resource:resource-api')
+    implementation(project(":matrix-core:matrix-web"))
+    implementation(project(":matrix-core:matrix-config"))
+    implementation(project(":matrix-core:matrix-redis"))
+    implementation(project(":matrix-core:matrix-sentinel"))
+    implementation(project(":matrix-core:matrix-auth"))
+    implementation(project(":matrix-core:matrix-swagger"))
+    implementation(project(":matrix-core:matrix-mybatis"))
+    implementation(project(":matrix-core:matrix-seata"))
+    implementation(project(":matrix-core:matrix-log"))
+    implementation(project(":matrix-core:matrix-prometheus"))
+    implementation(project(":matrix-core:matrix-validator"))
+    implementation(project(":matrix-core:matrix-jpush"))
+    implementation(project(":matrix-core:matrix-mq"))
+    implementation(project(":matrix-core:matrix-strategy"))
+    implementation(project(":matrix-core:matrix-sms")) {
+        exclude group: "com.sun.xml.bind", module: "jaxb-core"
+    }
+    implementation(project(":matrix-core:matrix-oss"))
+    implementation(project(":matrix-core:matrix-sensitive"))
+    implementation(project(":matrix-core:matrix-mongodb"))
+    implementation(project(":matrix-core:matrix-test"))
+    implementation 'com.tencentcloudapi:tencentcloud-sdk-java:3.1.930'
+
 }
