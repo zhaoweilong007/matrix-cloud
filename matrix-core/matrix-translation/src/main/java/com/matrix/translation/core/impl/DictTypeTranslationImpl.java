@@ -3,19 +3,18 @@ package com.matrix.translation.core.impl;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Validator;
 import com.matrix.common.service.IDictService;
-import com.matrix.common.util.StringUtils;
+import com.matrix.common.util.string.StringUtils;
 import com.matrix.translation.annotation.Translation;
 import com.matrix.translation.annotation.TranslationType;
 import com.matrix.translation.constant.TransConstant;
 import com.matrix.translation.core.TranslationInterface;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 /**
  * 字典翻译实现

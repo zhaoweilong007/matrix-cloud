@@ -1,11 +1,4 @@
 spring:
-  cloud:
-    openfeign:
-      client:
-        config:
-          default:
-            connectTimeout: 1000
-            readTimeout: 1000
   datasource:
     dynamic:
       datasource:
@@ -14,11 +7,6 @@ spring:
           username: ${DATASOURCE_USERNAME:root}
           password: ${DATASOURCE_PASSWORD:matrix}
           driver-class-name: com.mysql.cj.jdbc.Driver
-
-
-ocr:
-  secretId:
-  secretKey:
 
 
 sms:

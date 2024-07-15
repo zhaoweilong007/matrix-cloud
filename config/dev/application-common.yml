@@ -24,7 +24,7 @@ spring:
       eager: true
       transport:
         # 添加sentinel的控制台地址
-        dashboard: 192.168.31.20:8088
+        dashboard: ${SENTINEL_DASHBOARD:}
       scg:
         fallback:
           content-type: application/json
@@ -53,16 +53,16 @@ spring:
       fail_on_unknown_properties: false
   data:
     mongodb:
-      host: mongodb
-      port: 37017
-      database: matrix
-      authentication-database: matrix
-      username: root
-      password: matrix
+      uri: mongodb://${MONGODB_USERNAME:}:${MONGODB_PASSWORD:}@${MONGODB_URL:}/fangdx?maxPoolSize=${spring.data.mongodb.max-pool-size}&minPoolSize=${spring.data.mongodb.min-pool-size}&maxIdleTimeMS=${spring.data.mongodb.max-idle-time}&connectTimeoutMS=${spring.data.mongodb.connect-timeout}&socketTimeoutMS=${spring.data.mongodb.socket-timeout}
+      max-pool-size: 10
+      min-pool-size: 0
+      max-idle-time: 60000
+      connect-timeout: 5000
+      socket-timeout: 5000
 
 mybatis-plus:
   encryptor:
-    password: GNGMTgM5NxHm6SCM
+    password: ${ENCRYPTOR:}
   mapperPackage: com.matrix.**.mapper
   global-config:
     db-config:
@@ -101,11 +101,11 @@ redisson:
   nettyThreads: 8
   masterSlaveServersConfig:
     enable: true
-    database: 1
-    password: hAdf%)]dltd
-    masterAddress: redis://192.168.31.20:7379
+    database: ${REDIS_DATABASE:}
+    password: ${REDIS_PASSWORD:}
+    masterAddress: ${REDIS_MASTER_ADDR:}
     slaveAddresses:
-      - redis://192.168.31.19:7379
+      - ${REDIS_SLAVE_ADDR:}
     # 客户端名称
     clientName: ${spring.application.name}
     # master最小空闲连接数
@@ -210,8 +210,8 @@ xxl:
   job:
     enabled: true
     admin:
-      address: http://192.168.31.20:8090/xxl-job-admin
-      access-token: default_token
+      address: ${XXL_JOB_ADDR:}
+      access-token: ${XXL_JOB_TOKEN:}
     executor:
       app-name: ${spring.application.name}
       log-retention-days: 30
@@ -262,17 +262,6 @@ aliyun:
   oss:
     prefix:
 
-
-# 腾讯元im配置
-tencent:
-  im:
-    key:
-    sdkappid:
-    adminAcount:
-    serviceImId:
-
-
-
 #易盾检测配置
 yidun:
   secretId:
@@ -281,7 +270,6 @@ yidun:
   imgBusinessId:
   textCallBack:
   imgCallBack:
-
 
 
 #beanSearch配置
@@ -293,7 +281,6 @@ bean-searcher:
       page: pageNum
       size: pageSize
       start: 1
-
 
 
 easy-trans:
@@ -321,10 +308,14 @@ matrix:
       defaultVersion: 1.0
       chooser: com.matrix.feign.chooser.ProfileRuleChooser
       ips:
-        - 192.168.31.19
   monitor:
     traceEnable: true
     metricsEnable: true
+  mq:
+    enabled: false
+    onsAddr: ${MQ_ONSADDR:}
+  swagger:
+    enabled: ${SWAGGER_ENABLED:false}
 
 logging:
   level:
