@@ -292,13 +292,6 @@ matrix:
     enable: false #是否开启多租户模式
     ignoreTables: # 多租户忽略的表名
     ignore-urls: # 多租户忽略的接口地址
-  security:
-    white-urls: # 接口白名单地址
-  #设置不用key的过期时间
-  cache:
-    - name: #key名称
-      ttl: #过期ttl
-      prefix: #key前缀
 ```
 
 以上是matrix的所有配置
