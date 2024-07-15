@@ -10,18 +10,17 @@ import com.matrix.common.exception.CaptchaException;
 import com.matrix.common.exception.CaptchaExpireException;
 import com.matrix.common.exception.base.BaseException;
 import com.matrix.common.result.R;
-import com.matrix.common.util.StringUtils;
 import com.matrix.common.util.json.JsonUtils;
 import com.matrix.common.util.servlet.ServletUtils;
+import com.matrix.common.util.string.StringUtils;
 import com.matrix.redis.utils.RedisUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.filter.OncePerRequestFilter;
-
-import java.io.IOException;
 
 /**
  * 验证码校验

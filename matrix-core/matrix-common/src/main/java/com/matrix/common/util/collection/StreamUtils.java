@@ -1,16 +1,24 @@
-package com.matrix.common.util;
+package com.matrix.common.util.collection;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-
-import java.util.*;
+import com.matrix.common.util.string.StringUtils;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 /**
  * stream 流工具类

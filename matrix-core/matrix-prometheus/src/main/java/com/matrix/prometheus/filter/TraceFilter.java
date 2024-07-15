@@ -1,13 +1,12 @@
 package com.matrix.prometheus.filter;
 
-import com.matrix.prometheus.util.TracerUtils;
+import com.matrix.common.util.TracerUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.web.filter.OncePerRequestFilter;
-
 import java.io.IOException;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 /**
  * Trace 过滤器，打印 traceId 到 header 中返回

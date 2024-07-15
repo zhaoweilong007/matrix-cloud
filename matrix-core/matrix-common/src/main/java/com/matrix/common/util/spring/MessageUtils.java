@@ -1,4 +1,4 @@
-package com.matrix.common.util;
+package com.matrix.common.util.spring;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

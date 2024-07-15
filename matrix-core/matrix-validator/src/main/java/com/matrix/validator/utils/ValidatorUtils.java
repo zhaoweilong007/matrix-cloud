@@ -1,13 +1,12 @@
 package com.matrix.validator.utils;
 
-import com.matrix.common.util.SpringUtils;
+import com.matrix.common.util.spring.SpringUtils;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
+import java.util.Set;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-
-import java.util.Set;
 
 /**
  * Validator 校验框架工具

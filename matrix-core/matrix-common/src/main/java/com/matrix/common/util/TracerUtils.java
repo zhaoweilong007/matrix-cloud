@@ -1,4 +1,4 @@
-package com.matrix.prometheus.util;
+package com.matrix.common.util;
 
 import org.apache.skywalking.apm.toolkit.trace.TraceContext;
 

@@ -4,55 +4,15 @@ matrix:
     ignore-urls:
       - /auth/**
       - /v3/api-docs
-      - /sys/loginLog/save
-      - /sys/operateLog/save
-      - /sys/merchant/apply/submitApply
-      - /sys/user/selectUserNameById
-      - /sys/user/selectUserInfoById
-      - /sys/user/selectAuditUserByUserId
-      - /sys/region/**
-      - /sys/merchant/queryInfo
-      - /sys/merchant/valid
-      - /sys/merchant/id-list
-      - /sys/merchant/totalCount
-      - /sys/merchant/disable
-      - /sys/merchant/save
-      - /sys/merchant/updateById
-      - /sys/merchant/pageQuery
-      - /sys/merchant
-      - /sys/whiteList/queryAllWhiteList
-      - /sys/dictType/**
-      - /sys/sysDict/**
-      - /notify/subscribe/**
-      - /sys/user
-      - /sys/merchant/apply/**
-      - /broadcast/**
-      - /sys/shop/listByTenantId
-      - /notify/send/**
-      - /sys/user/queryUserIdByIdentifier
-      - /sys/merchant/statisticsByJoinCity
       - /easyTrans/proxy/**
     ignoreTables:
       - sys_menu
       - sys_role_menu
       - sys_user_role
-      - sys_merchant
-      - sys_merchant_apply
-      - sys_merchant_apply_reject_log
-      - sys_merchant_city
       - sys_config
       - sys_dict_data
       - sys_dict_type
       - sys_region_dict
-      - sys_customer_label
-      - sys_contact_log
-      - ums_user_basic
-      - sys_notify_message
-      - sys_notify_template
-      - ums_subway_base
-      - ums_subway_site
-      - sys_user_binding
-      - sys_search_config
 
   load-balance:
     gray:

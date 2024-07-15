@@ -1,12 +1,11 @@
-package com.matrix.common.util;
+package com.matrix.common.util.spring;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import com.google.common.collect.Lists;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import one.util.streamex.StreamEx;
-
-import java.util.List;
 
 /**
  * 描述：
