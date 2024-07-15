@@ -11,10 +11,14 @@ import com.matrix.api.resource.sms.SmsSceneEnum;
 import com.matrix.api.resource.sms.SmsSignNameEnum;
 import com.matrix.common.enums.SystemErrorTypeEnum;
 import com.matrix.common.result.R;
-import com.matrix.common.util.ProfileUtils;
+import com.matrix.common.util.spring.ProfileUtils;
 import com.matrix.redis.utils.RedisUtils;
 import com.matrix.sms.enums.SmsBlendEnum;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.time.Duration;
+import java.util.LinkedHashMap;
+import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.sms4j.api.SmsBlend;
@@ -23,11 +27,6 @@ import org.dromara.sms4j.core.factory.SmsFactory;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.time.Duration;
-import java.util.LinkedHashMap;
-import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping(value = SmsApi.PREFIX)

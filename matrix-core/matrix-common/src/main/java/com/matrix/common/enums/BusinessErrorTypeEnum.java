@@ -49,57 +49,29 @@ public enum BusinessErrorTypeEnum implements IResultCode {
     AUDIT_EXIST(2062, "已存在数据，不可重复提交"),
     GET_WX_USER_INFO_ERROR(2064, "获取微信用户信息失败"),
     OPENID_NOT_BINDING(2061, "openId未查询到绑定账号"),
-
-    SHOP_ALREADY_EXIST(2100, "门店已存在，请重新填写"),
-    PARENT_SHOP_DELETE_FAILED(2101, "删除失败，门店下存在其他分店！"),
-    SHOP_DELETE_FAILED(2102, "删除失败，分店下还有工作人员！"),
-    USER_DELETE_FAILED(2103, "删除失败，禁用状态才可使用！"),
-    SHOP_NOT_EXIST(2105, "门店不存在"),
     NOT_ALLOW_TO_CHECK(2114, "抱歉您暂无权限查看"),
-    MERCHANT_NOT_AUTH(2115, "未认证加盟商，无法登录"),
-    MERCHANT_DISABLE(2116, "加盟商已禁用无法登录"),
-    DO_NOT_REPEAT_CREATE(2117, "请勿创建重复标签"),
-    LABEL_COUNT_OVER_LIMIT(2118, "最多创建十个标签"),
-    SHOP_STATUS_INVALID(2105, "该门店不存在或被禁用"),
-    BRANCH_STATUS_INVALID(2105, "该分店不存在或被禁用"),
-
-
     REPEAT_SUBMIT(2999, "重复提交"),
     METHOD_NOTE_IMPL(3000, "方法未实现"),
     SUBMIT_EXIST(3001, "已提交记录，请等待审核"),
     STATE_UPDATED(3002, "状态已处理，无法操作"),
-    CHANNEL_USER_NOT_EXIST(3003, "不是渠道相关人员"),
     MENU_EXIST(3004, "菜单名称已存在"),
     REFUSE_REASON_NOT_BLANK(3005, "驳回原因不可为空"),
-
     MENU_SELECT_ERROR(3005, "上级菜单不能选择自己"),
-
     MENU_HAS_CHILDREN(3006, "存在子菜单,不允许删除"),
-
     MENU_ASSIGN(3007, "菜单已分配,不允许删除"),
-
     ROLE_DELETE_ERROR(3008, "角色已分配不能删除"),
-
     ROLE_PERMISSION(3009, "没有权限访问角色数据！"),
-
     ROLE_EXIST(3010, "角色名称已存在"),
-
     DICT_EXIST(3011, "字典类型已存在"),
-
     DICT_ASSIGN(3012, "字典类型已分配，不能删除"),
-
     ROLE_NOT_EXIST(3013, "角色不存在"),
 
     MENU_BTN_EXIST(4005, "菜单权限已存在"),
-
     JPUSH_TOKEN_INVALID(5002, "一键登陆无效或过期"),
     MOBILE_IS_BINDING(5003, "手机号已经绑定无法重复绑定"),
-    ERROR_APPLE_TOKEN_FAIL(5004, "苹果授权失败"),
+  ERROR_APPLE_TOKEN_FAIL(5004, "苹果授权失败");
 
 
-    OCR_CALL_ERROR(6005, "OCR识别异常"),
-    OCR_QUALITY_ERROR(6006, "图片质量不清晰"),
-    OCR_BORDER_CODE_ERROR(6007, "身份证边框不完整");
 
     public final int code;
     public final String msg;

@@ -8,8 +8,8 @@ Matrix-Cloud是微服务的脚手架，整合目前主流的微服务框架
 
 开发环境和相应中间件版本
 
-- jdk11
-- gradle7.4.2
+- jdk17
+- gradle8.2
 
 ### 📝技术选型
 
@@ -21,7 +21,7 @@ Matrix-Cloud是微服务的脚手架，整合目前主流的微服务框架
 | nacos                | 服务注册发现               | 2.2.1            |
 | spring cloud gateway | 网关                   | 依赖spring cloud版本 |
 | sentinel             | 熔断限流                 | 1.8.5            |
-| sa-Token             | 权限认证                 | 1.37.0           |
+| sa-token             | 权限认证                 | 1.37.0           |
 | seata                | 分布式事务                | 1.7.1            |
 | rocketmq             | 消息队列                 | 4.9.4            |
 | skywalking           | 分布式链路追踪              | 9.2.0            |
@@ -45,8 +45,8 @@ Matrix-Cloud是微服务的脚手架，整合目前主流的微服务框架
 | xxl-job-admin   | 分布式任务调度           | http://localhost:8090/xxl-job-admin   | admin/123456      |
 | rocketmqConsole | mq控制台             | http://localhost:19876/               | 无                 |
 | matrix-gateway  | 网关                | http://localhost:9000                 | 无                 |
-| matrix-gateway  | spring boot admin | http://localhost:9001                 | admin/admin       |
-| matrix-system   | 系统服务              | http://localhost:9002                 | 管理员:admin/123456  |
+| matrix-admin    | spring boot admin | http://localhost:9001                 | admin/admin       |
+| matrix-system   | 系统服务              | http://localhost:9002                 |                   |
 | matrix-resource | OSS、SMS、Email     | http://localhost:9003                 | 无                 |
 
 ## ⏳功能开发进度
@@ -246,20 +246,14 @@ matrix-web对servlet的配置（目前只支持servlet）
 ```yaml
 spring:
   application:
-    name: youAppName
+    name: #服务名
   profiles:
-    active: dev #指定当前环境
-  cloud:
-    # nacos配置，可通过环境变量指定
-    nacos:
-      server-addr: ${NACOS_SERVER_ADDRESS:localhost:8848}
-      username: ${NACOS_USERNAME:nacos}
-      password: ${NACOS_PASSWD:nacos}
-      config:
-        file-extension: yml
-        shared-configs:
-          - data-id: application-common.yml #包含的公共配置，在/config/application-common.yaml查看
-            refresh: true
+    active: ${PROFILE:} #环境配置 对应nacos的namespace
+  config:
+    import:
+      - optional:nacos:env.properties  #环境变量
+      - optional:nacos:application-common.yml  #公共配置
+      - optional:nacos:datasource.yml       #数据库配置
 logging:
   # 配置logstash tcp地址
   stash:
@@ -276,25 +270,26 @@ logging:
 
 ```yaml
 matrix:
-  useEs: false
-  useDataSource: false
-  xxl-job:
+  security:
+    # 验证码
+    captcha:
+      #需要校验的地址
+      validateUrl:
+      # - /auth/sys/login
+  access-log: false  #是否记录访问日志
+  load-balance:
+    gray:
+      enabled: true  #灰度负载均衡
+      defaultVersion: 1.0  #默认兜底版本
+      chooser: com.matrix.feign.chooser.ProfileRuleChooser #选择器
+      ips:  #支持的ip
+  swagger: #swagger文档配置
     enable: false
-    adminAddresses: http://localhost:8089/xxl-job-admin
-    accessToken: default_token #默认
-    executorAppName: ${spring.application.name}
-    executorAddress:
-    executorIp:
-    executorPort:
-    executorLogPath: /var/xxl-job/logs
-    executorLogRetentionDays: 30
-  swagger:
-    enable: false
-    name:
-    version:
-    description:
+    name: #文档名称
+    version:  #版本
+    description:  #描述
   tenant:
-    enable: false
+    enable: false #是否开启多租户模式
     ignoreTables: # 多租户忽略的表名
     ignore-urls: # 多租户忽略的接口地址
   security:

@@ -2,16 +2,15 @@ package com.matrix.feign.chooser;
 
 import cn.hutool.core.util.StrUtil;
 import com.matrix.auto.properties.GaryLoadBalanceProperties;
-import com.matrix.common.util.SpringUtils;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.cloud.client.ServiceInstance;
-import org.springframework.core.env.Environment;
-
+import com.matrix.common.util.spring.SpringUtils;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.core.env.Environment;
 
 /**
  * 多人协作负载均衡隔离

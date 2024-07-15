@@ -12,11 +12,17 @@ import com.matrix.common.enums.SystemErrorTypeEnum;
 import com.matrix.common.exception.ServiceException;
 import com.matrix.common.model.RoleDTO;
 import com.matrix.common.model.login.LoginUser;
-import com.matrix.common.util.SpringUtils;
-import com.matrix.common.util.StreamUtils;
-import com.matrix.common.util.StringUtils;
+import com.matrix.common.util.collection.StreamUtils;
+import com.matrix.common.util.spring.SpringUtils;
+import com.matrix.common.util.string.StringUtils;
 import com.matrix.datapermission.enums.DataScopeType;
 import com.matrix.datapermission.enums.RoleDataScoop;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.function.Function;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.expression.Alias;
@@ -32,9 +38,6 @@ import org.springframework.expression.ParserContext;
 import org.springframework.expression.common.TemplateParserContext;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
-
-import java.util.*;
-import java.util.function.Function;
 
 /**
  * 基于角色的数据权限规则

@@ -6,8 +6,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.matrix.auto.properties.OssProperties;
-import com.matrix.common.util.SpringUtils;
-
+import com.matrix.common.util.spring.SpringUtils;
 import java.io.IOException;
 
 /**
