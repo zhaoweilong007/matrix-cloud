@@ -19,7 +19,7 @@ ext {
     mybatisPlusVersion = '3.5.5'
     //https://github.com/yulichang/mybatis-plus-join/releases/tag/v1.4.7
     mybaitsPlusJoinVersion = '1.4.10'
-    esBootVersion = '2.0.0'
+    esBootVersion = '2.0.0-beta1'
     //https://github.com/troyzhxu/bean-searcher/releases/tag/v4.2.4
     beanSearchVersion = '4.2.7'
     redissonVersion = '3.24.3'

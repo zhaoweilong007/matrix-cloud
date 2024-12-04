@@ -35,11 +35,6 @@ allprojects {
 
     repositories {
         mavenLocal()
-        //腾讯云
-        maven {
-            allowInsecureProtocol = true
-            url 'http://mirrors.cloud.tencent.com/nexus/repository/maven-public/'
-        }
         //华为云
         maven { url 'https://repo.huaweicloud.com/repository/maven/' }
         //阿里云
