@@ -142,8 +142,8 @@ public class RoleDataPermissionRule implements DataPermissionRule {
             return null;
         }
         try {
-            final Expression expression = CCJSqlParserUtil.parseExpression(expressionSql);
-            return new Parenthesis(expression);
+            // 使用适配器强制添加括号
+            return CCJSqlParserUtil.parseExpression(expressionSql);
         } catch (JSQLParserException e) {
             throw new ServiceException(SystemErrorTypeEnum.DATA_PERMISSION_ERROR);
         }

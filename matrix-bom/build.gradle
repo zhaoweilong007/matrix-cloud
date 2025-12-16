@@ -13,7 +13,7 @@ dependencies {
          */
         api "io.seata:seata-spring-boot-starter:$seataVerson"
         api "com.baomidou:mybatis-plus-spring-boot3-starter:$mybatisPlusVersion"
-        api "cn.easy-es:easy-es-boot-starter:$esBootVersion"
+        api "org.dromara.easy-es:easy-es-boot-starter:$esBootVersion"
         api "org.redisson:redisson-spring-boot-starter:$redissonVersion"
         api "com.baomidou:lock4j-redisson-spring-boot-starter:$lock4jVersion"
         api "com.alibaba:druid-spring-boot-3-starter:$druidVersion"
@@ -26,7 +26,6 @@ dependencies {
         api "com.github.xiaoymin:knife4j-gateway-spring-boot-starter:$knife4jVersion"
         api "com.baomidou:dynamic-datasource-spring-boot3-starter:$dynamicDatasourceVersion"
         api "com.fhs-opensource:easy-trans-spring-boot-starter:$easyTransVersion"
-        // https://mvnrepository.com/artifact/org.dromara.sms4j/sms4j-spring-boot-starter
         api "org.dromara.sms4j:sms4j-spring-boot-starter:$sms4jVersion"
 
         /*other*/
@@ -67,6 +66,8 @@ dependencies {
         api "com.baomidou:mybatis-plus-generator:$mybatisPlusVersion"
         api "com.baomidou:mybatis-plus-annotation:$mybatisPlusVersion"
         api "com.baomidou:mybatis-plus-core:$mybatisPlusVersion"
+        api "com.baomidou:mybatis-plus-jsqlparser:$mybatisPlusVersion"
+
 
         api "io.vavr:vavr:$vavrVerison"
         api "org.jooq:jool:$joolVersion"

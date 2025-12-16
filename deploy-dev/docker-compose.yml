@@ -42,9 +42,9 @@ services:
     networks:
       - matrix_cloud
 
-
+    # https://github.com/lk0423/sentinel-dashboard
   sentinel:
-    image: matrix/sentinel-dashboard
+    image: linking0606/sentinel-dashboard:${SENTINEL_VERSION}
     container_name: sentinel
     environment:
       PARAM: -Dserver.port=8088 -Dcsp.sentinel.dashboard.server=localhost:8088 -Dproject.name=sentinel-dashboard -Ddatasource.provider=nacos -Ddatasource.provider.nacos.server-addr=nacos:8848 -Ddatasource.provider.nacos.username=nacos -Ddatasource.provider.nacos.password=nacos -Ddatasource.provider.nacos.namespace=dev
@@ -93,5 +93,51 @@ services:
     depends_on:
       - nacos
       - mysql
+    networks:
+      - matrix_cloud
+
+  mqnamesrv:
+    image: apache/rocketmq:${ROCKETMQ_VERSION}
+    container_name: mqnamesrv
+    environment:
+      JAVA_OPT: -server -Xms512m -Xmx512m
+    ports:
+      - "9876:9876"
+    volumes:
+      - ./rocketmq/data/logs:/home/rocketmq/logs
+    command: sh mqnamesrv
+    restart: always
+    networks:
+      - matrix_cloud
+
+  mqbroker1:
+    image: apache/rocketmq:${ROCKETMQ_VERSION}
+    container_name: mqbroker1
+    ports:
+      - "10911:10911"
+      - "10909:10909"
+      - "10912:10912"
+    environment:
+      JAVA_OPT_EXT: -server -Xms512M -Xmx512M -Xmn256m
+    volumes:
+      - ./rocketmq/broker1/conf/broker.conf:/home/rocketmq/rocketmq-${ROCKETMQ_VERSION}/conf/broker.conf
+      - ./rocketmq/broker1/logs:/home/rocketmq/logs/rocketmqlogs
+      - ./rocketmq/broker1/store:/home/rocketmq/store
+    command: sh mqbroker -c /home/rocketmq/rocketmq-${ROCKETMQ_VERSION}/conf/broker.conf
+    depends_on:
+      - mqnamesrv
+    restart: always
+    networks:
+      - matrix_cloud
+
+  mqconsole:
+    image: styletang/rocketmq-console-ng
+    container_name: mqconsole
+    ports:
+      - "19876:19876"
+    environment:
+      JAVA_OPTS: -Dserver.port=19876 -Drocketmq.namesrv.addr=mqnamesrv:9876 -Dcom.rocketmq.sendMessageWithVIPChannel=false
+    depends_on:
+      - mqnamesrv
     networks:
       - matrix_cloud

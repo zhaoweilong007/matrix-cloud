@@ -69,8 +69,8 @@ public enum BusinessErrorTypeEnum implements IResultCode {
     MENU_BTN_EXIST(4005, "菜单权限已存在"),
     JPUSH_TOKEN_INVALID(5002, "一键登陆无效或过期"),
     MOBILE_IS_BINDING(5003, "手机号已经绑定无法重复绑定"),
-  ERROR_APPLE_TOKEN_FAIL(5004, "苹果授权失败");
-
+    ERROR_APPLE_TOKEN_FAIL(5004, "苹果授权失败"),
+    OCR_ERROR(5005,"orc识别错误" );
 
 
     public final int code;

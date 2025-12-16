@@ -2,7 +2,8 @@ package com.matrix.mybatis.config;
 
 import cn.hutool.core.util.StrUtil;
 import cn.zhxu.bs.SqlExecutor;
-import cn.zhxu.bs.boot.BeanSearcherProperties;
+import cn.zhxu.bs.boot.prop.BeanSearcherProperties;
+import cn.zhxu.bs.boot.prop.BeanSearcherSql;
 import cn.zhxu.bs.implement.DefaultDbMapping;
 import cn.zhxu.bs.implement.DefaultSqlExecutor;
 import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
@@ -36,21 +37,20 @@ public class BeanSearchConfig {
      * @param dataSource      数据源
      * @param dataSourceRoute 数据源路由
      * @param slowListener    慢 SQL 监听器
-     * @param config          配置
      */
     @Bean
     @Primary
     public SqlExecutor sqlExecutor(ObjectProvider<DataSource> dataSource,
                                    ObjectProvider<DynamicRoutingDataSource> dataSourceRoute,
                                    ObjectProvider<SqlExecutor.SlowListener> slowListener,
-                                   BeanSearcherProperties config) {
+                                   BeanSearcherSql sql) {
         DefaultSqlExecutor executor = new DefaultSqlExecutor(dataSource.getIfAvailable());
         ifAvailable(dataSourceRoute, route -> {
             route.getDataSources().forEach(executor::setDataSource);
 
         });
         ifAvailable(slowListener, executor::setSlowListener);
-        executor.setSlowSqlThreshold(config.getSql().getSlowSqlThreshold());
+        executor.setSlowSqlThreshold(sql.getSlowSqlThreshold());
         return executor;
     }
 
@@ -71,7 +71,7 @@ public class BeanSearchConfig {
 
     @Bean
     @Primary
-    public DefaultDbMapping bsJpaDbMapping(BeanSearcherProperties config) {
+    public DefaultDbMapping bsJpaDbMapping(BeanSearcherSql sql) {
         DefaultDbMapping mapping = new DefaultDbMapping() {
 
             @Override
@@ -93,7 +93,7 @@ public class BeanSearchConfig {
             }
 
         };
-        BeanSearcherProperties.Sql.DefaultMapping conf = config.getSql().getDefaultMapping();
+        BeanSearcherSql.DefaultMapping conf = sql.getDefaultMapping();
         mapping.setTablePrefix(conf.getTablePrefix());
         mapping.setUpperCase(conf.isUpperCase());
         mapping.setUnderlineCase(conf.isUnderlineCase());

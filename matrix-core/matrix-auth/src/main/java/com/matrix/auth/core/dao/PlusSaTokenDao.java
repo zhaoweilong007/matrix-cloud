@@ -1,6 +1,7 @@
 package com.matrix.auth.core.dao;
 
 import cn.dev33.satoken.dao.SaTokenDao;
+import cn.dev33.satoken.dao.auto.SaTokenDaoBySessionFollowObject;
 import cn.dev33.satoken.util.SaFoxUtil;
 import com.matrix.redis.utils.RedisUtils;
 
@@ -12,7 +13,7 @@ import java.util.List;
 /**
  * Sa-Token持久层接口(使用框架自带RedisUtils实现 协议统一)
  */
-public class PlusSaTokenDao implements SaTokenDao {
+public class PlusSaTokenDao implements SaTokenDaoBySessionFollowObject {
 
     /**
      * 获取Value，如无返空
@@ -93,6 +94,11 @@ public class PlusSaTokenDao implements SaTokenDao {
      */
     @Override
     public Object getObject(String key) {
+        return RedisUtils.getCacheObject(key);
+    }
+
+    @Override
+    public <T> T getObject(String key, Class<T> classType) {
         return RedisUtils.getCacheObject(key);
     }
 

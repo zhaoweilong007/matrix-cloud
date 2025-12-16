@@ -68,16 +68,16 @@ public class OcrController implements OcrApi {
             final String json = resp.getAdvancedInfo();
             final AdvancedInfo advancedInfo = JSON.parseObject(json, AdvancedInfo.class);
             Assert.isTrue(advancedInfo.getQuality() >= 50,
-                    () -> new ServiceException(BusinessErrorTypeEnum.OCR_QUALITY_ERROR));
+                    () -> new ServiceException(BusinessErrorTypeEnum.OCR_ERROR));
             Assert.isTrue(advancedInfo.getBorderCodeValue() <= 50,
-                    () -> new ServiceException(BusinessErrorTypeEnum.OCR_BORDER_CODE_ERROR));
+                    () -> new ServiceException(BusinessErrorTypeEnum.OCR_ERROR));
             if (ArrayUtil.isNotEmpty(advancedInfo.getWarnInfos())) {
                 final String msg = Arrays.stream(advancedInfo.getWarnInfos())
                         .map(WarnInfoEnum::getWarnInfoEnum)
                         .filter(Objects::nonNull).map(WarnInfoEnum::getMsg)
                         .collect(Collectors.joining(","));
                 log.warn("OCR识别警告：{}", msg);
-                throw new ServiceException(BusinessErrorTypeEnum.OCR_CALL_ERROR, msg);
+                throw new ServiceException(BusinessErrorTypeEnum.OCR_ERROR, msg);
             }
             final IDCardOCRVo idCardOCRVo = JSON.parseObject(AbstractModel.toJsonString(resp),
                     IDCardOCRVo.class);
@@ -86,9 +86,9 @@ public class OcrController implements OcrApi {
             log.error("OCR调用失败 {}", e.toString());
             final OcrErrorCodeEnum errorCodeEnum = OcrErrorCodeEnum.getByCode(e.getErrorCode());
             if (errorCodeEnum != null) {
-                throw new ServiceException(BusinessErrorTypeEnum.OCR_CALL_ERROR, errorCodeEnum.getMsg());
+                throw new ServiceException(BusinessErrorTypeEnum.OCR_ERROR, errorCodeEnum.getMsg());
             } else {
-                throw new ServiceException(BusinessErrorTypeEnum.OCR_CALL_ERROR);
+                throw new ServiceException(BusinessErrorTypeEnum.OCR_ERROR);
             }
         }
     }
@@ -106,7 +106,7 @@ public class OcrController implements OcrApi {
                         .filter(Objects::nonNull).map(LicenseWarnInfoEnum::getMsg)
                         .collect(Collectors.joining(","));
                 log.warn("OCR识别警告：{}", msg);
-                throw new ServiceException(BusinessErrorTypeEnum.OCR_CALL_ERROR, msg);
+                throw new ServiceException(BusinessErrorTypeEnum.OCR_ERROR, msg);
             }
             final BizLicenseOCRVo bizLicenseOCRVo = JSON.parseObject(AbstractModel.toJsonString(resp),
                     BizLicenseOCRVo.class);
@@ -115,9 +115,9 @@ public class OcrController implements OcrApi {
             log.error("OCR调用失败 {}", e.toString());
             final OcrErrorCodeEnum errorCodeEnum = OcrErrorCodeEnum.getByCode(e.getErrorCode());
             if (errorCodeEnum != null) {
-                throw new ServiceException(BusinessErrorTypeEnum.OCR_CALL_ERROR, errorCodeEnum.getMsg());
+                throw new ServiceException(BusinessErrorTypeEnum.OCR_ERROR, errorCodeEnum.getMsg());
             } else {
-                throw new ServiceException(BusinessErrorTypeEnum.OCR_CALL_ERROR);
+                throw new ServiceException(BusinessErrorTypeEnum.OCR_ERROR);
             }
         }
     }

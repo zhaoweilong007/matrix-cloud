@@ -1,8 +1,8 @@
 package com.matrix.gateway.filter;
 
-import cn.dev33.satoken.basic.SaBasicUtil;
 import cn.dev33.satoken.exception.NotPermissionException;
 import cn.dev33.satoken.filter.SaFilterAuthStrategy;
+import cn.dev33.satoken.httpauth.basic.SaHttpBasicUtil;
 import cn.dev33.satoken.reactor.context.SaReactorSyncHolder;
 import cn.dev33.satoken.router.SaRouter;
 import cn.dev33.satoken.stp.StpUtil;
@@ -34,10 +34,10 @@ public class SecurityAuthStrategy implements SaFilterAuthStrategy {
     public void run(Object o) {
         //增加断点认证
         if (SaRouter.match("/actuator/**").isHit()) {
-            SaBasicUtil.check();
+            SaHttpBasicUtil.check();
             return;
         }
-        ServerWebExchange exchange = SaReactorSyncHolder.getContext();
+        ServerWebExchange exchange = SaReactorSyncHolder.getExchange();
         // 登录校验 -- 拦截所有路由
 
         //是否白名单 如白名单包含token 也进行校验 校验不通过也放行
@@ -62,7 +62,7 @@ public class SecurityAuthStrategy implements SaFilterAuthStrategy {
         //获取用户拥有资源
         List<String> permissionList = StpUtil.getPermissionList();
         //将访问所需资源或用户拥有资源进行比对
-        ServerHttpRequest request = SaReactorSyncHolder.getContext().getRequest();
+        ServerHttpRequest request = SaReactorSyncHolder.getExchange().getRequest();
         String path = request.getURI().getPath();
         String resource = permissionList.stream().filter(url -> antPathMatcher.match(url, path)).findFirst().orElseThrow(() -> new NotPermissionException(path));
         log.info("用户:【{}】 资源:【{}】授权成功", StpUtil.getLoginId(), resource);

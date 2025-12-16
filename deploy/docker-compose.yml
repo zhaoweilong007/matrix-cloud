@@ -6,6 +6,8 @@ networks:
     driver: bridge
 
 services:
+  #https://github.com/alibaba/nacos/releases
+  #https://nacos.io/zh-cn/blog/announcement-token-secret-key.html
   nacos:
     image: nacos/nacos-server:${NACOS_VERSION}
     container_name: nacos

@@ -10,7 +10,6 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 /**
  * 监控权限配置
@@ -34,14 +33,15 @@ public class WebSecurityConfigurer {
         return httpSecurity
                 .headers((header) ->
                         header.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
-                .authorizeHttpRequests((authorize) ->
-                        authorize.requestMatchers(
-                                        new AntPathRequestMatcher(adminContextPath + "/assets/**"),
-                                        new AntPathRequestMatcher(adminContextPath + "/login"),
-                                        new AntPathRequestMatcher("/actuator"),
-                                        new AntPathRequestMatcher("/actuator/**")
-                                ).permitAll()
-                                .anyRequest().authenticated())
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(
+                                adminContextPath + "/assets/**",
+                                adminContextPath + "/login",
+                                "/actuator",
+                                "/actuator/**"
+                        ).permitAll()
+                        .anyRequest().authenticated()
+                )
                 .formLogin((formLogin) ->
                         formLogin.loginPage(adminContextPath + "/login").successHandler(successHandler))
                 .logout((logout) ->

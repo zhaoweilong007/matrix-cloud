@@ -6,6 +6,8 @@ dependencies {
     api('com.baomidou:mybatis-plus-spring-boot3-starter')
     api "com.baomidou:dynamic-datasource-spring-boot3-starter"
     api 'cn.zhxu:bean-searcher-boot-starter'
+    api "com.baomidou:mybatis-plus-jsqlparser"
+
 
     compileOnly(project(":matrix-core:matrix-api"))
     compileOnly "com.alibaba.csp:sentinel-core"

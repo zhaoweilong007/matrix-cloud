@@ -1,4 +1,4 @@
 dependencies {
     api project(':matrix-core:matrix-auto')
-    api 'cn.easy-es:easy-es-boot-starter'
+    api 'org.dromara.easy-es:easy-es-boot-starter'
 }

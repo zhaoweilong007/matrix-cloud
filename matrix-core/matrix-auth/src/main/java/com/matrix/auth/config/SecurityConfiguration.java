@@ -1,7 +1,7 @@
 package com.matrix.auth.config;
 
-import cn.dev33.satoken.basic.SaBasicUtil;
 import cn.dev33.satoken.filter.SaServletFilter;
+import cn.dev33.satoken.httpauth.basic.SaHttpBasicUtil;
 import cn.dev33.satoken.interceptor.SaInterceptor;
 import cn.dev33.satoken.router.SaRouter;
 import cn.dev33.satoken.same.SaSameUtil;
@@ -65,7 +65,7 @@ public class SecurityConfiguration implements WebMvcConfigurer {
                 .addInclude("/**")
                 .setAuth(obj -> {
                     if (SaRouter.match("/actuator/**").isHit()) {
-                        SaBasicUtil.check();
+                        SaHttpBasicUtil.check();
                         return;
                     }
                     if (ProfileUtils.isTest()) {
