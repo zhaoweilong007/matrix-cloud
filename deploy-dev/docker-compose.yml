@@ -1,48 +1,93 @@
-version: '3.8'
-
 networks:
   matrix_cloud:
     name: matrix_cloud
     driver: bridge
 
 services:
-  #https://github.com/alibaba/nacos/releases
-  #https://nacos.io/zh-cn/blog/announcement-token-secret-key.html
+  #https://github.com/nacos-group/nacos-docker
   nacos:
     image: nacos/nacos-server:${NACOS_VERSION}
     container_name: nacos
     env_file:
       - ./env/nacos-standlone-mysql.env
     volumes:
-      - ./log/nacos:/home/nacos/logs
+      - ../logs/nacos:/home/nacos/logs
     ports:
+      - "8080:8080"
       - "8848:8848"
       - "9848:9848"
       - "9555:9555"
     depends_on:
       mysql:
-        condition: service_started
+        condition: service_healthy
     restart: always
     networks:
       - matrix_cloud
+    # 资源限制
+    mem_limit: 2g
+    mem_reservation: 1g
+    cpus: 1.0
+    # 健康检查 - 增加启动等待时间，让Nacos有足够时间初始化
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8848/nacos/actuator/health" ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 30s  # Nacos 启动较慢，建议加长
+
 
   mysql:
-    container_name: mysql_ex
-    build:
-      context: .
-      dockerfile: ./image/mysql/8/Dockerfile
-    image: example/mysql:8.0.30
+    container_name: mysql8
+    image: mysql:${MYSQL_VERSION}
     env_file:
       - ./env/mysql.env
     volumes:
-      - ./mysql:/var/lib/mysql
+      - ../mysql_data:/var/lib/mysql
+      #https://raw.githubusercontent.com/alibaba/nacos/3.1.1/distribution/conf/mysql-schema.sql
+      #https://github.com/xuxueli/xxl-job/blob/master/doc/db/tables_xxl_job.sql
+      #https://github.com/apache/incubator-seata/blob/2.x/script/server/db/mysql.sql
+      - ./mysql-init:/docker-entrypoint-initdb.d/
+    command:
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
     ports:
       - "3306:3306"
     restart: always
     networks:
       - matrix_cloud
+    # 资源限制
+    mem_limit: 2g
+    mem_reservation: 1g
+    cpus: 1.0
+    # 健康检查
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
 
-    # https://github.com/lk0423/sentinel-dashboard
+  redis:
+    image: redis:${REDIS_VERSION}
+    container_name: redis
+    ports:
+      - "6379:6379"
+    environment:
+      # 时区上海
+      TZ: Asia/Shanghai
+    volumes:
+      # 配置文件
+      - ./redis/conf:/redis/config
+      # 数据文件
+      - ./redis/data/:/redis/data/
+    command: "redis-server /redis/config/redis.conf"
+    privileged: true
+    restart: always
+    networks:
+      - matrix_cloud
+
+
+  # https://github.com/lk0423/sentinel-dashboard
   sentinel:
     image: linking0606/sentinel-dashboard:${SENTINEL_VERSION}
     container_name: sentinel
@@ -53,15 +98,28 @@ services:
       - "8088:8088"
     restart: always
     depends_on:
-      - nacos
+      nacos:
+        condition: service_healthy
     networks:
       - matrix_cloud
+    # 资源限制
+    mem_limit: 1g
+    mem_reservation: 512m
+    cpus: 0.5
+    # 健康检查
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8088" ]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
 
   xxl-job-admin:
     image: xuxueli/xxl-job-admin:${XXL_JOB_VERSION}
     container_name: xxl-job-admin
     volumes:
-      - ./log:/data/applogs
+      - ../logs/xxl-job:/data/applogs
       - ./xxl-job/application.properties:/application.properties
     environment:
       TZ: Asia/Shanghai
@@ -70,74 +128,196 @@ services:
     ports:
       - 8090:8080
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
     networks:
       - matrix_cloud
     restart: always
+    # 资源限制
+    mem_limit: 1g
+    mem_reservation: 512m
+    cpus: 0.5
+    # 健康检查
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/xxl-job-admin" ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+
+  # 初始化 Seata 配置到 Nacos
+  seata-config-init:
+    image: badouralix/curl-jq:latest   # 已含 curl + jq，轻量 Alpine
+    container_name: seata-config-init
+    env_file:
+      - ./env/seata.env
+    volumes:
+      - ./seata:/seata
+    entrypoint: >
+      /bin/sh -c "
+        set -e &&
+        apk add --no-cache bash &&
+        chmod +x /seata/nacos-config.sh &&
+        echo '⏳ Waiting for Nacos health...' &&
+        until curl -sf http://nacos:8848/nacos/actuator/health; do sleep 5; done &&
+        echo '🚀 Importing Seata config to Nacos v3.1.1...' &&
+        /seata/nacos-config.sh
+      "
+    restart: "no"
+    networks:
+      - matrix_cloud
+    depends_on:
+      nacos:
+        condition: service_healthy
 
   seata-server:
-    image: seataio/seata-server:${SEATA_VERSION}
+    image: apache/seata-server:${SEATA_VERSION}
     container_name: seata-server
     env_file:
       - ./env/seata.env
-    environment:
-      # 时区上海
-      TZ: Asia/Shanghai
     ports:
       - "8091:8091"
       - "7091:7091"
     volumes:
       - ./seata/application.yml:/seata-server/resources/application.yml
+      - ./seata/jdbc:/seata-server/libs
     restart: always
     privileged: true
     depends_on:
-      - nacos
-      - mysql
+      nacos:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
     networks:
       - matrix_cloud
+    # 资源限制
+    mem_limit: 1g
+    mem_reservation: 512m
+    cpus: 0.5
+    # 健康检查
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:7091/health" ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
 
-  mqnamesrv:
-    image: apache/rocketmq:${ROCKETMQ_VERSION}
-    container_name: mqnamesrv
-    environment:
-      JAVA_OPT: -server -Xms512m -Xmx512m
-    ports:
-      - "9876:9876"
-    volumes:
-      - ./rocketmq/data/logs:/home/rocketmq/logs
-    command: sh mqnamesrv
-    restart: always
-    networks:
-      - matrix_cloud
 
-  mqbroker1:
-    image: apache/rocketmq:${ROCKETMQ_VERSION}
-    container_name: mqbroker1
-    ports:
-      - "10911:10911"
-      - "10909:10909"
-      - "10912:10912"
-    environment:
-      JAVA_OPT_EXT: -server -Xms512M -Xmx512M -Xmn256m
-    volumes:
-      - ./rocketmq/broker1/conf/broker.conf:/home/rocketmq/rocketmq-${ROCKETMQ_VERSION}/conf/broker.conf
-      - ./rocketmq/broker1/logs:/home/rocketmq/logs/rocketmqlogs
-      - ./rocketmq/broker1/store:/home/rocketmq/store
-    command: sh mqbroker -c /home/rocketmq/rocketmq-${ROCKETMQ_VERSION}/conf/broker.conf
-    depends_on:
-      - mqnamesrv
-    restart: always
-    networks:
-      - matrix_cloud
 
-  mqconsole:
-    image: styletang/rocketmq-console-ng
-    container_name: mqconsole
-    ports:
-      - "19876:19876"
-    environment:
-      JAVA_OPTS: -Dserver.port=19876 -Drocketmq.namesrv.addr=mqnamesrv:9876 -Dcom.rocketmq.sendMessageWithVIPChannel=false
-    depends_on:
-      - mqnamesrv
-    networks:
-      - matrix_cloud
+#
+#
+#  mqnamesrv:
+#    image: apache/rocketmq:${ROCKETMQ_VERSION}
+#    container_name: mqnamesrv
+#    environment:
+#      JAVA_OPT: -server -Xms512m -Xmx512m
+#    ports:
+#      - "9876:9876"
+#    volumes:
+#      - ./rocketmq/data/logs:/home/rocketmq/logs
+#    command: sh mqnamesrv
+#    restart: always
+#    networks:
+#      - matrix_cloud
+#    # 资源限制
+#    mem_limit: 1g
+#    mem_reservation: 512m
+#    cpus: 0.5
+#    # 健康检查 - 修复健康检查命令，使用更可靠的检查方式
+#    healthcheck:
+#      test: [ "CMD", "sh", "-c", "ps aux | grep mqnamesrv | grep -v grep" ]
+#      interval: 30s
+#      timeout: 10s
+#      retries: 3
+#      start_period: 60s
+#
+#
+#  mqbroker1:
+#    image: apache/rocketmq:${ROCKETMQ_VERSION}
+#    container_name: mqbroker1
+#    ports:
+#      - "10911:10911"
+#      - "10909:10909"
+#      - "10912:10912"
+#    environment:
+#      JAVA_OPT_EXT: -server -Xms512M -Xmx512M -Xmn256m
+#    volumes:
+#      - ./rocketmq/broker1/conf/broker.conf:/home/rocketmq/rocketmq-${ROCKETMQ_VERSION}/conf/broker.conf
+#      - ./rocketmq/broker1/logs:/home/rocketmq/logs/rocketmqlogs
+#      - ./rocketmq/broker1/store:/home/rocketmq/store
+#    command: sh mqbroker -c /home/rocketmq/rocketmq-${ROCKETMQ_VERSION}/conf/broker.conf
+#    depends_on:
+#      mqnamesrv:
+#        condition: service_healthy
+#    restart: always
+#    networks:
+#      - matrix_cloud
+#    # 资源限制
+#    mem_limit: 2g
+#    mem_reservation: 1g
+#    cpus: 1.0
+#    # 健康检查
+#    healthcheck:
+#      test: [ "CMD", "sh", "-c", "echo \"status\" | nc localhost 10911" ]
+#      interval: 30s
+#      timeout: 10s
+#      retries: 3
+#      start_period: 60s
+#    # 可扩展性配置
+#    deploy:
+#      # 支持Docker Swarm模式下的扩展
+#      replicas: 1
+#      # 资源限制
+#      resources:
+#        limits:
+#          cpus: '1.0'
+#          memory: 2g
+#        reservations:
+#          cpus: '0.5'
+#          memory: 1g
+#      # 重启策略
+#      restart_policy:
+#        condition: on-failure
+#        delay: 5s
+#        max_attempts: 3
+#        window: 120s
+#      # 服务更新配置
+#      update_config:
+#        parallelism: 1
+#        delay: 10s
+#        failure_action: rollback
+#      # 服务回滚配置
+#      rollback_config:
+#        parallelism: 1
+#        delay: 10s
+#    # 服务标签，便于管理和监控
+#    labels:
+#      - "com.matrix-cloud.service=rocketmq-broker"
+#      - "com.matrix-cloud.environment=dev"
+#      - "com.matrix-cloud.version=${ROCKETMQ_VERSION}"
+#
+#  mqconsole:
+#    image: styletang/rocketmq-console-ng:latest
+#    container_name: mqconsole
+#    ports:
+#      - "19876:19876"
+#    environment:
+#      JAVA_OPTS: -Dserver.port=19876 -Drocketmq.namesrv.addr=mqnamesrv:9876 -Dcom.rocketmq.sendMessageWithVIPChannel=false
+#    depends_on:
+#      mqnamesrv:
+#        condition: service_healthy
+#    networks:
+#      - matrix_cloud
+#    restart: always
+#    # 资源限制
+#    mem_limit: 1g
+#    mem_reservation: 512m
+#    cpus: 0.5
+#    # 健康检查
+#    healthcheck:
+#      test: [ "CMD", "curl", "-f", "http://localhost:19876" ]
+#      interval: 30s
+#      timeout: 10s
+#      retries: 3
+#      start_period: 60s

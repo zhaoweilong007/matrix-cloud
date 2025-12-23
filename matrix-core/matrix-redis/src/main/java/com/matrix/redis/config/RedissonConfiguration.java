@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.redisson.codec.JsonJacksonCodec;
 import org.redisson.config.ClusterServersConfig;
 import org.redisson.config.MasterSlaveServersConfig;
+import org.redisson.config.SingleServerConfig;
 import org.redisson.spring.starter.RedissonAutoConfigurationCustomizer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -61,18 +62,12 @@ public class RedissonConfiguration {
             config.setThreads(redissonProperties.getThreads())
                     .setNettyThreads(redissonProperties.getNettyThreads())
                     .setCodec(new JsonJacksonCodec(objectMapper));
-            RedissonProperties.SingleServerConfig singleServerConfig = redissonProperties.getSingleServerConfig();
-            if (ObjectUtil.isNotNull(singleServerConfig) && singleServerConfig.getEnable()) {
+            RedissonProperties.SingleServerConfig singleServerConfigLocal = redissonProperties.getSingleServerConfig();
+            if (ObjectUtil.isNotNull(singleServerConfigLocal) && singleServerConfigLocal.getEnable()) {
                 // 使用单机模式
-                config.useSingleServer()
-                        //设置redis key前缀
-                        .setNameMapper(new KeyPrefixHandler(redissonProperties.getKeyPrefix()))
-                        .setTimeout(singleServerConfig.getTimeout())
-                        .setClientName(singleServerConfig.getClientName())
-                        .setIdleConnectionTimeout(singleServerConfig.getIdleConnectionTimeout())
-                        .setSubscriptionConnectionPoolSize(singleServerConfig.getSubscriptionConnectionPoolSize())
-                        .setConnectionMinimumIdleSize(singleServerConfig.getConnectionMinimumIdleSize())
-                        .setConnectionPoolSize(singleServerConfig.getConnectionPoolSize());
+                SingleServerConfig singleServer = config.useSingleServer();
+                BeanUtil.copyProperties(singleServerConfigLocal, singleServer, CopyOptions.create().ignoreNullValue());
+                singleServer.setNameMapper(new KeyPrefixHandler(redissonProperties.getKeyPrefix()));
                 return;
             }
             //主从模式配置

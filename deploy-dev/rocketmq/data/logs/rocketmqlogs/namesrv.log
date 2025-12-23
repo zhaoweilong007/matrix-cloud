@@ -1,0 +1,697 @@
+2025-12-17 10:03:47 INFO main - rocketmqHome=/home/rocketmq/rocketmq-5.3.4
+2025-12-17 10:03:47 INFO main - kvConfigPath=/home/rocketmq/namesrv/kvConfig.json
+2025-12-17 10:03:47 INFO main - configStorePath=/home/rocketmq/namesrv/namesrv.properties
+2025-12-17 10:03:47 INFO main - productEnvName=center
+2025-12-17 10:03:47 INFO main - clusterTest=false
+2025-12-17 10:03:47 INFO main - orderMessageEnable=false
+2025-12-17 10:03:47 INFO main - returnOrderTopicConfigToBroker=true
+2025-12-17 10:03:47 INFO main - clientRequestThreadPoolNums=8
+2025-12-17 10:03:47 INFO main - defaultThreadPoolNums=16
+2025-12-17 10:03:47 INFO main - clientRequestThreadPoolQueueCapacity=50000
+2025-12-17 10:03:47 INFO main - defaultThreadPoolQueueCapacity=10000
+2025-12-17 10:03:47 INFO main - scanNotActiveBrokerInterval=5000
+2025-12-17 10:03:47 INFO main - unRegisterBrokerQueueCapacity=3000
+2025-12-17 10:03:47 INFO main - supportActingMaster=false
+2025-12-17 10:03:47 INFO main - enableAllTopicList=true
+2025-12-17 10:03:47 INFO main - enableTopicList=true
+2025-12-17 10:03:47 INFO main - notifyMinBrokerIdChanged=false
+2025-12-17 10:03:47 INFO main - enableControllerInNamesrv=false
+2025-12-17 10:03:47 INFO main - needWaitForService=false
+2025-12-17 10:03:47 INFO main - waitSecondsForService=45
+2025-12-17 10:03:47 INFO main - deleteTopicWithBrokerRegistration=false
+2025-12-17 10:03:47 INFO main - configBlackList=configBlackList;configStorePath;kvConfigPath
+2025-12-17 10:03:47 INFO main - bindAddress=0.0.0.0
+2025-12-17 10:03:47 INFO main - listenPort=9876
+2025-12-17 10:03:47 INFO main - serverWorkerThreads=8
+2025-12-17 10:03:47 INFO main - serverCallbackExecutorThreads=0
+2025-12-17 10:03:47 INFO main - serverSelectorThreads=3
+2025-12-17 10:03:47 INFO main - serverOnewaySemaphoreValue=256
+2025-12-17 10:03:47 INFO main - serverAsyncSemaphoreValue=64
+2025-12-17 10:03:47 INFO main - serverChannelMaxIdleTimeSeconds=120
+2025-12-17 10:03:47 INFO main - serverSocketSndBufSize=0
+2025-12-17 10:03:47 INFO main - serverSocketRcvBufSize=0
+2025-12-17 10:03:47 INFO main - writeBufferHighWaterMark=0
+2025-12-17 10:03:47 INFO main - writeBufferLowWaterMark=0
+2025-12-17 10:03:47 INFO main - serverSocketBacklog=1024
+2025-12-17 10:03:47 INFO main - serverNettyWorkerGroupEnable=true
+2025-12-17 10:03:47 INFO main - serverPooledByteBufAllocatorEnable=true
+2025-12-17 10:03:47 INFO main - enableShutdownGracefully=false
+2025-12-17 10:03:47 INFO main - shutdownWaitTimeSeconds=30
+2025-12-17 10:03:47 INFO main - useEpollNativeSelector=false
+2025-12-17 10:03:47 INFO main - Server is running in TLS permissive mode
+2025-12-17 10:03:47 INFO main - Tls config file doesn't exist, skip it
+2025-12-17 10:03:47 INFO main - Log the final used tls related configuration
+2025-12-17 10:03:47 INFO main - tls.test.mode.enable = true
+2025-12-17 10:03:48 INFO main - Using OpenSSL provider
+2025-12-17 10:03:50 INFO main - SslContext created for server
+2025-12-17 10:03:50 INFO main - RemotingServer started, listening 0.0.0.0:9876
+2025-12-17 10:03:50 INFO main - Try to start service thread:NettyEventExecutor started:false lastThread:null
+2025-12-17 10:03:50 INFO main - Start service thread:NettyEventExecutor started:true lastThread:Thread[NettyEventExecutor,5,main]
+2025-12-17 10:03:50 INFO NettyEventExecutor - NettyEventExecutor service started
+2025-12-17 10:03:51 INFO main - name server address updated. NEW : [172.20.0.2:9876] , OLD: null
+2025-12-17 10:03:51 INFO main - Try to start service thread:NettyEventExecutor started:false lastThread:null
+2025-12-17 10:03:51 INFO main - Start service thread:NettyEventExecutor started:true lastThread:Thread[NettyEventExecutor,5,main]
+2025-12-17 10:03:51 INFO NettyEventExecutor - NettyEventExecutor service started
+2025-12-17 10:03:51 INFO main - Try to start service thread:FileWatchService started:false lastThread:null
+2025-12-17 10:03:51 INFO main - Start service thread:FileWatchService started:true lastThread:Thread[FileWatchService,5,main]
+2025-12-17 10:03:51 INFO main - Try to start service thread:org.apache.rocketmq.namesrv.routeinfo.BatchUnregistrationService started:false lastThread:null
+2025-12-17 10:03:51 INFO main - Start service thread:org.apache.rocketmq.namesrv.routeinfo.BatchUnregistrationService started:true lastThread:Thread[org.apache.rocketmq.namesrv.routeinfo.BatchUnregistrationService,5,main]
+2025-12-17 10:03:51 INFO FileWatchService - FileWatchService service started
+2025-12-17 10:03:51 INFO main - The Name Server boot success. serializeType=JSON, address 0.0.0.0:9876
+2025-12-17 10:03:51 INFO NettyClientScan_thread_1 - createChannel: begin to connect remote host[172.20.0.2:9876] asynchronously
+2025-12-17 10:03:51 INFO NettyClientWorkerThread_1 - NETTY CLIENT PIPELINE: CONNECT  172.20.0.2 => 172.20.0.2:9876
+2025-12-17 10:03:51 INFO NettyServerCodecThread_1 - NETTY SERVER PIPELINE: channelRegistered 172.20.0.2:43592
+2025-12-17 10:03:51 INFO NettyServerCodecThread_1 - NETTY SERVER PIPELINE: channelActive, the channel[172.20.0.2:43592]
+2025-12-17 10:03:51 INFO NettyClientWorkerThread_1 - NETTY CLIENT PIPELINE: ACTIVE, 172.20.0.2:9876, channelId=7f34215e
+2025-12-17 10:03:55 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:04:00 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:04:05 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:04:10 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:04:18 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:04:20 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:04:25 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:04:30 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:04:35 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:04:40 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:04:48 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:04:50 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:04:50 INFO NSScheduledThread - --------------------------------------------------------
+2025-12-17 10:04:50 INFO NSScheduledThread - configTable SIZE: 0
+2025-12-17 10:04:55 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:05:00 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:05:05 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:05:10 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:05:18 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:05:20 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:05:25 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:05:30 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:05:35 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:05:40 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:05:47 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:05:49 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:05:49 WARN NettyClientWorkerThread_1 - NETTY CLIENT PIPELINE: IDLE exception channel[addr=172.20.0.2:9876, id=7f34215e]
+2025-12-17 10:05:49 INFO NettyClientWorkerThread_1 - closeChannel: the channel[addr=172.20.0.2:9876, id=7f34215e] was removed from channel table
+2025-12-17 10:05:49 INFO NettyClientWorkerThread_1 - NETTY CLIENT PIPELINE: CLOSE channel[addr=172.20.0.2:9876, id=7f34215e]
+2025-12-17 10:05:49 INFO NettyClientWorkerThread_1 - eventCloseChannel: the channel[addr=172.20.0.2:9876, id=7f34215e] has been removed from the channel table before
+2025-12-17 10:05:49 INFO NettyClientSelector_1 - closeChannel: close the connection to remote address[172.20.0.2:9876] result: true
+2025-12-17 10:05:49 INFO NettyClientWorkerThread_1 - NETTY CLIENT PIPELINE: channelInactive, the channel[addr=172.20.0.2:9876, id=7f34215e]
+2025-12-17 10:05:49 INFO NettyServerCodecThread_1 - NETTY SERVER PIPELINE: channelInactive, the channel[172.20.0.2:43592]
+2025-12-17 10:05:49 INFO NettyClientWorkerThread_1 - eventCloseChannel: the channel[addr=172.20.0.2:9876, id=7f34215e] has been removed from the channel table before
+2025-12-17 10:05:49 INFO NettyServerCodecThread_1 - NETTY SERVER PIPELINE: channelUnregistered, the channel[172.20.0.2:43592]
+2025-12-17 10:05:50 INFO NettyClientScan_thread_4 - createChannel: begin to connect remote host[172.20.0.2:9876] asynchronously
+2025-12-17 10:05:50 INFO NettyClientWorkerThread_2 - NETTY CLIENT PIPELINE: CONNECT  172.20.0.2 => 172.20.0.2:9876
+2025-12-17 10:05:50 INFO NettyClientWorkerThread_2 - NETTY CLIENT PIPELINE: ACTIVE, 172.20.0.2:9876, channelId=8c1b05b7
+2025-12-17 10:05:50 INFO NettyServerCodecThread_2 - NETTY SERVER PIPELINE: channelRegistered 172.20.0.2:52522
+2025-12-17 10:05:50 INFO NettyServerCodecThread_2 - NETTY SERVER PIPELINE: channelActive, the channel[172.20.0.2:52522]
+2025-12-17 10:05:54 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:05:59 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:06:04 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:06:09 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:06:15 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:06:17 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:06:22 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:06:27 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:06:32 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:06:37 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:06:42 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:06:44 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:06:49 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:06:54 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:06:59 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:07:04 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:07:11 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:07:12 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:07:17 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:07:22 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:07:27 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:07:32 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:07:38 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:07:40 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:07:41 WARN NettyClientWorkerThread_2 - NETTY CLIENT PIPELINE: IDLE exception channel[addr=172.20.0.2:9876, id=8c1b05b7]
+2025-12-17 10:07:41 INFO NettyClientWorkerThread_2 - closeChannel: the channel[addr=172.20.0.2:9876, id=8c1b05b7] was removed from channel table
+2025-12-17 10:07:41 INFO NettyClientWorkerThread_2 - NETTY CLIENT PIPELINE: CLOSE channel[addr=172.20.0.2:9876, id=8c1b05b7]
+2025-12-17 10:07:41 INFO NettyClientWorkerThread_2 - eventCloseChannel: the channel[addr=172.20.0.2:9876, id=8c1b05b7] has been removed from the channel table before
+2025-12-17 10:07:41 INFO NettyClientSelector_1 - closeChannel: close the connection to remote address[172.20.0.2:9876] result: true
+2025-12-17 10:07:41 INFO NettyClientWorkerThread_2 - NETTY CLIENT PIPELINE: channelInactive, the channel[addr=172.20.0.2:9876, id=8c1b05b7]
+2025-12-17 10:07:41 INFO NettyClientWorkerThread_2 - eventCloseChannel: the channel[addr=172.20.0.2:9876, id=8c1b05b7] has been removed from the channel table before
+2025-12-17 10:07:41 INFO NettyServerCodecThread_2 - NETTY SERVER PIPELINE: channelInactive, the channel[172.20.0.2:52522]
+2025-12-17 10:07:41 INFO NettyServerCodecThread_2 - NETTY SERVER PIPELINE: channelUnregistered, the channel[172.20.0.2:52522]
+2025-12-17 10:07:42 INFO NettyClientScan_thread_3 - createChannel: begin to connect remote host[172.20.0.2:9876] asynchronously
+2025-12-17 10:07:42 INFO NettyClientWorkerThread_3 - NETTY CLIENT PIPELINE: CONNECT  172.20.0.2 => 172.20.0.2:9876
+2025-12-17 10:07:42 INFO NettyClientWorkerThread_3 - NETTY CLIENT PIPELINE: ACTIVE, 172.20.0.2:9876, channelId=8e54a415
+2025-12-17 10:07:42 INFO NettyServerCodecThread_3 - NETTY SERVER PIPELINE: channelRegistered 172.20.0.2:45032
+2025-12-17 10:07:42 INFO NettyServerCodecThread_3 - NETTY SERVER PIPELINE: channelActive, the channel[172.20.0.2:45032]
+2025-12-17 10:07:45 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:07:50 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:08:06 INFO main - rocketmqHome=/home/rocketmq/rocketmq-5.3.4
+2025-12-17 10:08:06 INFO main - kvConfigPath=/home/rocketmq/namesrv/kvConfig.json
+2025-12-17 10:08:06 INFO main - configStorePath=/home/rocketmq/namesrv/namesrv.properties
+2025-12-17 10:08:06 INFO main - productEnvName=center
+2025-12-17 10:08:06 INFO main - clusterTest=false
+2025-12-17 10:08:06 INFO main - orderMessageEnable=false
+2025-12-17 10:08:06 INFO main - returnOrderTopicConfigToBroker=true
+2025-12-17 10:08:06 INFO main - clientRequestThreadPoolNums=8
+2025-12-17 10:08:06 INFO main - defaultThreadPoolNums=16
+2025-12-17 10:08:06 INFO main - clientRequestThreadPoolQueueCapacity=50000
+2025-12-17 10:08:06 INFO main - defaultThreadPoolQueueCapacity=10000
+2025-12-17 10:08:06 INFO main - scanNotActiveBrokerInterval=5000
+2025-12-17 10:08:06 INFO main - unRegisterBrokerQueueCapacity=3000
+2025-12-17 10:08:06 INFO main - supportActingMaster=false
+2025-12-17 10:08:06 INFO main - enableAllTopicList=true
+2025-12-17 10:08:06 INFO main - enableTopicList=true
+2025-12-17 10:08:06 INFO main - notifyMinBrokerIdChanged=false
+2025-12-17 10:08:06 INFO main - enableControllerInNamesrv=false
+2025-12-17 10:08:06 INFO main - needWaitForService=false
+2025-12-17 10:08:06 INFO main - waitSecondsForService=45
+2025-12-17 10:08:06 INFO main - deleteTopicWithBrokerRegistration=false
+2025-12-17 10:08:06 INFO main - configBlackList=configBlackList;configStorePath;kvConfigPath
+2025-12-17 10:08:06 INFO main - bindAddress=0.0.0.0
+2025-12-17 10:08:06 INFO main - listenPort=9876
+2025-12-17 10:08:06 INFO main - serverWorkerThreads=8
+2025-12-17 10:08:06 INFO main - serverCallbackExecutorThreads=0
+2025-12-17 10:08:06 INFO main - serverSelectorThreads=3
+2025-12-17 10:08:06 INFO main - serverOnewaySemaphoreValue=256
+2025-12-17 10:08:06 INFO main - serverAsyncSemaphoreValue=64
+2025-12-17 10:08:06 INFO main - serverChannelMaxIdleTimeSeconds=120
+2025-12-17 10:08:06 INFO main - serverSocketSndBufSize=0
+2025-12-17 10:08:06 INFO main - serverSocketRcvBufSize=0
+2025-12-17 10:08:06 INFO main - writeBufferHighWaterMark=0
+2025-12-17 10:08:06 INFO main - writeBufferLowWaterMark=0
+2025-12-17 10:08:06 INFO main - serverSocketBacklog=1024
+2025-12-17 10:08:06 INFO main - serverNettyWorkerGroupEnable=true
+2025-12-17 10:08:06 INFO main - serverPooledByteBufAllocatorEnable=true
+2025-12-17 10:08:06 INFO main - enableShutdownGracefully=false
+2025-12-17 10:08:06 INFO main - shutdownWaitTimeSeconds=30
+2025-12-17 10:08:06 INFO main - useEpollNativeSelector=false
+2025-12-17 10:08:06 INFO main - Server is running in TLS permissive mode
+2025-12-17 10:08:06 INFO main - Tls config file doesn't exist, skip it
+2025-12-17 10:08:06 INFO main - Log the final used tls related configuration
+2025-12-17 10:08:06 INFO main - tls.test.mode.enable = true
+2025-12-17 10:08:07 INFO main - Using OpenSSL provider
+2025-12-17 10:08:08 INFO main - SslContext created for server
+2025-12-17 10:08:09 INFO main - RemotingServer started, listening 0.0.0.0:9876
+2025-12-17 10:08:09 INFO main - Try to start service thread:NettyEventExecutor started:false lastThread:null
+2025-12-17 10:08:09 INFO main - Start service thread:NettyEventExecutor started:true lastThread:Thread[NettyEventExecutor,5,main]
+2025-12-17 10:08:09 INFO NettyEventExecutor - NettyEventExecutor service started
+2025-12-17 10:08:09 INFO main - name server address updated. NEW : [172.20.0.3:9876] , OLD: null
+2025-12-17 10:08:09 INFO main - Try to start service thread:NettyEventExecutor started:false lastThread:null
+2025-12-17 10:08:09 INFO main - Start service thread:NettyEventExecutor started:true lastThread:Thread[NettyEventExecutor,5,main]
+2025-12-17 10:08:09 INFO NettyEventExecutor - NettyEventExecutor service started
+2025-12-17 10:08:09 INFO main - Try to start service thread:FileWatchService started:false lastThread:null
+2025-12-17 10:08:09 INFO main - Start service thread:FileWatchService started:true lastThread:Thread[FileWatchService,5,main]
+2025-12-17 10:08:09 INFO main - Try to start service thread:org.apache.rocketmq.namesrv.routeinfo.BatchUnregistrationService started:false lastThread:null
+2025-12-17 10:08:09 INFO main - Start service thread:org.apache.rocketmq.namesrv.routeinfo.BatchUnregistrationService started:true lastThread:Thread[org.apache.rocketmq.namesrv.routeinfo.BatchUnregistrationService,5,main]
+2025-12-17 10:08:09 INFO FileWatchService - FileWatchService service started
+2025-12-17 10:08:09 INFO main - The Name Server boot success. serializeType=JSON, address 0.0.0.0:9876
+2025-12-17 10:08:09 INFO NettyClientScan_thread_1 - createChannel: begin to connect remote host[172.20.0.3:9876] asynchronously
+2025-12-17 10:08:09 INFO NettyClientWorkerThread_1 - NETTY CLIENT PIPELINE: CONNECT  172.20.0.3 => 172.20.0.3:9876
+2025-12-17 10:08:09 INFO NettyServerCodecThread_1 - NETTY SERVER PIPELINE: channelRegistered 172.20.0.3:40304
+2025-12-17 10:08:09 INFO NettyServerCodecThread_1 - NETTY SERVER PIPELINE: channelActive, the channel[172.20.0.3:40304]
+2025-12-17 10:08:09 INFO NettyClientWorkerThread_1 - NETTY CLIENT PIPELINE: ACTIVE, 172.20.0.3:9876, channelId=c2c2da65
+2025-12-17 10:08:13 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:08:18 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:08:23 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:08:28 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:08:31 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:08:36 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:08:41 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:08:46 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:08:51 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:08:56 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:08:59 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:09:04 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:09:04 INFO NSScheduledThread - --------------------------------------------------------
+2025-12-17 10:09:04 INFO NSScheduledThread - configTable SIZE: 0
+2025-12-17 10:09:09 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:09:14 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:09:19 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:09:24 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:09:27 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:09:32 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:09:37 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:09:42 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:09:47 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:09:52 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:09:54 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:09:59 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:10:00 WARN NettyClientWorkerThread_1 - NETTY CLIENT PIPELINE: IDLE exception channel[addr=172.20.0.3:9876, id=c2c2da65]
+2025-12-17 10:10:00 INFO NettyClientWorkerThread_1 - closeChannel: the channel[addr=172.20.0.3:9876, id=c2c2da65] was removed from channel table
+2025-12-17 10:10:00 INFO NettyClientWorkerThread_1 - NETTY CLIENT PIPELINE: CLOSE channel[addr=172.20.0.3:9876, id=c2c2da65]
+2025-12-17 10:10:00 INFO NettyClientWorkerThread_1 - eventCloseChannel: the channel[addr=172.20.0.3:9876, id=c2c2da65] has been removed from the channel table before
+2025-12-17 10:10:00 INFO NettyClientSelector_1 - closeChannel: close the connection to remote address[172.20.0.3:9876] result: true
+2025-12-17 10:10:00 INFO NettyClientWorkerThread_1 - NETTY CLIENT PIPELINE: channelInactive, the channel[addr=172.20.0.3:9876, id=c2c2da65]
+2025-12-17 10:10:00 INFO NettyClientWorkerThread_1 - eventCloseChannel: the channel[addr=172.20.0.3:9876, id=c2c2da65] has been removed from the channel table before
+2025-12-17 10:10:00 INFO NettyServerCodecThread_1 - NETTY SERVER PIPELINE: channelInactive, the channel[172.20.0.3:40304]
+2025-12-17 10:10:00 INFO NettyServerCodecThread_1 - NETTY SERVER PIPELINE: channelUnregistered, the channel[172.20.0.3:40304]
+2025-12-17 10:10:00 INFO NettyClientScan_thread_4 - createChannel: begin to connect remote host[172.20.0.3:9876] asynchronously
+2025-12-17 10:10:00 INFO NettyClientWorkerThread_2 - NETTY CLIENT PIPELINE: CONNECT  172.20.0.3 => 172.20.0.3:9876
+2025-12-17 10:10:00 INFO NettyClientWorkerThread_2 - NETTY CLIENT PIPELINE: ACTIVE, 172.20.0.3:9876, channelId=924b663f
+2025-12-17 10:10:00 INFO NettyServerCodecThread_2 - NETTY SERVER PIPELINE: channelRegistered 172.20.0.3:46850
+2025-12-17 10:10:00 INFO NettyServerCodecThread_2 - NETTY SERVER PIPELINE: channelActive, the channel[172.20.0.3:46850]
+2025-12-17 10:10:04 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:10:09 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:10:14 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:10:19 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:10:22 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:10:27 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:10:32 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:10:37 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:10:42 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:10:47 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:10:50 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:10:55 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:11:00 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:11:05 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:11:10 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:11:15 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:11:17 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:11:22 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:11:27 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:11:32 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:11:37 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:11:42 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:11:45 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:11:50 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:11:51 WARN NettyClientWorkerThread_2 - NETTY CLIENT PIPELINE: IDLE exception channel[addr=172.20.0.3:9876, id=924b663f]
+2025-12-17 10:11:51 INFO NettyClientWorkerThread_2 - closeChannel: the channel[addr=172.20.0.3:9876, id=924b663f] was removed from channel table
+2025-12-17 10:11:51 INFO NettyClientWorkerThread_2 - NETTY CLIENT PIPELINE: CLOSE channel[addr=172.20.0.3:9876, id=924b663f]
+2025-12-17 10:11:51 INFO NettyClientWorkerThread_2 - eventCloseChannel: the channel[addr=172.20.0.3:9876, id=924b663f] has been removed from the channel table before
+2025-12-17 10:11:51 INFO NettyClientSelector_1 - closeChannel: close the connection to remote address[172.20.0.3:9876] result: true
+2025-12-17 10:11:51 INFO NettyClientWorkerThread_2 - NETTY CLIENT PIPELINE: channelInactive, the channel[addr=172.20.0.3:9876, id=924b663f]
+2025-12-17 10:11:51 INFO NettyClientWorkerThread_2 - eventCloseChannel: the channel[addr=172.20.0.3:9876, id=924b663f] has been removed from the channel table before
+2025-12-17 10:11:51 INFO NettyServerCodecThread_2 - NETTY SERVER PIPELINE: channelInactive, the channel[172.20.0.3:46850]
+2025-12-17 10:11:51 INFO NettyServerCodecThread_2 - NETTY SERVER PIPELINE: channelUnregistered, the channel[172.20.0.3:46850]
+2025-12-17 10:11:52 INFO NettyClientScan_thread_3 - createChannel: begin to connect remote host[172.20.0.3:9876] asynchronously
+2025-12-17 10:11:52 INFO NettyClientWorkerThread_3 - NETTY CLIENT PIPELINE: CONNECT  172.20.0.3 => 172.20.0.3:9876
+2025-12-17 10:11:52 INFO NettyClientWorkerThread_3 - NETTY CLIENT PIPELINE: ACTIVE, 172.20.0.3:9876, channelId=23d7d299
+2025-12-17 10:11:52 INFO NettyServerCodecThread_3 - NETTY SERVER PIPELINE: channelRegistered 172.20.0.3:38364
+2025-12-17 10:11:52 INFO NettyServerCodecThread_3 - NETTY SERVER PIPELINE: channelActive, the channel[172.20.0.3:38364]
+2025-12-17 10:11:55 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:12:00 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:12:05 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:12:10 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:12:13 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:12:18 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:12:23 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:12:28 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:12:33 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:12:38 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:12:40 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:12:45 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:13:08 INFO main - rocketmqHome=/home/rocketmq/rocketmq-5.3.4
+2025-12-17 10:13:08 INFO main - kvConfigPath=/home/rocketmq/namesrv/kvConfig.json
+2025-12-17 10:13:08 INFO main - configStorePath=/home/rocketmq/namesrv/namesrv.properties
+2025-12-17 10:13:08 INFO main - productEnvName=center
+2025-12-17 10:13:08 INFO main - clusterTest=false
+2025-12-17 10:13:08 INFO main - orderMessageEnable=false
+2025-12-17 10:13:08 INFO main - returnOrderTopicConfigToBroker=true
+2025-12-17 10:13:08 INFO main - clientRequestThreadPoolNums=8
+2025-12-17 10:13:08 INFO main - defaultThreadPoolNums=16
+2025-12-17 10:13:08 INFO main - clientRequestThreadPoolQueueCapacity=50000
+2025-12-17 10:13:08 INFO main - defaultThreadPoolQueueCapacity=10000
+2025-12-17 10:13:08 INFO main - scanNotActiveBrokerInterval=5000
+2025-12-17 10:13:08 INFO main - unRegisterBrokerQueueCapacity=3000
+2025-12-17 10:13:08 INFO main - supportActingMaster=false
+2025-12-17 10:13:08 INFO main - enableAllTopicList=true
+2025-12-17 10:13:08 INFO main - enableTopicList=true
+2025-12-17 10:13:08 INFO main - notifyMinBrokerIdChanged=false
+2025-12-17 10:13:08 INFO main - enableControllerInNamesrv=false
+2025-12-17 10:13:08 INFO main - needWaitForService=false
+2025-12-17 10:13:08 INFO main - waitSecondsForService=45
+2025-12-17 10:13:08 INFO main - deleteTopicWithBrokerRegistration=false
+2025-12-17 10:13:08 INFO main - configBlackList=configBlackList;configStorePath;kvConfigPath
+2025-12-17 10:13:08 INFO main - bindAddress=0.0.0.0
+2025-12-17 10:13:08 INFO main - listenPort=9876
+2025-12-17 10:13:08 INFO main - serverWorkerThreads=8
+2025-12-17 10:13:08 INFO main - serverCallbackExecutorThreads=0
+2025-12-17 10:13:08 INFO main - serverSelectorThreads=3
+2025-12-17 10:13:08 INFO main - serverOnewaySemaphoreValue=256
+2025-12-17 10:13:08 INFO main - serverAsyncSemaphoreValue=64
+2025-12-17 10:13:08 INFO main - serverChannelMaxIdleTimeSeconds=120
+2025-12-17 10:13:08 INFO main - serverSocketSndBufSize=0
+2025-12-17 10:13:08 INFO main - serverSocketRcvBufSize=0
+2025-12-17 10:13:08 INFO main - writeBufferHighWaterMark=0
+2025-12-17 10:13:08 INFO main - writeBufferLowWaterMark=0
+2025-12-17 10:13:08 INFO main - serverSocketBacklog=1024
+2025-12-17 10:13:08 INFO main - serverNettyWorkerGroupEnable=true
+2025-12-17 10:13:08 INFO main - serverPooledByteBufAllocatorEnable=true
+2025-12-17 10:13:08 INFO main - enableShutdownGracefully=false
+2025-12-17 10:13:08 INFO main - shutdownWaitTimeSeconds=30
+2025-12-17 10:13:08 INFO main - useEpollNativeSelector=false
+2025-12-17 10:13:09 INFO main - Server is running in TLS permissive mode
+2025-12-17 10:13:09 INFO main - Tls config file doesn't exist, skip it
+2025-12-17 10:13:09 INFO main - Log the final used tls related configuration
+2025-12-17 10:13:09 INFO main - tls.test.mode.enable = true
+2025-12-17 10:13:09 INFO main - Using OpenSSL provider
+2025-12-17 10:13:09 INFO main - SslContext created for server
+2025-12-17 10:13:09 INFO main - RemotingServer started, listening 0.0.0.0:9876
+2025-12-17 10:13:09 INFO main - Try to start service thread:NettyEventExecutor started:false lastThread:null
+2025-12-17 10:13:09 INFO main - Start service thread:NettyEventExecutor started:true lastThread:Thread[NettyEventExecutor,5,main]
+2025-12-17 10:13:09 INFO NettyEventExecutor - NettyEventExecutor service started
+2025-12-17 10:13:09 INFO main - name server address updated. NEW : [172.20.0.2:9876] , OLD: null
+2025-12-17 10:13:09 INFO main - Try to start service thread:NettyEventExecutor started:false lastThread:null
+2025-12-17 10:13:09 INFO main - Start service thread:NettyEventExecutor started:true lastThread:Thread[NettyEventExecutor,5,main]
+2025-12-17 10:13:09 INFO NettyEventExecutor - NettyEventExecutor service started
+2025-12-17 10:13:09 INFO main - Try to start service thread:FileWatchService started:false lastThread:null
+2025-12-17 10:13:09 INFO main - Start service thread:FileWatchService started:true lastThread:Thread[FileWatchService,5,main]
+2025-12-17 10:13:09 INFO main - Try to start service thread:org.apache.rocketmq.namesrv.routeinfo.BatchUnregistrationService started:false lastThread:null
+2025-12-17 10:13:09 INFO main - Start service thread:org.apache.rocketmq.namesrv.routeinfo.BatchUnregistrationService started:true lastThread:Thread[org.apache.rocketmq.namesrv.routeinfo.BatchUnregistrationService,5,main]
+2025-12-17 10:13:09 INFO FileWatchService - FileWatchService service started
+2025-12-17 10:13:09 INFO main - The Name Server boot success. serializeType=JSON, address 0.0.0.0:9876
+2025-12-17 10:13:09 INFO NettyClientScan_thread_1 - createChannel: begin to connect remote host[172.20.0.2:9876] asynchronously
+2025-12-17 10:13:09 INFO NettyClientWorkerThread_1 - NETTY CLIENT PIPELINE: CONNECT  172.20.0.2 => 172.20.0.2:9876
+2025-12-17 10:13:09 INFO NettyServerCodecThread_1 - NETTY SERVER PIPELINE: channelRegistered 172.20.0.2:56950
+2025-12-17 10:13:09 INFO NettyServerCodecThread_1 - NETTY SERVER PIPELINE: channelActive, the channel[172.20.0.2:56950]
+2025-12-17 10:13:09 INFO NettyClientWorkerThread_1 - NETTY CLIENT PIPELINE: ACTIVE, 172.20.0.2:9876, channelId=1af18f2f
+2025-12-17 10:13:14 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:13:19 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:13:24 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:13:29 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:13:34 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:13:37 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:13:42 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:13:47 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:13:52 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:13:57 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:14:02 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:14:04 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:14:04 INFO NSScheduledThread - --------------------------------------------------------
+2025-12-17 10:14:04 INFO NSScheduledThread - configTable SIZE: 0
+2025-12-17 10:14:09 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:14:14 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:14:19 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:14:24 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:14:29 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:14:32 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:14:37 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:14:42 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:14:47 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:14:52 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:14:57 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:15:00 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:15:00 WARN NettyClientWorkerThread_1 - NETTY CLIENT PIPELINE: IDLE exception channel[addr=172.20.0.2:9876, id=1af18f2f]
+2025-12-17 10:15:00 INFO NettyClientWorkerThread_1 - closeChannel: the channel[addr=172.20.0.2:9876, id=1af18f2f] was removed from channel table
+2025-12-17 10:15:00 INFO NettyClientWorkerThread_1 - NETTY CLIENT PIPELINE: CLOSE channel[addr=172.20.0.2:9876, id=1af18f2f]
+2025-12-17 10:15:00 INFO NettyClientWorkerThread_1 - eventCloseChannel: the channel[addr=172.20.0.2:9876, id=1af18f2f] has been removed from the channel table before
+2025-12-17 10:15:00 INFO NettyClientSelector_1 - closeChannel: close the connection to remote address[172.20.0.2:9876] result: true
+2025-12-17 10:15:00 WARN NettyServerCodecThread_1 - NETTY SERVER PIPELINE: IDLE exception [172.20.0.2:56950]
+2025-12-17 10:15:00 INFO NettyClientWorkerThread_1 - NETTY CLIENT PIPELINE: channelInactive, the channel[addr=172.20.0.2:9876, id=1af18f2f]
+2025-12-17 10:15:00 INFO NettyClientWorkerThread_1 - eventCloseChannel: the channel[addr=172.20.0.2:9876, id=1af18f2f] has been removed from the channel table before
+2025-12-17 10:15:00 INFO NettyServerNIOSelector_1 - closeChannel: close the connection to remote address[172.20.0.2:56950] result: true
+2025-12-17 10:15:00 INFO NettyServerCodecThread_1 - NETTY SERVER PIPELINE: channelInactive, the channel[172.20.0.2:56950]
+2025-12-17 10:15:00 INFO NettyServerCodecThread_1 - NETTY SERVER PIPELINE: channelUnregistered, the channel[172.20.0.2:56950]
+2025-12-17 10:15:01 INFO NettyClientScan_thread_4 - createChannel: begin to connect remote host[172.20.0.2:9876] asynchronously
+2025-12-17 10:15:01 INFO NettyClientWorkerThread_2 - NETTY CLIENT PIPELINE: CONNECT  172.20.0.2 => 172.20.0.2:9876
+2025-12-17 10:15:01 INFO NettyClientWorkerThread_2 - NETTY CLIENT PIPELINE: ACTIVE, 172.20.0.2:9876, channelId=f23614b9
+2025-12-17 10:15:01 INFO NettyServerCodecThread_2 - NETTY SERVER PIPELINE: channelRegistered 172.20.0.2:60274
+2025-12-17 10:15:01 INFO NettyServerCodecThread_2 - NETTY SERVER PIPELINE: channelActive, the channel[172.20.0.2:60274]
+2025-12-17 10:15:05 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:15:10 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:15:15 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:15:20 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:15:25 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:15:27 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:15:32 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:15:37 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:15:42 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:15:47 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:15:52 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:15:55 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:16:00 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:16:05 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:16:10 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:16:15 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:16:20 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:16:23 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:16:29 INFO main - rocketmqHome=/home/rocketmq/rocketmq-5.3.4
+2025-12-17 10:16:29 INFO main - kvConfigPath=/home/rocketmq/namesrv/kvConfig.json
+2025-12-17 10:16:29 INFO main - configStorePath=/home/rocketmq/namesrv/namesrv.properties
+2025-12-17 10:16:29 INFO main - productEnvName=center
+2025-12-17 10:16:29 INFO main - clusterTest=false
+2025-12-17 10:16:29 INFO main - orderMessageEnable=false
+2025-12-17 10:16:29 INFO main - returnOrderTopicConfigToBroker=true
+2025-12-17 10:16:29 INFO main - clientRequestThreadPoolNums=8
+2025-12-17 10:16:29 INFO main - defaultThreadPoolNums=16
+2025-12-17 10:16:29 INFO main - clientRequestThreadPoolQueueCapacity=50000
+2025-12-17 10:16:29 INFO main - defaultThreadPoolQueueCapacity=10000
+2025-12-17 10:16:29 INFO main - scanNotActiveBrokerInterval=5000
+2025-12-17 10:16:29 INFO main - unRegisterBrokerQueueCapacity=3000
+2025-12-17 10:16:29 INFO main - supportActingMaster=false
+2025-12-17 10:16:29 INFO main - enableAllTopicList=true
+2025-12-17 10:16:29 INFO main - enableTopicList=true
+2025-12-17 10:16:29 INFO main - notifyMinBrokerIdChanged=false
+2025-12-17 10:16:29 INFO main - enableControllerInNamesrv=false
+2025-12-17 10:16:29 INFO main - needWaitForService=false
+2025-12-17 10:16:29 INFO main - waitSecondsForService=45
+2025-12-17 10:16:29 INFO main - deleteTopicWithBrokerRegistration=false
+2025-12-17 10:16:29 INFO main - configBlackList=configBlackList;configStorePath;kvConfigPath
+2025-12-17 10:16:29 INFO main - bindAddress=0.0.0.0
+2025-12-17 10:16:29 INFO main - listenPort=9876
+2025-12-17 10:16:29 INFO main - serverWorkerThreads=8
+2025-12-17 10:16:29 INFO main - serverCallbackExecutorThreads=0
+2025-12-17 10:16:29 INFO main - serverSelectorThreads=3
+2025-12-17 10:16:29 INFO main - serverOnewaySemaphoreValue=256
+2025-12-17 10:16:29 INFO main - serverAsyncSemaphoreValue=64
+2025-12-17 10:16:29 INFO main - serverChannelMaxIdleTimeSeconds=120
+2025-12-17 10:16:29 INFO main - serverSocketSndBufSize=0
+2025-12-17 10:16:29 INFO main - serverSocketRcvBufSize=0
+2025-12-17 10:16:29 INFO main - writeBufferHighWaterMark=0
+2025-12-17 10:16:29 INFO main - writeBufferLowWaterMark=0
+2025-12-17 10:16:29 INFO main - serverSocketBacklog=1024
+2025-12-17 10:16:29 INFO main - serverNettyWorkerGroupEnable=true
+2025-12-17 10:16:29 INFO main - serverPooledByteBufAllocatorEnable=true
+2025-12-17 10:16:29 INFO main - enableShutdownGracefully=false
+2025-12-17 10:16:29 INFO main - shutdownWaitTimeSeconds=30
+2025-12-17 10:16:29 INFO main - useEpollNativeSelector=false
+2025-12-17 10:16:29 INFO main - Server is running in TLS permissive mode
+2025-12-17 10:16:29 INFO main - Tls config file doesn't exist, skip it
+2025-12-17 10:16:29 INFO main - Log the final used tls related configuration
+2025-12-17 10:16:29 INFO main - tls.test.mode.enable = true
+2025-12-17 10:16:30 INFO main - Using OpenSSL provider
+2025-12-17 10:16:32 INFO main - SslContext created for server
+2025-12-17 10:16:32 INFO main - RemotingServer started, listening 0.0.0.0:9876
+2025-12-17 10:16:32 INFO main - Try to start service thread:NettyEventExecutor started:false lastThread:null
+2025-12-17 10:16:32 INFO main - Start service thread:NettyEventExecutor started:true lastThread:Thread[NettyEventExecutor,5,main]
+2025-12-17 10:16:32 INFO NettyEventExecutor - NettyEventExecutor service started
+2025-12-17 10:16:32 INFO main - name server address updated. NEW : [172.20.0.2:9876] , OLD: null
+2025-12-17 10:16:32 INFO main - Try to start service thread:NettyEventExecutor started:false lastThread:null
+2025-12-17 10:16:32 INFO main - Start service thread:NettyEventExecutor started:true lastThread:Thread[NettyEventExecutor,5,main]
+2025-12-17 10:16:32 INFO NettyEventExecutor - NettyEventExecutor service started
+2025-12-17 10:16:32 INFO main - Try to start service thread:FileWatchService started:false lastThread:null
+2025-12-17 10:16:32 INFO main - Start service thread:FileWatchService started:true lastThread:Thread[FileWatchService,5,main]
+2025-12-17 10:16:32 INFO main - Try to start service thread:org.apache.rocketmq.namesrv.routeinfo.BatchUnregistrationService started:false lastThread:null
+2025-12-17 10:16:32 INFO main - Start service thread:org.apache.rocketmq.namesrv.routeinfo.BatchUnregistrationService started:true lastThread:Thread[org.apache.rocketmq.namesrv.routeinfo.BatchUnregistrationService,5,main]
+2025-12-17 10:16:32 INFO FileWatchService - FileWatchService service started
+2025-12-17 10:16:32 INFO main - The Name Server boot success. serializeType=JSON, address 0.0.0.0:9876
+2025-12-17 10:16:32 INFO NettyClientScan_thread_1 - createChannel: begin to connect remote host[172.20.0.2:9876] asynchronously
+2025-12-17 10:16:32 INFO NettyClientWorkerThread_1 - NETTY CLIENT PIPELINE: CONNECT  172.20.0.2 => 172.20.0.2:9876
+2025-12-17 10:16:32 INFO NettyServerCodecThread_1 - NETTY SERVER PIPELINE: channelRegistered 172.20.0.2:52790
+2025-12-17 10:16:32 INFO NettyServerCodecThread_1 - NETTY SERVER PIPELINE: channelActive, the channel[172.20.0.2:52790]
+2025-12-17 10:16:32 INFO NettyClientWorkerThread_1 - NETTY CLIENT PIPELINE: ACTIVE, 172.20.0.2:9876, channelId=1aa09b93
+2025-12-17 10:16:37 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:16:42 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:16:47 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:16:50 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:16:55 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:17:00 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:17:05 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:17:10 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:17:15 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:17:17 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:17:22 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:17:27 INFO NSScheduledThread - --------------------------------------------------------
+2025-12-17 10:17:27 INFO NSScheduledThread - configTable SIZE: 0
+2025-12-17 10:17:27 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:17:32 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:17:37 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:17:42 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:17:45 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:17:50 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:17:55 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:18:00 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:18:05 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:18:10 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:18:13 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:18:18 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:18:23 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:18:23 WARN NettyServerCodecThread_1 - NETTY SERVER PIPELINE: IDLE exception [172.20.0.2:52790]
+2025-12-17 10:18:23 INFO NettyServerNIOSelector_1 - closeChannel: close the connection to remote address[172.20.0.2:52790] result: true
+2025-12-17 10:18:23 INFO NettyServerCodecThread_1 - NETTY SERVER PIPELINE: channelInactive, the channel[172.20.0.2:52790]
+2025-12-17 10:18:23 INFO NettyServerCodecThread_1 - NETTY SERVER PIPELINE: channelUnregistered, the channel[172.20.0.2:52790]
+2025-12-17 10:18:23 INFO NettyClientWorkerThread_1 - NETTY CLIENT PIPELINE: channelInactive, the channel[addr=172.20.0.2:9876, id=1aa09b93]
+2025-12-17 10:18:23 INFO NettyClientWorkerThread_1 - closeChannel: the channel[addr=172.20.0.2:9876, id=1aa09b93] was removed from channel table
+2025-12-17 10:18:23 INFO NettyClientWorkerThread_1 - NETTY CLIENT PIPELINE: CLOSE channel[addr=172.20.0.2:9876, id=1aa09b93]
+2025-12-17 10:18:23 INFO NettyClientWorkerThread_1 - eventCloseChannel: the channel[addr=172.20.0.2:9876, id=1aa09b93] has been removed from the channel table before
+2025-12-17 10:18:23 INFO NettyClientSelector_1 - closeChannel: close the connection to remote address[172.20.0.2:9876] result: true
+2025-12-17 10:18:24 INFO NettyClientScan_thread_4 - createChannel: begin to connect remote host[172.20.0.2:9876] asynchronously
+2025-12-17 10:18:24 INFO NettyClientWorkerThread_2 - NETTY CLIENT PIPELINE: CONNECT  172.20.0.2 => 172.20.0.2:9876
+2025-12-17 10:18:24 INFO NettyClientWorkerThread_2 - NETTY CLIENT PIPELINE: ACTIVE, 172.20.0.2:9876, channelId=3f09d970
+2025-12-17 10:18:24 INFO NettyServerCodecThread_2 - NETTY SERVER PIPELINE: channelRegistered 172.20.0.2:42684
+2025-12-17 10:18:24 INFO NettyServerCodecThread_2 - NETTY SERVER PIPELINE: channelActive, the channel[172.20.0.2:42684]
+2025-12-17 10:18:28 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:18:33 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:18:38 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:18:41 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:18:46 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:18:51 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:18:56 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:19:01 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:19:06 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:19:08 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:19:13 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:19:18 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:19:23 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:19:28 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:19:33 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:19:36 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:19:41 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:19:46 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:19:51 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:19:56 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:20:01 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:20:04 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:20:09 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:20:14 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:20:15 WARN NettyClientWorkerThread_2 - NETTY CLIENT PIPELINE: IDLE exception channel[addr=172.20.0.2:9876, id=3f09d970]
+2025-12-17 10:20:15 INFO NettyClientWorkerThread_2 - closeChannel: the channel[addr=172.20.0.2:9876, id=3f09d970] was removed from channel table
+2025-12-17 10:20:15 INFO NettyClientWorkerThread_2 - NETTY CLIENT PIPELINE: CLOSE channel[addr=172.20.0.2:9876, id=3f09d970]
+2025-12-17 10:20:15 INFO NettyClientWorkerThread_2 - eventCloseChannel: the channel[addr=172.20.0.2:9876, id=3f09d970] has been removed from the channel table before
+2025-12-17 10:20:15 INFO NettyClientSelector_1 - closeChannel: close the connection to remote address[172.20.0.2:9876] result: true
+2025-12-17 10:20:15 INFO NettyClientWorkerThread_2 - NETTY CLIENT PIPELINE: channelInactive, the channel[addr=172.20.0.2:9876, id=3f09d970]
+2025-12-17 10:20:15 INFO NettyClientWorkerThread_2 - eventCloseChannel: the channel[addr=172.20.0.2:9876, id=3f09d970] has been removed from the channel table before
+2025-12-17 10:20:15 INFO NettyServerCodecThread_2 - NETTY SERVER PIPELINE: channelInactive, the channel[172.20.0.2:42684]
+2025-12-17 10:20:15 INFO NettyServerCodecThread_2 - NETTY SERVER PIPELINE: channelUnregistered, the channel[172.20.0.2:42684]
+2025-12-17 10:20:16 INFO NettyClientScan_thread_3 - createChannel: begin to connect remote host[172.20.0.2:9876] asynchronously
+2025-12-17 10:20:16 INFO NettyClientWorkerThread_3 - NETTY CLIENT PIPELINE: CONNECT  172.20.0.2 => 172.20.0.2:9876
+2025-12-17 10:20:16 INFO NettyClientWorkerThread_3 - NETTY CLIENT PIPELINE: ACTIVE, 172.20.0.2:9876, channelId=90fe46b1
+2025-12-17 10:20:16 INFO NettyServerCodecThread_3 - NETTY SERVER PIPELINE: channelRegistered 172.20.0.2:44262
+2025-12-17 10:20:16 INFO NettyServerCodecThread_3 - NETTY SERVER PIPELINE: channelActive, the channel[172.20.0.2:44262]
+2025-12-17 10:20:19 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:20:24 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:20:29 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:20:31 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:20:36 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:20:41 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:20:46 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:20:51 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:20:56 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:20:59 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:21:04 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:21:09 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:21:14 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:21:19 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:21:24 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:21:27 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:21:32 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:21:37 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:21:42 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:21:47 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:21:52 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:21:54 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:21:59 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:22:04 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:22:06 WARN NettyClientWorkerThread_3 - NETTY CLIENT PIPELINE: IDLE exception channel[addr=172.20.0.2:9876, id=90fe46b1]
+2025-12-17 10:22:06 INFO NettyClientWorkerThread_3 - closeChannel: the channel[addr=172.20.0.2:9876, id=90fe46b1] was removed from channel table
+2025-12-17 10:22:06 INFO NettyClientWorkerThread_3 - NETTY CLIENT PIPELINE: CLOSE channel[addr=172.20.0.2:9876, id=90fe46b1]
+2025-12-17 10:22:06 INFO NettyClientWorkerThread_3 - eventCloseChannel: the channel[addr=172.20.0.2:9876, id=90fe46b1] has been removed from the channel table before
+2025-12-17 10:22:06 INFO NettyClientSelector_1 - closeChannel: close the connection to remote address[172.20.0.2:9876] result: true
+2025-12-17 10:22:06 INFO NettyClientWorkerThread_3 - NETTY CLIENT PIPELINE: channelInactive, the channel[addr=172.20.0.2:9876, id=90fe46b1]
+2025-12-17 10:22:06 INFO NettyClientWorkerThread_3 - eventCloseChannel: the channel[addr=172.20.0.2:9876, id=90fe46b1] has been removed from the channel table before
+2025-12-17 10:22:06 INFO NettyServerCodecThread_3 - NETTY SERVER PIPELINE: channelInactive, the channel[172.20.0.2:44262]
+2025-12-17 10:22:06 INFO NettyServerCodecThread_3 - NETTY SERVER PIPELINE: channelUnregistered, the channel[172.20.0.2:44262]
+2025-12-17 10:22:07 INFO NettyClientScan_thread_2 - createChannel: begin to connect remote host[172.20.0.2:9876] asynchronously
+2025-12-17 10:22:07 INFO NettyClientWorkerThread_4 - NETTY CLIENT PIPELINE: CONNECT  172.20.0.2 => 172.20.0.2:9876
+2025-12-17 10:22:07 INFO NettyClientWorkerThread_4 - NETTY CLIENT PIPELINE: ACTIVE, 172.20.0.2:9876, channelId=851ebad4
+2025-12-17 10:22:07 INFO NettyServerCodecThread_4 - NETTY SERVER PIPELINE: channelRegistered 172.20.0.2:50228
+2025-12-17 10:22:07 INFO NettyServerCodecThread_4 - NETTY SERVER PIPELINE: channelActive, the channel[172.20.0.2:50228]
+2025-12-17 10:22:09 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:22:14 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:22:19 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:22:22 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:22:27 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:22:32 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:22:37 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:22:42 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:22:47 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:22:53 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:22:55 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:23:00 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:23:05 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:23:10 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:23:15 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:23:21 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:23:22 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:23:27 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:23:32 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:23:37 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:23:42 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:23:48 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:23:50 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:23:55 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:23:58 WARN NettyClientWorkerThread_4 - NETTY CLIENT PIPELINE: IDLE exception channel[addr=172.20.0.2:9876, id=851ebad4]
+2025-12-17 10:23:58 INFO NettyClientWorkerThread_4 - closeChannel: the channel[addr=172.20.0.2:9876, id=851ebad4] was removed from channel table
+2025-12-17 10:23:58 INFO NettyClientWorkerThread_4 - NETTY CLIENT PIPELINE: CLOSE channel[addr=172.20.0.2:9876, id=851ebad4]
+2025-12-17 10:23:58 INFO NettyClientWorkerThread_4 - eventCloseChannel: the channel[addr=172.20.0.2:9876, id=851ebad4] has been removed from the channel table before
+2025-12-17 10:23:58 INFO NettyClientSelector_1 - closeChannel: close the connection to remote address[172.20.0.2:9876] result: true
+2025-12-17 10:23:58 INFO NettyClientWorkerThread_4 - NETTY CLIENT PIPELINE: channelInactive, the channel[addr=172.20.0.2:9876, id=851ebad4]
+2025-12-17 10:23:58 INFO NettyClientWorkerThread_4 - eventCloseChannel: the channel[addr=172.20.0.2:9876, id=851ebad4] has been removed from the channel table before
+2025-12-17 10:23:58 INFO NettyServerCodecThread_4 - NETTY SERVER PIPELINE: channelInactive, the channel[172.20.0.2:50228]
+2025-12-17 10:23:58 INFO NettyServerCodecThread_4 - NETTY SERVER PIPELINE: channelUnregistered, the channel[172.20.0.2:50228]
+2025-12-17 10:23:59 INFO NettyClientScan_thread_1 - createChannel: begin to connect remote host[172.20.0.2:9876] asynchronously
+2025-12-17 10:23:59 INFO NettyClientWorkerThread_1 - NETTY CLIENT PIPELINE: CONNECT  172.20.0.2 => 172.20.0.2:9876
+2025-12-17 10:23:59 INFO NettyClientWorkerThread_1 - NETTY CLIENT PIPELINE: ACTIVE, 172.20.0.2:9876, channelId=cad0d68c
+2025-12-17 10:23:59 INFO NettyServerCodecThread_5 - NETTY SERVER PIPELINE: channelRegistered 172.20.0.2:50556
+2025-12-17 10:23:59 INFO NettyServerCodecThread_5 - NETTY SERVER PIPELINE: channelActive, the channel[172.20.0.2:50556]
+2025-12-17 10:24:00 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:24:05 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:24:10 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:24:16 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:24:21 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:24:26 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:24:31 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:24:32 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:24:37 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:24:44 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:24:46 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:24:51 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:24:56 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:25:01 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:25:06 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:25:11 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:25:13 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:25:18 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:25:23 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:25:28 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:25:33 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:25:38 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:25:41 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:25:46 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:25:50 WARN NettyClientWorkerThread_1 - NETTY CLIENT PIPELINE: IDLE exception channel[addr=172.20.0.2:9876, id=cad0d68c]
+2025-12-17 10:25:50 INFO NettyClientWorkerThread_1 - closeChannel: the channel[addr=172.20.0.2:9876, id=cad0d68c] was removed from channel table
+2025-12-17 10:25:50 INFO NettyClientWorkerThread_1 - NETTY CLIENT PIPELINE: CLOSE channel[addr=172.20.0.2:9876, id=cad0d68c]
+2025-12-17 10:25:50 INFO NettyClientWorkerThread_1 - eventCloseChannel: the channel[addr=172.20.0.2:9876, id=cad0d68c] has been removed from the channel table before
+2025-12-17 10:25:50 INFO NettyClientSelector_1 - closeChannel: close the connection to remote address[172.20.0.2:9876] result: true
+2025-12-17 10:25:50 INFO NettyClientWorkerThread_1 - NETTY CLIENT PIPELINE: channelInactive, the channel[addr=172.20.0.2:9876, id=cad0d68c]
+2025-12-17 10:25:50 INFO NettyClientWorkerThread_1 - eventCloseChannel: the channel[addr=172.20.0.2:9876, id=cad0d68c] has been removed from the channel table before
+2025-12-17 10:25:50 INFO NettyServerCodecThread_5 - NETTY SERVER PIPELINE: channelInactive, the channel[172.20.0.2:50556]
+2025-12-17 10:25:50 INFO NettyServerCodecThread_5 - NETTY SERVER PIPELINE: channelUnregistered, the channel[172.20.0.2:50556]
+2025-12-17 10:25:51 INFO NettyClientScan_thread_4 - createChannel: begin to connect remote host[172.20.0.2:9876] asynchronously
+2025-12-17 10:25:51 INFO NettyClientWorkerThread_2 - NETTY CLIENT PIPELINE: CONNECT  172.20.0.2 => 172.20.0.2:9876
+2025-12-17 10:25:51 INFO NettyClientWorkerThread_2 - NETTY CLIENT PIPELINE: ACTIVE, 172.20.0.2:9876, channelId=da452615
+2025-12-17 10:25:51 INFO NettyServerCodecThread_6 - NETTY SERVER PIPELINE: channelRegistered 172.20.0.2:51842
+2025-12-17 10:25:51 INFO NettyServerCodecThread_6 - NETTY SERVER PIPELINE: channelActive, the channel[172.20.0.2:51842]
+2025-12-17 10:25:51 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:25:56 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:26:01 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:26:06 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:26:09 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:26:14 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:26:19 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:26:24 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:26:29 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:26:34 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:26:36 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:26:41 INFO NSScheduledThread - --------------------------------------------------------
+2025-12-17 10:26:41 INFO NSScheduledThread - configTable SIZE: 0
+2025-12-17 10:26:41 INFO NSScanScheduledThread - start scanNotActiveBroker
+2025-12-17 10:26:46 INFO NSScanScheduledThread - start scanNotActiveBroker

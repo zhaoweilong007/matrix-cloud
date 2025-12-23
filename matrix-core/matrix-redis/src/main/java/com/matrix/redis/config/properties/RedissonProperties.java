@@ -54,6 +54,21 @@ public class RedissonProperties {
         private Boolean enable = false;
 
         /**
+         * redis地址
+         */
+        private String address;
+
+        /**
+         * db
+         */
+        private Integer database;
+
+        /**
+         * 密码
+         */
+        private String password;
+
+        /**
          * 客户端名称
          */
         private String clientName;
@@ -61,27 +76,27 @@ public class RedissonProperties {
         /**
          * 最小空闲连接数
          */
-        private int connectionMinimumIdleSize;
+        private Integer connectionMinimumIdleSize;
 
         /**
          * 连接池大小
          */
-        private int connectionPoolSize;
+        private Integer connectionPoolSize;
 
         /**
          * 连接空闲超时，单位：毫秒
          */
-        private int idleConnectionTimeout;
+        private Integer idleConnectionTimeout;
 
         /**
          * 命令等待超时，单位：毫秒
          */
-        private int timeout;
+        private Integer timeout;
 
         /**
          * 发布和订阅连接池大小
          */
-        private int subscriptionConnectionPoolSize;
+        private Integer subscriptionConnectionPoolSize;
 
     }
 
@@ -103,7 +118,7 @@ public class RedissonProperties {
         /**
          * db
          */
-        private int database = 0;
+        private Integer database = 0;
 
         /**
          * 密码
@@ -118,37 +133,37 @@ public class RedissonProperties {
         /**
          * master最小空闲连接数
          */
-        private int masterConnectionMinimumIdleSize;
+        private Integer masterConnectionMinimumIdleSize;
 
         /**
          * master连接池大小
          */
-        private int masterConnectionPoolSize;
+        private Integer masterConnectionPoolSize;
 
         /**
          * slave最小空闲连接数
          */
-        private int slaveConnectionMinimumIdleSize;
+        private Integer slaveConnectionMinimumIdleSize;
 
         /**
          * slave连接池大小
          */
-        private int slaveConnectionPoolSize;
+        private Integer slaveConnectionPoolSize;
 
         /**
          * 连接空闲超时，单位：毫秒
          */
-        private int idleConnectionTimeout;
+        private Integer idleConnectionTimeout;
 
         /**
          * 命令等待超时，单位：毫秒
          */
-        private int timeout;
+        private Integer timeout;
 
         /**
          * 发布和订阅连接池大小
          */
-        private int subscriptionConnectionPoolSize;
+        private Integer subscriptionConnectionPoolSize;
 
         /**
          * 读取模式
@@ -171,7 +186,7 @@ public class RedissonProperties {
         /**
          * db
          */
-        private int database = 0;
+        private Integer database = 0;
 
         /**
          * 密码
@@ -186,37 +201,37 @@ public class RedissonProperties {
         /**
          * master最小空闲连接数
          */
-        private int masterConnectionMinimumIdleSize;
+        private Integer masterConnectionMinimumIdleSize;
 
         /**
          * master连接池大小
          */
-        private int masterConnectionPoolSize;
+        private Integer masterConnectionPoolSize;
 
         /**
          * slave最小空闲连接数
          */
-        private int slaveConnectionMinimumIdleSize;
+        private Integer slaveConnectionMinimumIdleSize;
 
         /**
          * slave连接池大小
          */
-        private int slaveConnectionPoolSize;
+        private Integer slaveConnectionPoolSize;
 
         /**
          * 连接空闲超时，单位：毫秒
          */
-        private int idleConnectionTimeout;
+        private Integer idleConnectionTimeout;
 
         /**
          * 命令等待超时，单位：毫秒
          */
-        private int timeout;
+        private Integer timeout;
 
         /**
          * 发布和订阅连接池大小
          */
-        private int subscriptionConnectionPoolSize;
+        private Integer subscriptionConnectionPoolSize;
 
         /**
          * 读取模式

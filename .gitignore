@@ -39,3 +39,7 @@ out/
 /deploy/rocketmq/data/**
 /deploy/rocketmq/broker1/logs
 /deploy/rocketmq/broker1/store
+
+
+logs/**
+mysql_data/**

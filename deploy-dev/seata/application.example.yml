@@ -1,35 +1,47 @@
-#  Copyright 1999-2019 Seata.io Group.
 #
-#  Licensed under the Apache License, Version 2.0 (the "License");
-#  you may not use this file except in compliance with the License.
-#  You may obtain a copy of the License at
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
 #
-#  http://www.apache.org/licenses/LICENSE-2.0
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
-#  Unless required by applicable law or agreed to in writing, software
-#  distributed under the License is distributed on an "AS IS" BASIS,
-#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#  See the License for the specific language governing permissions and
-#  limitations under the License.
-
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
 server:
-  port: 7091
-
+  port: 8091
 spring:
   application:
     name: seata-server
-
+  main:
+    web-application-type: none
 logging:
   config: classpath:logback-spring.xml
   file:
     path: ${log.home:${user.home}/logs/seata}
   extend:
     logstash-appender:
+      # off by default
+      enabled: false
       destination: 127.0.0.1:4560
     kafka-appender:
+      # off by default
+      enabled: false
       bootstrap-servers: 127.0.0.1:9092
       topic: logback_to_logstash
-
+      producer:
+        acks: 0
+        linger-ms: 1000
+        max-block-ms: 0
+    metric-appender:
+      # off by default
+      enabled: false
 seata:
   config:
     # support: nacos 、 consul 、 apollo 、 zk  、 etcd3
@@ -38,12 +50,15 @@ seata:
       server-addr: 127.0.0.1:8848
       namespace:
       group: SEATA_GROUP
+      context-path:
+      ##1.The following configuration is for the open source version of Nacos
       username:
       password:
-      context-path:
-      ##if use MSE Nacos with auth, mutex with username/password attribute
+      ##2.The following configuration is for the MSE Nacos on aliyun
       #access-key:
       #secret-key:
+      ##3.The following configuration is used to deploy on Aliyun ECS or ACK without authentication
+      #ram-role-name:
       data-id: seataServer.properties
     consul:
       server-addr: 127.0.0.1:8500
@@ -67,21 +82,35 @@ seata:
       server-addr: http://localhost:2379
       key: seata.properties
   registry:
-    # support: nacos 、 eureka 、 redis 、 zk  、 consul 、 etcd3 、 sofa
+    # support: nacos 、 eureka 、 redis 、 zk  、 consul 、 etcd3 、 sofa 、 seata
     type: file
     preferred-networks: 30.240.*
+    metadata:
+      weight: 100
+    seata:
+      server-addr: 127.0.0.1:8081
+      cluster: default
+      namespace: public
+      heartbeat-period: 5000
+      metadata-max-age-ms: 30000
+      username: seata
+      password: seata
+      tokenValidityInMilliseconds: 1740000
     nacos:
       application: seata-server
       server-addr: 127.0.0.1:8848
       group: SEATA_GROUP
       namespace:
       cluster: default
+      context-path:
+      ##1.The following configuration is for the open source version of Nacos
       username:
       password:
-      context-path:
-      ##if use MSE Nacos with auth, mutex with username/password attribute
+      ##2.The following configuration is for the MSE Nacos on aliyun
       #access-key:
       #secret-key:
+      ##3.The following configuration is used to deploy on Aliyun ECS or ACK without authentication
+      #ram-role-name:
     eureka:
       service-url: http://localhost:8761/eureka
       application: default
@@ -116,19 +145,23 @@ seata:
       address-wait-time: 3000
 
   server:
-    service-port: 8091 #If not configured, the default is '${server.port} + 1000'
+    service-port: 8091 # If not configured, the default is '${server.port}'
     max-commit-retry-timeout: -1
     max-rollback-retry-timeout: -1
-    rollback-retry-timeout-unlock-enable: false
+    rollback-failed-unlock-enable: false
     enable-check-auth: true
     enable-parallel-request-handle: true
-    retry-dead-threshold: 130000
+    enable-parallel-handle-branch: false
+    retry-dead-threshold: 70000
     xaer-nota-retry-timeout: 60000
     enableParallelRequestHandle: true
+    applicationDataLimitCheck: true
+    applicationDataLimit: 64000
     recovery:
       committing-retry-period: 1000
       async-committing-retry-period: 1000
       rollbacking-retry-period: 1000
+      end-status-retry-period: 1000
       timeout-retry-period: 1000
     undo:
       log-save-days: 7
@@ -136,8 +169,17 @@ seata:
     session:
       branch-async-queue-size: 5000 #branch async remove queue size
       enable-branch-async-remove: false #enable to asynchronous remove branchSession
+    ratelimit:
+      enable: false
+      bucketTokenNumPerSecond: 999999
+      bucketTokenMaxNum: 999999
+      bucketTokenInitialNum: 999999
+    http:
+      filter:
+        xss:
+          keywords: ["<script>", "</script>", "javascript:", "vbscript:"]
   store:
-    # support: file 、 db 、 redis
+    # support: file 、 db 、 redis 、 raft
     mode: file
     session:
       mode: file
@@ -163,10 +205,29 @@ seata:
       branch-table: branch_table
       lock-table: lock_table
       distributed-lock-table: distributed_lock
+      vgroup-table: vgroup_table
       query-limit: 1000
       max-wait: 5000
+      druid:
+        time-between-eviction-runs-millis: 120000
+        min-evictable-idle-time-millis: 300000
+        test-while-idle: true
+        test-on-borrow: false
+        keep-alive: false
+      hikari:
+        idle-timeout: 600000
+        keepalive-time: 120000
+        max-lifetime: 1800000
+        validation-timeout: 5000
+      dbcp:
+        time-between-eviction-runs-millis: 120000
+        min-evictable-idle-time-millis: 300000
+        test-while-idle: true
+        test-on-borrow: false
     redis:
       mode: single
+      # support: lua 、 pipeline
+      type: lua
       database: 0
       min-conn: 10
       max-conn: 100
@@ -179,6 +240,7 @@ seata:
       sentinel:
         master-name:
         sentinel-hosts:
+        sentinel-password:
   metrics:
     enabled: false
     registry-type: compact
@@ -187,6 +249,11 @@ seata:
   transport:
     rpc-tc-request-timeout: 15000
     enable-tc-server-batch-send-response: false
+    # HTTP thread pool
+    min-http-pool-size: 10
+    max-http-pool-size: 100
+    max-http-task-queue-size: 1000
+    http-pool-keep-alive-time: 500
     shutdown:
       wait: 3
     thread-factory:

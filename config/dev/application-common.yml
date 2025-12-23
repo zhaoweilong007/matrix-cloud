@@ -89,9 +89,9 @@ mybatis-plus-join:
 spring:
   redis:
     redisson:
-      # 使用主从配置
+      # 使用单机配置
       config: |
-        masterSlaveServersConfig:
+        singleServerConfig:
 
 
 redisson:
@@ -99,6 +99,13 @@ redisson:
   threads: 4
   # Netty线程池数量
   nettyThreads: 8
+  # 单机配置
+  singleServerConfig:
+    enable: true
+    address: ${REDIS_MASTER_ADDR:}
+    password: ${REDIS_PASSWORD:}
+    database: ${REDIS_DATABASE:}
+  # 主从配置
   masterSlaveServersConfig:
     enable: true
     database: ${REDIS_DATABASE:}
