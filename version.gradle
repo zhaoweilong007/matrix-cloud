@@ -73,7 +73,7 @@ ext {
     wxVersion = '4.5.0'
 
     /*其他依赖版本*/
-    jclOverSlf4jVersion = '2.0.9'
+    jclOverSlf4jVersion = '2.0.17'
     javaJwtVersion = '3.8.3'
     jwksRsaVersion = '0.12.0'
     pinyin4jVersion = '2.5.0'
