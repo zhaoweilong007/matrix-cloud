@@ -25,10 +25,10 @@ plugins {
 
 sonar {
     properties {
-        property "sonar.projectKey", "xxxxxxx"
-        property "sonar.projectName", "matrix-cloud"
-        property "sonar.host.url", "http://192.168.31.19:9000"
-        property "sonar.token", "xxxxxx"
+        property "sonar.projectKey", findProperty('sonar.projectKey') ?: ''
+        property "sonar.projectName", findProperty('sonar.projectName') ?: 'matrix-cloud'
+        property "sonar.host.url", findProperty('sonar.host.url') ?: 'http://localhost:9000'
+        property "sonar.token", findProperty('sonar.token') ?: ''
     }
 }
 

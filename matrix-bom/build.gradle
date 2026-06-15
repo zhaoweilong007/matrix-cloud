@@ -11,7 +11,7 @@ dependencies {
         /**
          * springboot
          */
-        api "io.seata:seata-spring-boot-starter:$seataVerson"
+        api "io.seata:seata-spring-boot-starter:$seataVersion"
         api "com.baomidou:mybatis-plus-spring-boot3-starter:$mybatisPlusVersion"
         api "org.dromara.easy-es:easy-es-boot-starter:$esBootVersion"
         api "org.redisson:redisson-spring-boot-starter:$redissonVersion"
@@ -19,7 +19,7 @@ dependencies {
         api "com.alibaba:druid-spring-boot-3-starter:$druidVersion"
         api "cn.dev33:sa-token-spring-boot3-starter:$saTokenVersion"
         api "cn.dev33:sa-token-reactor-spring-boot3-starter:$saTokenVersion"
-        api "com.github.yulichang:mybatis-plus-join-boot-starter:$mybaitsPlusJoinVersion"
+        api "com.github.yulichang:mybatis-plus-join-boot-starter:$mybatisPlusJoinVersion"
         api "cn.zhxu:bean-searcher-boot-starter:$beanSearchVersion"
         api "de.codecentric:spring-boot-admin-starter-server:$adminServerVersion"
         api "com.github.xiaoymin:knife4j-openapi3-jakarta-spring-boot-starter:$knife4jVersion"
@@ -53,15 +53,15 @@ dependencies {
         api "com.alibaba.fastjson2:fastjson2:$fastjson2Version"
         api "org.apache.commons:commons-pool2:$commonspoolVersion"
         api "com.github.ben-manes.caffeine:caffeine:$caffeineVersion"
-        api "com.alibaba:transmittable-thread-local:$transmittableVerison"
+        api "com.alibaba:transmittable-thread-local:$transmittableVersion"
         api "org.apache.commons:commons-lang3:$commonsLang3Version"
         api "org.apache.commons:commons-collections4:$commonsCollections4Version"
         api "com.alibaba:easyexcel:$easyexcelVersion"
-        api "eu.bitwalker:UserAgentUtils:$UserAgentVerison"
+        api "eu.bitwalker:UserAgentUtils:$userAgentVersion"
         api "org.apache.httpcomponents.client5:httpclient5:$httpClientVersion"
 
-        api "io.swagger.core.v3:swagger-annotations-jakarta:$swaggerVerison"
-        api "io.swagger.core.v3:swagger-models-jakarta:$swaggerVerison"
+        api "io.swagger.core.v3:swagger-annotations-jakarta:$swaggerVersion"
+        api "io.swagger.core.v3:swagger-models-jakarta:$swaggerVersion"
         api "com.baomidou:mybatis-plus-extension:$mybatisPlusVersion"
         api "com.baomidou:mybatis-plus-generator:$mybatisPlusVersion"
         api "com.baomidou:mybatis-plus-annotation:$mybatisPlusVersion"
@@ -69,7 +69,7 @@ dependencies {
         api "com.baomidou:mybatis-plus-jsqlparser:$mybatisPlusVersion"
 
 
-        api "io.vavr:vavr:$vavrVerison"
+        api "io.vavr:vavr:$vavrVersion"
         api "org.jooq:jool:$joolVersion"
         api "org.joda:joda-money:$jodaMoneyVersion"
         api "jakarta.servlet:jakarta.servlet-api:$servletVersion"
@@ -81,6 +81,14 @@ dependencies {
          * 第三方sdk
          */
         api "com.aliyun.openservices:ons-client:$onsClientVersion"
-        api "com.github.binarywang:wx-java-miniapp-spring-boot-starter:$WxVersion"
+        api "com.github.binarywang:wx-java-miniapp-spring-boot-starter:$wxVersion"
+
+        /**
+         * 其他依赖版本
+         */
+        api "org.slf4j:jcl-over-slf4j:$jclOverSlf4jVersion"
+        api "com.auth0:java-jwt:$javaJwtVersion"
+        api "com.auth0:jwks-rsa:$jwksRsaVersion"
+        api "com.belerweb:pinyin4j:$pinyin4jVersion"
     }
 }
