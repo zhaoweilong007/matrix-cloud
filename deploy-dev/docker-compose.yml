@@ -139,11 +139,11 @@ services:
     cpus: 0.5
     # 健康检查
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8080/xxl-job-admin" ]
+      test: [ "CMD-SHELL", "find /proc -name 'cmdline' -exec cat {} \\; 2>/dev/null | grep -q 'java'" ]
       interval: 10s
       timeout: 10s
       retries: 5
-      start_period: 30s
+      start_period: 60s
 
 
   # 初始化 Seata 配置到 Nacos
@@ -176,12 +176,14 @@ services:
     container_name: seata-server
     env_file:
       - ./env/seata.env
+    environment:
+      LOADER_PATH: /seata-server/ext-lib
     ports:
       - "8091:8091"
       - "7091:7091"
     volumes:
       - ./seata/application.yml:/seata-server/resources/application.yml
-      - ./seata/jdbc:/seata-server/libs
+      - ./seata/jdbc:/seata-server/ext-lib
     restart: always
     privileged: true
     depends_on:
@@ -197,7 +199,7 @@ services:
     cpus: 0.5
     # 健康检查
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:7091/health" ]
+      test: [ "CMD", "curl", "-f", "http://localhost:8091/health" ]
       interval: 10s
       timeout: 10s
       retries: 5
