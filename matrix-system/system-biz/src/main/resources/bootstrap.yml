@@ -20,4 +20,4 @@ logging:
     com.matrix.mapper: debug
     com.matrix.api.**: debug
   file:
-    path: /var/logs
+    path: ${APP_LOG_PATH:/tmp/matrix-logs}

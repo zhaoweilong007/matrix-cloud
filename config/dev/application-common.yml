@@ -222,7 +222,7 @@ xxl:
     executor:
       app-name: ${spring.application.name}
       log-retention-days: 30
-      log-path: ${APP_LOG_PATH:/var/logs}/${spring.application.name}/xxlJob
+      log-path: ${APP_LOG_PATH:/tmp/matrix-logs}/${spring.application.name}/xxlJob
 
 #分布式事务配置
 seata:
