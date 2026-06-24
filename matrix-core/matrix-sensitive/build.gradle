@@ -2,6 +2,4 @@ dependencies {
     api(project(":matrix-core:matrix-auto"))
     api(project(':matrix-core:matrix-feign'))
     api 'com.netease.yidun:yidun-java-sdk:1.1.11'
-    compileOnly 'net.dreamlu:mica-auto'
-    annotationProcessor "net.dreamlu:mica-auto"
 }

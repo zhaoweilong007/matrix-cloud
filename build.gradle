@@ -1,27 +1,26 @@
-buildscript {
-    wrapper {
-        gradleVersion = GRADLE_VERSION
-    }
-    ext {
-        //https://plugins.gradle.org/plugin/org.springframework.boot
-        springBootVersion = '3.5.7'
-        commons = (subprojects - project(":matrix-bom"))
-    }
-}
-
-
 plugins {
     id 'base'
-    id "org.sonarqube" version "4.2.1.3168"
     id 'java-platform'
-    //https://plugins.gradle.org/plugin/org.springframework.boot
-    id "org.springframework.boot" version "${springBootVersion}" apply false
-    //https://plugins.gradle.org/plugin/io.spring.dependency-management
-    id "io.spring.dependency-management" version "1.1.7" apply false
-    //https://plugins.gradle.org/plugin/com.google.cloud.tools.jib
-    id "com.google.cloud.tools.jib" version "3.5.2" apply false
+    id 'org.sonarqube'
+    id 'org.springframework.boot' apply false
+    id 'io.spring.dependency-management' apply false
+    id 'com.google.cloud.tools.jib' apply false
 }
 
+// 应用模块（产出可启动 jar 和 Docker 镜像）
+ext.appModules = [
+        project(':matrix-admin'),
+        project(':matrix-gateway'),
+        project(':matrix-resource:resource-biz'),
+]
+def appModules = ext.appModules
+
+// 所有 Java 模块（排除 BOM）
+def commons = subprojects - project(':matrix-bom')
+
+wrapper {
+    gradleVersion = GRADLE_VERSION
+}
 
 sonar {
     properties {
@@ -38,27 +37,25 @@ allprojects {
 
     repositories {
         mavenLocal()
-        //华为云
         maven { url 'https://repo.huaweicloud.com/repository/maven/' }
-        //阿里云
         maven { url 'https://maven.aliyun.com/repository/central' }
-        maven { url "https://maven.aliyun.com/repository/public" }
-        maven { url "https://maven.aliyun.com/repository/gradle-plugin" }
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
         mavenCentral()
     }
 }
 
-
+// ============================================================
+// 通用配置：所有非 BOM 模块共享
+// ============================================================
 configure(commons) {
     apply plugin: 'idea'
     apply plugin: 'java'
-    apply plugin: 'org.sonarqube'
     apply plugin: 'java-library'
-    apply plugin: 'org.springframework.boot'
+    apply plugin: 'org.sonarqube'
     apply plugin: 'io.spring.dependency-management'
     apply from: "${rootProject.projectDir}/version.gradle"
 
-    // 替换 sourceCompatibility 和 targetCompatibility 为 java toolchain 配置
     java {
         toolchain {
             languageVersion = JavaLanguageVersion.of(17)
@@ -66,7 +63,13 @@ configure(commons) {
     }
 
     compileJava {
-        options.encoding = "UTF-8"
+        options.encoding = 'UTF-8'
+        options.compilerArgs.add '-parameters'
+    }
+
+    compileTestJava {
+        options.encoding = 'UTF-8'
+        options.compilerArgs.add '-parameters'
     }
 
     dependencyManagement {
@@ -78,21 +81,23 @@ configure(commons) {
     }
 
     dependencies {
-        implementation platform(project(":matrix-bom"))
+        implementation platform(project(':matrix-bom'))
 
-        annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
-        compileOnly "org.springframework.boot:spring-boot-configuration-processor"
+        // Lombok：所有模块通用
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+        testCompileOnly 'org.projectlombok:lombok'
+        testAnnotationProcessor 'org.projectlombok:lombok'
 
-        compileOnly "org.projectlombok:lombok"
-        testCompileOnly "org.projectlombok:lombok"
-
-        annotationProcessor "org.projectlombok:lombok"
-        annotationProcessor "org.projectlombok:lombok-mapstruct-binding:0.2.0"
-        testAnnotationProcessor "org.projectlombok:lombok"
-
+        // MapStruct Plus：所有模块通用
         implementation "io.github.linpeilie:mapstruct-plus-spring-boot-starter:${mapstructPlusVersion}"
         annotationProcessor "io.github.linpeilie:mapstruct-plus-processor:${mapstructPlusVersion}"
         testAnnotationProcessor "io.github.linpeilie:mapstruct-plus-processor:${mapstructPlusVersion}"
+
+        // mica-auto：自动配置注册器，所有模块统一应用
+        compileOnly 'net.dreamlu:mica-auto'
+        annotationProcessor 'net.dreamlu:mica-auto'
     }
 
     test {
@@ -100,17 +105,31 @@ configure(commons) {
         useJUnitPlatform()
     }
 
-    bootJar {
-        enabled = false
-    }
-
-    compileJava.options.compilerArgs.add '-parameters'
-    compileTestJava.options.compilerArgs.add '-parameters'
     compileJava.dependsOn(processResources)
 }
 
+// ============================================================
+// 库模块配置：禁用 bootJar，启用普通 jar
+// ============================================================
+configure(commons - appModules) {
+    tasks.matching { it.name == 'bootJar' }.configureEach { enabled = false }
+    jar { enabled = true }
+}
+
+// ============================================================
+// 应用模块配置：启用 bootJar、Spring Boot 插件
+// ============================================================
+configure(appModules) {
+    apply plugin: 'org.springframework.boot'
+
+    springBoot {
+        buildInfo()
+    }
+    bootJar { enabled = true }
+    jar { enabled = false }
+}
+
+// ============================================================
+// Jib 镜像构建配置
+// ============================================================
 apply from: "${rootProject.projectDir}/deploy.gradle"
-
-
-
-

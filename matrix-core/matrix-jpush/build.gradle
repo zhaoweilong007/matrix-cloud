@@ -2,6 +2,4 @@ dependencies {
     api(project(":matrix-core:matrix-auto"))
     api 'cn.jpush.api:jpush-client:3.5.5'
     api 'cn.jpush.api:jiguang-common:1.1.4'
-    compileOnly 'net.dreamlu:mica-auto'
-    annotationProcessor "net.dreamlu:mica-auto"
 }

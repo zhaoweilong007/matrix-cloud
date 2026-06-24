@@ -1,7 +1,20 @@
+pluginManagement {
+    repositories {
+        maven { url 'https://repo.huaweicloud.com/repository/maven/' }
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+        gradlePluginPortal()
+    }
+    plugins {
+        id 'org.springframework.boot' version '3.5.7' apply false
+        id 'io.spring.dependency-management' version '1.1.7' apply false
+        id 'com.google.cloud.tools.jib' version '3.5.2' apply false
+        id 'org.sonarqube' version '4.2.1.3168'
+    }
+}
+
 rootProject.name = 'matrix-cloud'
 
 include 'matrix-bom'
-include 'matrix-core'
 include 'matrix-core:matrix-common'
 include 'matrix-core:matrix-auto'
 include 'matrix-core:matrix-validator'
@@ -34,12 +47,10 @@ include 'matrix-core:matrix-strategy'
 include 'matrix-core:matrix-log'
 include 'matrix-core:matrix-data-permission'
 
-
 include 'matrix-admin'
 include 'matrix-gateway'
-//include 'matrix-system'
-//include 'matrix-system:system-api'
-//include 'matrix-system:system-biz'
-include 'matrix-resource'
 include 'matrix-resource:resource-api'
 include 'matrix-resource:resource-biz'
+
+//include 'matrix-system:system-api'
+//include 'matrix-system:system-biz'

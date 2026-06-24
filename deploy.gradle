@@ -1,14 +1,9 @@
-def microservices = [
-        project(':matrix-admin'),
-        project(':matrix-gateway'),
-//        project(':matrix-system:system-biz'),
-//        project(':matrix-resource:resource-biz')
-]
+// 应用模块（产出 Docker 镜像）- 从根 build.gradle 中获取
+def microservices = rootProject.ext.appModules
 
 switch (PROFILE) {
     case 'dev':
         ext {
-            //测试环境镜像仓库配置
             registryUrl = ''
             registryNamespace = ''
             registryUsername = ''
@@ -18,21 +13,19 @@ switch (PROFILE) {
         break
     case 'prod':
         ext {
-            //生产环境镜像仓库配置
             registryUrl = ''
             registryNamespace = ''
             registryUsername = ''
-            registryPassword = ""
+            registryPassword = ''
             baseImage = 'amazoncorretto:17.0.8'
         }
         break
 }
 
 println "build services: ${microservices.name}"
-
 println "build profile: $PROFILE"
 
-File agentFile = file "./skywalking-agent"
+File agentFile = file './skywalking-agent'
 
 configure(microservices) {
     apply plugin: 'com.google.cloud.tools.jib'
@@ -40,17 +33,14 @@ configure(microservices) {
         from {
             image = "${baseImage}"
         }
-        //推送的目标镜像仓库地址
         to {
             image = "${registryUrl}/${registryNamespace}/${project.name}:${project.version}"
-            //身份认证信息
             auth {
                 username = "${registryUsername}"
                 password = "${registryPassword}"
             }
         }
         allowInsecureRegistries = true
-        //镜像容器的配置信息
         container {
             environment = [SW_AGENT_NAME: "${project.name}".toString()]
             if (project.name == 'matrix-admin') {
@@ -58,15 +48,14 @@ configure(microservices) {
             } else {
                 jvmFlags = ['-Djava.security.egd=file:/dev/./urandom', '-Dfile.encoding=utf-8', '-javaagent:/skywalking-agent/skywalking-agent.jar']
             }
-            creationTime = "USE_CURRENT_TIMESTAMP"
+            creationTime = 'USE_CURRENT_TIMESTAMP'
             volumes = ['/skywalking/agent']
         }
 
-        //admin不增加agent探针
+        // matrix-admin 不挂 SkyWalking agent
         if (project.name == 'matrix-admin') {
             return
         }
-        //添加skyWalking agent探针
         extraDirectories {
             paths {
                 path {

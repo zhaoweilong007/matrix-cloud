@@ -4,7 +4,5 @@ dependencies {
 
     compileOnly 'org.aspectj:aspectjweaver'
 
-    compileOnly 'net.dreamlu:mica-auto'
-    annotationProcessor "net.dreamlu:mica-auto"
     testCompileOnly(project(":matrix-core:matrix-test"))
 }

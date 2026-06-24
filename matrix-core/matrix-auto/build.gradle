@@ -1,11 +1,11 @@
 dependencies {
-    api(project(":matrix-core:matrix-common"))
+    api project(':matrix-core:matrix-common')
     api 'org.springframework.cloud:spring-cloud-starter'
-    api('org.springframework.boot:spring-boot-configuration-processor')
-    api('org.springframework.boot:spring-boot-autoconfigure')
-    compileOnly 'net.dreamlu:mica-auto'
-    annotationProcessor "net.dreamlu:mica-auto"
-    annotationProcessor('org.springframework.boot:spring-boot-configuration-processor')
-    compileOnly 'com.aliyun.openservices:ons-client'
+    api 'org.springframework.boot:spring-boot-autoconfigure'
 
+    // matrix-auto 是配置属性集中地，需要 configuration-processor
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    compileOnly 'org.springframework.boot:spring-boot-configuration-processor'
+
+    compileOnly 'com.aliyun.openservices:ons-client'
 }

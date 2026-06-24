@@ -5,6 +5,4 @@ dependencies {
     api 'com.fhs-opensource:easy-trans-mybatis-plus-extend'
     api('cn.dev33:sa-token-core')
 
-    compileOnly 'net.dreamlu:mica-auto'
-    annotationProcessor "net.dreamlu:mica-auto"
 }

@@ -2,6 +2,4 @@ dependencies {
     api project(':matrix-core:matrix-auto')
     api('com.alibaba.cloud:spring-cloud-starter-alibaba-seata')
     api 'com.caucho:hessian:4.0.66'
-    compileOnly 'net.dreamlu:mica-auto'
-    annotationProcessor "net.dreamlu:mica-auto"
 }
