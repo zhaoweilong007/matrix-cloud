@@ -31,13 +31,13 @@ cd app && docker-compose up -d
 
 ## docker-compose.yml — 基础中间件
 
-包含：mysql, redis, nacos, sentinel, seata-server + seata-config-init, xxl-job-admin
+包含：mysql, redis, nacos, sentinel, seata-naming-server + seata-server, xxl-job-admin
 
 > 具体版本查看 [.env 文件](./.env)，可自行更改，注意不同版本的配置可能有所不同
 
 ### mysql
 
-MySQL 8.0.30，使用官方镜像 + 初始化脚本挂载方式。
+MySQL 8.0.46，使用官方镜像 + 初始化脚本挂载方式。
 
 [mysql-init/](./mysql-init/) 目录下的 SQL 文件会自动在首次启动时执行：
 
@@ -59,7 +59,7 @@ MySQL 8.0.30，使用官方镜像 + 初始化脚本挂载方式。
 
 ### nacos
 
-- 版本：v3.1.1
+- 版本：v3.2.2
 - UI 地址：http://localhost:8848/nacos
 - 默认账号：nacos/nacos
 
@@ -79,30 +79,31 @@ Nacos 初始化由 mysql-init/nacos.sql 自动完成，修改 [env/nacos-standlo
 
 > gateway 集成 sentinel 时，需添加 JVM 参数 `-Dcsp.sentinel.app.type=1`
 
-### seata-server
+### seata-naming-server + seata-server
 
-- 版本：2.5.0
-- UI 地址：http://localhost:7091
+- 版本：seata-server 2.6.0 + namingserver 2.6.0(jdk25)
+- 控制台 UI 地址：http://localhost:8081（集成在 namingserver）
 - 默认账号密码：seata/seata
+- seata-server RPC 端口：8091
 
-使用 nacos 配置/注册中心，db 存储模式，默认 AT 模式。
+> **为何引入 namingserver**：Seata 2.6.0 把控制台从 server 移出至独立 NamingServer（control-plane），且 seata-server 捆绑的 nacos-client 1.4.6 使用 v1 naming API，而 Nacos 3.x 已移除该 API（返回 501），导致 seata-server 无法注册到 nacos。故改用 Seata 自研 namingserver 作为注册中心，不再依赖 nacos naming。
 
-`seata-config-init` 容器会自动将 [seata/seataServer.properties](./seata/seataServer.properties) 推送到 nacos。
+seata-server 使用 namingserver 注册中心、file 配置（server 侧配置全部内联在 application.yml）、db 存储模式，默认 AT 模式。
 
 配置文件映射：
-- [seata/application.yml](./seata/application.yml) — 服务端配置
-- [seata/seataServer.properties](./seata/seataServer.properties) — Nacos 配置数据
+- [seata/application.yml](./seata/application.yml) — 服务端配置（registry.type=seata，config.type=file）
+- [seata/seataServer.properties](./seata/seataServer.properties) — 客户端共享配置（由 nacos-cli 推送到 nacos，供应用端读取）
 - [seata/logback-spring.xml](./seata/logback-spring.xml) — 日志配置
 
 MySQL 自动初始化 [mysql-init/seata.sql](./mysql-init/seata.sql) 创建 seata 数据库和表。
 
-> 由于使用 docker 部署，seata 注册到 nacos 的 IP 为容器 IP，通过 `SEATA_IP` 环境变量指定实际 IP
+> 由于使用 docker 部署，seata-server 注册到 namingserver 的 IP 为容器 IP，通过 `SEATA_IP` 环境变量指定实际 IP。
 
-**客户端配置：** seata 分组默认以 `spring.application.name` + `-seata-service-group` 拼接。需在 nacos 增加 dataid 为 `{服务名}-seata-service-group`，group 为 `SEATA_GROUP`，值为 seata-server 集群名称（默认 `default`）。
+**客户端配置：** 应用端（matrix-seata）需将 `seata.registry.type` 由 `nacos` 改为 `seata`，指向 namingserver（`server-addr: seata-naming-server:8081`，账号 seata/seata）；`seata.config.type` 保持 `nacos` 读取 seataServer.properties。seata 分组默认以 `spring.application.name` + `-group` 拼接。
 
 ### xxl-job-admin
 
-- 版本：3.3.1
+- 版本：3.4.2
 - UI 地址：http://localhost:8090/xxl-job-admin
 - 默认账号：admin/123456
 
@@ -118,7 +119,7 @@ MySQL 自动初始化 [mysql-init/seata.sql](./mysql-init/seata.sql) 创建 seat
 
 ### elasticsearch
 
-- 版本：7.17.10
+- 版本：8.19.17
 - 单节点模式，安全认证已启用
 
 setup 容器会自动创建用户（logstash_internal, kibana_system, metricbeat_internal 等）。
@@ -129,7 +130,7 @@ setup 容器会自动创建用户（logstash_internal, kibana_system, metricbeat
 
 ### SkyWalking
 
-- APM 版本：9.6.0
+- APM 版本：10.4.0（OAP/UI）+ Java Agent 9.6.0
 - UI 地址：http://localhost:8080
 - Java Agent：项目根目录 skywalking-agent/，Jib 构建时自动注入镜像
 
@@ -191,7 +192,7 @@ java -javaagent:/path/to/skywalking-agent/skywalking-agent.jar -jar yourApp.jar
 
 ### rocketmq
 
-- 版本：5.3.4
+- 版本：5.5.0
 
 在 docker-compose.yml 中已注释，取消注释即可启用。配置：[rocketmq/broker1/conf/broker.conf](./rocketmq/broker1/conf/broker.conf)
 
@@ -218,19 +219,3 @@ java -javaagent:/path/to/skywalking-agent/skywalking-agent.jar -jar yourApp.jar
 - `/actuator/gateway/refresh` POST — 路由刷新
 - `/actuator/gateway/globalfilters` GET — 全局过滤器列表
 - `/actuator/gateway/routefilters` GET — 路由过滤器工厂列表
-
----
-
-## 截图展示
-
-- nacos
-  ![nacos.png](img/nacos.png)
-
-- sentinel
-  ![sentinel.png](img/sentinel.png)
-
-- seata
-  ![seata.png](img/seata.png)
-
-- prometheus
-  ![prometheus.png](img/prometheus.png)

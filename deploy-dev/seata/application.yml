@@ -38,34 +38,21 @@ console:
 
 seata:
   config:
-    # support: nacos, consul, apollo, zk, etcd3
-    type: nacos
-    nacos:
-      server-addr: nacos:8848
-      namespace: public
-      group: SEATA_GROUP
-      username: nacos
-      password: nacos
-      context-path:
-      ##if use MSE Nacos with auth, mutex with username/password attribute
-      #access-key:
-      #secret-key:
-      data-id: seataServer.properties
+    # support: nacos, consul, apollo, zk, etcd3, file
+    # Nacos 3.x 移除 v1 config API，seata-server 捆绑的 nacos-client 1.4.6 无法读取，改用 file(本 application.yml 已含全部 server 配置)
+    type: file
   registry:
-    # support: nacos, eureka, redis, zk, consul, etcd3, sofa
-    type: nacos
-    nacos:
-      application: seata-server
-      server-addr: nacos:8848
-      group: SEATA_GROUP
-      namespace: public
+    # support: nacos, eureka, redis, zk, consul, etcd3, sofa, seata
+    # 改用 Seata 自研 namingserver 注册(Nacos 3.x 移除 v1 naming API，旧 nacos-client 无法注册)
+    type: seata
+    seata:
+      server-addr: seata-naming-server:8081
       cluster: default
-      username: nacos
-      password: nacos
-      context-path:
-      ##if use MSE Nacos with auth, mutex with username/password attribute
-      #access-key:
-      #secret-key:
+      namespace: public
+      heartbeat-period: 5000
+      metadata-max-age-ms: 30000
+      username: seata
+      password: seata
 
   server:
     service-port: 8091 # If not configured, the default is '${server.port}'
@@ -118,7 +105,7 @@ seata:
     db:
       datasource: druid
       db-type: mysql
-      driver-class-name: com.mysql.jdbc.Driver
+      driver-class-name: com.mysql.cj.jdbc.Driver
       url: jdbc:mysql://mysql:3306/seata?allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai&rewriteBatchedStatements=true
       user: root
       password: matrix

@@ -11,13 +11,13 @@ seata:
       password: nacos
       data-id: seataServer.properties
   registry:
-    type: nacos
-    nacos:
-      application: seata-server
-      server-addr: ${spring.cloud.nacos.server-addr}
-      group: SEATA_GROUP
-      namespace: ${spring.profiles.active}
-      username: nacos
-      password: nacos
+    # Seata 2.6.0 起 server 改用自研 namingserver 注册(Nacos 3.x 移除 v1 naming API，旧 nacos-client 无法注册)
+    type: seata
+    seata:
+      server-addr: ${seata.namingserver-addr:seata-naming-server:8081}
+      cluster: default
+      namespace: public
+      username: seata
+      password: seata
 
 

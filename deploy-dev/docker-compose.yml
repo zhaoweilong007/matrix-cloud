@@ -43,7 +43,7 @@ services:
       - ./env/mysql.env
     volumes:
       - ../mysql_data:/var/lib/mysql
-      #https://raw.githubusercontent.com/alibaba/nacos/3.1.1/distribution/conf/mysql-schema.sql
+      #https://raw.githubusercontent.com/alibaba/nacos/3.2.2/distribution/conf/mysql-schema.sql
       #https://github.com/xuxueli/xxl-job/blob/master/doc/db/tables_xxl_job.sql
       #https://github.com/apache/incubator-seata/blob/2.x/script/server/db/mysql.sql
       - ./mysql-init:/docker-entrypoint-initdb.d/
@@ -146,30 +146,32 @@ services:
       start_period: 60s
 
 
-  # 初始化 Seata 配置到 Nacos
-  seata-config-init:
-    image: badouralix/curl-jq:latest   # 已含 curl + jq，轻量 Alpine
-    container_name: seata-config-init
-    env_file:
-      - ./env/seata.env
-    volumes:
-      - ./seata:/seata
-    entrypoint: >
-      /bin/sh -c "
-        set -e &&
-        apk add --no-cache bash &&
-        chmod +x /seata/nacos-config.sh &&
-        echo '⏳ Waiting for Nacos health...' &&
-        until curl -sf http://nacos:8848/nacos/actuator/health; do sleep 5; done &&
-        echo '🚀 Importing Seata config to Nacos v3.1.1...' &&
-        /seata/nacos-config.sh
-      "
-    restart: "no"
+  # Seata 2.6.0 NamingServer(control-plane)：独立注册中心 + 控制台 UI
+  # Seata 2.6.0 把 console 从 server 移出，且捆绑的 nacos-client 1.4.6 用 v1 naming API(已被 Nacos 3.x 移除)，
+  # 故 seata-server 改用自研 namingserver 注册，不再依赖 nacos naming。
+  seata-naming-server:
+    image: apache/seata-naming-server:${SEATA_NAMING_VERSION}
+    container_name: seata-naming-server
+    environment:
+      TZ: Asia/Shanghai
+      # namingserver 注册端点需鉴权，默认 console user 为空 → 注册返回 401。
+      # 用 Spring Boot 标准机制注入 console 用户(seata/seata)，与 seata-server registry 账号一致。
+      SPRING_APPLICATION_JSON: '{"console":{"user":{"username":"seata","password":"seata"}}}'
+    ports:
+      - "8081:8081"
+    restart: always
     networks:
       - matrix_cloud
-    depends_on:
-      nacos:
-        condition: service_healthy
+    mem_limit: 1g
+    mem_reservation: 512m
+    cpus: 0.5
+    healthcheck:
+      # jib 镜像无 curl/wget，用 bash /dev/tcp 做 TCP 探活
+      test: [ "CMD-SHELL", "bash -c '</dev/tcp/localhost/8081'" ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
 
   seata-server:
     image: apache/seata-server:${SEATA_VERSION}
@@ -178,14 +180,13 @@ services:
       - ./env/seata.env
     ports:
       - "8091:8091"
-      - "7091:7091"
     volumes:
       - ./seata/application.yml:/seata-server/resources/application.yml
       - ./seata/jdbc/mysql.jar:/seata-server/libs/mysql.jar
     restart: always
     privileged: true
     depends_on:
-      nacos:
+      seata-naming-server:
         condition: service_healthy
       mysql:
         condition: service_healthy
@@ -195,13 +196,13 @@ services:
     mem_limit: 1g
     mem_reservation: 512m
     cpus: 0.5
-    # 健康检查
+    # 健康检查：2.6.0 server 为非 web 模式(web-application-type:none)，8091 是 Netty RPC 端口，用 TCP 探活
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8091/health" ]
+      test: [ "CMD-SHELL", "bash -c '</dev/tcp/localhost/8091'" ]
       interval: 10s
       timeout: 10s
       retries: 5
-      start_period: 30s
+      start_period: 40s
 
 
 

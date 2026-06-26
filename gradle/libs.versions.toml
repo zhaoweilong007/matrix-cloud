@@ -59,7 +59,7 @@ javaJwt = "3.8.3"
 jwksRsa = "0.12.0"
 
 # === 监控 ===
-skywalking = "9.0.0"
+skywalking = "9.6.0"
 micrometer = "1.16.1"
 admin-server = "3.5.6"
 

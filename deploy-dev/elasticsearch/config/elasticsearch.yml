@@ -1,19 +1,23 @@
 ---
-## Default Elasticsearch configuration from Elasticsearch base image.
-## https://github.com/elastic/elasticsearch/blob/7.17/distribution/docker/src/docker/config/elasticsearch.yml
+## Elasticsearch 8.x configuration (single-node, dev)
+## 保持与 7.17 一致的 HTTP + basic auth 模式，显式关闭 TLS 以避免 SkyWalking OAP / setup 容器的 JKS truststore 改造。
+## https://www.elastic.co/guide/en/elasticsearch/reference/8.19/security-settings.html
 #
 cluster.name: "docker-cluster"
 discovery.type: "single-node"
 network.host: 0.0.0.0
 
 ## X-Pack settings
-## see https://www.elastic.co/guide/en/elasticsearch/reference/7.17/security-settings.html
-#
 xpack.license.self_generated.type: basic
 xpack.security.enabled: true
+# ES8 默认会自动开启安全配置(enrollment + 证书生成)，显式关闭以手动控制
+xpack.security.autoconfiguration.enabled: false
+# 保持 HTTP 明文 + basic auth(elastic / ${ELASTIC_PASSWORD})，SkyWalking/setup 无需 HTTPS
+xpack.security.http.ssl.enabled: false
+# single-node 放宽 bootstrap 检查，可禁用传输层 TLS
+xpack.security.transport.ssl.enabled: false
 
 ingest.geoip.downloader.enabled: false
 #http.cors.enabled: true
 #http.cors.allow-origin: "*"
 #http.cors.allow-headers: Authorization
-#xpack.security.transport.ssl.enabled: true

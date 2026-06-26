@@ -13,7 +13,7 @@ CREATE TABLE `xxl_job_group`
 (
     `id`           int(11)     NOT NULL AUTO_INCREMENT,
     `app_name`     varchar(64) NOT NULL COMMENT '执行器AppName',
-    `title`        varchar(12) NOT NULL COMMENT '执行器名称',
+    `title`        varchar(64) NOT NULL COMMENT '执行器名称',
     `address_type` tinyint(4)  NOT NULL DEFAULT '0' COMMENT '执行器地址类型：0=自动注册、1=手动录入',
     `address_list` text COMMENT '执行器地址列表，多地址逗号分隔',
     `update_time`  datetime             DEFAULT NULL,
@@ -23,7 +23,7 @@ CREATE TABLE `xxl_job_group`
 
 CREATE TABLE `xxl_job_registry`
 (
-    `id`             int(11)      NOT NULL AUTO_INCREMENT,
+    `id`             bigint(20)   NOT NULL AUTO_INCREMENT,
     `registry_group` varchar(50)  NOT NULL,
     `registry_key`   varchar(255) NOT NULL,
     `registry_value` varchar(255) NOT NULL,
@@ -49,7 +49,7 @@ CREATE TABLE `xxl_job_info`
     `misfire_strategy`          varchar(50)  NOT NULL DEFAULT 'DO_NOTHING' COMMENT '调度过期策略',
     `executor_route_strategy`   varchar(50)           DEFAULT NULL COMMENT '执行器路由策略',
     `executor_handler`          varchar(255)          DEFAULT NULL COMMENT '执行器任务handler',
-    `executor_param`            varchar(512)          DEFAULT NULL COMMENT '执行器任务参数',
+    `executor_param`            text                  DEFAULT NULL COMMENT '执行器任务参数',
     `executor_block_strategy`   varchar(50)           DEFAULT NULL COMMENT '阻塞处理策略',
     `executor_timeout`          int(11)      NOT NULL DEFAULT '0' COMMENT '任务执行超时时间，单位秒',
     `executor_fail_retry_count` int(11)      NOT NULL DEFAULT '0' COMMENT '失败重试次数',
@@ -87,7 +87,7 @@ CREATE TABLE `xxl_job_log`
     `job_id`                    int(11)    NOT NULL COMMENT '任务，主键ID',
     `executor_address`          varchar(255)        DEFAULT NULL COMMENT '执行器地址，本次执行的地址',
     `executor_handler`          varchar(255)        DEFAULT NULL COMMENT '执行器任务handler',
-    `executor_param`            varchar(512)        DEFAULT NULL COMMENT '执行器任务参数',
+    `executor_param`            text                DEFAULT NULL COMMENT '执行器任务参数',
     `executor_sharding_param`   varchar(20)         DEFAULT NULL COMMENT '执行器任务分片参数，格式如 1/2',
     `executor_fail_retry_count` int(11)    NOT NULL DEFAULT '0' COMMENT '失败重试次数',
     `trigger_time`              datetime            DEFAULT NULL COMMENT '调度-时间',
@@ -100,8 +100,8 @@ CREATE TABLE `xxl_job_log`
     PRIMARY KEY (`id`),
     KEY `I_trigger_time` (`trigger_time`),
     KEY `I_handle_code` (`handle_code`),
-    KEY `I_jobid_jobgroup` (`job_id`,`job_group`),
-    KEY `I_job_id` (`job_id`)
+    KEY `I_jobgroup` (`job_group`),
+    KEY `I_jobid` (`job_id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 

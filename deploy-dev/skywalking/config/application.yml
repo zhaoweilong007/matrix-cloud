@@ -54,8 +54,9 @@ cluster:
   nacos:
     serviceName: ${SW_SERVICE_NAME:"SkyWalking_OAP_Cluster"}
     hostPort: ${SW_CLUSTER_NACOS_HOST_PORT:nacos:8848}
-    # Nacos Configuration namespace
+    # Nacos Naming namespace
     namespace: ${SW_CLUSTER_NACOS_NAMESPACE:"public"}
+    contextPath: ${SW_CLUSTER_NACOS_CONTEXT_PATH:""}
     # Nacos auth username
     username: ${SW_CLUSTER_NACOS_USERNAME:"nacos"}
     password: ${SW_CLUSTER_NACOS_PASSWORD:"nacos"}
@@ -74,15 +75,13 @@ core:
     restHost: ${SW_CORE_REST_HOST:0.0.0.0}
     restPort: ${SW_CORE_REST_PORT:12800}
     restContextPath: ${SW_CORE_REST_CONTEXT_PATH:/}
-    restMaxThreads: ${SW_CORE_REST_MAX_THREADS:200}
     restIdleTimeOut: ${SW_CORE_REST_IDLE_TIMEOUT:30000}
     restAcceptQueueSize: ${SW_CORE_REST_QUEUE_SIZE:0}
     httpMaxRequestHeaderSize: ${SW_CORE_HTTP_MAX_REQUEST_HEADER_SIZE:8192}
     gRPCHost: ${SW_CORE_GRPC_HOST:0.0.0.0}
     gRPCPort: ${SW_CORE_GRPC_PORT:11800}
     maxConcurrentCallsPerConnection: ${SW_CORE_GRPC_MAX_CONCURRENT_CALL:0}
-    maxMessageSize: ${SW_CORE_GRPC_MAX_MESSAGE_SIZE:0}
-    gRPCThreadPoolQueueSize: ${SW_CORE_GRPC_POOL_QUEUE_SIZE:-1}
+    maxMessageSize: ${SW_CORE_GRPC_MAX_MESSAGE_SIZE:52428800} #50MB
     gRPCThreadPoolSize: ${SW_CORE_GRPC_THREAD_POOL_SIZE:-1}
     gRPCSslEnabled: ${SW_CORE_GRPC_SSL_ENABLED:false}
     gRPCSslKeyPath: ${SW_CORE_GRPC_SSL_KEY_PATH:""}
@@ -119,7 +118,7 @@ core:
     searchableTracesTags: ${SW_SEARCHABLE_TAG_KEYS:http.method,http.status_code,rpc.status_code,db.type,db.instance,mq.queue,mq.topic,mq.broker}
     # Define the set of log tag keys, which should be searchable through the GraphQL.
     # The max length of key=value should be less than 256 or will be dropped.
-    searchableLogsTags: ${SW_SEARCHABLE_LOGS_TAG_KEYS:level}
+    searchableLogsTags: ${SW_SEARCHABLE_LOGS_TAG_KEYS:level,http.status_code}
     # Define the set of alarm tag keys, which should be searchable through the GraphQL.
     # The max length of key=value should be less than 256 or will be dropped.
     searchableAlarmTags: ${SW_SEARCHABLE_ALARM_TAG_KEYS:level}
@@ -137,8 +136,18 @@ core:
     trainingPeriodHttpUriRecognitionPattern: ${SW_CORE_TRAINING_PERIOD_HTTP_URI_RECOGNITION_PATTERN:60}
     # The max number of HTTP URIs per service for further URI pattern recognition.
     maxHttpUrisNumberPerService: ${SW_CORE_MAX_HTTP_URIS_NUMBER_PER_SVR:3000}
+    # If disable the hierarchy, the service and instance hierarchy relation will not be built. And the query of hierarchy will return empty result.
+    # All the hierarchy relations are defined in the `hierarchy-definition.yml`.
+    # Notice: some of the configurations only available for kubernetes environments.
+    enableHierarchy: ${SW_CORE_ENABLE_HIERARCHY:true}
+    # The int value of the max heap memory usage percent. The default value is 96%.
+    maxHeapMemoryUsagePercent: ${SW_CORE_MAX_HEAP_MEMORY_USAGE_PERCENT:96}
+    # The long value of the max direct memory usage. The default max value is -1, representing no limit. The unit is in bytes.
+    maxDirectMemoryUsage: ${SW_CORE_MAX_DIRECT_MEMORY_USAGE:-1}
 storage:
   selector: ${SW_STORAGE:elasticsearch}
+  banyandb:
+    # Since 10.2.0, the banyandb configuration is separated to an independent configuration file: `bydb.yaml`.
   elasticsearch:
     namespace: ${SW_NAMESPACE:""}
     clusterNodes: ${SW_STORAGE_ES_CLUSTER_NODES:es:9200}
@@ -149,8 +158,10 @@ storage:
     numHttpClientThread: ${SW_STORAGE_ES_NUM_HTTP_CLIENT_THREAD:0}
     user: ${SW_ES_USER:"elastic"}
     password: ${SW_ES_PASSWORD:"changeme"}
-    trustStorePath: ${SW_STORAGE_ES_SSL_JKS_PATH:""}
-    trustStorePass: ${SW_STORAGE_ES_SSL_JKS_PASS:""}
+    trustStorePath: ${SW_STORAGE_ES_SSL_JKS_PATH:""} # Path to the truststore that contains CA certificates used to verify the OpenSearch/Elasticsearch server certificate.
+    trustStorePass: ${SW_STORAGE_ES_SSL_JKS_PASS:""} # Password for the truststore defined in trustStorePath.
+    keyStorePath: ${SW_STORAGE_ES_SSL_KEY_STORE_PATH:""} # Path to the client certificate keystore for mutual TLS (OpenSearch/Elasticsearch client certificate authentication). 
+    keyStorePass: ${SW_STORAGE_ES_SSL_KEY_STORE_PASS:""} # Password for the client certificate keystore defined in keyStorePath. This can be externalized via secretsManagementFile.
     secretsManagementFile: ${SW_ES_SECRETS_MANAGEMENT_FILE:""} # Secrets management file in the properties format includes the username, password, which are managed by 3rd party tool.
     dayStep: ${SW_STORAGE_DAY_STEP:1} # Represent the number of days in the one minute/hour/day index.
     indexShardsNumber: ${SW_STORAGE_ES_INDEX_SHARDS_NUMBER:1} # Shard number of new indexes
@@ -173,6 +184,8 @@ storage:
     scrollingBatchSize: ${SW_STORAGE_ES_SCROLLING_BATCH_SIZE:5000}
     segmentQueryMaxSize: ${SW_STORAGE_ES_QUERY_SEGMENT_SIZE:200}
     profileTaskQueryMaxSize: ${SW_STORAGE_ES_QUERY_PROFILE_TASK_SIZE:200}
+    asyncProfilerTaskQueryMaxSize: ${SW_STORAGE_ES_QUERY_ASYNC_PROFILER_TASK_SIZE:200}
+    pprofTaskQueryMaxSize: ${SW_STORAGE_ES_QUERY_PPROF_TASK_SIZE:200}
     profileDataQueryBatchSize: ${SW_STORAGE_ES_QUERY_PROFILE_DATA_BATCH_SIZE:100}
     oapAnalyzer: ${SW_STORAGE_ES_OAP_ANALYZER:"{\"analyzer\":{\"oap_analyzer\":{\"type\":\"stop\"}}}"} # the oap analyzer.
     oapLogAnalyzer: ${SW_STORAGE_ES_OAP_LOG_ANALYZER:"{\"analyzer\":{\"oap_log_analyzer\":{\"type\":\"standard\"}}}"} # the oap log analyzer. It could be customized by the ES analyzer configuration to support more language log formats, such as Chinese log, Japanese log and etc.
@@ -181,13 +194,6 @@ storage:
     logicSharding: ${SW_STORAGE_ES_LOGIC_SHARDING:false}
     # Custom routing can reduce the impact of searches. Instead of having to fan out a search request to all the shards in an index, the request can be sent to just the shard that matches the specific routing value (or values).
     enableCustomRouting: ${SW_STORAGE_ES_ENABLE_CUSTOM_ROUTING:false}
-  h2:
-    properties:
-      jdbcUrl: ${SW_STORAGE_H2_URL:jdbc:h2:mem:skywalking-oap-db;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=FALSE}
-      dataSource.user: ${SW_STORAGE_H2_USER:sa}
-    metadataQueryMaxSize: ${SW_STORAGE_H2_QUERY_MAX_SIZE:5000}
-    maxSizeOfBatchSql: ${SW_STORAGE_MAX_SIZE_OF_BATCH_SQL:100}
-    asyncBatchPersistentPoolSize: ${SW_STORAGE_ASYNC_BATCH_PERSISTENT_POOL_SIZE:1}
   mysql:
     properties:
       jdbcUrl: ${SW_JDBC_URL:"jdbc:mysql://localhost:3306/swtest?rewriteBatchedStatements=true&allowMultiQueries=true"}
@@ -212,21 +218,6 @@ storage:
     metadataQueryMaxSize: ${SW_STORAGE_MYSQL_QUERY_MAX_SIZE:5000}
     maxSizeOfBatchSql: ${SW_STORAGE_MAX_SIZE_OF_BATCH_SQL:2000}
     asyncBatchPersistentPoolSize: ${SW_STORAGE_ASYNC_BATCH_PERSISTENT_POOL_SIZE:4}
-  banyandb:
-    host: ${SW_STORAGE_BANYANDB_HOST:127.0.0.1}
-    port: ${SW_STORAGE_BANYANDB_PORT:17912}
-    maxBulkSize: ${SW_STORAGE_BANYANDB_MAX_BULK_SIZE:5000}
-    flushInterval: ${SW_STORAGE_BANYANDB_FLUSH_INTERVAL:15}
-    metricsShardsNumber: ${SW_STORAGE_BANYANDB_METRICS_SHARDS_NUMBER:1}
-    recordShardsNumber: ${SW_STORAGE_BANYANDB_RECORD_SHARDS_NUMBER:1}
-    superDatasetShardsFactor: ${SW_STORAGE_BANYANDB_SUPERDATASET_SHARDS_FACTOR:2}
-    concurrentWriteThreads: ${SW_STORAGE_BANYANDB_CONCURRENT_WRITE_THREADS:15}
-    profileTaskQueryMaxSize: ${SW_STORAGE_BANYANDB_PROFILE_TASK_QUERY_MAX_SIZE:200} # the max number of fetch task in a request
-    blockIntervalHours: ${SW_STORAGE_BANYANDB_BLOCK_INTERVAL_HOURS:24} # Unit is hour
-    segmentIntervalDays: ${SW_STORAGE_BANYANDB_SEGMENT_INTERVAL_DAYS:1} # Unit is day
-    superDatasetBlockIntervalHours: ${SW_STORAGE_BANYANDB_SUPER_DATASET_BLOCK_INTERVAL_HOURS:4} # Unit is hour
-    superDatasetSegmentIntervalDays: ${SW_STORAGE_BANYANDB_SUPER_DATASET_SEGMENT_INTERVAL_DAYS:1} # Unit is day
-    specificGroupSettings: ${SW_STORAGE_BANYANDB_SPECIFIC_GROUP_SETTINGS:""} # For example, {"group1": {"blockIntervalHours": 4, "segmentIntervalDays": 1}}
 
 agent-analyzer:
   selector: ${SW_AGENT_ANALYZER:default}
@@ -239,18 +230,22 @@ agent-analyzer:
     # Nginx and Envoy agents can't get the real remote address.
     # Exit spans with the component in the list would not generate the client-side instance relation metrics.
     noUpstreamRealAddressAgents: ${SW_NO_UPSTREAM_REAL_ADDRESS:6000,9000}
-    meterAnalyzerActiveFiles: ${SW_METER_ANALYZER_ACTIVE_FILES:datasource,threadpool,satellite,go-runtime,python-runtime,continuous-profiling} # Which files could be meter analyzed, files split by ","
-    slowCacheReadThreshold: ${SW_SLOW_CACHE_SLOW_READ_THRESHOLD:default:20,redis:10} # The slow cache write operation thresholds. Unit ms.
+    meterAnalyzerActiveFiles: ${SW_METER_ANALYZER_ACTIVE_FILES:datasource,threadpool,satellite,go-runtime,python-runtime,continuous-profiling,java-agent,go-agent,ruby-runtime} # Which files could be meter analyzed, files split by ","
+    slowCacheReadThreshold: ${SW_SLOW_CACHE_SLOW_READ_THRESHOLD:default:20,redis:10} # The slow cache read operation thresholds. Unit ms.
     slowCacheWriteThreshold: ${SW_SLOW_CACHE_SLOW_WRITE_THRESHOLD:default:20,redis:10} # The slow cache write operation thresholds. Unit ms.
 
 log-analyzer:
   selector: ${SW_LOG_ANALYZER:default}
   default:
-    lalFiles: ${SW_LOG_LAL_FILES:envoy-als,mesh-dp,mysql-slowsql,pgsql-slowsql,redis-slowsql,k8s-service,default}
-    malFiles: ${SW_LOG_MAL_FILES:""}
+    lalFiles: ${SW_LOG_LAL_FILES:envoy-als,mesh-dp,mysql-slowsql,pgsql-slowsql,redis-slowsql,k8s-service,nginx,envoy-ai-gateway,default}
+    malFiles: ${SW_LOG_MAL_FILES:"nginx"}
 
 event-analyzer:
   selector: ${SW_EVENT_ANALYZER:default}
+  default:
+
+gen-ai-analyzer:
+  selector: ${SW_GENAI_ANALYZER:default}
   default:
 
 receiver-sharing-server:
@@ -260,7 +255,6 @@ receiver-sharing-server:
     restHost: ${SW_RECEIVER_SHARING_REST_HOST:0.0.0.0}
     restPort: ${SW_RECEIVER_SHARING_REST_PORT:0}
     restContextPath: ${SW_RECEIVER_SHARING_REST_CONTEXT_PATH:/}
-    restMaxThreads: ${SW_RECEIVER_SHARING_REST_MAX_THREADS:200}
     restIdleTimeOut: ${SW_RECEIVER_SHARING_REST_IDLE_TIMEOUT:30000}
     restAcceptQueueSize: ${SW_RECEIVER_SHARING_REST_QUEUE_SIZE:0}
     httpMaxRequestHeaderSize: ${SW_RECEIVER_SHARING_HTTP_MAX_REQUEST_HEADER_SIZE:8192}
@@ -268,8 +262,7 @@ receiver-sharing-server:
     gRPCHost: ${SW_RECEIVER_GRPC_HOST:0.0.0.0}
     gRPCPort: ${SW_RECEIVER_GRPC_PORT:0}
     maxConcurrentCallsPerConnection: ${SW_RECEIVER_GRPC_MAX_CONCURRENT_CALL:0}
-    maxMessageSize: ${SW_RECEIVER_GRPC_MAX_MESSAGE_SIZE:0}
-    gRPCThreadPoolQueueSize: ${SW_RECEIVER_GRPC_POOL_QUEUE_SIZE:0}
+    maxMessageSize: ${SW_RECEIVER_GRPC_MAX_MESSAGE_SIZE:52428800} #50MB
     gRPCThreadPoolSize: ${SW_RECEIVER_GRPC_THREAD_POOL_SIZE:0}
     gRPCSslEnabled: ${SW_RECEIVER_GRPC_SSL_ENABLED:false}
     gRPCSslKeyPath: ${SW_RECEIVER_GRPC_SSL_KEY_PATH:""}
@@ -296,6 +289,34 @@ receiver-profile:
   selector: ${SW_RECEIVER_PROFILE:default}
   default:
 
+receiver-async-profiler:
+  selector: ${SW_RECEIVER_ASYNC_PROFILER:default}
+  default:
+    # Used to manage the maximum size of the jfr file that can be received, the unit is Byte, default is 30M
+    jfrMaxSize: ${SW_RECEIVER_ASYNC_PROFILER_JFR_MAX_SIZE:31457280}
+    # Used to determine whether to receive jfr in memory file or physical file mode
+    #
+    # The memory file mode have fewer local file system limitations, so they are by default. But it costs more memory.
+    #
+    # The physical file mode will use less memory when parsing and is more friendly to parsing large files.
+    # However, if the storage of the tmp directory in the container is insufficient, the oap server instance may crash.
+    # It is recommended to use physical file mode when volume mounting is used or the tmp directory has sufficient storage.
+    memoryParserEnabled: ${SW_RECEIVER_ASYNC_PROFILER_MEMORY_PARSER_ENABLED:true}
+
+receiver-pprof:
+  selector: ${SW_RECEIVER_PPROF:default}
+  default:
+    # Used to manage the maximum size of the pprof file that can be received, the unit is Byte, default is 30M
+    pprofMaxSize: ${SW_RECEIVER_PPROF_MAX_SIZE:31457280}
+    # Used to determine whether to receive pprof in memory file or physical file mode
+    #
+    # The memory file mode have fewer local file system limitations, so they are by default. But it costs more memory.
+    #
+    # The physical file mode will use less memory when parsing and is more friendly to parsing large files.
+    # However, if the storage of the tmp directory in the container is insufficient, the oap server instance may crash.
+    # It is recommended to use physical file mode when volume mounting is used or the tmp directory has sufficient storage.
+    memoryParserEnabled: ${SW_RECEIVER_PPROF_MEMORY_PARSER_ENABLED:true}
+
 receiver-zabbix:
   selector: ${SW_RECEIVER_ZABBIX:-}
   default:
@@ -311,14 +332,30 @@ envoy-metric:
   selector: ${SW_ENVOY_METRIC:default}
   default:
     acceptMetricsService: ${SW_ENVOY_METRIC_SERVICE:true}
+    enabledEnvoyMetricsRules: ${SW_ENVOY_METRIC_ENABLED_RULES:"envoy,envoy-svc-relation"}
     alsHTTPAnalysis: ${SW_ENVOY_METRIC_ALS_HTTP_ANALYSIS:""}
     alsTCPAnalysis: ${SW_ENVOY_METRIC_ALS_TCP_ANALYSIS:""}
     # `k8sServiceNameRule` allows you to customize the service name in ALS via Kubernetes metadata,
     # the available variables are `pod`, `service`, f.e., you can use `${service.metadata.name}-${pod.metadata.labels.version}`
     # to append the version number to the service name.
     # Be careful, when using environment variables to pass this configuration, use single quotes(`''`) to avoid it being evaluated by the shell.
-    k8sServiceNameRule: ${K8S_SERVICE_NAME_RULE:"${pod.metadata.labels.(service.istio.io/canonical-name)}"}
-    istioServiceNameRule: ${ISTIO_SERVICE_NAME_RULE:"${serviceEntry.metadata.name}"}
+    k8sServiceNameRule: ${K8S_SERVICE_NAME_RULE:"${pod.metadata.labels.(service.istio.io/canonical-name)}.${pod.metadata.namespace}"}
+    istioServiceNameRule: ${ISTIO_SERVICE_NAME_RULE:"${serviceEntry.metadata.name}.${serviceEntry.metadata.namespace}"}
+    # When looking up service informations from the Istio ServiceEntries, some
+    # of the ServiceEntries might be created in several namespaces automatically
+    # by some components, and OAP will randomly pick one of them to build the
+    # service name, users can use this config to exclude ServiceEntries that
+    # they don't want to be used. Comma separated.
+    istioServiceEntryIgnoredNamespaces: ${SW_ISTIO_SERVICE_ENTRY_IGNORED_NAMESPACES:""}
+    gRPCHost: ${SW_ALS_GRPC_HOST:0.0.0.0}
+    gRPCPort: ${SW_ALS_GRPC_PORT:0}
+    maxConcurrentCallsPerConnection: ${SW_ALS_GRPC_MAX_CONCURRENT_CALL:0}
+    maxMessageSize: ${SW_ALS_GRPC_MAX_MESSAGE_SIZE:0}
+    gRPCThreadPoolSize: ${SW_ALS_GRPC_THREAD_POOL_SIZE:0}
+    gRPCSslEnabled: ${SW_ALS_GRPC_SSL_ENABLED:false}
+    gRPCSslKeyPath: ${SW_ALS_GRPC_SSL_KEY_PATH:""}
+    gRPCSslCertChainPath: ${SW_ALS_GRPC_SSL_CERT_CHAIN_PATH:""}
+    gRPCSslTrustedCAsPath: ${SW_ALS_GRPC_SSL_TRUSTED_CAS_PATH:""}
 
 kafka-fetcher:
   selector: ${SW_KAFKA_FETCHER:-}
@@ -333,6 +370,18 @@ kafka-fetcher:
     kafkaHandlerThreadPoolSize: ${SW_KAFKA_HANDLER_THREAD_POOL_SIZE:-1}
     kafkaHandlerThreadPoolQueueSize: ${SW_KAFKA_HANDLER_THREAD_POOL_QUEUE_SIZE:-1}
 
+cilium-fetcher:
+  selector: ${SW_CILIUM_FETCHER:-}
+  default:
+    peerHost: ${SW_CILIUM_FETCHER_PEER_HOST:hubble-peer.kube-system.svc.cluster.local}
+    peerPort: ${SW_CILIUM_FETCHER_PEER_PORT:80}
+    fetchFailureRetrySecond: ${SW_CILIUM_FETCHER_FETCH_FAILURE_RETRY_SECOND:10}
+    sslConnection: ${SW_CILIUM_FETCHER_SSL_CONNECTION:false}
+    sslPrivateKeyFile: ${SW_CILIUM_FETCHER_PRIVATE_KEY_FILE_PATH:}
+    sslCertChainFile: ${SW_CILIUM_FETCHER_CERT_CHAIN_FILE_PATH:}
+    sslCaFile: ${SW_CILIUM_FETCHER_CA_FILE_PATH:}
+    convertClientAsServerTraffic: ${SW_CILIUM_FETCHER_CONVERT_CLIENT_AS_SERVER_TRAFFIC:true}
+
 receiver-meter:
   selector: ${SW_RECEIVER_METER:default}
   default:
@@ -340,8 +389,8 @@ receiver-meter:
 receiver-otel:
   selector: ${SW_OTEL_RECEIVER:default}
   default:
-    enabledHandlers: ${SW_OTEL_RECEIVER_ENABLED_HANDLERS:"otlp-metrics,otlp-logs"}
-    enabledOtelMetricsRules: ${SW_OTEL_RECEIVER_ENABLED_OTEL_METRICS_RULES:"apisix,k8s/*,istio-controlplane,vm,mysql/*,postgresql/*,oap,aws-eks/*,windows,aws-s3/*,aws-dynamodb/*,aws-gateway/*,redis/*,elasticsearch/*,rabbitmq/*,mongodb/*"}
+    enabledHandlers: ${SW_OTEL_RECEIVER_ENABLED_HANDLERS:"otlp-traces,otlp-metrics,otlp-logs"}
+    enabledOtelMetricsRules: ${SW_OTEL_RECEIVER_ENABLED_OTEL_METRICS_RULES:"apisix,nginx/*,k8s/*,istio-controlplane,vm,mysql/*,postgresql/*,oap,aws-eks/*,windows,aws-s3/*,aws-dynamodb/*,aws-gateway/*,redis/*,elasticsearch/*,rabbitmq/*,mongodb/*,kafka/*,pulsar/*,bookkeeper/*,rocketmq/*,clickhouse/*,activemq/*,kong/*,flink/*,banyandb/*,envoy-ai-gateway/*"}
 
 receiver-zipkin:
   selector: ${SW_RECEIVER_ZIPKIN:-}
@@ -351,12 +400,13 @@ receiver-zipkin:
     searchableTracesTags: ${SW_ZIPKIN_SEARCHABLE_TAG_KEYS:http.method}
     # The sample rate precision is 1/10000, should be between 0 and 10000
     sampleRate: ${SW_ZIPKIN_SAMPLE_RATE:10000}
+    # The maximum spans to be collected per second. 0 means no limit. Spans exceeding this threshold will be dropped.
+    maxSpansPerSecond: ${SW_ZIPKIN_MAX_SPANS_PER_SECOND:0}
     ## The below configs are for OAP collect zipkin trace from HTTP
     enableHttpCollector: ${SW_ZIPKIN_HTTP_COLLECTOR_ENABLED:true}
     restHost: ${SW_RECEIVER_ZIPKIN_REST_HOST:0.0.0.0}
     restPort: ${SW_RECEIVER_ZIPKIN_REST_PORT:9411}
     restContextPath: ${SW_RECEIVER_ZIPKIN_REST_CONTEXT_PATH:/}
-    restMaxThreads: ${SW_RECEIVER_ZIPKIN_REST_MAX_THREADS:200}
     restIdleTimeOut: ${SW_RECEIVER_ZIPKIN_REST_IDLE_TIMEOUT:30000}
     restAcceptQueueSize: ${SW_RECEIVER_ZIPKIN_REST_QUEUE_SIZE:0}
     ## The below configs are for OAP collect zipkin trace from kafka
@@ -407,7 +457,6 @@ query-zipkin:
     restHost: ${SW_QUERY_ZIPKIN_REST_HOST:0.0.0.0}
     restPort: ${SW_QUERY_ZIPKIN_REST_PORT:9412}
     restContextPath: ${SW_QUERY_ZIPKIN_REST_CONTEXT_PATH:/zipkin}
-    restMaxThreads: ${SW_QUERY_ZIPKIN_REST_MAX_THREADS:200}
     restIdleTimeOut: ${SW_QUERY_ZIPKIN_REST_IDLE_TIMEOUT:30000}
     restAcceptQueueSize: ${SW_QUERY_ZIPKIN_REST_QUEUE_SIZE:0}
     # Default look back for traces and autocompleteTags, 1 day in millis
@@ -428,9 +477,15 @@ promql:
     restHost: ${SW_PROMQL_REST_HOST:0.0.0.0}
     restPort: ${SW_PROMQL_REST_PORT:9090}
     restContextPath: ${SW_PROMQL_REST_CONTEXT_PATH:/}
-    restMaxThreads: ${SW_PROMQL_REST_MAX_THREADS:200}
     restIdleTimeOut: ${SW_PROMQL_REST_IDLE_TIMEOUT:30000}
     restAcceptQueueSize: ${SW_PROMQL_REST_QUEUE_SIZE:0}
+    # The below config is for the API buildInfo, set the value to mock the build info.
+    buildInfoVersion: ${SW_PROMQL_BUILD_INFO_VERSION:"2.45.0"}
+    buildInfoRevision: ${SW_PROMQL_BUILD_INFO_REVISION:""}
+    buildInfoBranch: ${SW_PROMQL_BUILD_INFO_BRANCH:""}
+    buildInfoBuildUser: ${SW_PROMQL_BUILD_INFO_BUILD_USER:""}
+    buildInfoBuildDate: ${SW_PROMQL_BUILD_INFO_BUILD_DATE:""}
+    buildInfoGoVersion: ${SW_PROMQL_BUILD_INFO_GO_VERSION:""}
 
 #This module is for LogQL API.
 logql:
@@ -440,16 +495,32 @@ logql:
     restHost: ${SW_LOGQL_REST_HOST:0.0.0.0}
     restPort: ${SW_LOGQL_REST_PORT:3100}
     restContextPath: ${SW_LOGQL_REST_CONTEXT_PATH:/}
-    restMaxThreads: ${SW_LOGQL_REST_MAX_THREADS:200}
     restIdleTimeOut: ${SW_LOGQL_REST_IDLE_TIMEOUT:30000}
     restAcceptQueueSize: ${SW_LOGQL_REST_QUEUE_SIZE:0}
+
+traceQL:
+  selector: ${SW_TRACEQL:-}
+  default:
+    restHost: ${SW_TRACEQL_REST_HOST:0.0.0.0}
+    restPort: ${SW_TRACEQL_REST_PORT:3200}
+    enableDatasourceZipkin: ${SW_TRACEQL_ENABLE_DATASOURCE_ZIPKIN:false}
+    enableDatasourceSkywalking: ${SW_TRACEQL_ENABLE_DATASOURCE_SKYWALKING:false}
+    restContextPathZipkin: ${SW_TRACEQL_REST_CONTEXT_PATH_ZIPKIN:/zipkin}
+    restContextPathSkywalking: ${SW_TRACEQL_REST_CONTEXT_PATH_SKYWALKING:/skywalking}
+    restIdleTimeOut: ${SW_TRACEQL_REST_IDLE_TIMEOUT:30000}
+    restAcceptQueueSize: ${SW_TRACEQL_REST_QUEUE_SIZE:0}
+    # If the query does not provide the start time (the default end time is current), the default lookback for traces and autocompleteTags is 1 day in milliseconds.
+    lookback: ${SW_TRACEQL_LOOKBACK:86400000}
+    # The tags in the list result of traces query, which would be used for trace grouping and shown in the trace list page.
+    zipkinTracesListResultTags: ${SW_TRACEQL_ZIPKIN_TRACES_LIST_RESULT_TAGS:http.method,error}
+    skywalkingTracesListResultTags: ${SW_TRACEQL_SKYWALKING_TRACES_LIST_RESULT_TAGS:http.method,http.status_code,rpc.status_code,db.type,db.instance,mq.queue,mq.topic,mq.broker}
 
 alarm:
   selector: ${SW_ALARM:default}
   default:
 
 telemetry:
-  selector: ${SW_TELEMETRY:none}
+  selector: ${SW_TELEMETRY:prometheus}
   none:
   prometheus:
     host: ${SW_TELEMETRY_PROMETHEUS_HOST:0.0.0.0}
@@ -466,6 +537,7 @@ configuration:
     port: ${SW_DCS_SERVER_PORT:80}
     clusterName: ${SW_DCS_CLUSTER_NAME:SkyWalking}
     period: ${SW_DCS_PERIOD:20}
+    maxInboundMessageSize: ${SW_DCS_MAX_INBOUND_MESSAGE_SIZE:4194304}
   apollo:
     apolloMeta: ${SW_CONFIG_APOLLO:http://localhost:8080}
     apolloCluster: ${SW_CONFIG_APOLLO_CLUSTER:default}
@@ -532,9 +604,15 @@ exporter:
     exportErrorStatusTraceOnly: ${SW_EXPORTER_KAFKA_TRACE_FILTER_ERROR:false}
 
 health-checker:
-  selector: ${SW_HEALTH_CHECKER:-}
+  selector: ${SW_HEALTH_CHECKER:default}
   default:
-    checkIntervalSeconds: ${SW_HEALTH_CHECKER_INTERVAL_SECONDS:5}
+    checkIntervalSeconds: ${SW_HEALTH_CHECKER_INTERVAL_SECONDS:30}
+
+status-query:
+  selector: ${SW_STATUS_QUERY:default}
+  default:
+    # Include the list of keywords to filter configurations including secrets. Separate keywords by a comma.
+    keywords4MaskingSecretsOfConfig: ${SW_DEBUGGING_QUERY_KEYWORDS_FOR_MASKING_SECRETS:user,password,token,accessKey,secretKey,authentication}
 
 configuration-discovery:
   selector: ${SW_CONFIGURATION_DISCOVERY:default}
@@ -550,6 +628,15 @@ receiver-ebpf:
   default:
     # The continuous profiling policy cache time, Unit is second.
     continuousPolicyCacheTimeout: ${SW_CONTINUOUS_POLICY_CACHE_TIMEOUT:60}
+    gRPCHost: ${SW_EBPF_GRPC_HOST:0.0.0.0}
+    gRPCPort: ${SW_EBPF_GRPC_PORT:0}
+    maxConcurrentCallsPerConnection: ${SW_EBPF_GRPC_MAX_CONCURRENT_CALL:0}
+    maxMessageSize: ${SW_EBPF_ALS_GRPC_MAX_MESSAGE_SIZE:0}
+    gRPCThreadPoolSize: ${SW_EBPF_GRPC_THREAD_POOL_SIZE:0}
+    gRPCSslEnabled: ${SW_EBPF_GRPC_SSL_ENABLED:false}
+    gRPCSslKeyPath: ${SW_EBPF_GRPC_SSL_KEY_PATH:""}
+    gRPCSslCertChainPath: ${SW_EBPF_GRPC_SSL_CERT_CHAIN_PATH:""}
+    gRPCSslTrustedCAsPath: ${SW_EBPF_GRPC_SSL_TRUSTED_CAS_PATH:""}
 
 receiver-telegraf:
   selector: ${SW_RECEIVER_TELEGRAF:default}
@@ -562,7 +649,6 @@ aws-firehose:
     host: ${SW_RECEIVER_AWS_FIREHOSE_HTTP_HOST:0.0.0.0}
     port: ${SW_RECEIVER_AWS_FIREHOSE_HTTP_PORT:12801}
     contextPath: ${SW_RECEIVER_AWS_FIREHOSE_HTTP_CONTEXT_PATH:/}
-    maxThreads: ${SW_RECEIVER_AWS_FIREHOSE_HTTP_MAX_THREADS:200}
     idleTimeOut: ${SW_RECEIVER_AWS_FIREHOSE_HTTP_IDLE_TIME_OUT:30000}
     acceptQueueSize: ${SW_RECEIVER_AWS_FIREHOSE_HTTP_ACCEPT_QUEUE_SIZE:0}
     maxRequestHeaderSize: ${SW_RECEIVER_AWS_FIREHOSE_HTTP_MAX_REQUEST_HEADER_SIZE:8192}
@@ -576,3 +662,5 @@ ai-pipeline:
   default:
     uriRecognitionServerAddr: ${SW_AI_PIPELINE_URI_RECOGNITION_SERVER_ADDR:}
     uriRecognitionServerPort: ${SW_AI_PIPELINE_URI_RECOGNITION_SERVER_PORT:17128}
+    baselineServerAddr: ${SW_API_PIPELINE_BASELINE_SERVICE_HOST:}
+    baselineServerPort: ${SW_API_PIPELINE_BASELINE_SERVICE_PORT:18080}
