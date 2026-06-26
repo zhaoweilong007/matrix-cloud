@@ -15,7 +15,7 @@ plugins {
     id 'org.springframework.boot' apply false
     id 'io.spring.dependency-management' apply false
     id 'com.google.cloud.tools.jib' apply false
-    id 'com.diffplug.spotless' version '8.6.0' apply false
+    id 'com.diffplug.spotless' version "${spotlessVersion}" apply false
 }
 
 // 应用模块（产出可启动 jar 和 Docker 镜像）
