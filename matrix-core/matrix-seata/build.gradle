@@ -1,5 +1,5 @@
 dependencies {
     api project(':matrix-core:matrix-auto')
     api('com.alibaba.cloud:spring-cloud-starter-alibaba-seata')
-    api 'com.caucho:hessian:4.0.66'
+    api libs.hessian
 }

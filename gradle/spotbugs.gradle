@@ -1,0 +1,20 @@
+apply plugin: 'com.github.spotbugs'
+
+spotbugs {
+    ignoreFailures = true
+    showStackTraces = true
+    showProgress = true
+    visitors = ['FindSqlInjection', 'SwitchFallthrough']
+    omitVisitors = ['FindNonShortCircuit']
+    includeFilter = file("${project.rootDir}/code-analysis/spotbugs/include-filter.xml")
+    excludeFilter = file("${project.rootDir}/code-analysis/spotbugs/exclude-filter.xml")
+}
+
+spotbugsMain {
+    reports {
+        html {
+            required = true
+            outputLocation = file("${project.layout.buildDirectory.asFile.get()}/reports/spotbugs/spotbugs.html")
+        }
+    }
+}

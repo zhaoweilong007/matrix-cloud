@@ -1,0 +1,251 @@
+# ============================================================
+# Matrix Cloud Version Catalog
+# 统一管理所有依赖版本
+# ============================================================
+
+[versions]
+# === 框架版本 ===
+springboot = "3.5.7"
+springCloud = "2025.0.0"
+springCloudAlibaba = "2025.0.0.0"
+mica = "3.5.7"
+dependency-management = "1.1.7"
+
+# === 核心组件 ===
+mybatis-plus = "3.5.15"
+mybatis-plus-join = "1.5.5"
+seata = "1.7.1"
+sa-token = "1.44.0"
+redisson = "3.52.0"
+sentinel = "1.8.6"
+knife4j = "4.5.0"
+druid = "1.2.20"
+dynamic-datasource = "4.3.0"
+xxl-job = "3.3.1"
+lock4j = "2.2.5"
+
+# === Elasticsearch ===
+easy-es = "3.0.1"
+bean-searcher = "4.7.1"
+
+# === 工具库 ===
+lombok = "1.18.30"
+lombok-mapstruct = "0.2.0"
+mapstruct-plus = "1.3.5"
+hutool = "5.8.22"
+guava = "31.1-jre"
+gson = "2.10.1"
+fastjson2 = "2.0.48"
+commons-pool2 = "2.11.1"
+caffeine = "3.1.1"
+transmittable = "2.13.2"
+commons-lang3 = "3.12.0"
+commons-collections4 = "4.4"
+easyexcel = "3.3.2"
+userAgent = "1.21"
+streamex = "0.8.1"
+vavr = "0.10.4"
+jool = "0.9.15"
+joda-money = "1.0.3"
+servlet = "6.0.0"
+validator = "3.0.2"
+swagger = "2.2.19"
+httpClient = "5.2.1"
+pinyin = "2.0.3.RELEASE"
+pinyin4j = "2.5.0"
+
+# === 认证 ===
+javaJwt = "3.8.3"
+jwksRsa = "0.12.0"
+
+# === 监控 ===
+skywalking = "9.0.0"
+micrometer = "1.16.1"
+admin-server = "3.5.6"
+
+# === 其他 ===
+easy-trans = "3.0.6"
+sms4j = "3.3.5"
+ons-client = "1.8.8.8.Final"
+wx = "4.5.0"
+jpush = "3.5.5"
+jiguang = "1.1.4"
+aliyun-oss = "3.15.1"
+hessian = "4.0.66"
+yidun = "1.1.11"
+tencentcloud = "3.1.930"
+mockito = "5.2.0"
+podam = "8.0.0.RELEASE"
+
+# === 构建插件 ===
+jib = "3.5.2"
+sonarqube = "4.2.1.3168"
+spotbugs = "4.9.3"
+spotless = "8.6.0"
+checkstyle = "10.21.4"
+pmd = "7.25.0"
+jacoco = "0.8.14"
+
+[libraries]
+# === Spring Boot Starters ===
+spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web" }
+spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test" }
+spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator" }
+spring-boot-starter-security = { module = "org.springframework.boot:spring-boot-starter-security" }
+spring-boot-starter-validation = { module = "org.springframework.boot:spring-boot-starter-validation" }
+spring-boot-starter-data-mongodb = { module = "org.springframework.boot:spring-boot-starter-data-mongodb" }
+spring-boot-starter-cache = { module = "org.springframework.boot:spring-boot-starter-cache" }
+spring-boot-autoconfigure = { module = "org.springframework.boot:spring-boot-autoconfigure" }
+spring-boot-configuration-processor = { module = "org.springframework.boot:spring-boot-configuration-processor" }
+
+# === Spring Cloud ===
+spring-cloud-starter = { module = "org.springframework.cloud:spring-cloud-starter" }
+spring-cloud-starter-gateway = { module = "org.springframework.cloud:spring-cloud-starter-gateway" }
+spring-cloud-gateway-server-webflux = { module = "org.springframework.cloud:spring-cloud-gateway-server-webflux" }
+spring-cloud-starter-openfeign = { module = "org.springframework.cloud:spring-cloud-starter-openfeign" }
+spring-cloud-starter-loadbalancer = { module = "org.springframework.cloud:spring-cloud-starter-loadbalancer" }
+spring-cloud-starter-bootstrap = { module = "org.springframework.cloud:spring-cloud-starter-bootstrap" }
+
+# === Spring Cloud Alibaba ===
+nacos-discovery = { module = "com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-discovery" }
+nacos-config = { module = "com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-config" }
+sentinel-starter = { module = "com.alibaba.cloud:spring-cloud-starter-alibaba-sentinel" }
+sentinel-gateway = { module = "com.alibaba.cloud:spring-cloud-alibaba-sentinel-gateway" }
+seata-starter = { module = "com.alibaba.cloud:spring-cloud-starter-alibaba-seata" }
+
+# === MyBatis Plus ===
+mybatis-plus = { module = "com.baomidou:mybatis-plus-spring-boot3-starter", version.ref = "mybatis-plus" }
+mybatis-plus-join = { module = "com.github.yulichang:mybatis-plus-join-boot-starter", version.ref = "mybatis-plus-join" }
+mybatis-plus-generator = { module = "com.baomidou:mybatis-plus-generator", version.ref = "mybatis-plus" }
+mybatis-plus-extension = { module = "com.baomidou:mybatis-plus-extension", version.ref = "mybatis-plus" }
+mybatis-plus-annotation = { module = "com.baomidou:mybatis-plus-annotation", version.ref = "mybatis-plus" }
+mybatis-plus-core = { module = "com.baomidou:mybatis-plus-core", version.ref = "mybatis-plus" }
+mybatis-plus-jsqlparser = { module = "com.baomidou:mybatis-plus-jsqlparser", version.ref = "mybatis-plus" }
+dynamic-datasource = { module = "com.baomidou:dynamic-datasource-spring-boot3-starter", version.ref = "dynamic-datasource" }
+druid = { module = "com.alibaba:druid-spring-boot-3-starter", version.ref = "druid" }
+bean-searcher = { module = "cn.zhxu:bean-searcher-boot-starter", version.ref = "bean-searcher" }
+bean-searcher-core = { module = "cn.zhxu:bean-searcher", version.ref = "bean-searcher" }
+
+# === Sa-Token ===
+sa-token-core = { module = "cn.dev33:sa-token-core", version.ref = "sa-token" }
+sa-token-jwt = { module = "cn.dev33:sa-token-jwt", version.ref = "sa-token" }
+sa-token-spring-boot3 = { module = "cn.dev33:sa-token-spring-boot3-starter", version.ref = "sa-token" }
+sa-token-reactor = { module = "cn.dev33:sa-token-reactor-spring-boot3-starter", version.ref = "sa-token" }
+sa-token-redisson = { module = "cn.dev33:sa-token-redisson-jackson2", version.ref = "sa-token" }
+
+# === Redis ===
+redisson = { module = "org.redisson:redisson-spring-boot-starter", version.ref = "redisson" }
+lock4j = { module = "com.baomidou:lock4j-redisson-spring-boot-starter", version.ref = "lock4j" }
+
+# === Elasticsearch ===
+easy-es = { module = "org.dromara.easy-es:easy-es-boot-starter", version.ref = "easy-es" }
+
+# === 分布式事务 ===
+seata = { module = "io.seata:seata-spring-boot-starter", version.ref = "seata" }
+
+# === 限流熔断 ===
+sentinel-core = { module = "com.alibaba.csp:sentinel-core", version.ref = "sentinel" }
+sentinel-datasource-nacos = { module = "com.alibaba.csp:sentinel-datasource-nacos", version.ref = "sentinel" }
+
+# === API 文档 ===
+knife4j = { module = "com.github.xiaoymin:knife4j-openapi3-jakarta-spring-boot-starter", version.ref = "knife4j" }
+knife4j-gateway = { module = "com.github.xiaoymin:knife4j-gateway-spring-boot-starter", version.ref = "knife4j" }
+swagger-annotations = { module = "io.swagger.core.v3:swagger-annotations-jakarta", version.ref = "swagger" }
+swagger-models = { module = "io.swagger.core.v3:swagger-models-jakarta", version.ref = "swagger" }
+
+# === 任务调度 ===
+xxl-job = { module = "com.xuxueli:xxl-job-core", version.ref = "xxl-job" }
+
+# === 消息队列 ===
+ons-client = { module = "com.aliyun.openservices:ons-client", version.ref = "ons-client" }
+
+# === 工具库 ===
+hutool = { module = "cn.hutool:hutool-all", version.ref = "hutool" }
+guava = { module = "com.google.guava:guava", version.ref = "guava" }
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+fastjson2 = { module = "com.alibaba.fastjson2:fastjson2", version.ref = "fastjson2" }
+easyexcel = { module = "com.alibaba:easyexcel", version.ref = "easyexcel" }
+caffeine = { module = "com.github.ben-manes.caffeine:caffeine", version.ref = "caffeine" }
+commons-lang3 = { module = "org.apache.commons:commons-lang3", version.ref = "commons-lang3" }
+commons-collections4 = { module = "org.apache.commons:commons-collections4", version.ref = "commons-collections4" }
+commons-pool2 = { module = "org.apache.commons:commons-pool2", version.ref = "commons-pool2" }
+transmittable-thread-local = { module = "com.alibaba:transmittable-thread-local", version.ref = "transmittable" }
+streamex = { module = "one.util:streamex", version.ref = "streamex" }
+vavr = { module = "io.vavr:vavr", version.ref = "vavr" }
+jool = { module = "org.jooq:jool", version.ref = "jool" }
+joda-money = { module = "org.joda:joda-money", version.ref = "joda-money" }
+httpclient5 = { module = "org.apache.httpcomponents.client5:httpclient5", version.ref = "httpClient" }
+java-jwt = { module = "com.auth0:java-jwt", version.ref = "javaJwt" }
+jwks-rsa = { module = "com.auth0:jwks-rsa", version.ref = "jwksRsa" }
+pinyin4j = { module = "com.belerweb:pinyin4j", version.ref = "pinyin4j" }
+tiny-pinyin = { module = "io.github.biezhi:TinyPinyin", version.ref = "pinyin" }
+user-agent-utils = { module = "eu.bitwalker:UserAgentUtils", version.ref = "userAgent" }
+
+# === Mica 生态 ===
+mica-core = { module = "net.dreamlu:mica-core" }
+mica-xss = { module = "net.dreamlu:mica-xss" }
+mica-auto = { module = "net.dreamlu:mica-auto" }
+mica-ip2region = { module = "net.dreamlu:mica-ip2region" }
+mica-jobs = { module = "net.dreamlu:mica-jobs" }
+
+# === MapStruct Plus ===
+mapstruct-plus-starter = { module = "io.github.linpeilie:mapstruct-plus-spring-boot-starter", version.ref = "mapstruct-plus" }
+mapstruct-plus-processor = { module = "io.github.linpeilie:mapstruct-plus-processor", version.ref = "mapstruct-plus" }
+
+# === 监控 ===
+skywalking-toolkit-trace = { module = "org.apache.skywalking:apm-toolkit-trace", version.ref = "skywalking" }
+skywalking-toolkit-logback = { module = "org.apache.skywalking:apm-toolkit-logback-1.x", version.ref = "skywalking" }
+skywalking-toolkit-opentracing = { module = "org.apache.skywalking:apm-toolkit-opentracing", version.ref = "skywalking" }
+micrometer-prometheus = { module = "io.micrometer:micrometer-registry-prometheus", version.ref = "micrometer" }
+spring-boot-admin-server = { module = "de.codecentric:spring-boot-admin-starter-server", version.ref = "admin-server" }
+
+# === SMS ===
+sms4j = { module = "org.dromara.sms4j:sms4j-spring-boot-starter", version.ref = "sms4j" }
+
+# === 翻译 ===
+easy-trans = { module = "com.fhs-opensource:easy-trans-spring-boot-starter", version.ref = "easy-trans" }
+easy-trans-mybatis = { module = "com.fhs-opensource:easy-trans-mybatis-plus-extend", version.ref = "easy-trans" }
+easy-trans-anno = { module = "com.fhs-opensource:easy-trans-anno", version.ref = "easy-trans" }
+
+# === 推送 ===
+jpush-client = { module = "cn.jpush.api:jpush-client", version.ref = "jpush" }
+jiguang-common = { module = "cn.jpush.api:jiguang-common", version.ref = "jiguang" }
+
+# === OSS ===
+aliyun-oss = { module = "com.aliyun.oss:aliyun-sdk-oss", version.ref = "aliyun-oss" }
+
+# === 微信 ===
+wx-miniapp = { module = "com.github.binarywang:wx-java-miniapp-spring-boot-starter", version.ref = "wx" }
+
+# === 其他 ===
+hessian = { module = "com.caucho:hessian", version.ref = "hessian" }
+yidun-sdk = { module = "com.netease.yidun:yidun-java-sdk", version.ref = "yidun" }
+tencentcloud-sdk = { module = "com.tencentcloudapi:tencentcloud-sdk-java", version.ref = "tencentcloud" }
+mysql-connector = { module = "com.mysql:mysql-connector-j" }
+jackson-core = { module = "com.fasterxml.jackson.core:jackson-core" }
+jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind" }
+jackson-datatype-jsr310 = { module = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310" }
+servlet-api = { module = "jakarta.servlet:jakarta.servlet-api", version.ref = "servlet" }
+validation-api = { module = "jakarta.validation:jakarta.validation-api", version.ref = "validator" }
+slf4j-api = { module = "org.slf4j:slf4j-api" }
+jcl-over-slf4j = { module = "org.slf4j:jcl-over-slf4j" }
+aspectjweaver = { module = "org.aspectj:aspectjweaver" }
+spring-web = { module = "org.springframework:spring-web" }
+spring-expression = { module = "org.springframework:spring-expression" }
+lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
+lombok-mapstruct-binding = { module = "org.projectlombok:lombok-mapstruct-binding", version.ref = "lombok-mapstruct" }
+mockito-inline = { module = "org.mockito:mockito-inline", version.ref = "mockito" }
+podam = { module = "uk.co.jemos.podam:podam", version.ref = "podam" }
+spotbugs-annotations = { module = "com.github.spotbugs:spotbugs-annotations", version.ref = "spotbugs" }
+
+[bundles]
+mybatis = ["mybatis-plus", "mybatis-plus-join", "dynamic-datasource", "druid"]
+sa-token = ["sa-token-core", "sa-token-jwt", "sa-token-redisson"]
+skywalking = ["skywalking-toolkit-trace", "skywalking-toolkit-logback", "skywalking-toolkit-opentracing"]
+easy-trans = ["easy-trans", "easy-trans-mybatis", "easy-trans-anno"]
+
+[plugins]
+spring-boot = { id = "org.springframework.boot", version.ref = "springboot" }
+dependency-management = { id = "io.spring.dependency-management", version.ref = "dependency-management" }
+jib = { id = "com.google.cloud.tools.jib", version.ref = "jib" }
+sonarqube = { id = "org.sonarqube", version.ref = "sonarqube" }

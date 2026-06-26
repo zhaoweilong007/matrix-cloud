@@ -22,5 +22,5 @@ dependencies {
     implementation project(':matrix-core:matrix-mongodb')
     implementation project(':matrix-core:matrix-test')
 
-    implementation 'com.tencentcloudapi:tencentcloud-sdk-java:3.1.930'
+    implementation libs.tencentcloud.sdk
 }

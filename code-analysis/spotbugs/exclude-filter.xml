@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
+    <!-- 排除测试代码 -->
+    <Match>
+        <Package name="~.*\.test\..*"/>
+    </Match>
+    <Match>
+        <Package name="~.*\.tests\..*"/>
+    </Match>
+    <!-- 排除生成的代码 -->
+    <Match>
+        <Package name="~.*\.generated\..*"/>
+    </Match>
+    <!-- 排除 Lombok 生成的代码 -->
+    <Match>
+        <Or>
+            <Annotation name="lombok.Generated"/>
+        </Or>
+    </Match>
+</FindBugsFilter>

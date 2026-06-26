@@ -1,5 +1,5 @@
 dependencies {
     api(project(":matrix-core:matrix-auto"))
-    api 'com.aliyun.oss:aliyun-sdk-oss:3.15.1'
+    api libs.aliyun.oss
     api 'org.springframework:spring-web'
 }

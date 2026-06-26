@@ -1,0 +1,17 @@
+apply plugin: 'pmd'
+
+pmd {
+    toolVersion = '7.25.0'
+    ignoreFailures = true
+    incrementalAnalysis = true
+    threads = 4
+    rulesMinimumPriority = 5
+    ruleSetFiles = files("${rootProject.projectDir}/code-analysis/pmd/pmd.xml")
+}
+
+tasks.withType(Pmd).configureEach {
+    reports {
+        xml.required = false
+        html.required = true
+    }
+}

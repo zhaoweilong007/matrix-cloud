@@ -1,0 +1,12 @@
+apply plugin: 'com.diffplug.spotless'
+
+spotless {
+    java {
+        // 使用 palantir-java-format 替代 google-java-format，兼容性更好
+        palantirJavaFormat('2.38.0')
+        removeUnusedImports()
+        trimTrailingWhitespace()
+    }
+    // 默认不强制检查，可通过 spotlessCheck 手动执行
+    enforceCheck false
+}

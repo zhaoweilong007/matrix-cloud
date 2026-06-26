@@ -1,0 +1,16 @@
+apply plugin: 'checkstyle'
+
+checkstyle {
+    toolVersion = '10.21.4'
+    configFile = rootProject.file('code-analysis/checkstyle/matrix-checks.xml')
+    ignoreFailures = true
+    showViolations = true
+    maxWarnings = 1000
+}
+
+tasks.withType(Checkstyle).configureEach {
+    reports {
+        xml.required = false
+        html.required = true
+    }
+}

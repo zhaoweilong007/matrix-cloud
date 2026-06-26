@@ -1,3 +1,13 @@
+buildscript {
+    repositories {
+        gradlePluginPortal()
+        mavenCentral()
+    }
+    dependencies {
+        classpath "com.github.spotbugs.snom:spotbugs-gradle-plugin:6.5.4"
+    }
+}
+
 plugins {
     id 'base'
     id 'java-platform'
@@ -5,6 +15,7 @@ plugins {
     id 'org.springframework.boot' apply false
     id 'io.spring.dependency-management' apply false
     id 'com.google.cloud.tools.jib' apply false
+    id 'com.diffplug.spotless' version '8.6.0' apply false
 }
 
 // 应用模块（产出可启动 jar 和 Docker 镜像）
@@ -54,7 +65,12 @@ configure(commons) {
     apply plugin: 'java-library'
     apply plugin: 'org.sonarqube'
     apply plugin: 'io.spring.dependency-management'
-    apply from: "${rootProject.projectDir}/version.gradle"
+
+    // 静态分析工具
+    apply from: "${rootProject.projectDir}/gradle/checkstyle.gradle"
+    apply from: "${rootProject.projectDir}/gradle/spotbugs.gradle"
+    apply from: "${rootProject.projectDir}/gradle/pmd.gradle"
+    apply from: "${rootProject.projectDir}/gradle/spotless.gradle"
 
     java {
         toolchain {
@@ -74,9 +90,9 @@ configure(commons) {
 
     dependencyManagement {
         imports {
-            mavenBom "com.alibaba.cloud:spring-cloud-alibaba-dependencies:${springCloudAlibabaVersion}"
-            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-            mavenBom "net.dreamlu:mica-bom:${micaVersion}"
+            mavenBom "com.alibaba.cloud:spring-cloud-alibaba-dependencies:${libs.versions.springCloudAlibaba.get()}"
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${libs.versions.springCloud.get()}"
+            mavenBom "net.dreamlu:mica-bom:${libs.versions.mica.get()}"
         }
     }
 
@@ -84,20 +100,23 @@ configure(commons) {
         implementation platform(project(':matrix-bom'))
 
         // Lombok：所有模块通用
-        compileOnly 'org.projectlombok:lombok'
-        annotationProcessor 'org.projectlombok:lombok'
-        annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
-        testCompileOnly 'org.projectlombok:lombok'
-        testAnnotationProcessor 'org.projectlombok:lombok'
+        compileOnly libs.lombok
+        annotationProcessor libs.lombok
+        annotationProcessor libs.lombok.mapstruct.binding
+        testCompileOnly libs.lombok
+        testAnnotationProcessor libs.lombok
 
         // MapStruct Plus：所有模块通用
-        implementation "io.github.linpeilie:mapstruct-plus-spring-boot-starter:${mapstructPlusVersion}"
-        annotationProcessor "io.github.linpeilie:mapstruct-plus-processor:${mapstructPlusVersion}"
-        testAnnotationProcessor "io.github.linpeilie:mapstruct-plus-processor:${mapstructPlusVersion}"
+        implementation libs.mapstruct.plus.starter
+        annotationProcessor libs.mapstruct.plus.processor
+        testAnnotationProcessor libs.mapstruct.plus.processor
 
         // mica-auto：自动配置注册器，所有模块统一应用
-        compileOnly 'net.dreamlu:mica-auto'
-        annotationProcessor 'net.dreamlu:mica-auto'
+        compileOnly libs.mica.auto
+        annotationProcessor libs.mica.auto
+
+        // SpotBugs 注解
+        compileOnly libs.spotbugs.annotations
     }
 
     test {

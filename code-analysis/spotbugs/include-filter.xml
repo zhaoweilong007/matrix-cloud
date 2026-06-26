@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
+    <!-- 空的包含过滤器，表示检查所有类 -->
+</FindBugsFilter>

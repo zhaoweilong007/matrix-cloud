@@ -14,43 +14,38 @@ pluginManagement {
 
 rootProject.name = 'matrix-cloud'
 
-include 'matrix-bom'
-include 'matrix-core:matrix-common'
-include 'matrix-core:matrix-auto'
-include 'matrix-core:matrix-validator'
-include 'matrix-core:matrix-redis'
-include 'matrix-core:matrix-idempotent'
-include 'matrix-core:matrix-feign'
-include 'matrix-core:matrix-web'
-include 'matrix-core:matrix-auth'
-include 'matrix-core:matrix-config'
-include 'matrix-core:matrix-es'
-include 'matrix-core:matrix-mongodb'
-include 'matrix-core:matrix-prometheus'
-include 'matrix-core:matrix-excel'
-include 'matrix-core:matrix-job'
-include 'matrix-core:matrix-jpush'
-include 'matrix-core:matrix-lock'
-include 'matrix-core:matrix-mq'
-include 'matrix-core:matrix-mybatis'
-include 'matrix-core:matrix-tenant'
-include 'matrix-core:matrix-oss'
-include 'matrix-core:matrix-sms'
-include 'matrix-core:matrix-seata'
-include 'matrix-core:matrix-sensitive'
-include 'matrix-core:matrix-swagger'
-include 'matrix-core:matrix-api'
-include 'matrix-core:matrix-test'
-include 'matrix-core:matrix-translation'
-include 'matrix-core:matrix-sentinel'
-include 'matrix-core:matrix-strategy'
-include 'matrix-core:matrix-log'
-include 'matrix-core:matrix-data-permission'
+// 排除非模块目录
+def excludedName(file) {
+    return file.name != "build"
+            && file.name != "src"
+            && file.name != "out"
+            && file.name != "bin"
+            && file.name != ".gradle"
+            && file.name != ".idea"
+}
 
-include 'matrix-admin'
-include 'matrix-gateway'
-include 'matrix-resource:resource-api'
-include 'matrix-resource:resource-biz'
+// 一层模块（直接子目录）
+['matrix-bom', 'matrix-admin', 'matrix-gateway'].each {
+    include it
+}
 
-//include 'matrix-system:system-api'
-//include 'matrix-system:system-biz'
+// 两层模块：matrix-core
+file("${rootDir}/matrix-core").eachDir { dir ->
+    if (excludedName(dir)) {
+        include "matrix-core:${dir.name}"
+    }
+}
+
+// 两层模块：matrix-resource
+file("${rootDir}/matrix-resource").eachDir { dir ->
+    if (excludedName(dir)) {
+        include "matrix-resource:${dir.name}"
+    }
+}
+
+// 两层模块：matrix-system（当前未完成，暂不启用）
+// file("${rootDir}/matrix-system").eachDir { dir ->
+//     if (excludedName(dir)) {
+//         include "matrix-system:${dir.name}"
+//     }
+// }
