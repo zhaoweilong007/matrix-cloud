@@ -176,14 +176,12 @@ services:
     container_name: seata-server
     env_file:
       - ./env/seata.env
-    environment:
-      LOADER_PATH: /seata-server/ext-lib
     ports:
       - "8091:8091"
       - "7091:7091"
     volumes:
       - ./seata/application.yml:/seata-server/resources/application.yml
-      - ./seata/jdbc:/seata-server/ext-lib
+      - ./seata/jdbc/mysql.jar:/seata-server/libs/mysql.jar
     restart: always
     privileged: true
     depends_on:
