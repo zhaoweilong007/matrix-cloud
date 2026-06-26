@@ -43,3 +43,15 @@ out/
 
 logs/**
 mysql_data/**
+
+### deploy-dev 运行时数据（容器挂载卷，运行/清数据时生成）###
+/deploy-dev/redis/data/**
+/deploy-dev/elasticsearch/data/**
+/deploy-dev/elasticsearch/logs/**
+/deploy-dev/prometheus/grafana/**
+/deploy-dev/rocketmq/data/**
+/deploy-dev/rocketmq/broker1/logs/**
+/deploy-dev/rocketmq/broker1/store/**
+
+### SkyWalking agent 运行时日志 ###
+/skywalking-agent/logs/**
