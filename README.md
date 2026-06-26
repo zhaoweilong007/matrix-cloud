@@ -78,11 +78,20 @@ docker-compose up -d
 ### 4. 编译项目
 
 ```bash
+# 设置 JDK 17（如使用 sdkman）
+export JAVA_HOME=/home/zwl/.sdkman/candidates/java/17.0.19-amzn
+
 # 编译整个项目
-./gradlew.bat build
+./gradlew build -x test
 
 # 编译指定模块
-./gradlew.bat :matrix-system:system-biz:build
+./gradlew :matrix-resource:resource-biz:build
+
+# 静态分析（Checkstyle + SpotBugs + PMD）
+./gradlew checkstyleMain spotbugsMain pmdMain
+
+# 代码格式化
+./gradlew spotlessApply
 ```
 
 ### 5. 启动服务
@@ -90,9 +99,8 @@ docker-compose up -d
 按照以下顺序启动服务：
 
 1. 启动`matrix-gateway`（网关服务）
-2. 启动`matrix-system`（系统服务）
-3. 启动`matrix-resource`（资源服务）
-4. 启动`matrix-admin`（管理服务）
+2. 启动`matrix-resource`（资源服务）
+3. 启动`matrix-admin`（管理服务）
 
 ### 6. 访问服务
 
@@ -173,6 +181,18 @@ docker-compose up -d
 | MapStruct Plus    | 1.3.5            | 对象映射工具             |
 | EasyExcel         | 3.3.2            | Excel导入导出           |
 
+### 构建体系
+
+| 工具/配置                | 用途说明                                    |
+|----------------------|----------------------------------------|
+| `gradle/libs.versions.toml` | 版本目录，集中管理 ~100 个依赖版本             |
+| `gradle.properties`  | 插件版本管理（Spring Boot、Jib 等）           |
+| `settings.gradle`    | 动态模块发现，自动扫描目录                      |
+| Checkstyle           | 代码风格检查（Google Java Style）              |
+| SpotBugs             | 静态分析，检测潜在 Bug                        |
+| PMD                  | 代码质量检查                                 |
+| Spotless             | 代码格式化（palantir-java-format）            |
+
 ## 📌核心功能
 
 | 功能模块         | 状态 | 描述说明                |
@@ -242,7 +262,7 @@ docker-compose up -d
 | 模块名称           | 服务地址       | 端口 | 主要功能                |
 |----------------|------------|----|---------------------|
 | matrix-gateway | 127.0.0.1  | 9000| 网关服务，处理请求路由、鉴权等     |
-| matrix-system  | 127.0.0.1  | 9002| 系统服务，提供用户、角色、权限等基础功能 |
+| matrix-system  | 127.0.0.1  | 9002| 系统服务（当前未启用，代码待完善） |
 | matrix-resource| 127.0.0.1  | 9003| 资源服务，提供OSS、SMS、Email等功能 |
 | matrix-admin   | 127.0.0.1  | 9001| Spring Boot Admin，用于监控和管理Spring Boot应用 |
 
@@ -491,7 +511,7 @@ matrix:
 
 ```bash
 # 编译模块
-./gradlew.bat :matrix-yourmodule:yourmodule-biz:build
+./gradlew :matrix-yourmodule:yourmodule-biz:build
 
 # 运行模块
 java -jar matrix-yourmodule-yourmodule-biz-3.0.0.jar
@@ -613,13 +633,13 @@ jib {
 
 ```bash
 # 构建单个模块的Docker镜像
-./gradlew.bat :matrix-system:system-biz:jib
+./gradlew :matrix-resource:resource-biz:jib
 
 # 构建所有模块的Docker镜像
-./gradlew.bat jib
+./gradlew jib
 
 # 构建本地镜像（不推送）
-./gradlew.bat :matrix-system:system-biz:jibDockerBuild
+./gradlew :matrix-resource:resource-biz:jibDockerBuild
 ```
 
 #### 自定义组件构建
@@ -630,7 +650,6 @@ jib {
 // 定义需要构建Docker的模块
 def javaMicroservices = [
         project(':matrix-gateway'),
-        project(':matrix-system:system-biz'),
         project(':matrix-resource:resource-biz'),
         project(':matrix-admin'),
         // 添加自定义组件
