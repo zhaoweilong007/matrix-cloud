@@ -7,6 +7,10 @@ spring:
   main:
     allow-bean-definition-overriding: true
     allow-circular-references: true
+  autoconfigure:
+    exclude:
+      # easy-trans 3.0.6 不兼容 SB4（RestTemplateBuilder 已移除），排除其自动配置
+      - com.fhs.trans.config.TransServiceConfig
 
   servlet:
     multipart:

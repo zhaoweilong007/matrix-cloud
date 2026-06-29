@@ -3,6 +3,7 @@ package com.matrix.web.config;
 import com.matrix.web.handler.I18nLocaleResolver;
 import com.matrix.web.handler.I18nResponseBodyAdvice;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.LocaleResolver;
 
@@ -13,6 +14,7 @@ import org.springframework.web.servlet.LocaleResolver;
 public class I18nConfig {
 
     @Bean
+    @ConditionalOnMissingBean(LocaleResolver.class)
     public LocaleResolver localeResolver() {
         return new I18nLocaleResolver();
     }

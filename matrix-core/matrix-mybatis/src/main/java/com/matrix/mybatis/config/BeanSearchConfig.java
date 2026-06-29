@@ -13,8 +13,8 @@ import com.matrix.mybatis.convert.JsonFieldConvert;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Primary;
 
 import javax.sql.DataSource;
 import java.util.List;
@@ -39,7 +39,7 @@ public class BeanSearchConfig {
      * @param slowListener    慢 SQL 监听器
      */
     @Bean
-    @Primary
+    @ConditionalOnMissingBean(SqlExecutor.class)
     public SqlExecutor sqlExecutor(ObjectProvider<DataSource> dataSource,
                                    ObjectProvider<DynamicRoutingDataSource> dataSourceRoute,
                                    ObjectProvider<SqlExecutor.SlowListener> slowListener,
@@ -70,7 +70,7 @@ public class BeanSearchConfig {
 
 
     @Bean
-    @Primary
+    @ConditionalOnMissingBean(cn.zhxu.bs.DbMapping.class)
     public DefaultDbMapping bsJpaDbMapping(BeanSearcherSql sql) {
         DefaultDbMapping mapping = new DefaultDbMapping() {
 

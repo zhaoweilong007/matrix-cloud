@@ -1,5 +1,6 @@
 package com.matrix.resource;
 
+import com.fhs.trans.config.TransServiceConfig;
 import com.matrix.feign.annotation.EnableFeign;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,7 +14,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  **/
 @EnableDiscoveryClient
 @EnableFeign
-@SpringBootApplication
+@SpringBootApplication(exclude = {TransServiceConfig.class})
 public class ResourceApp {
 
     public static void main(String[] args) {

@@ -12,7 +12,7 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@EnableFeignClients(basePackages = "com.matrix.*.api.**.client")
+@EnableFeignClients(basePackages = {"com.matrix.*.api.**.client", "com.matrix.web.client"})
 @Import(FeignAutoConfig.class)
 public @interface EnableFeign {
 

@@ -6,6 +6,14 @@ spring:
     name: matrix-gateway
   profiles:
     active: ${PROFILE:dev}
+  cloud:
+    nacos:
+      config:
+        username: nacos
+        password: nacos
+      discovery:
+        username: nacos
+        password: nacos
   config:
     import:
       - optional:nacos:env.properties

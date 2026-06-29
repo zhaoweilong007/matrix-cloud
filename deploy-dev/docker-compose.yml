@@ -156,7 +156,7 @@ services:
       TZ: Asia/Shanghai
       # namingserver 注册端点需鉴权，默认 console user 为空 → 注册返回 401。
       # 用 Spring Boot 标准机制注入 console 用户(seata/seata)，与 seata-server registry 账号一致。
-      SPRING_APPLICATION_JSON: '{"console":{"user":{"username":"seata","password":"seata"}}}'
+      SPRING_APPLICATION_JSON: '{"console":{"user":{"username":"seata","password":"seata"}},"seata":{"namingserver":{"auth":{"enabled":false}}}}'
     ports:
       - "8081:8081"
     restart: always

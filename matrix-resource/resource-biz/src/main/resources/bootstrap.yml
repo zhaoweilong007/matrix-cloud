@@ -6,9 +6,41 @@ spring:
     name: matrix-resource
   profiles:
     active: ${PROFILE:dev}
+  main:
+    allow-bean-definition-overriding: true
+  cloud:
+    nacos:
+      config:
+        username: nacos
+        password: nacos
+      discovery:
+        username: nacos
+        password: nacos
   config:
     import:
       - optional:nacos:env.properties
       - optional:nacos:application-common.yml
       - optional:nacos:datasource.yml
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+      password: matrix
+      database: 0
+
+mybatis-plus:
+  mapperPackage: com.matrix.**.mapper
+  global-config:
+    db-config:
+      id-type: assign_id
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+  configuration:
+    map-underscore-to-camel-case: true
+  type-aliases-package: com.matrix.**.entity,com.matrix.**.vo
+
+# seata 暂时禁用，待 namingserver 认证问题解决后启用
+seata:
+  enabled: false
 

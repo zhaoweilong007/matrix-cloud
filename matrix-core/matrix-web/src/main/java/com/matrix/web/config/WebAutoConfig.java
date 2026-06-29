@@ -86,6 +86,7 @@ public class WebAutoConfig implements WebMvcConfigurer {
 
 
     @Bean
+    @ConditionalOnMissingBean(LocaleResolver.class)
     public LocaleResolver localeResolver() {
         return new I18nLocaleResolver();
     }
