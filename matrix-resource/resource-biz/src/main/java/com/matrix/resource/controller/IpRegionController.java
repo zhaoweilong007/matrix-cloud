@@ -36,7 +36,7 @@ public class IpRegionController implements IpRegionApi {
 
     @Override
     public R<IpInfoVo> ipInfo(Long ip) {
-        final IpInfo ipInfo = regionSearcher.memorySearch(ip);
+        final IpInfo ipInfo = regionSearcher.memorySearch(String.valueOf(ip));
         final IpInfoVo ipInfoVo = ResourceConvert.INSTANCE.convert(ipInfo);
         setCityCode(ipInfoVo);
         return R.success(ipInfoVo);

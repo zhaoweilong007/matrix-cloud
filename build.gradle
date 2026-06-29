@@ -1,21 +1,12 @@
-buildscript {
-    repositories {
-        gradlePluginPortal()
-        mavenCentral()
-    }
-    dependencies {
-        classpath "com.github.spotbugs.snom:spotbugs-gradle-plugin:6.5.4"
-    }
-}
-
 plugins {
     id 'base'
     id 'java-platform'
-    id 'org.sonarqube'
-    id 'org.springframework.boot' apply false
-    id 'io.spring.dependency-management' apply false
-    id 'com.google.cloud.tools.jib' apply false
-    id 'com.diffplug.spotless' version "${spotlessVersion}" apply false
+    alias(libs.plugins.sonarqube)
+    alias(libs.plugins.spring.boot) apply false
+    alias(libs.plugins.dependency.management) apply false
+    alias(libs.plugins.jib) apply false
+    alias(libs.plugins.spotless) apply false
+    alias(libs.plugins.spotbugs) apply false
 }
 
 // 应用模块（产出可启动 jar 和 Docker 镜像）
@@ -74,7 +65,7 @@ configure(commons) {
 
     java {
         toolchain {
-            languageVersion = JavaLanguageVersion.of(17)
+            languageVersion = JavaLanguageVersion.of(21)
         }
     }
 

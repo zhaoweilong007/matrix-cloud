@@ -9,19 +9,16 @@ def v = libs.versions
 dependencies {
     constraints {
         // === Spring Boot Starters ===
-        api libs.seata
         api libs.mybatis.plus
         api libs.easy.es
         api libs.redisson
         api libs.lock4j
         api libs.druid
-        api libs.sa.token.spring.boot3
+        api libs.sa.token.spring.boot4
         api libs.sa.token.reactor
         api libs.mybatis.plus.join
         api libs.bean.searcher
         api libs.spring.boot.admin.server
-        api libs.knife4j
-        api libs.knife4j.gateway
         api libs.dynamic.datasource
         api libs.easy.trans
         api libs.sms4j

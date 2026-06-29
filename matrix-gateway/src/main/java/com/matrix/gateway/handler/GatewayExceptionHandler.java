@@ -4,7 +4,7 @@ import com.matrix.common.enums.SystemErrorTypeEnum;
 import com.matrix.common.result.R;
 import com.matrix.gateway.utils.WebFluxUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
+import org.springframework.web.server.WebExceptionHandler;
 import org.springframework.cloud.gateway.support.NotFoundException;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.server.ResponseStatusException;
@@ -15,7 +15,7 @@ import reactor.core.publisher.Mono;
  * 网关统一异常处理
  */
 @Slf4j
-public class GatewayExceptionHandler implements ErrorWebExceptionHandler {
+public class GatewayExceptionHandler implements WebExceptionHandler {
 
     @Override
     public Mono<Void> handle(ServerWebExchange exchange, Throwable ex) {

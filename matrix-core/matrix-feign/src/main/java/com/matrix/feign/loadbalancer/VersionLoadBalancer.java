@@ -61,8 +61,10 @@ public class VersionLoadBalancer implements ReactorServiceInstanceLoadBalancer {
 
     private String getVersionFromRequestData(RequestData requestData) {
         Map<String, String> queryMap = QueryUtils.getQueryMap(requestData.getUrl());
-        if (requestData.getHeaders().containsKey(CommonConstants.VERSION_HEADER)) {
-            return requestData.getHeaders().getFirst(CommonConstants.VERSION_HEADER);
+        // Spring 7 HttpHeaders.get(Object) 返回 List<String>，用 toSingleValueMap 取首值
+        String versionHeader = requestData.getHeaders().toSingleValueMap().get(CommonConstants.VERSION_HEADER);
+        if (StringUtils.isNotBlank(versionHeader)) {
+            return versionHeader;
         } else if (MapUtils.isNotEmpty(queryMap) && queryMap.containsKey(CommonConstants.VERSION_HEADER)
                 && StringUtils.isNotBlank(queryMap.get(CommonConstants.VERSION_HEADER))) {
             return queryMap.get(CommonConstants.VERSION_HEADER);

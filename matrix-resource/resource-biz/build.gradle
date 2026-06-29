@@ -5,7 +5,6 @@ dependencies {
     implementation project(':matrix-core:matrix-redis')
     implementation project(':matrix-core:matrix-sentinel')
     implementation project(':matrix-core:matrix-auth')
-    implementation project(':matrix-core:matrix-swagger')
     implementation project(':matrix-core:matrix-mybatis')
     implementation project(':matrix-core:matrix-seata')
     implementation project(':matrix-core:matrix-log')

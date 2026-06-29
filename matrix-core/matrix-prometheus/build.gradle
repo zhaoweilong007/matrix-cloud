@@ -1,6 +1,7 @@
 dependencies {
     api project(':matrix-core:matrix-auto')
     api('org.springframework.boot:spring-boot-starter-actuator')
+    api('org.springframework.boot:spring-boot-micrometer-metrics')
     api 'io.micrometer:micrometer-registry-prometheus'
     api 'org.apache.skywalking:apm-toolkit-logback-1.x'
     api 'org.apache.skywalking:apm-toolkit-trace'

@@ -1,10 +1,10 @@
 dependencies {
     api project(':matrix-core:matrix-auto')
     api 'com.mysql:mysql-connector-j'
-    api 'com.alibaba:druid-spring-boot-3-starter'
+    api 'com.alibaba:druid-spring-boot-4-starter'
     api 'com.github.yulichang:mybatis-plus-join-boot-starter'
-    api 'com.baomidou:mybatis-plus-spring-boot3-starter'
-    api 'com.baomidou:dynamic-datasource-spring-boot3-starter'
+    api 'com.baomidou:mybatis-plus-spring-boot4-starter'
+    api 'com.baomidou:dynamic-datasource-spring-boot4-starter'
     api 'cn.zhxu:bean-searcher-boot-starter'
     api 'com.baomidou:mybatis-plus-jsqlparser'
 

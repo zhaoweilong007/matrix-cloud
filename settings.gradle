@@ -4,12 +4,6 @@ pluginManagement {
         maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
         gradlePluginPortal()
     }
-    plugins {
-        id 'org.springframework.boot' version "${springBootVersion}" apply false
-        id 'io.spring.dependency-management' version "${dependencyManagementVersion}" apply false
-        id 'com.google.cloud.tools.jib' version "${jibVersion}" apply false
-        id 'org.sonarqube' version "${sonarqubeVersion}"
-    }
 }
 
 rootProject.name = 'matrix-cloud'

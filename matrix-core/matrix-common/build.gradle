@@ -13,6 +13,8 @@ dependencies {
     api 'org.jooq:jool'
     api 'org.joda:joda-money'
     api 'com.baomidou:mybatis-plus-extension'
+    // SB4 Jackson 2 过渡模块：保留 com.fasterxml.jackson 兼容，避免迁移至 tools.jackson
+    api 'org.springframework.boot:spring-boot-jackson2'
     api 'com.fasterxml.jackson.core:jackson-core'
     api 'com.fasterxml.jackson.core:jackson-databind'
     api 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'

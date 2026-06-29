@@ -1,5 +1,8 @@
 dependencies {
     api project(':matrix-core:matrix-auto')
     api 'org.redisson:redisson-spring-boot-starter'
+    api 'org.redisson:redisson-spring-cache:4.6.1'
     api 'org.springframework.boot:spring-boot-starter-cache'
+    // SB4 CacheProperties 从 spring-boot-autoconfigure 移至 spring-boot-cache
+    api 'org.springframework.boot:spring-boot-cache'
 }

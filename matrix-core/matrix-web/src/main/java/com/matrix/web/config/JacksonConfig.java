@@ -14,8 +14,8 @@ import com.matrix.common.jackson.BigNumberSerializer;
 import com.matrix.common.util.json.JsonUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
-import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
+import org.springframework.boot.jackson2.autoconfigure.Jackson2AutoConfiguration;
+import org.springframework.boot.jackson2.autoconfigure.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 
 import java.math.BigInteger;
@@ -31,7 +31,7 @@ import java.util.TimeZone;
  * @since 2023/6/15
  **/
 @Slf4j
-@AutoConfiguration(before = JacksonAutoConfiguration.class)
+@AutoConfiguration(before = Jackson2AutoConfiguration.class)
 public class JacksonConfig {
 
 

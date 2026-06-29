@@ -92,24 +92,6 @@ spring:
 
 
 
-knife4j:
-  gateway:
-    enabled: true
-    strategy: manual
-    routes:
-      - name: 系统服务
-        url: /system/v3/api-docs
-        service-name: matrix-system
-        context-path: system
-        order: 1
-      - name: 资源服务
-        url: /resource/v3/api-docs
-        service-name: matrix-resource
-        context-path: resource
-        order: 2
-
-
-
 feign:
   sentinel:
     enabled: true

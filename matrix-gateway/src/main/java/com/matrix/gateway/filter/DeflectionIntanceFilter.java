@@ -52,7 +52,7 @@ public class DeflectionIntanceFilter implements GlobalFilter, Ordered {
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         URI url = exchange.getAttribute(ServerWebExchangeUtils.GATEWAY_REQUEST_URL_ATTR);
         String schemePrefix = exchange.getAttribute(ServerWebExchangeUtils.GATEWAY_SCHEME_PREFIX_ATTR);
-        if (exchange.getRequest().getHeaders().containsKey(CommonConstants.INSTANCE_INFO)) {
+        if (exchange.getRequest().getHeaders().get(CommonConstants.INSTANCE_INFO) != null) {
 
             addOriginalRequestUrl(exchange, url);
 

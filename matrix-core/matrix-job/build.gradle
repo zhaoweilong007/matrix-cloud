@@ -1,4 +1,4 @@
 dependencies {
     api project(':matrix-core:matrix-auto')
-    api 'net.dreamlu:mica-jobs'
+    // mica-jobs 在 mica 4.x 中已移除，matrix-job 未直接引用其类，仅依赖 mica-auto
 }

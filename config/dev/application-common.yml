@@ -192,26 +192,6 @@ management:
     health:
       show-details: always
 
-# knife4j的增强配置
-knife4j:
-  enable: true
-  production: false
-  setting:
-    language: zh_cn
-
-
-# springdoc-openapi项目配置
-springdoc:
-  swagger-ui:
-    path: /swagger-ui.html
-    tags-sorter: alpha
-    operations-sorter: alpha
-  api-docs:
-    path: /v3/api-docs
-  group-configs:
-    - group: ${spring.application.name}
-      paths-to-match: '/**'
-
 #分布式定时任务
 xxl:
   job:

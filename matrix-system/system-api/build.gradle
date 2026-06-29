@@ -2,5 +2,4 @@ dependencies {
     api project(':matrix-core:matrix-common')
     api project(':matrix-core:matrix-api')
     api project(':matrix-core:matrix-feign')
-    api project(':matrix-core:matrix-swagger')
 }

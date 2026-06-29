@@ -8,19 +8,17 @@ dependencies {
     implementation project(':matrix-core:matrix-prometheus')
     implementation project(':matrix-core:matrix-test')
     implementation(project(':matrix-core:matrix-auth')) {
-        exclude group: 'cn.dev33', module: 'sa-token-spring-boot3-starter'
+        exclude group: 'cn.dev33', module: 'sa-token-spring-boot4-starter'
     }
 
-    // spring cloud
-    implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
-    implementation 'org.springframework.cloud:spring-cloud-gateway-server-webflux'
+    // spring cloud (SC 2025.1 起 gateway starter 改名)
+    implementation 'org.springframework.cloud:spring-cloud-starter-gateway-server-webflux'
 
     // spring cloud alibaba
     implementation 'com.alibaba.cloud:spring-cloud-alibaba-sentinel-gateway'
 
     // spring boot
-    implementation 'cn.dev33:sa-token-reactor-spring-boot3-starter'
-    implementation 'com.github.xiaoymin:knife4j-gateway-spring-boot-starter'
+    implementation 'cn.dev33:sa-token-reactor-spring-boot4-starter'
 
     implementation 'com.github.ben-manes.caffeine:caffeine'
 }

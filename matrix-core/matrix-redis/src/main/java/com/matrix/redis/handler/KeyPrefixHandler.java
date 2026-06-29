@@ -1,7 +1,7 @@
 package com.matrix.redis.handler;
 
 import org.apache.commons.lang3.StringUtils;
-import org.redisson.api.NameMapper;
+import org.redisson.config.NameMapper;
 
 /**
  * redis缓存key前缀处理

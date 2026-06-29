@@ -25,6 +25,7 @@ import reactor.core.publisher.Mono;
 import java.net.URI;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.springframework.cloud.gateway.support.ServerWebExchangeUtils.*;
 
@@ -58,9 +59,11 @@ public class GrayVersionIsolationFilter implements GlobalFilter, Ordered {
 
         URI requestUri = exchange.getAttribute(GATEWAY_REQUEST_URL_ATTR);
         String serviceId = requestUri.getHost();
-        Set<LoadBalancerLifecycle> supportedLifecycleProcessors = LoadBalancerLifecycleValidator
-                .getSupportedLifecycleProcessors(clientFactory.getInstances(serviceId, LoadBalancerLifecycle.class),
-                        RequestDataContext.class, ResponseData.class, ServiceInstance.class);
+        // SC 5.0 移除了 LoadBalancerLifecycleValidator，内联其 supports() 过滤逻辑
+        Set<LoadBalancerLifecycle> supportedLifecycleProcessors = clientFactory
+                .getInstances(serviceId, LoadBalancerLifecycle.class).values().stream()
+                .filter(l -> l.supports(RequestDataContext.class, ResponseData.class, ServiceInstance.class))
+                .collect(Collectors.toSet());
         DefaultRequest<RequestDataContext> lbRequest = new DefaultRequest<>(
                 new RequestDataContext(new RequestData(exchange.getRequest()), getHint(serviceId)));
 

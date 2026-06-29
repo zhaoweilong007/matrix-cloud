@@ -8,10 +8,8 @@ import com.matrix.feign.chooser.IRuleChooser;
 import com.matrix.gateway.filter.*;
 import com.matrix.gateway.handler.GatewayExceptionHandler;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.gateway.config.GatewayLoadBalancerProperties;
 import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
@@ -19,10 +17,7 @@ import org.springframework.cloud.loadbalancer.support.LoadBalancerClientFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.http.converter.HttpMessageConverter;
 import reactor.core.publisher.Mono;
-
-import java.util.stream.Collectors;
 
 /**
  * 网关配置
@@ -104,13 +99,5 @@ public class GatewayConfig {
     public KeyResolver remoteAddrKeyResolver() {
         return exchange -> Mono.just(exchange.getRequest().getRemoteAddress().getAddress().getHostAddress());
     }
-
-
-    @Bean
-    @ConditionalOnMissingBean
-    public HttpMessageConverters messageConverters(ObjectProvider<HttpMessageConverter<?>> converters) {
-        return new HttpMessageConverters(converters.orderedStream().collect(Collectors.toList()));
-    }
-
 
 }

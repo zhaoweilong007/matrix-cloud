@@ -48,10 +48,9 @@ public class ServletUtils extends JakartaServletUtil {
      * @param response 响应
      * @param object   对象，会序列化成 JSON 字符串
      */
-    @SuppressWarnings("deprecation") // 必须使用 APPLICATION_JSON_UTF8_VALUE，否则会乱码
     public static void writeJSON(HttpServletResponse response, Object object) {
         String content = JSON.toJSONString(object);
-        write(response, content, MediaType.APPLICATION_JSON_UTF8_VALUE);
+        write(response, content, MediaType.APPLICATION_JSON_VALUE);
     }
 
     /**

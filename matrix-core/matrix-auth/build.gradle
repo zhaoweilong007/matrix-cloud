@@ -3,5 +3,6 @@ dependencies {
     api project(':matrix-core:matrix-redis')
     api 'cn.dev33:sa-token-core'
     api 'cn.dev33:sa-token-jwt'
-    api 'cn.dev33:sa-token-spring-boot3-starter'
+    api 'cn.dev33:sa-token-spring-boot4-starter'
+    compileOnly 'org.springframework:spring-webmvc'
 }
