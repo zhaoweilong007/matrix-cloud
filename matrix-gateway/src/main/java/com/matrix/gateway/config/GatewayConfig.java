@@ -16,6 +16,7 @@ import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
 import org.springframework.cloud.loadbalancer.support.LoadBalancerClientFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.core.annotation.Order;
 import reactor.core.publisher.Mono;
 
@@ -96,6 +97,7 @@ public class GatewayConfig {
 
 
     @Bean(value = "remoteAddrKeyResolver")
+    @Primary
     public KeyResolver remoteAddrKeyResolver() {
         return exchange -> Mono.just(exchange.getRequest().getRemoteAddress().getAddress().getHostAddress());
     }

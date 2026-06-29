@@ -13,15 +13,14 @@ import org.redisson.config.ClusterServersConfig;
 import org.redisson.config.MasterSlaveServersConfig;
 import org.redisson.config.SingleServerConfig;
 import org.redisson.spring.starter.RedissonAutoConfigurationCustomizer;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Primary;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializer;
 
@@ -41,19 +40,23 @@ public class RedissonConfiguration {
 
 
     /**
-     * 创建 RedisTemplate Bean，使用 JSON 序列化方式
+     * 自定义 Redisson 自动配置的 RedisTemplate，使用 JSON 序列化方式。
+     * Redisson 4.x AutoConfigurationV4 已注册 redisTemplate，此处通过 BeanPostProcessor 定制序列化。
      */
     @Bean
-    @Primary
-    @ConditionalOnBean(RedisConnectionFactory.class)
-    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory) {
-        RedisTemplate<String, Object> template = new RedisTemplate<>();
-        template.setConnectionFactory(factory);
-        template.setKeySerializer(RedisSerializer.string());
-        template.setHashKeySerializer(RedisSerializer.string());
-        template.setValueSerializer(RedisSerializer.json());
-        template.setHashValueSerializer(RedisSerializer.json());
-        return template;
+    public static BeanPostProcessor redisTemplatePostProcessor() {
+        return new BeanPostProcessor() {
+            @Override
+            public Object postProcessAfterInitialization(Object bean, String beanName) {
+                if (bean instanceof RedisTemplate<?, ?> template) {
+                    template.setKeySerializer(RedisSerializer.string());
+                    template.setHashKeySerializer(RedisSerializer.string());
+                    template.setValueSerializer(RedisSerializer.json());
+                    template.setHashValueSerializer(RedisSerializer.json());
+                }
+                return bean;
+            }
+        };
     }
 
     @Bean

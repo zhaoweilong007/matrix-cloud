@@ -3,7 +3,7 @@ package com.matrix.job;
 import cn.hutool.core.util.StrUtil;
 import net.dreamlu.mica.auto.annotation.AutoEnvPostProcessor;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.env.EnvironmentPostProcessor;
+import org.springframework.boot.EnvironmentPostProcessor;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 /**

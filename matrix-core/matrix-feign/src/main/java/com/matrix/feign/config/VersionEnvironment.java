@@ -5,7 +5,7 @@ import com.matrix.common.constant.ConfigConstants;
 import com.matrix.common.constant.Constants;
 import net.dreamlu.mica.auto.annotation.AutoEnvPostProcessor;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.env.EnvironmentPostProcessor;
+import org.springframework.boot.EnvironmentPostProcessor;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 /**

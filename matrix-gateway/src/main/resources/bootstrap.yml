@@ -10,3 +10,9 @@ spring:
     import:
       - optional:nacos:env.properties
       - optional:nacos:application-common.yml
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+      password: matrix
+      database: 0

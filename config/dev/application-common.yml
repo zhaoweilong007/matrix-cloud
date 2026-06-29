@@ -59,6 +59,11 @@ spring:
       max-idle-time: 60000
       connect-timeout: 5000
       socket-timeout: 5000
+    redis:
+      host: 127.0.0.1
+      port: 6379
+      password: matrix
+      database: 0
 
 mybatis-plus:
   encryptor:
@@ -86,14 +91,6 @@ mybatis-plus-join:
   banner: false # 关闭控制台的 Banner 打印
 
 ---
-spring:
-  redis:
-    redisson:
-      # 使用单机配置
-      config: |
-        singleServerConfig:
-
-
 redisson:
   # 线程池数量
   threads: 4

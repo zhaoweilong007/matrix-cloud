@@ -8,8 +8,8 @@ import com.alibaba.csp.sentinel.slots.system.SystemRule;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Primary;
 
 /**
  * @author ZhaoWeiLong
@@ -25,31 +25,31 @@ public class SentinelConfig {
     }
 
     @Bean({"sentinel-json-flow-converter"})
-    @Primary
+    @ConditionalOnMissingBean(name = "sentinel-json-flow-converter")
     public CustomJsonConvert jsonFlowConverter() {
         return new CustomJsonConvert(this.objectMapper, FlowRule.class);
     }
 
     @Bean({"sentinel-json-degrade-converter"})
-    @Primary
+    @ConditionalOnMissingBean(name = "sentinel-json-degrade-converter")
     public CustomJsonConvert jsonDegradeConverter() {
         return new CustomJsonConvert(this.objectMapper, DegradeRule.class);
     }
 
     @Bean({"sentinel-json-system-converter"})
-    @Primary
+    @ConditionalOnMissingBean(name = "sentinel-json-system-converter")
     public CustomJsonConvert jsonSystemConverter() {
         return new CustomJsonConvert(this.objectMapper, SystemRule.class);
     }
 
     @Bean({"sentinel-json-authority-converter"})
-    @Primary
+    @ConditionalOnMissingBean(name = "sentinel-json-authority-converter")
     public CustomJsonConvert jsonAuthorityConverter() {
         return new CustomJsonConvert(this.objectMapper, AuthorityRule.class);
     }
 
     @Bean({"sentinel-json-param-flow-converter"})
-    @Primary
+    @ConditionalOnMissingBean(name = "sentinel-json-param-flow-converter")
     public CustomJsonConvert jsonParamFlowConverter() {
         return new CustomJsonConvert(this.objectMapper, ParamFlowRule.class);
     }
