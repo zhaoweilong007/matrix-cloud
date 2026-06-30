@@ -123,6 +123,15 @@
 
 ## 二、待办计划
 
+### 进度总览
+
+| 阶段 | 状态 | 完成度 | 说明 |
+|------|------|--------|------|
+| Phase 1 构建与配置修复 | ✅ | 4/4 | configuration-cache、baseImage JDK21、CLAUDE.md 同步、toml 别名清理 |
+| Phase 2 运行时冒烟测试 | ✅ | 5/5 | Gateway/Admin/Resource-Biz 启动验证、定向回归 |
+| Phase 3 Seata & SkyWalking 验证 | ⚠️ | 2/4 | Seata Nacos 配置读取成功、ES 启动成功；NamingServer JDK 兼容性、OAP WSL2 兼容性阻塞 |
+| Phase 4 收尾与合并准备 | ✅ | 完成 | 文档更新、代码提交 |
+
 ### 2.1 运行时冒烟测试 ✅ 已完成 (2026-06-30)
 
 - [x] **gateway 启动验证**：SB4 启动 6s，Nacos 注册成功，Redisson 连接，sa-token 鉴权正常，Sentinel 网关过滤器加载
@@ -190,10 +199,11 @@
 **提交记录：**
 - `dee1fdd` - Phase 1：构建配置修复与文档同步
 - `c4b9ba0` - Phase 3：Seata & SkyWalking 验证记录
+- `252f6eb` - Phase 4：收尾与合并准备完成
 
 **阻塞问题（需后续解决）：**
-1. **Seata NamingServer JDK 兼容性**：需升级 seata-server 到 JDK17 镜像
-2. **SkyWalking OAP WSL2 兼容性**：需在非 WSL2 环境验证或降级版本
+1. **Seata NamingServer JDK 兼容性**：需升级 seata-server 到 JDK17 镜像（`apache/seata-server:2.6.0-java17`）
+2. **SkyWalking OAP WSL2 兼容性**：需在非 WSL2 环境验证或降级到 9.7.0
 
 ### 2.6 后续延后项目
 
