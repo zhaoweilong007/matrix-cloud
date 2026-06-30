@@ -42,13 +42,6 @@ matrix:
     - sys_contact_log
   ignore-urls:
     - /resource/ip/**
-  swagger:
-    enabled: true
-    title: 资源服务
-    version: 1.0
-    description: oss、sms、email、jpush服务
-    contact-user: zwl
-    contact-url: http://localhost:9003/v3/api-docs
   mq:
     enabled: false
     onsAddr:

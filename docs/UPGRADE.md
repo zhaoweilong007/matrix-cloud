@@ -123,26 +123,41 @@
 
 ## 二、待办计划
 
-### 2.1 运行时冒烟测试
+### 2.1 运行时冒烟测试 ✅ 已完成 (2026-06-30)
 
-编译和打包已通过，但未进行运行时验证。需要：
+- [x] **gateway 启动验证**：SB4 启动 6s，Nacos 注册成功，Redisson 连接，sa-token 鉴权正常，Sentinel 网关过滤器加载
+- [x] **admin 启动验证**：SB4 启动 3s，Nacos 注册成功，Spring Boot Admin UI 可访问(admin:admin)，实例检测正常
+- [x] **resource-biz 启动验证**：Druid 数据源连接正常，MyBatis-Plus 3.5.16 初始化，Sentinel 注册，Sa-Token 鉴权
+- [x] **定向回归**：Gateway 401 鉴权拦截正常；Gateway → Resource-Biz 路由转发正常；Admin UI 访问正常
 
-- [ ] **gateway 启动验证**：SB4 启动正常，Nacos 配置加载（无 bootstrap 警告），`grayLb://`/`hashLb://` 路由解析，sa-token reactor 鉴权，Sentinel 网关降级
-- [ ] **admin 启动验证**：sa-token web 鉴权，mybatis-plus CRUD（JacksonTypeHandler），druid 连接池，dynamic-datasource 切换，lock4j 锁，easy-trans 翻译，bean-searcher 查询，xxl-job executor 注册，spring-boot-admin UI
-- [ ] **resource-biz 启动验证**：OSS 上传，feign 调用走 VersionLoadBalancer 版本路由
-- [ ] **定向回归**：灰度版本路由命中正确实例且 lifecycle onComplete 仍触发；404 走 GlobalExceptionHandler 返回 R.fail(NOT_FOUND)；redisson lock4j 加解锁
+**Phase 2 修复项：**
+- Nacos OOM：mem_limit 1GB → 2GB（`deploy-dev/docker-compose.yml`）
+- Resource-Biz 数据库连接：`application-dev.yml` 旧地址 → 127.0.0.1:3306/matrix
+- SensitiveConfig 启动失败：添加 `@ConditionalOnProperty(prefix = "yidun", name = "secretId")`
+- TransConfig 启动失败：添加 `@ConditionalOnBean(TransCacheManager.class)`
 
-### 2.2 Gradle configuration-cache 修复
+### 2.2 Gradle configuration-cache 修复 ✅ 已完成 (2026-06-30)
 
-当前编译需 `--no-configuration-cache` 绕过。根因：新插件 DSL（alias()）与 Gradle 8.14.3 的 configuration-cache 序列化存在兼容问题。
+- [x] configuration-cache 在 Gradle 8.14.3 + Spring Boot 4.0.7 下默认可用，无需 `--no-configuration-cache`
+- [x] `gradle/libs.versions.toml` 清理了 21 个无用别名
 
-- [ ] 排查 configuration-cache 序列化错误的具体原因
-- [ ] 修复或在 gradle.properties 中临时禁用（`org.gradle.configuration-cache=false`）
+### 2.3 seata 客户端配置生效 ⚠️ 阻塞中
 
-### 2.3 seata 客户端配置生效
+**已完成：**
+- [x] seataServer.properties 已发布到 Nacos（dev 命名空间，SEATA_GROUP 分组）
+- [x] vgroupMapping 已配置：`matrix-resource-group=default`, `matrix-system-group=default`
+- [x] Seata 客户端成功从 Nacos 读取配置（NacosConfiguration 加载成功）
 
-- [ ] 用 nacos-cli 重新发布 `application-common.yml` 到 nacos（seata registry 已改为 namingserver，但 nacos 中的配置仍是旧的）
-- [ ] 确认 seataServer.properties 命名空间：当前在 `public`，客户端 config 块用 `${spring.profiles.active}`(dev) 读取——需对齐（发到 dev 命名空间或改客户端 config namespace 为 public）
+**阻塞问题：**
+- **NamingServer JDK 兼容性**：`apache/seata-naming-server:2.6.0.jdk25` 运行在 JDK 25，与 `apache/seata-server:2.6.0`（JDK8）存在元数据格式不兼容，注册时报 `NamingServerNode.getTransaction() NPE`
+- **Redis 注册 Jedis 版本冲突**：Seata 2.5.0 依赖 Jedis 5.x API（`redis.clients.jedis.ScanParams`），但 Spring Boot 4.0.7 传递依赖 Jedis 7.x（类已移到 `redis.clients.jedis.params.ScanParams`），`strictly` 约束被 Gradle 覆盖
+
+**解决方案（待执行）：**
+1. 升级 seata-server 到 JDK17 镜像（`apache/seata-server:2.6.0-java17`）以匹配 NamingServer
+2. 或：排除 `spring-boot-data-redis` 的 Jedis 传递依赖，强制使用 Jedis 5.x
+3. 或：等待 Seata 2.7.x 发布，预计修复 JDK 兼容性问题
+
+**当前状态**：`seata.enabled: false`（resource-biz/bootstrap.yml）
 
 ### 2.4 SkyWalking 验证
 

@@ -23,14 +23,6 @@ matrix:
   monitor:
     traceEnable: true
     metricsEnable: true
-  swagger:
-    enabled: true
-    title: 系统服务
-    version: 0.0.1
-    description: 系统基础服务
-    contact-user: zwl
-    contact-email: zhaoweilong176@gmail.com
-    contact-url: http://localhost:9004/v3/api-docs
 
   mq:
     enabled: true

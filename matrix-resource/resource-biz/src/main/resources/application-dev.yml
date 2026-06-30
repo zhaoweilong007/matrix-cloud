@@ -7,14 +7,38 @@ logging:
     com.alibaba.nacos: warn
     org.springframework: warn
 
+# Seata 配置（覆盖 seata.yml 中的占位符）
+seata:
+  enabled: true
+  tx-service-group: ${spring.application.name}-group
+  config:
+    type: nacos
+    nacos:
+      server-addr: ${spring.cloud.nacos.server-addr:127.0.0.1:8848}
+      group: SEATA_GROUP
+      namespace: ${spring.profiles.active:dev}
+      username: nacos
+      password: nacos
+      data-id: seataServer.properties
+  registry:
+    # NamingServer 2.6.0.jdk25 与 seata-server 2.6.0(JDK8) 存在兼容问题，改用 Redis 注册
+    type: redis
+    redis:
+      server-addr: ${spring.redis.host:localhost}:${spring.redis.port:6379}
+      db: 0
+      password: ${spring.redis.password:matrix}
+      timeout: 0
+      max-conn: 10
+      min-conn: 1
+
 spring:
   datasource:
     dynamic:
       datasource:
         master:
-          url: jdbc:mysql://${DATASOURCE_HOST:192.168.31.20:4306}/fdx?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&rewriteBatchedStatements=true&allowMultiQueries=true
-          username: ${DATASOURCE_USERNAME:fangdx}
-          password: ${DATASOURCE_PASSWORD:UeD:oW-eC|u}
+          url: jdbc:mysql://${DATASOURCE_HOST:127.0.0.1:3306}/${DATASOURCE_DB:matrix}?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8&rewriteBatchedStatements=true&allowMultiQueries=true&allowPublicKeyRetrieval=true
+          username: ${DATASOURCE_USERNAME:root}
+          password: ${DATASOURCE_PASSWORD:matrix}
           driver-class-name: com.mysql.cj.jdbc.Driver
 
 

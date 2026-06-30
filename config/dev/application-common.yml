@@ -302,8 +302,6 @@ matrix:
   mq:
     enabled: false
     onsAddr: ${MQ_ONSADDR:}
-  swagger:
-    enabled: ${SWAGGER_ENABLED:false}
 
 logging:
   level:

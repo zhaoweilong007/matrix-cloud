@@ -24,7 +24,7 @@ services:
     networks:
       - matrix_cloud
     # 资源限制
-    mem_limit: 1g
+    mem_limit: 2g
     mem_reservation: 512m
     cpus: 1.0
     # 健康检查 - 增加启动等待时间，让Nacos有足够时间初始化
@@ -56,7 +56,7 @@ services:
     networks:
       - matrix_cloud
     # 资源限制
-    mem_limit: 1g
+    mem_limit: 2g
     mem_reservation: 512m
     cpus: 1.0
     # 健康检查
@@ -107,7 +107,7 @@ services:
     networks:
       - matrix_cloud
     # 资源限制
-    mem_limit: 1g
+    mem_limit: 2g
     mem_reservation: 512m
     cpus: 0.5
     # 健康检查
@@ -156,17 +156,19 @@ services:
   seata-naming-server:
     image: apache/seata-naming-server:${SEATA_NAMING_VERSION}
     container_name: seata-naming-server
+    volumes:
+      - ./seata/namingserver-application.yml:/seata-naming-server/resources/application.yml
     environment:
       TZ: Asia/Shanghai
       # namingserver 注册端点需鉴权，默认 console user 为空 → 注册返回 401。
       # 用 Spring Boot 标准机制注入 console 用户(seata/seata)，与 seata-server registry 账号一致。
-      SPRING_APPLICATION_JSON: '{"console":{"user":{"username":"seata","password":"seata"}},"seata":{"namingserver":{"auth":{"enabled":false}}}}'
+      SPRING_APPLICATION_JSON: '{"console":{"user":{"username":"seata","password":"seata"}}}'
     ports:
       - "8081:8081"
     restart: always
     networks:
       - matrix_cloud
-    mem_limit: 1g
+    mem_limit: 2g
     mem_reservation: 512m
     cpus: 0.5
     healthcheck:
@@ -197,7 +199,7 @@ services:
     networks:
       - matrix_cloud
     # 资源限制
-    mem_limit: 1g
+    mem_limit: 2g
     mem_reservation: 512m
     cpus: 0.5
     # 健康检查：2.6.0 server 为非 web 模式(web-application-type:none)，8091 是 Netty RPC 端口，用 TCP 探活
@@ -209,120 +211,90 @@ services:
       start_period: 40s
 
 
+  # RocketMQ 5.5.0 - 最小内存配置
+  mqnamesrv:
+    image: apache/rocketmq:${ROCKETMQ_VERSION}
+    container_name: mqnamesrv
+    environment:
+      HEAP_OPTS: "-Xms128m -Xmx128m -Xmn64m"
+      JAVA_OPT_EXT: -XX:MaxMetaspaceSize=64m
+    ports:
+      - "9876:9876"
+    volumes:
+      - ./rocketmq/data/logs:/home/rocketmq/logs
+    command: sh mqnamesrv
+    restart: always
+    networks:
+      - matrix_cloud
+    # 资源限制 - namesrv 最小配置
+    mem_limit: 256m
+    mem_reservation: 128m
+    cpus: 0.25
+    # 健康检查
+    healthcheck:
+      test: [ "CMD-SHELL", "bash -c '</dev/tcp/localhost/9876'" ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
 
-#
-#
-#  mqnamesrv:
-#    image: apache/rocketmq:${ROCKETMQ_VERSION}
-#    container_name: mqnamesrv
-#    environment:
-#      JAVA_OPT: -server -Xms512m -Xmx512m
-#    ports:
-#      - "9876:9876"
-#    volumes:
-#      - ./rocketmq/data/logs:/home/rocketmq/logs
-#    command: sh mqnamesrv
-#    restart: always
-#    networks:
-#      - matrix_cloud
-#    # 资源限制
-#    mem_limit: 256m
-#    mem_reservation: 128m
-#    cpus: 0.5
-#    # 健康检查 - 修复健康检查命令，使用更可靠的检查方式
-#    healthcheck:
-#      test: [ "CMD", "sh", "-c", "ps aux | grep mqnamesrv | grep -v grep" ]
-#      interval: 30s
-#      timeout: 10s
-#      retries: 3
-#      start_period: 60s
-#
-#
-#  mqbroker1:
-#    image: apache/rocketmq:${ROCKETMQ_VERSION}
-#    container_name: mqbroker1
-#    ports:
-#      - "10911:10911"
-#      - "10909:10909"
-#      - "10912:10912"
-#    environment:
-#      JAVA_OPT_EXT: -server -Xms512M -Xmx512M -Xmn256m
-#    volumes:
-#      - ./rocketmq/broker1/conf/broker.conf:/home/rocketmq/rocketmq-${ROCKETMQ_VERSION}/conf/broker.conf
-#      - ./rocketmq/broker1/logs:/home/rocketmq/logs/rocketmqlogs
-#      - ./rocketmq/broker1/store:/home/rocketmq/store
-#    command: sh mqbroker -c /home/rocketmq/rocketmq-${ROCKETMQ_VERSION}/conf/broker.conf
-#    depends_on:
-#      mqnamesrv:
-#        condition: service_healthy
-#    restart: always
-#    networks:
-#      - matrix_cloud
-#    # 资源限制
-#    mem_limit: 256m
-#    mem_reservation: 128m
-#    cpus: 1.0
-#    # 健康检查
-#    healthcheck:
-#      test: [ "CMD", "sh", "-c", "echo \"status\" | nc localhost 10911" ]
-#      interval: 30s
-#      timeout: 10s
-#      retries: 3
-#      start_period: 60s
-#    # 可扩展性配置
-#    deploy:
-#      # 支持Docker Swarm模式下的扩展
-#      replicas: 1
-#      # 资源限制
-#      resources:
-#        limits:
-#          cpus: '1.0'
-#          memory: 2g
-#        reservations:
-#          cpus: '0.5'
-#          memory: 1g
-#      # 重启策略
-#      restart_policy:
-#        condition: on-failure
-#        delay: 5s
-#        max_attempts: 3
-#        window: 120s
-#      # 服务更新配置
-#      update_config:
-#        parallelism: 1
-#        delay: 10s
-#        failure_action: rollback
-#      # 服务回滚配置
-#      rollback_config:
-#        parallelism: 1
-#        delay: 10s
-#    # 服务标签，便于管理和监控
-#    labels:
-#      - "com.matrix-cloud.service=rocketmq-broker"
-#      - "com.matrix-cloud.environment=dev"
-#      - "com.matrix-cloud.version=${ROCKETMQ_VERSION}"
-#
-#  mqconsole:
-#    image: styletang/rocketmq-console-ng:latest
-#    container_name: mqconsole
-#    ports:
-#      - "19876:19876"
-#    environment:
-#      JAVA_OPTS: -Dserver.port=19876 -Drocketmq.namesrv.addr=mqnamesrv:9876 -Dcom.rocketmq.sendMessageWithVIPChannel=false
-#    depends_on:
-#      mqnamesrv:
-#        condition: service_healthy
-#    networks:
-#      - matrix_cloud
-#    restart: always
-#    # 资源限制
-#    mem_limit: 256m
-#    mem_reservation: 128m
-#    cpus: 0.5
-#    # 健康检查
-#    healthcheck:
-#      test: [ "CMD", "curl", "-f", "http://localhost:19876" ]
-#      interval: 30s
-#      timeout: 10s
-#      retries: 3
-#      start_period: 60s
+
+  mqbroker1:
+    image: apache/rocketmq:${ROCKETMQ_VERSION}
+    container_name: mqbroker1
+    ports:
+      - "10911:10911"
+      - "10909:10909"
+      - "10912:10912"
+    environment:
+      # broker 最小 JVM 配置（broker 需要更多堆外内存）
+      HEAP_OPTS: "-Xms256m -Xmx256m -Xmn128m -XX:MaxDirectMemorySize=64m"
+      JAVA_OPT_EXT: -XX:MaxMetaspaceSize=64m
+    volumes:
+      - ./rocketmq/broker1/conf/broker.conf:/home/rocketmq/rocketmq-${ROCKETMQ_VERSION}/conf/broker.conf
+      - ./rocketmq/broker1/logs:/home/rocketmq/logs/rocketmqlogs
+      - ./rocketmq/broker1/store:/home/rocketmq/store
+    command: sh mqbroker -c /home/rocketmq/rocketmq-${ROCKETMQ_VERSION}/conf/broker.conf
+    depends_on:
+      mqnamesrv:
+        condition: service_healthy
+    restart: always
+    networks:
+      - matrix_cloud
+    # 资源限制 - broker 最小配置
+    mem_limit: 2g
+    mem_reservation: 512m
+    cpus: 0.5
+    # 健康检查
+    healthcheck:
+      test: [ "CMD-SHELL", "bash -c '</dev/tcp/localhost/10911'" ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+
+  mqconsole:
+    image: styletang/rocketmq-console-ng:latest
+    container_name: mqconsole
+    ports:
+      - "19876:19876"
+    environment:
+      JAVA_OPTS: -Dserver.port=19876 -Drocketmq.namesrv.addr=mqnamesrv:9876 -Dcom.rocketmq.sendMessageWithVIPChannel=false
+    depends_on:
+      mqnamesrv:
+        condition: service_healthy
+    networks:
+      - matrix_cloud
+    restart: always
+    # 资源限制
+    mem_limit: 256m
+    mem_reservation: 128m
+    cpus: 0.25
+    # 健康检查
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:19876" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s

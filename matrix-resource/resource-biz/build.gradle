@@ -17,7 +17,6 @@ dependencies {
         exclude group: 'com.sun.xml.bind', module: 'jaxb-core'
     }
     implementation project(':matrix-core:matrix-oss')
-    implementation project(':matrix-core:matrix-sensitive')
     implementation project(':matrix-core:matrix-mongodb')
     implementation project(':matrix-core:matrix-test')
 

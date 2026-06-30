@@ -7,6 +7,7 @@ import com.matrix.translation.entity.SysUserTrans;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 
@@ -19,6 +20,7 @@ import java.util.Map;
  * @since 2023/8/30
  **/
 @AutoConfiguration
+@ConditionalOnBean(TransCacheManager.class)
 public class TransConfig {
 
     @Autowired

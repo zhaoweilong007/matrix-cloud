@@ -1,5 +1,0 @@
-dependencies {
-    api(project(":matrix-core:matrix-auto"))
-    api(project(':matrix-core:matrix-feign'))
-    api libs.yidun.sdk
-}

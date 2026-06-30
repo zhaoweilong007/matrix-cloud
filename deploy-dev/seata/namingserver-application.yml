@@ -1,0 +1,42 @@
+# NamingServer application.yml - 自定义配置，挂载到容器覆盖默认配置
+server:
+  port: 8081
+spring:
+  threads:
+    virtual:
+      enabled: true
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  ai:
+    mcp:
+      server:
+        protocol: streamable
+        streamable-http:
+          mcp-endpoint: /mcp
+        name: mcp-server
+        version: 1.0.0
+  application:
+    name: seata-namingserver
+logging:
+  config: classpath:logback-spring.xml
+  file:
+    path: ${log.home:${user.home}/logs/seata}
+heartbeat:
+  threshold: 90000
+  period: 60000
+console:
+  user:
+    username:
+    password:
+seata:
+  security:
+    secretKey: SeataSecretKey0c382ef121d778043159209298fd40bf3850a017
+    tokenValidityInMilliseconds: 1800000
+    csrf-ignore-urls: /naming/v1/**,/api/v1/naming/**
+    ignore:
+      # 添加 /naming/v1/** 允许 Seata Server 注册（不需要 JWT 认证）
+      urls: /,/**/*.css,/**/*.js,/**/*.html,/**/*.map,/**/*.svg,/**/*.png,/**/*.jpeg,/**/*.ico,/api/v1/auth/login,/version.json,/naming/v1/**,/error
+  mcp:
+    query:
+      max-query-duration: 86400000

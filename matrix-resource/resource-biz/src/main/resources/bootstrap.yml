@@ -40,7 +40,8 @@ mybatis-plus:
     map-underscore-to-camel-case: true
   type-aliases-package: com.matrix.**.entity,com.matrix.**.vo
 
-# seata 暂时禁用，待 namingserver 认证问题解决后启用
+# seata 暂时禁用：NamingServer 2.6.0.jdk25 与 seata-server(JDK8) 不兼容，Jedis 5.x/7.x 版本冲突
+# 后续方案：1) 升级 seata-server 到 JDK17+ 镜像 或 2) 排除 spring-data-redis 的 Jedis 传递依赖
 seata:
   enabled: false
 

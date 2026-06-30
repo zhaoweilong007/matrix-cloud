@@ -43,7 +43,8 @@ seata:
     type: file
   registry:
     # support: nacos, eureka, redis, zk, consul, etcd3, sofa, seata
-    # 改用 Seata 自研 namingserver 注册(Nacos 3.x 移除 v1 naming API，旧 nacos-client 无法注册)
+    # NamingServer 2.6.0.jdk25 与 seata-server 2.6.0(JDK8) 存在兼容问题(NamingServerNode.getTransaction() NPE)
+    # 暂时保留 seata 类型配置，待升级 seata-server 到 JDK17+ 镜像后启用
     type: seata
     seata:
       server-addr: seata-naming-server:8081
