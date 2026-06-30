@@ -5,62 +5,64 @@ networks:
 
 
 services:
-  es:
-    image: elasticsearch:${ELASTIC_VERSION}
-    container_name: es
+  # BanyanDB - SkyWalking 10.4.0 存储后端（替代 Elasticsearch）
+  banyandb:
+    image: apache/skywalking-banyandb:${BANYANDB_VERSION:-0.8.0}
+    container_name: banyandb
+    command: standalone
     ports:
-      - "9200:9200"
-      - "9300:9300"
+      - "17912:17912"
+      - "17913:17913"
     environment:
-      # 设置集群名称
-      cluster.name: elasticsearch
-      # 以单一节点模式启动
-      discovery.type: single-node
-      ES_JAVA_OPTS: "-Xms512m -Xmx512m"
-      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:-}
+      TZ: Asia/Shanghai
     volumes:
-      - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro,z
-      - ./elasticsearch/plugins:/usr/share/elasticsearch/plugins
-      - ./elasticsearch/data:/usr/share/elasticsearch/data
-      - ./elasticsearch/logs:/usr/share/elasticsearch/logs
+      - ./banyandb/data:/var/lib/banyandb
     networks:
       - matrix_cloud
     restart: always
-
-  setup:
-    profiles:
-      - setup
-    build:
-      context: setup/
-      args:
-        ELASTIC_VERSION: ${ELASTIC_VERSION}
-    init: true
-    volumes:
-      - ./setup/entrypoint.sh:/entrypoint.sh:ro,Z
-      - ./setup/lib.sh:/lib.sh:ro,Z
-      - ./setup/roles:/roles:ro,Z
-    environment:
-      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:-}
-    networks:
-      - matrix_cloud
-    depends_on:
-      - es
+    mem_limit: 1g
+    mem_reservation: 512m
+    cpus: 0.5
+    healthcheck:
+      test: [ "CMD-SHELL", "wget -q --spider http://localhost:17913 || exit 1" ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
 
   sky-oap:
     image: apache/skywalking-oap-server:${SKYWALING_VERSION}
     container_name: sky-oap
     volumes:
-      - ./skywalking:/skywalking/ext-config
+      - ./skywalking/config:/skywalking/ext-config
     ports:
       - "11800:11800"
       - "12800:12800"
     environment:
       TZ: Asia/Shanghai
+      SW_STORAGE: banyandb
+      # BanyanDB 配置 - 通过环境变量传递
+      SW_STORAGE_BANYANDB_TARGETS: banyandb:17912
+      SW_STORAGE_BANYANDB_MAX_BULK_SIZE: 10000
+      SW_STORAGE_BANYANDB_FLUSH_INTERVAL: 15
+      SW_STORAGE_BANYANDB_FLUSH_TIMEOUT: 10
+      SW_STORAGE_BANYANDB_CONCURRENT_WRITE_THREADS: 15
+      SW_STORAGE_BANYANDB_QUERY_MAX_WINDOW_SIZE: 10000
+      SW_STORAGE_BANYANDB_QUERY_MAX_SIZE: 10000
+      SW_STORAGE_BANYANDB_QUERY_SEGMENT_SIZE: 200
+      SW_STORAGE_BANYANDB_QUERY_PROFILE_TASK_SIZE: 200
+      SW_STORAGE_BANYANDB_QUERY_PROFILE_DATA_BATCH_SIZE: 100
+      # WSL2 兼容性：禁用 Netty epoll 原生传输，使用 NIO
+      JAVA_OPTS: "-Dio.grpc.netty.shaded.io.netty.transport.noNative=true -Dio.netty.transport.noNative=true"
     depends_on:
-      - es
+      banyandb:
+        condition: service_healthy
     networks:
       - matrix_cloud
     restart: always
+    mem_limit: 2g
+    mem_reservation: 512m
+    cpus: 1.0
 
   sky-ui:
     image: apache/skywalking-ui:${SKYWALING_UI_VERSION}

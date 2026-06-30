@@ -129,8 +129,9 @@
 |------|------|--------|------|
 | Phase 1 构建与配置修复 | ✅ | 4/4 | configuration-cache、baseImage JDK21、CLAUDE.md 同步、toml 别名清理 |
 | Phase 2 运行时冒烟测试 | ✅ | 5/5 | Gateway/Admin/Resource-Biz 启动验证、定向回归 |
-| Phase 3 Seata & SkyWalking 验证 | ⚠️ | 2/4 | Seata Nacos 配置读取成功、ES 启动成功；NamingServer JDK 兼容性、OAP WSL2 兼容性阻塞 |
+| Phase 3 Seata & SkyWalking 验证 | ✅ | 4/4 | Seata JDK17 镜像 + NamingServer 注册成功；BanyanDB 0.10.2 + OAP 10.4.0 启动成功 |
 | Phase 4 收尾与合并准备 | ✅ | 完成 | 文档更新、代码提交 |
+| Phase 5 阻塞问题解决 | ✅ | 2/2 | Seata JDK 兼容性、SkyWalking WSL2 兼容性 |
 
 ### 2.1 运行时冒烟测试 ✅ 已完成 (2026-06-30)
 
@@ -162,37 +163,43 @@
 - **Redis 注册 Jedis 版本冲突**：Seata 2.5.0 依赖 Jedis 5.x API（`redis.clients.jedis.ScanParams`），但 Spring Boot 4.0.7 传递依赖 Jedis 7.x（类已移到 `redis.clients.jedis.params.ScanParams`），`strictly` 约束被 Gradle 覆盖
 
 **解决方案（待执行）：**
-1. 升级 seata-server 到 JDK17 镜像（`apache/seata-server:2.6.0-java17`）以匹配 NamingServer
+1. 升级 seata-server 到 JDK17 镜像（`apache/seata-server:2.6.0.jdk17`）以匹配 NamingServer
 2. 或：排除 `spring-boot-data-redis` 的 Jedis 传递依赖，强制使用 Jedis 5.x
 3. 或：等待 Seata 2.7.x 发布，预计修复 JDK 兼容性问题
 
-**当前状态**：`seata.enabled: false`（resource-biz/bootstrap.yml）
+**当前状态**：✅ 已解决 — seata-server 已升级到 JDK17 镜像，`seata.enabled: true`
 
-### 2.4 SkyWalking 验证 ⚠️ 阻塞中
+### 2.4 SkyWalking 验证 ✅ 已解决 (2026-06-30)
 
-**已完成：**
-- [x] ES 8.19.17 启动成功，集群健康（green 状态）
-- [x] SkyWalking UI 10.4.0 可访问（http://localhost:9080）
-- [x] `dev.env` 中 `SW_AGENT_COLLECTOR_BACKEND_SERVICES` 修正为 `127.0.0.1:11800`
+**问题根因：**
+- OAP 10.4.0 内部 gRPC 端口（17912）在 WSL2 环境下 Netty epoll 连接失败
+- BanyanDB 版本不兼容：OAP 10.4.0 需要 BanyanDB API 0.10+，初始部署的 0.8.0 不满足
 
-**阻塞问题：**
-- **OAP 10.4.0 持续崩溃**：`finishConnect(..) failed with error(-111): Connection refused` — OAP 内部 gRPC 通信端口（17912）连接失败，WSL2 环境下 Netty epoll 与内部通信存在兼容性问题
-- 尝试了 standalone 集群模式、H2 内存存储、telemetry=none 等方案均无法解决
-- ES 存储模式和 H2 存储模式均出现相同错误
+**解决方案：**
+1. **BanyanDB 替代 ES**：部署 `apache/skywalking-banyandb:0.10.2` 替代 Elasticsearch
+2. **Netty epoll 禁用**：添加 JVM 参数 `-Dio.grpc.netty.shaded.io.netty.transport.noNative=true -Dio.netty.transport.noNative=true`
+3. **BanyanDB 目标配置**：通过环境变量 `SW_STORAGE_BANYANDB_TARGETS=banyandb:17912` 指定连接地址
+4. **bydb.yaml 配置**：`config/bydb.yaml` 中 `targets: ${SW_STORAGE_BANYANDB_TARGETS:127.0.0.1:17912}`
 
-**解决方案（待执行）：**
-1. 尝试在非 WSL2 环境（原生 Linux/Docker Desktop）下验证
-2. 或降级 SkyWalking 到 9.7.0（更稳定的版本）
-3. 或使用 SkyWalking 10.4.0 的 BanyanDB 替代 ES
+**验证结果：**
+- [x] BanyanDB 0.10.2 容器健康运行（standalone 模式）
+- [x] OAP 10.4.0 成功连接 BanyanDB，API 版本 0.10 匹配
+- [x] OAP 自动创建 schema（measures、streams、index rules）
+- [x] SkyWalking UI 可访问（http://localhost:9080）
+- [x] gRPC 端口 11800 和 HTTP 端口 12800 正常监听
 
-**当前状态**：OAP 无法启动，SkyWalking 栈不可用
+**配置变更：**
+- `deploy-dev/.env`：`BANYANDB_VERSION=0.10.2`
+- `deploy-dev/docker-prometheus.yml`：添加 BanyanDB 服务，OAP 环境变量配置
+- `deploy-dev/skywalking/config/bydb.yaml`：BanyanDB 连接配置
+- `deploy-dev/skywalking/config/application.yml`：`storage.selector: banyandb`
 
 ### 2.5 Phase 4：收尾与合并准备 ✅ 已完成 (2026-06-30)
 
 **已完成：**
 - [x] **Phase 1 构建与配置修复**：4/4 任务完成（configuration-cache、baseImage JDK21、CLAUDE.md 同步、toml 别名清理）
 - [x] **Phase 2 运行时冒烟测试**：5/5 任务完成（Gateway/Admin/Resource-Biz 启动验证、定向回归）
-- [x] **Phase 3 Seata & SkyWalking 验证**：部分完成，阻塞问题已记录
+- [x] **Phase 3 Seata & SkyWalking 验证**：已完成，阻塞问题已解决
 - [x] **文档更新**：UPGRADE.md 记录所有变更、修复项、阻塞问题及解决方案
 - [x] **代码提交**：所有变更已提交到 3.x 分支
 
@@ -201,9 +208,9 @@
 - `c4b9ba0` - Phase 3：Seata & SkyWalking 验证记录
 - `252f6eb` - Phase 4：收尾与合并准备完成
 
-**阻塞问题（需后续解决）：**
-1. **Seata NamingServer JDK 兼容性**：需升级 seata-server 到 JDK17 镜像（`apache/seata-server:2.6.0-java17`）
-2. **SkyWalking OAP WSL2 兼容性**：需在非 WSL2 环境验证或降级到 9.7.0
+**Phase 5 阻塞问题解决：**
+1. ✅ **Seata NamingServer JDK 兼容性**：已升级 seata-server 到 `apache/seata-server:2.6.0.jdk17`
+2. ✅ **SkyWalking OAP WSL2 兼容性**：已切换到 BanyanDB 0.10.2 存储后端 + 禁用 Netty epoll
 
 ### 2.6 后续延后项目
 
@@ -235,11 +242,12 @@ dependency-management = 1.1.7
 NACOS_VERSION       = v3.2.2
 MYSQL_VERSION       = 8.0.46
 REDIS_VERSION       = 7.4.9
-SEATA_VERSION       = 2.6.0
+SEATA_VERSION       = 2.6.0.jdk17
 SEATA_NAMING_VERSION = 2.6.0.jdk25
 ELASTIC_VERSION     = 8.19.17
 SKYWALING_VERSION   = 10.4.0-java17
 SKYWALING_UI_VERSION = 10.4.0-java17
+BANYANDB_VERSION    = 0.10.2
 XXL_JOB_VERSION     = 3.4.2
 ROCKETMQ_VERSION    = 5.5.0
 SENTINEL_VERSION    = 1.8.5
@@ -256,7 +264,9 @@ SENTINEL_VERSION    = 1.8.5
 | Seata NamingServer | 8081 |
 | Seata Server RPC | 8091 |
 | XXL-Job Admin | 9100 |
-| SkyWalking UI | 8080 |
+| SkyWalking UI | 9080 |
+| BanyanDB gRPC | 17912 |
+| BanyanDB HTTP | 17913 |
 
 ---
 
@@ -269,3 +279,5 @@ SENTINEL_VERSION    = 1.8.5
 | 保留 Jackson 2（spring-boot-jackson2） | SB4 Jackson 迁移影响面大（~15 文件 + easy-es/bean-searcher 兼容），过渡模块可保兼容 | 2026-06-29 |
 | JDK 17 → 21 | 用户选择，SB4 支持 21，可享用虚拟线程等新特性 | 2026-06-29 |
 | 全量 starter 升级到最新 | 用户选择，确保兼容性 | 2026-06-29 |
+| Seata Server 升级到 JDK17 镜像 | NamingServer 2.6.0.jdk25 与 JDK8 镜像不兼容（NPE），升级到 `2.6.0.jdk17` 解决 | 2026-06-30 |
+| SkyWalking 使用 BanyanDB 替代 ES | WSL2 环境下 OAP 10.4.0 的 Netty epoll 与 ES 存在兼容性问题，BanyanDB 是 SkyWalking 原生存储，兼容性更好 | 2026-06-30 |

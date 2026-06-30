@@ -1,0 +1,17 @@
+# BanyanDB configuration for SkyWalking OAP 10.4.0
+# Reference: https://skywalking.apache.org/docs/10.4.0/en/setup/backend/backend-storage/banyandb/
+
+banyandb:
+  # BanyanDB server host
+  host: ${SW_STORAGE_BANYANDB_HOST:banyandb}
+  # BanyanDB gRPC port
+  port: ${SW_STORAGE_BANYANDB_GRPC_PORT:17912}
+  # Whether to use TLS connection
+  tls: false
+  # Max allowed message size (in bytes)
+  maxBulkSize: 10000
+  # Flush interval in seconds
+  flushInterval: 15
+  # Data routing rules
+  metricsShardsNumber: 1
+  recordShardsNumber: 1
