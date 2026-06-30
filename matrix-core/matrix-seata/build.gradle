@@ -2,10 +2,4 @@ dependencies {
     api project(':matrix-core:matrix-auto')
     api('com.alibaba.cloud:spring-cloud-starter-alibaba-seata')
     api libs.hessian
-    // Seata Redis 注册中心需要 Jedis 客户端（Seata 2.5.0 依赖 Jedis 5.x API）
-    api('redis.clients:jedis:5.2.0') {
-        version {
-            strictly '5.2.0'
-        }
-    }
 }

@@ -21,15 +21,13 @@ seata:
       password: nacos
       data-id: seataServer.properties
   registry:
-    # NamingServer 2.6.0.jdk25 与 seata-server 2.6.0(JDK8) 存在兼容问题，改用 Redis 注册
-    type: redis
-    redis:
-      server-addr: ${spring.redis.host:localhost}:${spring.redis.port:6379}
-      db: 0
-      password: ${spring.redis.password:matrix}
-      timeout: 0
-      max-conn: 10
-      min-conn: 1
+    type: seata
+    seata:
+      server-addr: ${seata.namingserver-addr:localhost:8081}
+      cluster: default
+      namespace: public
+      username: seata
+      password: seata
 
 spring:
   datasource:

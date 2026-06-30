@@ -159,11 +159,24 @@
 
 **当前状态**：`seata.enabled: false`（resource-biz/bootstrap.yml）
 
-### 2.4 SkyWalking 验证
+### 2.4 SkyWalking 验证 ⚠️ 阻塞中
 
-- [ ] 启动 ES 8.19 + SkyWalking OAP 10.4.0 + UI 栈（docker-prometheus.yml）
-- [ ] 验证 SkyWalking agent 9.6.0 注入到 Jib 构建的镜像
-- [ ] 验证 OAP 连接 ES 8.19 正常，trace 数据可查
+**已完成：**
+- [x] ES 8.19.17 启动成功，集群健康（green 状态）
+- [x] SkyWalking UI 10.4.0 可访问（http://localhost:9080）
+- [x] `dev.env` 中 `SW_AGENT_COLLECTOR_BACKEND_SERVICES` 修正为 `127.0.0.1:11800`
+
+**阻塞问题：**
+- **OAP 10.4.0 持续崩溃**：`finishConnect(..) failed with error(-111): Connection refused` — OAP 内部 gRPC 通信端口（17912）连接失败，WSL2 环境下 Netty epoll 与内部通信存在兼容性问题
+- 尝试了 standalone 集群模式、H2 内存存储、telemetry=none 等方案均无法解决
+- ES 存储模式和 H2 存储模式均出现相同错误
+
+**解决方案（待执行）：**
+1. 尝试在非 WSL2 环境（原生 Linux/Docker Desktop）下验证
+2. 或降级 SkyWalking 到 9.7.0（更稳定的版本）
+3. 或使用 SkyWalking 10.4.0 的 BanyanDB 替代 ES
+
+**当前状态**：OAP 无法启动，SkyWalking 栈不可用
 
 ### 2.5 后续延后项目
 
