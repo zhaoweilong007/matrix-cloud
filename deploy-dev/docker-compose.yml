@@ -23,17 +23,17 @@ services:
     restart: always
     networks:
       - matrix_cloud
-    # 资源限制 - 最低配置
-    mem_limit: 1g
-    mem_reservation: 256m
+    # 资源限制
+    mem_limit: 1536m
+    mem_reservation: 512m
     cpus: 0.5
-    # 健康检查 - 增加启动等待时间，让Nacos有足够时间初始化
+    # 健康检查 - Nacos v3.2.2 启动较慢
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8848/nacos/actuator/health" ]
-      interval: 10s
+      interval: 15s
       timeout: 10s
-      retries: 5
-      start_period: 30s  # Nacos 启动较慢，建议加长
+      retries: 10
+      start_period: 180s
 
 
   mysql:
@@ -217,7 +217,7 @@ services:
     image: apache/rocketmq:${ROCKETMQ_VERSION}
     container_name: mqnamesrv
     environment:
-      HEAP_OPTS: "-Xms64m -Xmx64m -Xmn32m"
+      HEAP_OPTS: "-Xms128m -Xmx128m -Xmn64m"
       JAVA_OPT_EXT: -XX:MaxMetaspaceSize=64m
     ports:
       - "9876:9876"
@@ -228,8 +228,8 @@ services:
     networks:
       - matrix_cloud
     # 资源限制 - 最低配置
-    mem_limit: 128m
-    mem_reservation: 64m
+    mem_limit: 256m
+    mem_reservation: 128m
     cpus: 0.25
     # 健康检查
     healthcheck:
@@ -249,8 +249,8 @@ services:
       - "10912:10912"
     environment:
       # broker 最小 JVM 配置（broker 需要更多堆外内存）
-      HEAP_OPTS: "-Xms128m -Xmx128m -Xmn64m -XX:MaxDirectMemorySize=32m"
-      JAVA_OPT_EXT: -XX:MaxMetaspaceSize=64m
+      HEAP_OPTS: "-Xms512m -Xmx512m -Xmn256m -XX:MaxDirectMemorySize=128m"
+      JAVA_OPT_EXT: -XX:MaxMetaspaceSize=128m
     volumes:
       - ./rocketmq/broker1/conf/broker.conf:/home/rocketmq/rocketmq-${ROCKETMQ_VERSION}/conf/broker.conf
       - ./rocketmq/broker1/logs:/home/rocketmq/logs/rocketmqlogs
@@ -262,17 +262,17 @@ services:
     restart: always
     networks:
       - matrix_cloud
-    # 资源限制 - 最低配置
-    mem_limit: 512m
-    mem_reservation: 128m
-    cpus: 0.25
-    # 健康检查
+    # 资源限制
+    mem_limit: 2g
+    mem_reservation: 512m
+    cpus: 0.5
+    # 健康检查 - TCP 探活
     healthcheck:
       test: [ "CMD-SHELL", "bash -c '</dev/tcp/localhost/10911'" ]
-      interval: 10s
+      interval: 30s
       timeout: 10s
       retries: 5
-      start_period: 60s
+      start_period: 120s
 
 
   mqconsole:
@@ -288,9 +288,9 @@ services:
     networks:
       - matrix_cloud
     restart: always
-    # 资源限制 - 最低配置
-    mem_limit: 128m
-    mem_reservation: 64m
+    # 资源限制
+    mem_limit: 512m
+    mem_reservation: 128m
     cpus: 0.25
     # 健康检查
     healthcheck:
