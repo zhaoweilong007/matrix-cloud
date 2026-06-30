@@ -15,6 +15,10 @@ services:
       - ${APP_LOG_PATH}:${APP_LOG_PATH}
       - /data/logs/big_log:/data/logs/big_log
     restart: always
+    # 资源限制
+    mem_limit: 256m
+    mem_reservation: 128m
+    cpus: 0.5
   matrix-resource:
     image: ${REGISTER_URL}/matrix-cloud/matrix-resource-biz:${VERSION}
     container_name: matrix-resource
@@ -30,6 +34,10 @@ services:
     volumes:
       - ${APP_LOG_PATH}:${APP_LOG_PATH}
     restart: always
+    # 资源限制
+    mem_limit: 256m
+    mem_reservation: 128m
+    cpus: 0.5
   matrix-system:
     image: ${REGISTER_URL}/matrix-cloud/matrix-system-biz:${VERSION}
     container_name: matrix-system
@@ -45,6 +53,10 @@ services:
     volumes:
       - ${APP_LOG_PATH}:${APP_LOG_PATH}
     restart: always
+    # 资源限制
+    mem_limit: 256m
+    mem_reservation: 128m
+    cpus: 0.5
   matrix-admin:
     image: ${REGISTER_URL}/matrix-cloud/matrix-admin:${VERSION}
     container_name: matrix-admin
@@ -61,3 +73,7 @@ services:
     volumes:
       - ${APP_LOG_PATH}:${APP_LOG_PATH}
     restart: always
+    # 资源限制
+    mem_limit: 256m
+    mem_reservation: 128m
+    cpus: 0.5

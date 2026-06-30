@@ -3,7 +3,7 @@ spring:
     dynamic:
       datasource:
         master:
-          url: jdbc:mysql://${DATASOURCE_HOST:192.168.31.20:4306}/fdx?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&rewriteBatchedStatements=true&allowMultiQueries=true
+          url: jdbc:mysql://${DATASOURCE_HOST:127.0.0.1:3306}/${DATASOURCE_DB:matrix}?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8&rewriteBatchedStatements=true&allowMultiQueries=true&allowPublicKeyRetrieval=true
           username: ${DATASOURCE_USERNAME:root}
           password: ${DATASOURCE_PASSWORD:matrix}
           driver-class-name: com.mysql.cj.jdbc.Driver

@@ -16,7 +16,6 @@ mybatis-plus = "3.5.16"
 mybatis-plus-join = "1.5.5"
 sa-token = "1.45.0"
 redisson = "4.6.1"
-redisson-spring-cache = "4.6.1"
 sentinel = "1.8.6"
 druid = "1.2.28"
 dynamic-datasource = "4.5.0"
@@ -87,31 +86,8 @@ pmd = "7.25.0"
 palantirJavaFormat = "2.38.0"
 
 [libraries]
-# === Spring Boot Starters ===
-spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web" }
-spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test" }
-spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator" }
-spring-boot-starter-security = { module = "org.springframework.boot:spring-boot-starter-security" }
-spring-boot-starter-validation = { module = "org.springframework.boot:spring-boot-starter-validation" }
-spring-boot-starter-data-mongodb = { module = "org.springframework.boot:spring-boot-starter-data-mongodb" }
-spring-boot-starter-cache = { module = "org.springframework.boot:spring-boot-starter-cache" }
-spring-boot-autoconfigure = { module = "org.springframework.boot:spring-boot-autoconfigure" }
-spring-boot-configuration-processor = { module = "org.springframework.boot:spring-boot-configuration-processor" }
-
-# === Spring Cloud ===
-spring-cloud-starter = { module = "org.springframework.cloud:spring-cloud-starter" }
-spring-cloud-starter-gateway = { module = "org.springframework.cloud:spring-cloud-starter-gateway-server-webflux" }
-spring-cloud-gateway-server-webflux = { module = "org.springframework.cloud:spring-cloud-gateway-server-webflux" }
-spring-cloud-starter-openfeign = { module = "org.springframework.cloud:spring-cloud-starter-openfeign" }
-spring-cloud-starter-loadbalancer = { module = "org.springframework.cloud:spring-cloud-starter-loadbalancer" }
-spring-cloud-starter-bootstrap = { module = "org.springframework.cloud:spring-cloud-starter-bootstrap" }
-
-# === Spring Cloud Alibaba ===
-nacos-discovery = { module = "com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-discovery" }
-nacos-config = { module = "com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-config" }
-sentinel-starter = { module = "com.alibaba.cloud:spring-cloud-starter-alibaba-sentinel" }
-sentinel-gateway = { module = "com.alibaba.cloud:spring-cloud-alibaba-sentinel-gateway" }
-seata-starter = { module = "com.alibaba.cloud:spring-cloud-starter-alibaba-seata" }
+# === Spring Boot/Cloud/Alibaba Starters ===
+# 以下 starter 由 BOM 统一管理版本，模块中直接使用 GAV 字符串，无需 alias
 
 # === MyBatis Plus ===
 mybatis-plus = { module = "com.baomidou:mybatis-plus-spring-boot4-starter", version.ref = "mybatis-plus" }
@@ -145,7 +121,7 @@ easy-es = { module = "org.dromara.easy-es:easy-es-boot-starter", version.ref = "
 
 # === 限流熔断 ===
 sentinel-core = { module = "com.alibaba.csp:sentinel-core", version.ref = "sentinel" }
-sentinel-datasource-nacos = { module = "com.alibaba.csp:sentinel-datasource-nacos", version.ref = "sentinel" }
+# sentinel-datasource-nacos 由模块直接使用 GAV 字符串
 
 # === API 文档 ===
 # knife4j 已移除(不支持 SB4)，改用 apifox 插件生成文档；swagger 注解按需保留供 DTO 标注
@@ -181,11 +157,8 @@ tiny-pinyin = { module = "io.github.biezhi:TinyPinyin", version.ref = "pinyin" }
 user-agent-utils = { module = "eu.bitwalker:UserAgentUtils", version.ref = "userAgent" }
 
 # === Mica 生态 ===
-mica-core = { module = "net.dreamlu:mica-core" }
-mica-xss = { module = "net.dreamlu:mica-xss" }
+# mica-core, mica-xss, mica-ip2region 由模块直接使用 GAV 字符串（版本由 mica-bom 管理）
 mica-auto = { module = "net.dreamlu:mica-auto" }
-mica-ip2region = { module = "net.dreamlu:mica-ip2region" }
-mica-jobs = { module = "net.dreamlu:mica-jobs" }
 
 # === MapStruct Plus ===
 mapstruct-plus-starter = { module = "io.github.linpeilie:mapstruct-plus-spring-boot-starter", version.ref = "mapstruct-plus" }
@@ -220,17 +193,11 @@ wx-miniapp = { module = "com.github.binarywang:wx-java-miniapp-spring-boot-start
 hessian = { module = "com.caucho:hessian", version.ref = "hessian" }
 yidun-sdk = { module = "com.netease.yidun:yidun-java-sdk", version.ref = "yidun" }
 tencentcloud-sdk = { module = "com.tencentcloudapi:tencentcloud-sdk-java", version.ref = "tencentcloud" }
-mysql-connector = { module = "com.mysql:mysql-connector-j" }
-jackson-core = { module = "com.fasterxml.jackson.core:jackson-core" }
-jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind" }
-jackson-datatype-jsr310 = { module = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310" }
 servlet-api = { module = "jakarta.servlet:jakarta.servlet-api", version.ref = "servlet" }
 validation-api = { module = "jakarta.validation:jakarta.validation-api", version.ref = "validator" }
-slf4j-api = { module = "org.slf4j:slf4j-api" }
+# mysql-connector, jackson-*, slf4j-api, aspectjweaver, spring-web, spring-expression
+# 由模块直接使用 GAV 字符串（版本由 Spring Boot BOM 管理）
 jcl-over-slf4j = { module = "org.slf4j:jcl-over-slf4j" }
-aspectjweaver = { module = "org.aspectj:aspectjweaver" }
-spring-web = { module = "org.springframework:spring-web" }
-spring-expression = { module = "org.springframework:spring-expression" }
 lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
 lombok-mapstruct-binding = { module = "org.projectlombok:lombok-mapstruct-binding", version.ref = "lombok-mapstruct" }
 mockito-inline = { module = "org.mockito:mockito-inline", version.ref = "mockito" }

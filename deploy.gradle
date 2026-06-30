@@ -8,7 +8,7 @@ switch (PROFILE) {
             registryNamespace = ''
             registryUsername = ''
             registryPassword = ''
-            baseImage = 'amazoncorretto:17.0.8'
+            baseImage = 'amazoncorretto:21'
         }
         break
     case 'prod':
@@ -17,7 +17,7 @@ switch (PROFILE) {
             registryNamespace = ''
             registryUsername = ''
             registryPassword = ''
-            baseImage = 'amazoncorretto:17.0.8'
+            baseImage = 'amazoncorretto:21'
         }
         break
 }

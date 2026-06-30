@@ -24,8 +24,8 @@ services:
     networks:
       - matrix_cloud
     # 资源限制
-    mem_limit: 2g
-    mem_reservation: 1g
+    mem_limit: 256m
+    mem_reservation: 128m
     cpus: 1.0
     # 健康检查 - 增加启动等待时间，让Nacos有足够时间初始化
     healthcheck:
@@ -56,8 +56,8 @@ services:
     networks:
       - matrix_cloud
     # 资源限制
-    mem_limit: 2g
-    mem_reservation: 1g
+    mem_limit: 256m
+    mem_reservation: 128m
     cpus: 1.0
     # 健康检查
     healthcheck:
@@ -85,6 +85,10 @@ services:
     restart: always
     networks:
       - matrix_cloud
+    # 资源限制
+    mem_limit: 256m
+    mem_reservation: 128m
+    cpus: 0.5
 
 
   # https://github.com/lk0423/sentinel-dashboard
@@ -103,8 +107,8 @@ services:
     networks:
       - matrix_cloud
     # 资源限制
-    mem_limit: 1g
-    mem_reservation: 512m
+    mem_limit: 256m
+    mem_reservation: 128m
     cpus: 0.5
     # 健康检查
     healthcheck:
@@ -134,8 +138,8 @@ services:
       - matrix_cloud
     restart: always
     # 资源限制
-    mem_limit: 1g
-    mem_reservation: 512m
+    mem_limit: 256m
+    mem_reservation: 128m
     cpus: 0.5
     # 健康检查
     healthcheck:
@@ -162,8 +166,8 @@ services:
     restart: always
     networks:
       - matrix_cloud
-    mem_limit: 1g
-    mem_reservation: 512m
+    mem_limit: 256m
+    mem_reservation: 128m
     cpus: 0.5
     healthcheck:
       # jib 镜像无 curl/wget，用 bash /dev/tcp 做 TCP 探活
@@ -193,8 +197,8 @@ services:
     networks:
       - matrix_cloud
     # 资源限制
-    mem_limit: 1g
-    mem_reservation: 512m
+    mem_limit: 256m
+    mem_reservation: 128m
     cpus: 0.5
     # 健康检查：2.6.0 server 为非 web 模式(web-application-type:none)，8091 是 Netty RPC 端口，用 TCP 探活
     healthcheck:
@@ -222,8 +226,8 @@ services:
 #    networks:
 #      - matrix_cloud
 #    # 资源限制
-#    mem_limit: 1g
-#    mem_reservation: 512m
+#    mem_limit: 256m
+#    mem_reservation: 128m
 #    cpus: 0.5
 #    # 健康检查 - 修复健康检查命令，使用更可靠的检查方式
 #    healthcheck:
@@ -255,8 +259,8 @@ services:
 #    networks:
 #      - matrix_cloud
 #    # 资源限制
-#    mem_limit: 2g
-#    mem_reservation: 1g
+#    mem_limit: 256m
+#    mem_reservation: 128m
 #    cpus: 1.0
 #    # 健康检查
 #    healthcheck:
@@ -312,8 +316,8 @@ services:
 #      - matrix_cloud
 #    restart: always
 #    # 资源限制
-#    mem_limit: 1g
-#    mem_reservation: 512m
+#    mem_limit: 256m
+#    mem_reservation: 128m
 #    cpus: 0.5
 #    # 健康检查
 #    healthcheck:

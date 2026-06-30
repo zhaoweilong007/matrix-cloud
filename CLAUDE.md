@@ -2,9 +2,9 @@
 
 ## Project Overview
 
-**Matrix-Cloud** — Java 17 微服务脚手架框架。Spring Boot 3.5.7 + Spring Cloud 2025.0.0 + Spring Cloud Alibaba 2025.0.0.0。
+**Matrix-Cloud** — Java 21 微服务脚手架框架。Spring Boot 4.0.7 + Spring Cloud 2025.1.2 + Spring Cloud Alibaba 2025.1.0.0。
 
-**权威版本来源**: `version.gradle` 和 `matrix-bom/build.gradle`，不要依赖本文件中的版本号，始终查阅这两个文件。
+**权威版本来源**: `gradle/libs.versions.toml` 和 `matrix-bom/build.gradle`，不要依赖本文件中的版本号，始终查阅这两个文件。
 
 ## Build
 
@@ -18,12 +18,12 @@
 
 关键构建文件：
 - `build.gradle` — 根构建配置，所有子模块共享 `commons` 配置块
-- `version.gradle` — **统一版本管理**，所有第三方依赖版本在此声明
+- `gradle/libs.versions.toml` — **统一版本管理**，所有第三方依赖版本在此声明（Version Catalog）
 - `matrix-bom/build.gradle` — BOM平台，约束所有依赖版本
 - `deploy.gradle` — Jib Docker构建，`microservices` 列表控制哪些服务打包镜像
 - `settings.gradle` — 模块定义，matrix-system 已注释掉（未启用）
 
-Java 17 通过 toolchain 配置（`JavaLanguageVersion.of(17)`），非 sourceCompatibility。
+Java 21 通过 toolchain 配置（`JavaLanguageVersion.of(21)`），非 sourceCompatibility。
 
 测试默认关闭（`build.gradle` `test { enabled = false }`）。测试基础设施在 `matrix-core/matrix-test`。
 
@@ -38,10 +38,10 @@ matrix-cloud/
 │   ├── matrix-web/           # Web Starter：全局异常、Jackson、i18n、访问日志、上下文传播
 │   ├── matrix-auth/          # Sa-Token+JWT认证：登录、权限、网关内部令牌、验证码、租户鉴权
 │   ├── matrix-feign/         # OpenFeign：请求头传播(租户/认证/灰度版本)、版本路由负载均衡
-│   ├── matrix-mybatis/       # MyBatis-Plus 3.5.15：BaseMapperX/Vo查询/乐观锁/雪花ID/自动填充
+│   ├── matrix-mybatis/       # MyBatis-Plus 3.5.16：BaseMapperX/Vo查询/乐观锁/雪花ID/自动填充
 │   ├── matrix-redis/         # Redis+Redisson：单机/主从/集群、Spring Cache、RedisUtils
 │   ├── matrix-tenant/        # 多租户：SQL自动拼接tenant_id、缓存隔离、租户Job遍历、@TenantIgnore
-│   ├── matrix-swagger/       # Knife4j 4.5.0 OpenAPI 3 文档
+│   ├── matrix-swagger/       # (已移除 Knife4j，改用 apifox 生成文档)
 │   ├── matrix-log/           # 操作日志(@Log) + 异常通知(@ExceptionNoticeLog)
 │   ├── matrix-mq/            # RocketMQ：同步/异步/顺序/事务消息模板，自动注册Listener
 │   ├── matrix-job/           # XXL-Job：自动计算executor端口
@@ -55,7 +55,7 @@ matrix-cloud/
 │   ├── matrix-sensitive/     # 网易易盾内容审核(文本/图片)
 │   ├── matrix-oss/           # 阿里云OSS依赖聚合
 │   ├── matrix-sms/           # SMS4J多供应商短信
-│   ├── matrix-excel/         # EasyExcel导入导出(字典转换/单元格合并)
+│   ├── matrix-excel/         # EasyExcel 4.x 导入导出(字典转换/单元格合并)
 │   ├── matrix-es/            # Easy-Es Elasticsearch ORM聚合
 │   ├── matrix-mongodb/       # MongoDB MyBatis-Plus风格封装(EasyMongoService)
 │   ├── matrix-prometheus/    # Prometheus指标 + trace-id响应头
@@ -160,7 +160,6 @@ matrix 框架配置前缀 `matrix.*`：
 - `matrix.security.captcha.validateUrl` — 验证码校验URL
 - `matrix.access-log.enable` — API访问日志
 - `matrix.load-balance.gray.enabled` / `defaultVersion` — 灰度负载均衡
-- `matrix.swagger.enable` — Knife4j文档开关
 - `matrix.tenant.enable` — 多租户开关
 
 ## Service Ports
