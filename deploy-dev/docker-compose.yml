@@ -24,8 +24,8 @@ services:
     networks:
       - matrix_cloud
     # 资源限制
-    mem_limit: 256m
-    mem_reservation: 128m
+    mem_limit: 1g
+    mem_reservation: 512m
     cpus: 1.0
     # 健康检查 - 增加启动等待时间，让Nacos有足够时间初始化
     healthcheck:
@@ -56,8 +56,8 @@ services:
     networks:
       - matrix_cloud
     # 资源限制
-    mem_limit: 256m
-    mem_reservation: 128m
+    mem_limit: 1g
+    mem_reservation: 512m
     cpus: 1.0
     # 健康检查
     healthcheck:
@@ -107,8 +107,8 @@ services:
     networks:
       - matrix_cloud
     # 资源限制
-    mem_limit: 256m
-    mem_reservation: 128m
+    mem_limit: 1g
+    mem_reservation: 512m
     cpus: 0.5
     # 健康检查
     healthcheck:
@@ -166,8 +166,8 @@ services:
     restart: always
     networks:
       - matrix_cloud
-    mem_limit: 256m
-    mem_reservation: 128m
+    mem_limit: 1g
+    mem_reservation: 512m
     cpus: 0.5
     healthcheck:
       # jib 镜像无 curl/wget，用 bash /dev/tcp 做 TCP 探活
@@ -197,8 +197,8 @@ services:
     networks:
       - matrix_cloud
     # 资源限制
-    mem_limit: 256m
-    mem_reservation: 128m
+    mem_limit: 1g
+    mem_reservation: 512m
     cpus: 0.5
     # 健康检查：2.6.0 server 为非 web 模式(web-application-type:none)，8091 是 Netty RPC 端口，用 TCP 探活
     healthcheck:
