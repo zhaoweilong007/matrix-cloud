@@ -1,6 +1,6 @@
 # Matrix-Cloud 升级记录与待办计划
 
-> 最后更新：2026-06-29
+> 最后更新：2026-06-30
 
 ---
 
@@ -178,7 +178,24 @@
 
 **当前状态**：OAP 无法启动，SkyWalking 栈不可用
 
-### 2.5 后续延后项目
+### 2.5 Phase 4：收尾与合并准备 ✅ 已完成 (2026-06-30)
+
+**已完成：**
+- [x] **Phase 1 构建与配置修复**：4/4 任务完成（configuration-cache、baseImage JDK21、CLAUDE.md 同步、toml 别名清理）
+- [x] **Phase 2 运行时冒烟测试**：5/5 任务完成（Gateway/Admin/Resource-Biz 启动验证、定向回归）
+- [x] **Phase 3 Seata & SkyWalking 验证**：部分完成，阻塞问题已记录
+- [x] **文档更新**：UPGRADE.md 记录所有变更、修复项、阻塞问题及解决方案
+- [x] **代码提交**：所有变更已提交到 3.x 分支
+
+**提交记录：**
+- `dee1fdd` - Phase 1：构建配置修复与文档同步
+- `c4b9ba0` - Phase 3：Seata & SkyWalking 验证记录
+
+**阻塞问题（需后续解决）：**
+1. **Seata NamingServer JDK 兼容性**：需升级 seata-server 到 JDK17 镜像
+2. **SkyWalking OAP WSL2 兼容性**：需在非 WSL2 环境验证或降级版本
+
+### 2.6 后续延后项目
 
 | 项目 | 说明 | 优先级 |
 |------|------|--------|
