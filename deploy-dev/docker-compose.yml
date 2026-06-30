@@ -23,10 +23,10 @@ services:
     restart: always
     networks:
       - matrix_cloud
-    # 资源限制
-    mem_limit: 2g
-    mem_reservation: 512m
-    cpus: 1.0
+    # 资源限制 - 最低配置
+    mem_limit: 1g
+    mem_reservation: 256m
+    cpus: 0.5
     # 健康检查 - 增加启动等待时间，让Nacos有足够时间初始化
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8848/nacos/actuator/health" ]
@@ -55,10 +55,10 @@ services:
     restart: always
     networks:
       - matrix_cloud
-    # 资源限制
-    mem_limit: 2g
-    mem_reservation: 512m
-    cpus: 1.0
+    # 资源限制 - 最低配置
+    mem_limit: 1g
+    mem_reservation: 256m
+    cpus: 0.5
     # 健康检查
     healthcheck:
       test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
@@ -85,10 +85,10 @@ services:
     restart: always
     networks:
       - matrix_cloud
-    # 资源限制
-    mem_limit: 256m
-    mem_reservation: 128m
-    cpus: 0.5
+    # 资源限制 - 最低配置
+    mem_limit: 128m
+    mem_reservation: 64m
+    cpus: 0.25
 
 
   # https://github.com/lk0423/sentinel-dashboard
@@ -106,10 +106,10 @@ services:
         condition: service_healthy
     networks:
       - matrix_cloud
-    # 资源限制
-    mem_limit: 2g
-    mem_reservation: 512m
-    cpus: 0.5
+    # 资源限制 - 最低配置
+    mem_limit: 512m
+    mem_reservation: 128m
+    cpus: 0.25
     # 健康检查
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8088" ]
@@ -128,7 +128,7 @@ services:
     environment:
       TZ: Asia/Shanghai
       PARAMS: --spring.config.location=/application.properties
-      JAVA_OPTS: -Xmx512m
+      JAVA_OPTS: -Xmx256m
     ports:
       - 8090:8080
     depends_on:
@@ -137,10 +137,10 @@ services:
     networks:
       - matrix_cloud
     restart: always
-    # 资源限制
+    # 资源限制 - 最低配置
     mem_limit: 256m
-    mem_reservation: 128m
-    cpus: 0.5
+    mem_reservation: 64m
+    cpus: 0.25
     # 健康检查
     healthcheck:
       test: [ "CMD-SHELL", "find /proc -name 'cmdline' -exec cat {} \\; 2>/dev/null | grep -q 'java'" ]
@@ -168,9 +168,10 @@ services:
     restart: always
     networks:
       - matrix_cloud
-    mem_limit: 2g
-    mem_reservation: 512m
-    cpus: 0.5
+    # 资源限制 - 最低配置
+    mem_limit: 1g
+    mem_reservation: 256m
+    cpus: 0.25
     healthcheck:
       # jib 镜像无 curl/wget，用 bash /dev/tcp 做 TCP 探活
       test: [ "CMD-SHELL", "bash -c '</dev/tcp/localhost/8081'" ]
@@ -198,9 +199,9 @@ services:
         condition: service_healthy
     networks:
       - matrix_cloud
-    # 资源限制
-    mem_limit: 2g
-    mem_reservation: 512m
+    # 资源限制 - 最低配置
+    mem_limit: 1g
+    mem_reservation: 256m
     cpus: 0.5
     # 健康检查：2.6.0 server 为非 web 模式(web-application-type:none)，8091 是 Netty RPC 端口，用 TCP 探活
     healthcheck:
@@ -216,7 +217,7 @@ services:
     image: apache/rocketmq:${ROCKETMQ_VERSION}
     container_name: mqnamesrv
     environment:
-      HEAP_OPTS: "-Xms128m -Xmx128m -Xmn64m"
+      HEAP_OPTS: "-Xms64m -Xmx64m -Xmn32m"
       JAVA_OPT_EXT: -XX:MaxMetaspaceSize=64m
     ports:
       - "9876:9876"
@@ -226,9 +227,9 @@ services:
     restart: always
     networks:
       - matrix_cloud
-    # 资源限制 - namesrv 最小配置
-    mem_limit: 256m
-    mem_reservation: 128m
+    # 资源限制 - 最低配置
+    mem_limit: 128m
+    mem_reservation: 64m
     cpus: 0.25
     # 健康检查
     healthcheck:
@@ -248,7 +249,7 @@ services:
       - "10912:10912"
     environment:
       # broker 最小 JVM 配置（broker 需要更多堆外内存）
-      HEAP_OPTS: "-Xms256m -Xmx256m -Xmn128m -XX:MaxDirectMemorySize=64m"
+      HEAP_OPTS: "-Xms128m -Xmx128m -Xmn64m -XX:MaxDirectMemorySize=32m"
       JAVA_OPT_EXT: -XX:MaxMetaspaceSize=64m
     volumes:
       - ./rocketmq/broker1/conf/broker.conf:/home/rocketmq/rocketmq-${ROCKETMQ_VERSION}/conf/broker.conf
@@ -261,10 +262,10 @@ services:
     restart: always
     networks:
       - matrix_cloud
-    # 资源限制 - broker 最小配置
-    mem_limit: 2g
-    mem_reservation: 512m
-    cpus: 0.5
+    # 资源限制 - 最低配置
+    mem_limit: 512m
+    mem_reservation: 128m
+    cpus: 0.25
     # 健康检查
     healthcheck:
       test: [ "CMD-SHELL", "bash -c '</dev/tcp/localhost/10911'" ]
@@ -287,9 +288,9 @@ services:
     networks:
       - matrix_cloud
     restart: always
-    # 资源限制
-    mem_limit: 256m
-    mem_reservation: 128m
+    # 资源限制 - 最低配置
+    mem_limit: 128m
+    mem_reservation: 64m
     cpus: 0.25
     # 健康检查
     healthcheck:
