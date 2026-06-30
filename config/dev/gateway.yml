@@ -19,12 +19,8 @@ security:
   ignore:
     whites:
       - /actuator/health
-      - /doc.html
       - /code
-      - /v3/api-docs/**
-      - /*/v3/api-docs/**
       - /csrf
-      - /webjars/**
       - /system/auth/**
 
 

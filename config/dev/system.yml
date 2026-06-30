@@ -3,7 +3,6 @@ matrix:
     enable: true
     ignore-urls:
       - /auth/**
-      - /v3/api-docs
       - /easyTrans/proxy/**
     ignoreTables:
       - sys_menu
@@ -18,20 +17,6 @@ matrix:
     gray:
       enabled: true
       chooser: com.matrix.feign.chooser.ProfileRuleChooser
-      ips:
-        - 192.168.31.19
   monitor:
     traceEnable: true
     metricsEnable: true
-
-  mq:
-    enabled: true
-    onsAddr: xxxxxxxxx
-    accessKey: xxxxxxxxx
-    secretKey: xxxxxxxxx
-    producers:
-      - groupId: GID_ws_notify_subscribe
-      - groupId: GID_sys_user_data
-    consumers:
-      - groupId: GID_ws_notify_subscribe
-        MessageModel: BROADCASTING
