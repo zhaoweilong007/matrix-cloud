@@ -347,4 +347,60 @@ public class R<T> implements Serializable {
     public static void throwFail(String message) {
         throwFail(SystemCode.FAILURE, message);
     }
+
+    /**
+     * 检查响应是否失败，失败则抛出 ServiceException
+     * 用于 Feign 调用后，一行代码将远程错误转为本地异常
+     *
+     * @return this（成功时）
+     * @throws ServiceException 失败时抛出
+     */
+    public R<T> checkError() {
+        if (R.isFail(this)) {
+            throw new ServiceException(this);
+        }
+        return this;
+    }
+
+    /**
+     * 检查响应是否失败，失败则抛出指定异常
+     *
+     * @param errorCode 指定的错误码
+     * @return this（成功时）
+     * @throws ServiceException 失败时抛出
+     */
+    public R<T> checkError(IResultCode errorCode) {
+        if (R.isFail(this)) {
+            throw new ServiceException(errorCode);
+        }
+        return this;
+    }
+
+    /**
+     * 检查响应是否失败，失败则抛出指定异常
+     *
+     * @param errorCode 指定的错误码
+     * @param message   自定义消息
+     * @return this（成功时）
+     * @throws ServiceException 失败时抛出
+     */
+    public R<T> checkError(IResultCode errorCode, String message) {
+        if (R.isFail(this)) {
+            throw new ServiceException(errorCode, message);
+        }
+        return this;
+    }
+
+    /**
+     * 获取数据，失败则抛出异常
+     * 用于 Feign 调用后，直接获取数据，失败自动抛异常
+     *
+     * @return data（成功时）
+     * @throws ServiceException 失败时抛出
+     */
+    @Nullable
+    public T getCheckedData() {
+        checkError();
+        return this.data;
+    }
 }

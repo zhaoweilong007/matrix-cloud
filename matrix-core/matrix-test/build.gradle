@@ -3,4 +3,7 @@ dependencies {
     api 'org.springframework.boot:spring-boot-starter-test'
     api libs.mockito.inline
     api libs.podam
+
+    // H2 内存数据库（单元测试用）
+    api 'com.h2database:h2'
 }

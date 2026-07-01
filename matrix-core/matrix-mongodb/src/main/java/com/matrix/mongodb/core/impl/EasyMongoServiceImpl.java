@@ -50,7 +50,7 @@ public class EasyMongoServiceImpl<ID extends Serializable, T> implements EasyMon
         if (entityList == null || entityList.isEmpty()) {
             return true;
         }
-        BulkOperations bulkOps = mongoTemplate.bulkOps(BulkOperations.UNORDERED, targetClass);
+        BulkOperations bulkOps = mongoTemplate.bulkOps(BulkOperations.BulkMode.UNORDERED, targetClass);
         bulkOps.insert(entityList);
         bulkOps.execute();
         return true;

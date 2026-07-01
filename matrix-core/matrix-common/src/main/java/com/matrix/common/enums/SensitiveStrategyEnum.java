@@ -24,6 +24,19 @@ public enum SensitiveStrategyEnum {
     NAME(DesensitizedUtil::chineseName),
 
     /**
+     * 中文名脱敏（保留姓，用*替换名）
+     */
+    CHINESE_NAME(s -> {
+        if (s == null || s.isEmpty()) {
+            return s;
+        }
+        if (s.length() <= 1) {
+            return "*";
+        }
+        return s.charAt(0) + "*".repeat(s.length() - 1);
+    }),
+
+    /**
      * 手机号脱敏 中间四位
      */
     PHONE(DesensitizedUtil::mobilePhone),
@@ -33,6 +46,28 @@ public enum SensitiveStrategyEnum {
      * PC public customer 公客
      */
     PHONE_PC(DesensitizationUtil::mobilePhone),
+
+    /**
+     * 固定电话脱敏
+     */
+    FIXED_PHONE(s -> {
+        if (s == null || s.isEmpty()) {
+            return s;
+        }
+        // 区号-号码格式：010-12345678 -> 010-****5678
+        if (s.contains("-")) {
+            String[] parts = s.split("-", 2);
+            if (parts.length == 2 && parts[1].length() > 4) {
+                return parts[0] + "-" + "*".repeat(parts[1].length() - 4)
+                        + parts[1].substring(parts[1].length() - 4);
+            }
+        }
+        // 纯数字格式
+        if (s.length() > 4) {
+            return "*".repeat(s.length() - 4) + s.substring(s.length() - 4);
+        }
+        return "*".repeat(s.length());
+    }),
 
     /**
      * 地址脱敏
@@ -47,9 +82,52 @@ public enum SensitiveStrategyEnum {
     /**
      * 银行卡
      */
-    BANK_CARD(DesensitizedUtil::bankCard);
+    BANK_CARD(DesensitizedUtil::bankCard),
 
-    // 可自行添加其他脱敏策略
+    /**
+     * 密码脱敏
+     */
+    PASSWORD(s -> "********"),
+
+    /**
+     * IP地址脱敏（保留前两段）
+     */
+    IP(s -> {
+        if (s == null || s.isEmpty()) {
+            return s;
+        }
+        int lastDot = s.lastIndexOf('.');
+        if (lastDot > 0) {
+            int prevDot = s.lastIndexOf('.', lastDot - 1);
+            if (prevDot > 0) {
+                return s.substring(0, prevDot) + ".*.*";
+            }
+        }
+        return "***.***.***.***";
+    }),
+
+    /**
+     * 车牌号脱敏（保留省份简称和城市代码）
+     */
+    LICENSE_PLATE(s -> {
+        if (s == null || s.isEmpty()) {
+            return s;
+        }
+        if (s.length() >= 2) {
+            return s.substring(0, 2) + "*".repeat(s.length() - 2);
+        }
+        return "*".repeat(s.length());
+    }),
+
+    /**
+     * 身份证脱敏（保留前4后4）
+     */
+    ID_CARD_FULL(s -> {
+        if (s == null || s.length() < 8) {
+            return s;
+        }
+        return s.substring(0, 4) + "*".repeat(s.length() - 8) + s.substring(s.length() - 4);
+    });
 
     private final Function<String, String> desensitizer;
 

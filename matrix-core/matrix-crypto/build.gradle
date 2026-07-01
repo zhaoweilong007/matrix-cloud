@@ -1,0 +1,7 @@
+dependencies {
+    api project(':matrix-core:matrix-common')
+    api 'org.springframework.boot:spring-boot-starter-web'
+
+    // Hutool 工具库（包含加解密功能）
+    api libs.hutool
+}
