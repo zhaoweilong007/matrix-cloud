@@ -1,0 +1,5 @@
+dependencies {
+    api project(':matrix-core:matrix-common')
+    api libs.justauth
+    compileOnly project(':matrix-core:matrix-redis')
+}

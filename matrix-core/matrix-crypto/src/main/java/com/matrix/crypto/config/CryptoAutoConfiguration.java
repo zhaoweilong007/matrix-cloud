@@ -6,6 +6,8 @@ import com.matrix.crypto.interceptor.ApiEncryptResponseAdvice;
 import com.matrix.crypto.service.AesCryptoService;
 import com.matrix.crypto.service.CryptoService;
 import com.matrix.crypto.service.RsaCryptoService;
+import com.matrix.crypto.service.Sm2CryptoService;
+import com.matrix.crypto.service.Sm4CryptoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -31,10 +33,12 @@ public class CryptoAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public CryptoService cryptoService() {
-        if (properties.getType() == CryptoProperties.CryptoType.RSA) {
-            return new RsaCryptoService(properties.getPublicKey(), properties.getPrivateKey());
-        }
-        return new AesCryptoService(properties.getSecretKey());
+        return switch (properties.getType()) {
+            case RSA -> new RsaCryptoService(properties.getPublicKey(), properties.getPrivateKey());
+            case SM4 -> new Sm4CryptoService(properties.getSecretKey());
+            case SM2 -> new Sm2CryptoService(properties.getPrivateKey(), properties.getPublicKey());
+            default -> new AesCryptoService(properties.getSecretKey());
+        };
     }
 
     @Bean

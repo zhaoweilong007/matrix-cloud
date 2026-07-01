@@ -9,8 +9,11 @@ import com.baomidou.mybatisplus.extension.plugins.inner.BlockAttackInnerIntercep
 import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.matrix.mybatis.handler.DefaultDBFieldHandler;
+import com.matrix.mybatis.interceptor.MybatisDecryptInterceptor;
+import com.matrix.mybatis.interceptor.MybatisEncryptInterceptor;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -52,5 +55,23 @@ public class MybatisPlusConfig {
     @Bean
     public MetaObjectHandler defaultMetaObjectHandler() {
         return new DefaultDBFieldHandler();
+    }
+
+    /**
+     * MyBatis 写入加密拦截器（需 matrix-crypto 模块）。
+     */
+    @Bean
+    @ConditionalOnClass(name = "com.matrix.crypto.service.CryptoService")
+    public MybatisEncryptInterceptor mybatisEncryptInterceptor() {
+        return new MybatisEncryptInterceptor();
+    }
+
+    /**
+     * MyBatis 读取解密拦截器（需 matrix-crypto 模块）。
+     */
+    @Bean
+    @ConditionalOnClass(name = "com.matrix.crypto.service.CryptoService")
+    public MybatisDecryptInterceptor mybatisDecryptInterceptor() {
+        return new MybatisDecryptInterceptor();
     }
 }

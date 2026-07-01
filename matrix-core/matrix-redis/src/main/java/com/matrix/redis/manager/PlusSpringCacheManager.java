@@ -14,6 +14,7 @@ package com.matrix.redis.manager;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.matrix.redis.cache.CaffeineRedisCacheDecorator;
 import com.matrix.redis.utils.RedisUtils;
 import java.util.Collection;
 import java.util.Collections;
@@ -47,6 +48,7 @@ public class PlusSpringCacheManager implements CacheManager {
     private boolean dynamic = true;
     private boolean allowNullValues = true;
     private boolean transactionAware = true;
+    private boolean caffeineL1Enabled = false;
 
     /**
      * Creates CacheManager supplied by Redisson instance
@@ -74,6 +76,15 @@ public class PlusSpringCacheManager implements CacheManager {
      */
     public void setTransactionAware(boolean transactionAware) {
         this.transactionAware = transactionAware;
+    }
+
+    /**
+     * Enable Caffeine L1 local cache on top of Redis L2.
+     *
+     * @param caffeineL1Enabled enable if <code>true</code>
+     */
+    public void setCaffeineL1Enabled(boolean caffeineL1Enabled) {
+        this.caffeineL1Enabled = caffeineL1Enabled;
     }
 
     /**
@@ -133,6 +144,9 @@ public class PlusSpringCacheManager implements CacheManager {
         if (transactionAware) {
             cache = new TransactionAwareCacheDecorator(cache);
         }
+        if (caffeineL1Enabled) {
+            cache = new CaffeineRedisCacheDecorator(name, cache);
+        }
         Cache oldCache = instanceMap.putIfAbsent(name, cache);
         if (oldCache != null) {
             cache = oldCache;
@@ -146,6 +160,9 @@ public class PlusSpringCacheManager implements CacheManager {
         Cache cache = new RedissonCache(map, config, allowNullValues);
         if (transactionAware) {
             cache = new TransactionAwareCacheDecorator(cache);
+        }
+        if (caffeineL1Enabled) {
+            cache = new CaffeineRedisCacheDecorator(name, cache);
         }
         Cache oldCache = instanceMap.putIfAbsent(name, cache);
         if (oldCache != null) {

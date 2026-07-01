@@ -80,5 +80,8 @@ dependencies {
         api libs.jwks.rsa
         api libs.pinyin4j
         api libs.jsoup
+        api libs.springdoc
+        api libs.bouncycastle
+        api libs.justauth
     }
 }

@@ -24,7 +24,7 @@ Java 21 通过 toolchain (`JavaLanguageVersion.of(21)`)，测试默认禁用 (`t
 ```
 matrix-cloud/
 ├── matrix-bom/               # BOM 依赖版本约束
-├── matrix-core/              # 35个可插拔核心模块
+├── matrix-core/              # 38个可插拔核心模块
 │   ├── matrix-common/        # R<T>响应、IResultCode/ErrorCode异常、BaseEntity(含clean防御)、脱敏(10种注解)、TTL上下文、JS精度序列化
 │   ├── matrix-web/           # Web Starter：全局异常、Jackson、i18n、XSS过滤(Jsoup)
 │   ├── matrix-auth/          # Sa-Token+JWT：登录、权限、@ApiSignature、验证码、租户鉴权
@@ -46,6 +46,9 @@ matrix-cloud/
 │   ├── matrix-sensitive/     # 网易易盾内容审核
 │   ├── matrix-websocket/     # WebSocket多节点广播(Redis)、消息监听器SPI
 │   ├── matrix-ip/            # IP定位(ip2region)+行政区划(四级树形area.csv)
+│   ├── matrix-doc/           # SpringDoc OpenAPI文档(Swagger UI)、Sa-Token认证集成
+│   ├── matrix-mail/          # Jakarta Mail邮件发送、MailBuilder链式构建
+│   ├── matrix-social/        # JustAuth第三方登录(Gitee/GitHub/微信/钉钉/飞书)
 │   ├── matrix-oss/           # 阿里云OSS
 │   ├── matrix-sms/           # SMS4J多供应商短信
 │   ├── matrix-excel/         # EasyExcel导入导出
@@ -94,7 +97,8 @@ userClient.save(user).checkError(SystemErrorTypeEnum.OPERATE_FAIL); // 检查错
 | `@Translation` | translation | 字段翻译 |
 | `@DataPermission` / `@TenantIgnore` | data-permission/tenant | 数据权限+租户隔离 |
 | `@RepeatSubmit` / `@RateLimiter` / `@ApiSignature` | idempotent/redis/auth | 防重/限流/API签名 |
-| `@ApiEncrypt` / `@Log` / `@ExceptionNoticeLog` | crypto/log | 加解密/日志/异常通知 |
+| `@ApiEncrypt` / `@EncryptField` / `@Log` / `@ExceptionNoticeLog` | crypto/log | API加解密/MyBatis字段加解密/日志/异常通知 |
+| `CryptoService`(AES/RSA/SM4/SM2) / `MailBuilder` / `SocialAuthService` | crypto/mail/social | 多算法加解密/链式邮件/第三方OAuth |
 | `@HandlerType` / `@InEnum` / `@PhoneValue` | strategy/validator | 策略注入/校验 |
 | `@JsonSerialize(using=NumberSerializer)` / `@JsonSerialize(using=LongToStringSerializer)` | common | Long JS精度保护 |
 | `MPJLambdaWrapperX` / `LongListTypeHandler` / `IntegerListTypeHandler` / `LongSetTypeHandler` | mybatis | 连表查询+集合TypeHandler |

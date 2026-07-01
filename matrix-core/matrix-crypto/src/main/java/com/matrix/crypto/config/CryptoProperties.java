@@ -43,6 +43,6 @@ public class CryptoProperties {
     private String encryptField = "encryptData";
 
     public enum CryptoType {
-        AES, RSA
+        AES, RSA, SM4, SM2
     }
 }

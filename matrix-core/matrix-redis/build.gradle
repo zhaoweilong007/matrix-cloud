@@ -6,6 +6,8 @@ dependencies {
     api 'org.springframework.boot:spring-boot-starter-cache'
     // SB4 CacheProperties 从 spring-boot-autoconfigure 移至 spring-boot-cache
     api 'org.springframework.boot:spring-boot-cache'
+    // Caffeine L1 本地缓存
+    api libs.caffeine
 
     // AOP 支持（RateLimiter 切面）
     api 'org.aspectj:aspectjweaver'

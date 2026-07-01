@@ -9,6 +9,7 @@ dependencies {
     api 'com.baomidou:mybatis-plus-jsqlparser'
 
     compileOnly project(':matrix-core:matrix-api')
+    compileOnly project(':matrix-core:matrix-crypto')
     compileOnly 'com.alibaba.csp:sentinel-core'
     compileOnly 'io.micrometer:micrometer-core'
 }

@@ -48,9 +48,11 @@ joda-money = "1.0.3"
 servlet = "6.0.0"
 validator = "3.0.2"
 swagger = "2.2.19"
+springdoc = "2.8.8"
 httpClient = "5.6.1"
 pinyin = "2.0.3.RELEASE"
 pinyin4j = "2.5.1"
+justauth = "1.16.7"
 
 # === 认证 ===
 javaJwt = "3.8.3"
@@ -78,6 +80,7 @@ podam = "8.0.2.RELEASE"
 
 # === 安全 ===
 jsoup = "1.22.2"
+bouncycastle = "1.78.1"
 
 # === 新增工具 ===
 tika = "3.3.1"
@@ -137,6 +140,7 @@ sentinel-core = { module = "com.alibaba.csp:sentinel-core", version.ref = "senti
 # knife4j 已移除(不支持 SB4)，改用 apifox 插件生成文档；swagger 注解按需保留供 DTO 标注
 swagger-annotations = { module = "io.swagger.core.v3:swagger-annotations-jakarta", version.ref = "swagger" }
 swagger-models = { module = "io.swagger.core.v3:swagger-models-jakarta", version.ref = "swagger" }
+springdoc = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui", version.ref = "springdoc" }
 
 # === 任务调度 ===
 xxl-job = { module = "com.xuxueli:xxl-job-core", version.ref = "xxl-job" }
@@ -219,12 +223,14 @@ junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher
 
 # === 安全 ===
 jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
+bouncycastle = { module = "org.bouncycastle:bcpkix-jdk18on", version.ref = "bouncycastle" }
 
 # === 新增工具 ===
 tika-core = { module = "org.apache.tika:tika-core", version.ref = "tika" }
 sensitive-word = { module = "com.github.houbb:sensitive-word", version.ref = "sensitive-word" }
 jedis-mock = { module = "com.github.fppt:jedis-mock", version.ref = "jedis-mock" }
 anji-captcha = { module = "com.anji-plus:spring-boot-starter-captcha", version.ref = "anji-captcha" }
+justauth = { module = "me.zhyd.oauth:JustAuth", version.ref = "justauth" }
 
 [bundles]
 mybatis = ["mybatis-plus", "mybatis-plus-join", "dynamic-datasource", "druid"]

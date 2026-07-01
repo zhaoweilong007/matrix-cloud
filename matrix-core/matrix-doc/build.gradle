@@ -1,0 +1,5 @@
+dependencies {
+    api project(':matrix-core:matrix-common')
+    api libs.springdoc
+    compileOnly 'cn.dev33:sa-token-spring-boot4-starter'
+}
