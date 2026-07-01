@@ -48,7 +48,7 @@ joda-money = "1.0.3"
 servlet = "6.0.0"
 validator = "3.0.2"
 swagger = "2.2.19"
-springdoc = "2.8.8"
+springdoc = "3.0.3"
 httpClient = "5.6.1"
 pinyin = "2.0.3.RELEASE"
 pinyin4j = "2.5.1"
@@ -80,8 +80,8 @@ podam = "8.0.2.RELEASE"
 
 # === 安全 ===
 jsoup = "1.22.2"
-bouncycastle = "1.78.1"
-s3 = "2.29.47"
+bouncycastle = "1.84"
+s3 = "2.42.9"
 
 # === 新增工具 ===
 tika = "3.3.1"
