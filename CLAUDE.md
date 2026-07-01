@@ -35,7 +35,7 @@ matrix-cloud/
 │   ├── matrix-crypto/        # @ApiEncrypt AES/RSA 请求解密+响应加密
 │   ├── matrix-log/           # @Log操作日志 + @ExceptionNoticeLog异常通知
 │   ├── matrix-mq/            # RocketMQ：消息模板、Listener自动注册、租户上下文传播
-│   ├── matrix-job/           # XXL-Job
+│   ├── matrix-job/           # XXL-Job：XxlJobSpringExecutor自动配置+自动端口IP
 │   ├── matrix-seata/         # Seata AT分布式事务
 │   ├── matrix-sentinel/      # Sentinel：自定义SlotChain、QPS监控
 │   ├── matrix-strategy/      # @HandlerType → BusinessHandlerChooser 策略注入
@@ -49,10 +49,11 @@ matrix-cloud/
 │   ├── matrix-doc/           # SpringDoc OpenAPI文档(Swagger UI)、Sa-Token认证集成
 │   ├── matrix-mail/          # Jakarta Mail邮件发送、MailBuilder链式构建
 │   ├── matrix-social/        # JustAuth第三方登录(Gitee/GitHub/微信/钉钉/飞书)
-│   ├── matrix-oss/           # 阿里云OSS
+│   ├── matrix-oss/           # S3兼容对象存储(AWS SDK)：上传/下载/预签名URL/批量删除
 │   ├── matrix-sms/           # SMS4J多供应商短信
-│   ├── matrix-excel/         # EasyExcel导入导出
+│   ├── matrix-excel/         # EasyExcel导入导出(@ExcelEnumFormat/@ExcelDynamicOptions/@ExcelNotation/@ExcelRequired + ExcelBuilder)
 │   ├── matrix-es/            # Easy-Es Elasticsearch
+│   ├── matrix-es/            # Easy-Es Elasticsearch ORM自动配置
 │   ├── matrix-mongodb/       # MongoDB EasyMongoService
 │   ├── matrix-prometheus/    # Prometheus指标 + trace-id
 │   ├── matrix-jpush/         # 极光推送

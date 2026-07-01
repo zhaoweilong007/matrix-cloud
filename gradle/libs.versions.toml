@@ -81,6 +81,7 @@ podam = "8.0.2.RELEASE"
 # === 安全 ===
 jsoup = "1.22.2"
 bouncycastle = "1.78.1"
+s3 = "2.29.47"
 
 # === 新增工具 ===
 tika = "3.3.1"
@@ -231,6 +232,7 @@ sensitive-word = { module = "com.github.houbb:sensitive-word", version.ref = "se
 jedis-mock = { module = "com.github.fppt:jedis-mock", version.ref = "jedis-mock" }
 anji-captcha = { module = "com.anji-plus:spring-boot-starter-captcha", version.ref = "anji-captcha" }
 justauth = { module = "me.zhyd.oauth:JustAuth", version.ref = "justauth" }
+s3 = { module = "software.amazon.awssdk:s3", version.ref = "s3" }
 
 [bundles]
 mybatis = ["mybatis-plus", "mybatis-plus-join", "dynamic-datasource", "druid"]

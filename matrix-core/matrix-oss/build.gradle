@@ -1,5 +1,7 @@
 dependencies {
-    api(project(":matrix-core:matrix-auto"))
+    api project(':matrix-core:matrix-auto')
+    api project(':matrix-core:matrix-common')
+    api libs.s3
     api libs.aliyun.oss
     api 'org.springframework:spring-web'
 }

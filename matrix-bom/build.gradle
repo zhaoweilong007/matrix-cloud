@@ -83,5 +83,6 @@ dependencies {
         api libs.springdoc
         api libs.bouncycastle
         api libs.justauth
+        api libs.s3
     }
 }
