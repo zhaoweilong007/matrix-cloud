@@ -39,10 +39,14 @@ configure(microservices) {
                 username = "${registryUsername}"
                 password = "${registryPassword}"
             }
+            tags = ["latest", "${project.version}"]
         }
         allowInsecureRegistries = true
         container {
-            environment = [SW_AGENT_NAME: "${project.name}".toString()]
+            environment = [
+                SW_AGENT_NAME: "${project.name}".toString(),
+                JAVA_TOOL_OPTIONS: ''
+            ]
             // JDK 21 优化参数
             def baseJvmFlags = [
                 '-Djava.security.egd=file:/dev/./urandom',
@@ -57,7 +61,10 @@ configure(microservices) {
                 '-XX:+UseStringDeduplication',
                 '-XX:+OptimizeStringConcat',
                 // NIO 优化
-                '-Djava.nio.preferDirectBuffers=true'
+                '-Djava.nio.preferDirectBuffers=true',
+                // 健康检查端点
+                '-Dmanagement.endpoint.health.enabled=true',
+                '-Dmanagement.endpoints.web.exposure.include=health,info,metrics'
             ]
             if (project.name == 'matrix-admin') {
                 jvmFlags = baseJvmFlags
@@ -66,6 +73,7 @@ configure(microservices) {
             }
             creationTime = 'USE_CURRENT_TIMESTAMP'
             volumes = ['/skywalking/agent']
+            ports = ['8080', '9090']
         }
 
         // matrix-admin 不挂 SkyWalking agent
