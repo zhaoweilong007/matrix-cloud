@@ -19,8 +19,6 @@ public class TenantDatabaseInterceptor implements TenantLineHandler {
         ignoreTables = properties.getIgnoreTables();
         ignoreTables.add("dual");
         ignoreTables.add("DUAL");
-        ignoreTables.add("ams_sys_user");
-        ignoreTables.add("ums_user_basic");
     }
 
     @Override

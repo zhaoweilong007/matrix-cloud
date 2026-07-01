@@ -89,12 +89,19 @@ public class LogAspect {
                 || object instanceof BindingResult) {
             return true;
         }
-        // 排除敏感字段
+        // 检查是否包含敏感字段（使用反射而非 JSON 序列化）
         try {
-            final JSONObject jsonObject = JSON.parseObject(JSON.toJSONString(object));
-            MapUtil.removeAny(jsonObject, EXCLUDE_PROPERTIES);
+            java.lang.reflect.Field[] fields = clazz.getDeclaredFields();
+            for (java.lang.reflect.Field field : fields) {
+                String fieldName = field.getName();
+                for (String excludeProperty : EXCLUDE_PROPERTIES) {
+                    if (excludeProperty.equals(fieldName)) {
+                        return true;
+                    }
+                }
+            }
         } catch (Exception e) {
-            log.error("日志脱敏处理异常：{}", e.getMessage());
+            log.debug("日志脱敏处理异常：{}", e.getMessage());
         }
         return false;
     }

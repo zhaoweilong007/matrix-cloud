@@ -8,8 +8,11 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -39,6 +42,11 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         "yyyy/MM/dd", "yyyy/MM/dd HH:mm:ss", "yyyy/MM/dd HH:mm", "yyyy/MM",
         "yyyy.MM.dd", "yyyy.MM.dd HH:mm:ss", "yyyy.MM.dd HH:mm", "yyyy.MM"
     };
+
+    /**
+     * DateTimeFormatter 缓存，避免每次创建新实例
+     */
+    private static final Map<String, DateTimeFormatter> FORMATTER_CACHE = new ConcurrentHashMap<>();
 
     /**
      * 获取当前Date型日期
@@ -83,7 +91,9 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     }
 
     public static String parseDateToStr(final String format, final Date date) {
-        return new SimpleDateFormat(format).format(date);
+        DateTimeFormatter formatter = FORMATTER_CACHE.computeIfAbsent(format, DateTimeFormatter::ofPattern);
+        LocalDateTime localDateTime = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        return formatter.format(localDateTime);
     }
 
     public static Date dateTime(final String format, final String ts) {

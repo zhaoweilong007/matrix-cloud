@@ -130,15 +130,11 @@ public class RepeatSubmitAspect {
             return clazz.getComponentType().isAssignableFrom(MultipartFile.class);
         } else if (Collection.class.isAssignableFrom(clazz)) {
             Collection collection = (Collection) o;
-            for (Object value : collection) {
-                return value instanceof MultipartFile;
-            }
+            return collection.stream().anyMatch(value -> value instanceof MultipartFile);
         } else if (Map.class.isAssignableFrom(clazz)) {
             Map map = (Map) o;
-            for (Object value : map.entrySet()) {
-                Map.Entry entry = (Map.Entry) value;
-                return entry.getValue() instanceof MultipartFile;
-            }
+            return map.entrySet().stream()
+                    .anyMatch(entry -> ((Map.Entry) entry).getValue() instanceof MultipartFile);
         }
         return o instanceof MultipartFile
                 || o instanceof HttpServletRequest

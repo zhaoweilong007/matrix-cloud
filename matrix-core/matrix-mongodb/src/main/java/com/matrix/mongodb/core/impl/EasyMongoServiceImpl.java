@@ -13,6 +13,7 @@ import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import org.springframework.data.mongodb.core.BulkOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -46,8 +47,12 @@ public class EasyMongoServiceImpl<ID extends Serializable, T> implements EasyMon
 
     @Override
     public boolean saveBatch(Collection<T> entityList) {
-
-        entityList.forEach(item -> mongoTemplate.save(item));
+        if (entityList == null || entityList.isEmpty()) {
+            return true;
+        }
+        BulkOperations bulkOps = mongoTemplate.bulkOps(BulkOperations.UNORDERED, targetClass);
+        bulkOps.insert(entityList);
+        bulkOps.execute();
         return true;
     }
 

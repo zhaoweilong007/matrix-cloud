@@ -25,7 +25,7 @@ public enum SystemErrorTypeEnum implements IResultCode {
     ARGUMENT_NOT_VALID(1001, "请求参数错误"),
     ERROR_SESSION(1003, "用户身份认证失败"),
     VERIFICATION_CODE_ERROR(1005, "验证码错误"),
-    VERIFICATION_CODE_EXPIRE(1005, "验证码已失效"),
+    VERIFICATION_CODE_EXPIRE(1004, "验证码已失效"),
     REPEAT_SUBMIT(1006, "重复提交间隔时间不能小于1秒"),
     VALID_TENANT_FAIL(1007, "校验租户失败"),
     TENANT_NOT_FOUND(1008, "不存在租户编号"),

@@ -3,6 +3,8 @@ package com.matrix.web.thread;
 import com.matrix.common.context.LbIsolationContextHolder;
 import com.matrix.common.context.LoginUserContextHolder;
 import com.matrix.common.context.TenantContextHolder;
+import com.matrix.common.context.TerminalContextHolder;
+import com.matrix.common.enums.PlatformUserTypeEnum;
 import com.matrix.common.model.login.LoginUser;
 import org.springframework.core.task.TaskDecorator;
 import org.springframework.web.context.request.RequestAttributes;
@@ -19,6 +21,7 @@ public class ContextCopyingDecorator implements TaskDecorator {
         Long tenantId = TenantContextHolder.getTenantId();
         LoginUser loginUser = LoginUserContextHolder.getUser();
         String version = LbIsolationContextHolder.getVersion();
+        PlatformUserTypeEnum userType = TerminalContextHolder.getUserType();
         // 子线程
         return () -> {
             try {
@@ -27,12 +30,14 @@ public class ContextCopyingDecorator implements TaskDecorator {
                 TenantContextHolder.setTenantId(tenantId);
                 LoginUserContextHolder.setUser(loginUser);
                 LbIsolationContextHolder.setVersion(version);
+                TerminalContextHolder.setUsertype(userType);
                 runnable.run();
             } finally {
                 RequestContextHolder.resetRequestAttributes();
                 TenantContextHolder.clear();
                 LoginUserContextHolder.clear();
                 LbIsolationContextHolder.clear();
+                TerminalContextHolder.clear();
             }
         };
     }

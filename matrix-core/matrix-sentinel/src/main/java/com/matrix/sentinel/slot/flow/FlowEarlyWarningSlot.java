@@ -24,21 +24,33 @@ import org.springframework.util.CollectionUtils;
 @Slf4j
 public class FlowEarlyWarningSlot extends AbstractLinkedProcessorSlot<DefaultNode> {
 
+    /**
+     * 默认预警阈值比例（80%）
+     */
+    private static final double DEFAULT_WARNING_RATIO = 0.8;
+
     private final FlowRuleChecker checker;
+    private final double warningRatio;
 
     public FlowEarlyWarningSlot() {
-        this(new FlowRuleChecker());
+        this(new FlowRuleChecker(), DEFAULT_WARNING_RATIO);
+    }
+
+    public FlowEarlyWarningSlot(double warningRatio) {
+        this(new FlowRuleChecker(), warningRatio);
     }
 
     /**
      * Package-private for test.
      *
      * @param checker flow rule checker
+     * @param warningRatio 预警阈值比例（0.0-1.0）
      * @since 1.6.1
      */
-    FlowEarlyWarningSlot(FlowRuleChecker checker) {
+    FlowEarlyWarningSlot(FlowRuleChecker checker, double warningRatio) {
         AssertUtil.notNull(checker, "flow checker should not be null");
         this.checker = checker;
+        this.warningRatio = warningRatio > 0 && warningRatio <= 1 ? warningRatio : DEFAULT_WARNING_RATIO;
     }
 
     private List<FlowRule> getRuleProvider(String resource) {
@@ -48,11 +60,8 @@ public class FlowEarlyWarningSlot extends AbstractLinkedProcessorSlot<DefaultNod
         for (FlowRule rule : rules) {
             FlowRule earlyWarningRule = new FlowRule();
             BeanUtils.copyProperties(rule, earlyWarningRule);
-            /**
-             * 这里是相当于把规则阈值改成原来的80%，达到提前预警的效果，
-             * 这里建议把0.8做成配置
-             */
-            earlyWarningRule.setCount(rule.getCount() * 0.8);
+            // 把规则阈值改成配置的比例，达到提前预警的效果
+            earlyWarningRule.setCount(rule.getCount() * warningRatio);
             earlyWarningRuleList.add(earlyWarningRule);
         }
         Map<String, List<FlowRule>> flowRules = FlowRuleUtil.buildFlowRuleMap(earlyWarningRuleList);

@@ -352,7 +352,7 @@ public class RedisUtils {
      */
     public static <T> Map<String, T> getCacheMap(final String key) {
         RMap<String, T> rMap = CLIENT.getMap(key);
-        return rMap.getAll(rMap.keySet());
+        return rMap.readAllMap();
     }
 
     /**

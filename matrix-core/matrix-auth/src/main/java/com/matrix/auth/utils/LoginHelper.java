@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import one.util.streamex.StreamEx;
 
 /**
@@ -35,6 +36,7 @@ import one.util.streamex.StreamEx;
  * 多用户体系 针对 多种用户类型 但权限控制不一致
  * 可以组成 多用户类型表与多设备类型 分别控制权限
  */
+@Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class LoginHelper {
 
@@ -113,6 +115,7 @@ public class LoginHelper {
                 SaHolder.getStorage().set(CommonConstants.USER_KEY, userId);
             }
         } catch (Exception e) {
+            log.debug("获取用户ID失败: {}", e.getMessage());
             return null;
         }
         return userId;
@@ -127,6 +130,7 @@ public class LoginHelper {
                 SaHolder.getStorage().set(CommonConstants.TENANT_KEY, tenantId);
             }
         } catch (Exception e) {
+            log.debug("获取租户ID失败: {}", e.getMessage());
             return null;
         }
         return tenantId;
