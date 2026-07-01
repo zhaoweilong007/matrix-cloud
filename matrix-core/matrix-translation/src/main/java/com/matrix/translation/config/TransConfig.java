@@ -1,8 +1,8 @@
 package com.matrix.translation.config;
 
-import com.fhs.cache.service.TransCacheManager;
-import com.fhs.trans.ds.DataSourceSetter;
-import com.fhs.trans.service.impl.SimpleTransService;
+import org.dromara.cache.service.TransCacheManager;
+import org.dromara.trans.ds.DataSourceSetter;
+import org.dromara.trans.service.impl.SimpleTransService;
 import com.matrix.translation.entity.SysUserTrans;
 import jakarta.annotation.PostConstruct;
 import java.util.Map;

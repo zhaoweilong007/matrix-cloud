@@ -1,7 +1,7 @@
 package com.matrix.translation.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.fhs.core.trans.vo.TransPojo;
+import org.dromara.core.trans.vo.TransPojo;
 import com.matrix.common.entity.BaseIdEntity;
 import lombok.Data;
 

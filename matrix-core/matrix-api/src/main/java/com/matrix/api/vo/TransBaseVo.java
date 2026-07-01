@@ -1,8 +1,8 @@
 package com.matrix.api.vo;
 
-import com.fhs.core.trans.anno.Trans;
-import com.fhs.core.trans.constant.TransType;
-import com.fhs.core.trans.vo.TransPojo;
+import org.dromara.core.trans.anno.Trans;
+import org.dromara.core.trans.constant.TransType;
+import org.dromara.core.trans.vo.TransPojo;
 import com.matrix.translation.entity.SysUserTrans;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

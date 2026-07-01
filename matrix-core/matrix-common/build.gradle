@@ -27,7 +27,7 @@ dependencies {
     api 'org.apache.httpcomponents.client5:httpclient5'
     api 'jakarta.servlet:jakarta.servlet-api'
     api 'jakarta.validation:jakarta.validation-api'
-    api 'com.fhs-opensource:easy-trans-anno'
+    api libs.easy.trans.anno
     api 'org.apache.skywalking:apm-toolkit-trace'
 
 

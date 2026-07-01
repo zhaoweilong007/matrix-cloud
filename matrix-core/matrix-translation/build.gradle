@@ -1,8 +1,8 @@
 dependencies {
     api project(':matrix-core:matrix-feign')
     api project(':matrix-core:matrix-redis')
-    api 'com.fhs-opensource:easy-trans-spring-boot-starter'
-    api 'com.fhs-opensource:easy-trans-mybatis-plus-extend'
+    api libs.easy.trans
+    api libs.easy.trans.mybatis
     api('cn.dev33:sa-token-core')
 
 }

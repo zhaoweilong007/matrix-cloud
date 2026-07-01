@@ -2,7 +2,7 @@ package com.matrix.common.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.fhs.core.trans.vo.TransPojo;
+import org.dromara.core.trans.vo.TransPojo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serializable;
 import lombok.Data;

@@ -64,7 +64,7 @@ micrometer = "1.17.0"
 admin-server = "4.1.1"
 
 # === 其他 ===
-easy-trans = "3.0.6"
+easy-trans = "3.1.5"
 sms4j = "3.3.5"
 ons-client = "1.8.8.8.Final"
 wx = "4.5.0"
@@ -190,9 +190,9 @@ spring-boot-admin-server = { module = "de.codecentric:spring-boot-admin-starter-
 sms4j = { module = "org.dromara.sms4j:sms4j-spring-boot-starter", version.ref = "sms4j" }
 
 # === 翻译 ===
-easy-trans = { module = "com.fhs-opensource:easy-trans-spring-boot-starter", version.ref = "easy-trans" }
-easy-trans-mybatis = { module = "com.fhs-opensource:easy-trans-mybatis-plus-extend", version.ref = "easy-trans" }
-easy-trans-anno = { module = "com.fhs-opensource:easy-trans-anno", version.ref = "easy-trans" }
+easy-trans = { module = "org.dromara:easy-trans-spring-boot-starter", version.ref = "easy-trans" }
+easy-trans-mybatis = { module = "org.dromara:easy-trans-mybatis-plus-extend", version.ref = "easy-trans" }
+easy-trans-anno = { module = "org.dromara:easy-trans-anno", version.ref = "easy-trans" }
 
 # === 推送 ===
 jpush-client = { module = "cn.jpush.api:jpush-client", version.ref = "jpush" }
