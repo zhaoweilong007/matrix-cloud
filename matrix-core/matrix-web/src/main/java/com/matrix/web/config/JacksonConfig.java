@@ -2,6 +2,7 @@ package com.matrix.web.config;
 
 import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
+import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
@@ -21,58 +22,53 @@ import java.util.List;
 import java.util.TimeZone;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.boot.jackson2.autoconfigure.Jackson2AutoConfiguration;
-import org.springframework.boot.jackson2.autoconfigure.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 
 /**
+ * Jackson 序列化配置。
+ *
  * @author ZhaoWeiLong
  * @since 2023/6/15
  **/
 @Slf4j
-@AutoConfiguration(before = Jackson2AutoConfiguration.class)
+@AutoConfiguration
 public class JacksonConfig {
 
     public static final String PATTERN_DATETIME = "yyyy-MM-dd HH:mm:ss";
-
     public static final String PATTERN_DATE = "yyyy-MM-dd";
     public static final String PATTERN_TIME = "HH:mm:ss";
 
-    public static final DateTimeFormatter DATETIME_FORMATTER = DateTimeFormatter.ofPattern(PATTERN_DATETIME);
-    public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(PATTERN_DATE);
-    public static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern(PATTERN_TIME);
-
     @Bean
-    public Jackson2ObjectMapperBuilderCustomizer customizer() {
-        return builder -> {
-            // 全局配置序列化返回 JSON 处理
-            builder.modules(buildModule());
-            builder.timeZone(TimeZone.getDefault());
-            log.info("jackson config init");
-        };
-    }
-
-    private JavaTimeModule buildModule() {
+    public Module javaTimeModule() {
         JavaTimeModule javaTimeModule = new JavaTimeModule();
         javaTimeModule.addSerializer(Long.class, BigNumberSerializer.INSTANCE);
         javaTimeModule.addSerializer(Long.TYPE, BigNumberSerializer.INSTANCE);
         javaTimeModule.addSerializer(BigInteger.class, BigNumberSerializer.INSTANCE);
-        javaTimeModule.addSerializer(LocalDate.class, new LocalDateSerializer(DATE_FORMATTER));
-        javaTimeModule.addSerializer(LocalTime.class, new LocalTimeSerializer(TIME_FORMATTER));
-        javaTimeModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(DATETIME_FORMATTER));
-        javaTimeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(DATETIME_FORMATTER));
-        javaTimeModule.addDeserializer(LocalDate.class, new LocalDateDeserializer(DATE_FORMATTER));
-        javaTimeModule.addDeserializer(LocalTime.class, new LocalTimeDeserializer(TIME_FORMATTER));
+        javaTimeModule.addSerializer(LocalDate.class,
+                new LocalDateSerializer(DateTimeFormatter.ofPattern(PATTERN_DATE)));
+        javaTimeModule.addSerializer(LocalTime.class,
+                new LocalTimeSerializer(DateTimeFormatter.ofPattern(PATTERN_TIME)));
+        javaTimeModule.addSerializer(LocalDateTime.class,
+                new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(PATTERN_DATETIME)));
+        javaTimeModule.addDeserializer(LocalDateTime.class,
+                new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern(PATTERN_DATETIME)));
+        javaTimeModule.addDeserializer(LocalDate.class,
+                new LocalDateDeserializer(DateTimeFormatter.ofPattern(PATTERN_DATE)));
+        javaTimeModule.addDeserializer(LocalTime.class,
+                new LocalTimeDeserializer(DateTimeFormatter.ofPattern(PATTERN_TIME)));
         return javaTimeModule;
     }
 
     @Bean
-    public JsonUtils jsonUtils(List<ObjectMapper> mappers) {
-        final JavaTimeModule javaTimeModule = buildModule();
-        mappers.forEach(mapper -> mapper.registerModule(javaTimeModule));
+    public JsonUtils jsonUtils(List<ObjectMapper> mappers, Module javaTimeModule) {
+        mappers.forEach(mapper -> {
+            mapper.registerModule(javaTimeModule);
+            mapper.setTimeZone(TimeZone.getDefault());
+        });
         final ObjectMapper mapper = CollUtil.getFirst(mappers);
         JsonUtils.init(mapper);
         JacksonTypeHandler.setObjectMapper(mapper);
+        log.info("jackson config init");
         return new JsonUtils();
     }
 }
