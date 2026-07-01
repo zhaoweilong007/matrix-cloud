@@ -1,6 +1,7 @@
 package com.matrix.seata.config;
 
 import com.matrix.auto.factory.YamlPropertySourceFactory;
+import com.matrix.seata.interceptor.SeataRestTemplateInterceptor;
 import jakarta.annotation.PostConstruct;
 import java.sql.SQLException;
 import javax.sql.DataSource;
@@ -8,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
 
 /**
@@ -20,6 +22,14 @@ import org.springframework.context.annotation.PropertySource;
 @ConditionalOnBean(DataSource.class)
 @Slf4j
 public class SeataConfiguration {
+
+    /**
+     * 创建 Seata RestTemplate 拦截器，自动传播 XID。
+     */
+    @Bean
+    public SeataRestTemplateInterceptor seataRestTemplateInterceptor() {
+        return new SeataRestTemplateInterceptor();
+    }
 
     public static final String undoLogSql =
             """
