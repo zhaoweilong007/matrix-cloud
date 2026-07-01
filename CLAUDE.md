@@ -32,18 +32,18 @@ Java 21 通过 toolchain 配置（`JavaLanguageVersion.of(21)`），非 sourceCo
 ```
 matrix-cloud/
 ├── matrix-bom/               # BOM 统一依赖版本约束
-├── matrix-core/              # 31个可插拔核心模块
-│   ├── matrix-common/        # 基础：R<T>响应、异常体系(IResultCode)、实体基类、上下文Holder、脱敏、工具集
+├── matrix-core/              # 33个可插拔核心模块
+│   ├── matrix-common/        # 基础：R<T>响应、异常体系(IResultCode/ErrorCode)、实体基类(含clean防御方法)、上下文Holder、脱敏(10种注解)、缓存工具(CacheUtils)、JS精度保护序列化器、工具集
 │   ├── matrix-auto/          # 全局 @ConfigurationProperties + mica-auto注解处理器
-│   ├── matrix-web/           # Web Starter：全局异常、Jackson、i18n、访问日志、上下文传播
-│   ├── matrix-auth/          # Sa-Token+JWT认证：登录、权限、网关内部令牌、验证码、租户鉴权
+│   ├── matrix-web/           # Web Starter：全局异常、Jackson、i18n、访问日志、XSS过滤、上下文传播
+│   ├── matrix-auth/          # Sa-Token+JWT认证：登录、权限、网关内部令牌、验证码、租户鉴权、API签名校验(@ApiSignature)
 │   ├── matrix-feign/         # OpenFeign：请求头传播(租户/认证/灰度版本)、版本路由负载均衡
 │   ├── matrix-mybatis/       # MyBatis-Plus 3.5.16：BaseMapperX/Vo查询/乐观锁/雪花ID/自动填充
-│   ├── matrix-redis/         # Redis+Redisson：单机/主从/集群、Spring Cache、RedisUtils
+│   ├── matrix-redis/         # Redis+Redisson：单机/主从/集群、Spring Cache、RedisUtils、限流(@RateLimiter)、自定义TTL缓存
 │   ├── matrix-tenant/        # 多租户：SQL自动拼接tenant_id、缓存隔离、租户Job遍历、@TenantIgnore
-│   ├── matrix-swagger/       # (已移除 Knife4j，改用 apifox 生成文档)
+│   ├── matrix-crypto/        # API加解密：@ApiEncrypt注解、AES/RSA请求解密+响应加密
 │   ├── matrix-log/           # 操作日志(@Log) + 异常通知(@ExceptionNoticeLog)
-│   ├── matrix-mq/            # RocketMQ：同步/异步/顺序/事务消息模板，自动注册Listener
+│   ├── matrix-mq/            # RocketMQ：同步/异步/顺序/事务消息模板、自动注册Listener、MQ租户上下文传播
 │   ├── matrix-job/           # XXL-Job：自动计算executor端口
 │   ├── matrix-seata/         # Seata AT模式分布式事务，自动建undo_log表
 │   ├── matrix-sentinel/      # Sentinel增强：自定义SlotChain(流量/降级预警)、QPS监控
@@ -62,7 +62,7 @@ matrix-cloud/
 │   ├── matrix-jpush/         # 极光推送多App客户端
 │   ├── matrix-validator/     # 自定义校验(@InEnum/@PhoneValue/@DateValue)
 │   ├── matrix-api/           # 常用模块聚合 + IBaseFeignClient标准CRUD契约
-│   ├── matrix-test/          # 测试基础设施(Mockito基类/随机POJO)
+│   ├── matrix-test/          # 测试基础设施(BaseDbUnitTest/BaseRedisUnitTest/RandomUtils/AssertUtils)
 │   └── matrix-config/        # Nacos配置中心依赖聚合
 ├── matrix-admin/             # Spring Boot Admin 监控 (端口9002)
 ├── matrix-gateway/           # API网关 (端口9000) — 认证/灰度/XSS/黑名单/限流/i18n
@@ -77,14 +77,26 @@ matrix-cloud/
 ### 统一API响应
 所有接口返回 `R<T>`（`com.matrix.common.result.R`）。工厂方法：`R.success()`, `R.fail(msg)`, `R.fail(IResultCode)`。
 
+Feign 调用后使用链式方法处理远程错误：
+```java
+// 直接获取数据，失败自动抛异常
+UserDTO user = userClient.getUser(id).getCheckedData();
+// 检查错误并自定义异常
+userClient.save(user).checkError(SystemErrorTypeEnum.OPERATE_FAIL);
+```
+
 ### 异常体系
 - 错误码接口：`IResultCode` → 实现：`SystemErrorTypeEnum`(1xxx), `BusinessErrorTypeEnum`(2xxx-5xxx)
+- 错误码对象：`ErrorCode(code, message)` — 支持占位符参数 `ErrorCode(1001, "用户{}不存在").exception(id)`
 - 业务异常：`ServiceException(IResultCode)` 或 `ServiceException(R<?>)`
 - 工具构造：`ServiceExceptionUtil.exception(...)` 支持i18n模板
 
 ### 实体继承
 - `BaseIdEntity` — snowflake id + TransPojo
 - `BaseEntity` — + createdBy/createdAt/updatedBy/updatedAt/deleted(@TableLogic)
+  - `clean()` — 清理所有审计字段
+  - `cleanCreateFields()` — 仅清理创建审计字段
+  - `cleanUpdateFields()` — 仅清理更新审计字段
 - `TenantEntity` — + tenantId
 - `TreeEntity<T>` — + parentId/children
 
@@ -104,17 +116,25 @@ matrix-cloud/
 ### 常用注解速查
 | 注解 | 模块 | 用途 |
 |------|------|------|
-| `@Sensitive` | common | 字段脱敏(Jackson序列化时) |
+| `@Sensitive(strategy=...)` | common | 字段脱敏(Jackson序列化时) |
+| `@MobileDesensitize` / `@IdCardDesensitize` / `@BankCardDesensitize` | common | 独立脱敏注解，无需指定策略 |
+| `@EmailDesensitize` / `@NameDesensitize` / `@PasswordDesensitize` | common | 独立脱敏注解 |
+| `@AddressDesensitize` / `@FixedPhoneDesensitize` / `@IpDesensitize` / `@LicensePlateDesensitize` | common | 独立脱敏注解 |
 | `@SensitiveCheck` | common | 内容审核触发(文本/图片) |
 | `@Translation` | translation | 字段翻译(字典/用户名/地区) |
 | `@DataPermission` | data-permission | 行级数据权限 |
 | `@TenantIgnore` | tenant | 跳过租户SQL过滤 |
 | `@RepeatSubmit` | idempotent | 防重复提交(5秒间隔) |
+| `@RateLimiter` | redis | Redis令牌桶限流(5种Key策略) |
+| `@ApiEncrypt` | crypto | API请求解密+响应加密(AES/RSA) |
+| `@ApiSignature` | auth | API签名校验(appId/timestamp/nonce/sign) |
 | `@HandlerType(type, source)` | strategy | 策略模式标记 → BusinessHandlerChooser |
 | `@Log` | log | 操作日志记录 |
 | `@ExceptionNoticeLog` | log | 异常通知 |
 | `@EnableFeign` | feign | 启用Feign客户端+版本负载均衡 |
 | `@InEnum` / `@PhoneValue` | validator | 自定义校验 |
+| `@JsonSerialize(using = NumberSerializer.class)` | common | Long序列化时自动处理JS精度 |
+| `@JsonSerialize(using = LongToStringSerializer.class)` | common | Long全转String序列化 |
 
 ### 认证模式
 Sa-Token JWT(simple模式) + Redis持久化。登录：`LoginHelper.loginByDevice(LoginUser, DeviceTypeEnum)`。获取当前用户：`LoginHelper.getLoginUser()`。权限接口：`SaPermissionImpl`(StpInterface)。
@@ -161,6 +181,10 @@ matrix 框架配置前缀 `matrix.*`：
 - `matrix.access-log.enable` — API访问日志
 - `matrix.load-balance.gray.enabled` / `defaultVersion` — 灰度负载均衡
 - `matrix.tenant.enable` — 多租户开关
+- `matrix.mq.enabled` — RocketMQ 开关
+- `matrix.crypto.enabled` / `type`(AES\|RSA) / `secretKey` — API加解密
+- `matrix.rate-limiter.enabled` — 限流注解开关（默认开启）
+- `matrix.xss.enabled` / `excludeUrls` — XSS 过滤开关与排除URL
 
 ## Service Ports
 

@@ -24,7 +24,7 @@ Matrix-Cloud是一个基于Spring Cloud Alibaba的企业级微服务脚手架，
 
 #### 开发环境
 
-- **JDK**: 17
+- **JDK**: 21
 - **Gradle**: 8.14.3
 - **IDE**: IntelliJ IDEA 或 Eclipse
 
@@ -32,24 +32,22 @@ Matrix-Cloud是一个基于Spring Cloud Alibaba的企业级微服务脚手架，
 
 | 中间件类型       | 版本    | 用途说明                |
 |--------------|-------|---------------------|
-| Nacos        | 2.2.1 | 服务注册发现与配置中心          |
-| Sentinel     | 1.8.6 | 熔断限流                |
-| Seata        | 1.7.1 | 分布式事务               |
-| RocketMQ     | 4.9.4 | 消息队列                |
-| SkyWalking   | 9.0.0 | 分布式链路追踪             |
-| Elasticsearch| 7.17.6| 搜索引擎与日志存储           |
-| Kibana       | 7.17.6| 日志分析与可视化           |
-| Logstash     | 7.17.6| 日志收集与处理            |
-| Prometheus   | 1.16.1| 监控数据收集              |
+| Nacos        | 3.2.2 | 服务注册发现与配置中心          |
+| Sentinel     | 1.8.5 | 熔断限流                |
+| Seata        | 2.6.0 | 分布式事务               |
+| RocketMQ     | 5.5.0 | 消息队列                |
+| SkyWalking   | 10.4.0| 分布式链路追踪             |
+| BanyanDB     | 0.10.2| SkyWalking 原生存储后端    |
+| Prometheus   | —     | 监控数据收集              |
 | Grafana      | latest| 监控数据可视化             |
-| XXL-Job      | 3.3.1 | 分布式任务调度             |
+| XXL-Job      | 3.4.2 | 分布式任务调度             |
 
 ## 🚀快速开始
 
 ### 1. 环境准备
 
-- 安装JDK 17并配置环境变量
-- 安装Gradle 8.14.3并配置环境变量
+- 安装 JDK 21 并配置环境变量
+- 安装 Gradle 8.14.3 并配置环境变量
 - 克隆项目代码
 
 ### 2. 启动中间件
@@ -78,17 +76,11 @@ docker-compose up -d
 ### 4. 编译项目
 
 ```bash
-# 设置 JDK 17（如使用 sdkman）
-export JAVA_HOME=/home/zwl/.sdkman/candidates/java/17.0.19-amzn
-
 # 编译整个项目
 ./gradlew build -x test
 
 # 编译指定模块
 ./gradlew :matrix-resource:resource-biz:build
-
-# 静态分析（Checkstyle + SpotBugs + PMD）
-./gradlew checkstyleMain spotbugsMain pmdMain
 
 # 代码格式化
 ./gradlew spotlessApply
@@ -109,10 +101,9 @@ export JAVA_HOME=/home/zwl/.sdkman/candidates/java/17.0.19-amzn
 | 服务名称          | 访问地址                                  | 备注                |
 |---------------|---------------------------------------|-------------------|
 | Nacos控制台     | http://localhost:8848/nacos           | 用户名/密码：nacos/nacos |
-| Sentinel控制台  | http://localhost:8088/dashboard       | 用户名/密码：sentinel/sentinel |
 | 网关服务          | http://localhost:9000                 | 主要访问入口            |
-| API文档         | http://localhost:9000/doc.html        | Swagger文档聚合       |
-| Spring Boot Admin | http://localhost:9001                 | 应用监控             |
+| Spring Boot Admin | http://localhost:9002                 | 应用监控             |
+| SkyWalking UI  | http://localhost:9080                 | 分布式链路追踪          |
 
 ## �️技术选型
 
@@ -120,66 +111,64 @@ export JAVA_HOME=/home/zwl/.sdkman/candidates/java/17.0.19-amzn
 
 | 技术框架                 | 版本               | 用途说明                |
 |----------------------|------------------|---------------------|
-| Spring Cloud Alibaba | 2025.0.0.0       | 微服务基础框架             |
-| Spring Cloud         | 2025.0.0         | 微服务生态              |
-| Spring Boot          | 3.5.7            | 应用开发框架              |
+| Spring Cloud Alibaba | 2025.1.0.0       | 微服务基础框架             |
+| Spring Cloud         | 2025.1.2         | 微服务生态              |
+| Spring Boot          | 4.0.7            | 应用开发框架              |
 
 ### 服务治理
 
 | 技术框架                 | 版本               | 用途说明                |
 |----------------------|------------------|---------------------|
-| Nacos                | 2.2.1            | 服务注册发现与配置中心          |
+| Nacos                | 3.2.2            | 服务注册发现与配置中心          |
 | Spring Cloud Gateway | 依赖Spring Cloud版本 | 网关服务，处理请求路由、鉴权等     |
-| Sentinel             | 1.8.6            | 熔断限流                |
-| Seata                | 1.7.1            | 分布式事务               |
+| Sentinel             | 1.8.5            | 熔断限流                |
+| Seata                | 2.6.0            | 分布式事务               |
 
 ### 安全认证
 
 | 技术框架                 | 版本               | 用途说明                |
 |----------------------|------------------|---------------------|
-| Sa-Token             | 1.44.0           | 权限认证                |
+| Sa-Token             | 1.45.0           | 权限认证                |
 
 ### 数据持久化
 
 | 技术框架                 | 版本               | 用途说明                |
 |----------------------|------------------|---------------------|
-| MyBatis-Plus         | 3.5.15           | ORM框架               |
-| Redis                | 6.2.x            | 缓存数据库               |
+| MyBatis-Plus         | 3.5.16           | ORM框架               |
+| Redis                | 7.4.x            | 缓存数据库               |
 | MongoDB              | 4.4.x            | 文档数据库               |
-| Elasticsearch        | 7.17.6           | 搜索引擎与日志存储           |
+| Elasticsearch        | 8.19.17          | 搜索引擎               |
 
 ### 消息队列
 
 | 技术框架                 | 版本               | 用途说明                |
 |----------------------|------------------|---------------------|
-| RocketMQ             | 4.9.4            | 消息队列                |
+| RocketMQ             | 5.5.0            | 消息队列                |
 
 ### 监控与日志
 
 | 技术框架                 | 版本               | 用途说明                |
 |----------------------|------------------|---------------------|
-| SkyWalking           | 9.0.0            | 分布式链路追踪             |
-| ELK Stack            | 7.17.6           | 日志收集、存储与分析         |
-| Prometheus           | 1.16.1           | 监控数据收集              |
+| SkyWalking           | 10.4.0           | 分布式链路追踪             |
+| Prometheus           | —                | 监控数据收集              |
 | Grafana              | latest           | 监控数据可视化             |
-| Spring Boot Admin    | 3.5.6            | Spring Boot应用监控     |
+| Spring Boot Admin    | 4.1.1            | Spring Boot应用监控     |
 
 ### 开发工具
 
 | 工具名称               | 版本               | 用途说明                |
 |------------------|------------------|---------------------|
-| Knife4j           | 4.5.0            | Swagger增强工具，API文档生成 |
-| XXL-Job           | 3.3.1            | 分布式任务调度             |
+| XXL-Job           | 3.4.2            | 分布式任务调度             |
 | Jib               | 3.5.2            | Docker镜像构建工具        |
 
 ### 工具库
 
 | 工具库名称              | 版本               | 用途说明                |
 |-------------------|------------------|---------------------|
-| Hutool            | 5.8.22           | Java工具类库           |
-| Lombok            | 1.18.30          | 简化Java代码           |
-| MapStruct Plus    | 1.3.5            | 对象映射工具             |
-| EasyExcel         | 3.3.2            | Excel导入导出           |
+| Hutool            | 5.8.46           | Java工具类库           |
+| Lombok            | 1.18.46          | 简化Java代码           |
+| MapStruct Plus    | 1.5.1            | 对象映射工具             |
+| EasyExcel         | 4.0.3            | Excel导入导出           |
 
 ### 构建体系
 
@@ -198,7 +187,6 @@ export JAVA_HOME=/home/zwl/.sdkman/candidates/java/17.0.19-amzn
 | 功能模块         | 状态 | 描述说明                |
 |--------------|----|---------------------|
 | RBAC权限管理     | ✅  | 基于Sa-Token的角色权限管理     |
-| 聚合Swagger文档  | ✅  | 统一管理所有微服务的API文档     |
 | 多租户管理       | ✅  | 支持多租户模式，实现数据隔离     |
 | 动态路由         | ✅  | 基于Nacos的配置，修改后可实时生效  |
 | 灰度发布         | ✅  | 支持基于版本和IP的灰度发布      |
@@ -207,10 +195,15 @@ export JAVA_HOME=/home/zwl/.sdkman/candidates/java/17.0.19-amzn
 | 日志收集分析      | ✅  | 集成ELK进行日志收集和分析      |
 | 应用监控         | ✅  | 使用Prometheus和Grafana进行应用监控 |
 | 分布式任务调度     | ✅  | 集成XXL-Job实现分布式任务调度   |
-| 熔断限流         | ✅  | 集成Sentinel实现熔断限流       |
-| 幂等性校验        | ✅  | 防止重复请求             |
-| 敏感数据脱敏       | ✅  | 敏感数据自动脱敏           |
-| 数据权限控制       | ✅  | 基于注解的数据权限隔离        |
+| 熔断限流         | ✅  | Sentinel网关限流 + @RateLimiter注解级Redis限流 |
+| 幂等性校验        | ✅  | @RepeatSubmit防重复提交     |
+| 敏感数据脱敏       | ✅  | 10种脱敏注解，自动数据脱敏       |
+| 数据权限控制       | ✅  | 基于注解的行级数据权限隔离      |
+| API加解密         | ✅  | @ApiEncrypt AES/RSA请求解密+响应加密 |
+| MQ租户传播        | ✅  | RocketMQ消息自动携带租户上下文    |
+| XSS过滤          | ✅  | Jsoup XSS脚本自动清理      |
+| API签名校验       | ✅  | @ApiSignature 防篡改+防重放  |
+| JS精度保护        | ✅  | Long自动处理JS安全整数范围     |
 
 ## 🔧模块架构
 
@@ -289,9 +282,10 @@ export JAVA_HOME=/home/zwl/.sdkman/candidates/java/17.0.19-amzn
 
 | 组件名称               | 模块路径                    | 用途说明                          |
 |--------------------|-------------------------|-------------------------------|
-| **matrix-auth**    | `matrix-core:matrix-auth` | 权限认证相关功能，基于Sa-Token实现       |
-| **matrix-sensitive** | `matrix-core:matrix-sensitive` | 敏感数据脱敏，支持多种脱敏策略         |
-| **matrix-idempotent** | `matrix-core:matrix-idempotent` | 幂等性校验，防止重复请求             |
+| **matrix-auth**    | `matrix-core:matrix-auth` | 权限认证：Sa-Token+JWT登录/权限/内部令牌、@ApiSignature签名校验 |
+| **matrix-sensitive** | `matrix-core:matrix-sensitive` | 内容审核：网易易盾文本/图片审核         |
+| **matrix-idempotent** | `matrix-core:matrix-idempotent` | 幂等性：@RepeatSubmit 防重复提交       |
+| **matrix-crypto**  | `matrix-core:matrix-crypto` | API加解密：@ApiEncrypt AES/RSA请求解密+响应加密 |
 
 ### 数据处理组件
 
@@ -330,10 +324,9 @@ export JAVA_HOME=/home/zwl/.sdkman/candidates/java/17.0.19-amzn
 
 | 组件名称               | 模块路径                    | 用途说明                          |
 |--------------------|-------------------------|-------------------------------|
-| **matrix-swagger** | `matrix-core:matrix-swagger` | 集成Swagger，提供API文档聚合        |
-| **matrix-prometheus** | `matrix-core:matrix-prometheus` | 服务监控相关，集成Prometheus      |
-| **matrix-strategy** | `matrix-core:matrix-strategy` | 策略模式组件，提供策略模式的通用实现     |
-| **matrix-test**    | `matrix-core:matrix-test` | 测试组件，提供测试相关功能           |
+| **matrix-prometheus** | `matrix-core:matrix-prometheus` | 服务监控：Prometheus指标 + trace-id响应头      |
+| **matrix-strategy** | `matrix-core:matrix-strategy` | 策略模式：@HandlerType自动注入 → BusinessHandlerChooser    |
+| **matrix-test**    | `matrix-core:matrix-test` | 测试组件：BaseDbUnitTest/BaseRedisUnitTest/RandomUtils/AssertUtils |
 
 
 ## 🎯业务模块说明
@@ -481,12 +474,6 @@ logging:
 matrix:
   # 访问日志配置
   access-log: false
-  # Swagger文档配置
-  swagger:
-    enable: true
-    name: 自定义模块API
-    version: 1.0.0
-    description: 自定义模块的API文档
   # 灰度发布配置
   load-balance:
     gray:
@@ -564,20 +551,7 @@ matrix:
         - 192.168.1.101
 ```
 
-### 4. Swagger文档配置
-
-```yaml
-matrix:
-  swagger:
-    enable: true                     # 是否启用Swagger
-    name: Matrix Cloud API           # 文档名称
-    version: 3.0.0                   # 文档版本
-    description: Matrix Cloud 微服务框架API文档  # 文档描述
-    contact:                         # 联系人信息
-      name: zwl
-      email: zhaoweilong176@gmail.com
-    base-package: com.matrix         # 扫描的基础包
-```
+### 4. 灰度发布配置
 
 ### 5. 多租户配置
 
@@ -599,11 +573,28 @@ matrix:
 matrix:
   sentinel:
     enable: true                     # 是否启用Sentinel
-    flow-rules:                      # 流控规则
-      - resource: /api/user/**
-        count: 100
-        grade: 1
-        limitApp: default
+  rate-limiter:
+    enabled: true                    # 是否启用@RateLimiter注解限流
+```
+
+### 7. API加解密配置
+
+```yaml
+matrix:
+  crypto:
+    enabled: true                    # 是否启用API加解密
+    type: AES                        # 加密类型：AES / RSA
+    secret-key: your-aes-key         # AES密钥（16/24/32字节）
+```
+
+### 8. XSS 过滤配置
+
+```yaml
+matrix:
+  xss:
+    enabled: true                    # 是否启用XSS过滤
+    exclude-urls:                    # 排除过滤的URL模式列表
+      - /api/public/**
 ```
 
 ## 🚀部署指南
@@ -804,29 +795,10 @@ Matrix-Cloud集成了多种监控工具，提供了完整的监控体系：
 
 | 监控工具       | 用途说明                | 访问地址                                  |
 |------------|---------------------|---------------------------------------|
-| SkyWalking | 分布式链路追踪             | http://localhost:8080/general         |
+| SkyWalking | 分布式链路追踪             | http://localhost:9080                 |
 | Prometheus | 监控数据收集              | http://localhost:9090                 |
 | Grafana    | 监控数据可视化             | http://localhost:3000                 |
-| Spring Boot Admin | Spring Boot应用监控     | http://localhost:9001                 |
-
-### 2. 日志管理
-
-#### 日志收集
-
-Matrix-Cloud使用ELK Stack进行日志收集和分析：
-
-1. **Logstash**：收集应用日志，进行过滤和转换
-2. **Elasticsearch**：存储日志数据
-3. **Kibana**：日志可视化和分析
-
-#### 日志查询
-
-通过Kibana可以方便地查询和分析日志：
-
-1. 访问Kibana：http://localhost:5601
-2. 创建索引模式：`matrix-*`
-3. 在Discover页面查询日志
-4. 在Dashboard页面查看日志统计
+| Spring Boot Admin | Spring Boot应用监控     | http://localhost:9002                 |
 
 ### 3. 性能优化
 
@@ -867,8 +839,8 @@ Matrix-Cloud使用ELK Stack进行日志收集和分析：
 
 ### 3. API文档
 
-- **Swagger文档**：http://localhost:9000/doc.html
-- **接口文档**：可通过Swagger UI在线查看和测试API
+- **Apifox**：使用 Apifox 插件生成 API 文档，替代 Knife4j/Swagger
+- 各服务 Actuator 端点：`/actuator/health`, `/actuator/info`, `/actuator/metrics`
 
 ## 🤝贡献指南
 
