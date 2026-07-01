@@ -11,6 +11,7 @@ import com.matrix.websocket.core.session.WebSocketSessionHandlerDecorator;
 import com.matrix.websocket.core.session.WebSocketSessionManager;
 import com.matrix.websocket.core.session.WebSocketSessionManagerImpl;
 import com.matrix.websocket.core.util.WebSocketFrameworkUtils;
+import com.matrix.websocket.sse.SseEmitterSessionManager;
 import java.util.List;
 import org.redisson.api.RedissonClient;
 import org.slf4j.Logger;
@@ -153,5 +154,14 @@ public class WebSocketAutoConfiguration implements WebSocketConfigurer {
     public RedisWebSocketMessageConsumer redisWebSocketMessageConsumer(WebSocketSessionManager sessionManager,
             RedissonClient redissonClient) {
         return new RedisWebSocketMessageConsumer(redissonClient, sessionManager);
+    }
+
+    // ========== SSE 支持 ==========
+
+    @Bean
+    @ConditionalOnProperty(prefix = "matrix.websocket.sse", name = "enabled", havingValue = "true")
+    public SseEmitterSessionManager sseEmitterSessionManager() {
+        log.info("SSE support enabled");
+        return new SseEmitterSessionManager();
     }
 }

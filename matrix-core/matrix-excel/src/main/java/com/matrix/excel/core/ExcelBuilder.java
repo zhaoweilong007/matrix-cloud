@@ -1,10 +1,10 @@
 package com.matrix.excel.core;
 
 import cn.hutool.core.collection.CollUtil;
-import com.alibaba.excel.EasyExcel;
-import com.alibaba.excel.ExcelWriter;
-import com.alibaba.excel.support.ExcelTypeEnum;
-import com.alibaba.excel.write.metadata.WriteSheet;
+import org.apache.fesod.sheet.EasyExcel;
+import org.apache.fesod.sheet.ExcelWriter;
+import org.apache.fesod.sheet.support.ExcelTypeEnum;
+import org.apache.fesod.sheet.write.metadata.WriteSheet;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;

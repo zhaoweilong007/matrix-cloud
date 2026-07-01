@@ -2,6 +2,9 @@ package com.matrix.common.service;
 
 import com.matrix.common.util.string.StringUtils;
 
+import java.util.Collections;
+import java.util.Map;
+
 /**
  * 字典服务服务
  */
@@ -48,4 +51,15 @@ public interface IDictService {
      * @return 字典值
      */
     String getDictValue(String dictType, String dictLabel, String separator);
+
+    /**
+     * 根据字典类型获取所有字典数据。
+     * 默认返回空 Map，子类可覆盖实现。
+     *
+     * @param dictType 字典类型
+     * @return 字典数据 Map（key=字典值, value=字典标签），无数据时返回空 Map
+     */
+    default Map<String, String> getAllDictByDictType(String dictType) {
+        return Collections.emptyMap();
+    }
 }

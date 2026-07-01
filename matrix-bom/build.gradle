@@ -50,7 +50,7 @@ dependencies {
         api libs.transmittable.thread.local
         api libs.commons.lang3
         api libs.commons.collections4
-        api libs.easyexcel
+        api libs.fesod.sheet
         api libs.user.agent.utils
         api libs.httpclient5
 

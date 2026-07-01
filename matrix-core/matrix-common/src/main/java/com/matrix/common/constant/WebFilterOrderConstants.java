@@ -33,4 +33,7 @@ public interface WebFilterOrderConstants {
     int TENANT_SECURITY_FILTER = -96;
 
     int API_ACCESS_LOG_FILTER = -100;
+
+    /** 演示模式过滤器，需在认证之后执行 */
+    int DEMO_FILTER = -90;
 }

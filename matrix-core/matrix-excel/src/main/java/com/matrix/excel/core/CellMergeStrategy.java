@@ -1,7 +1,7 @@
 package com.matrix.excel.core;
 
-import com.alibaba.excel.metadata.Head;
-import com.alibaba.excel.write.merge.AbstractMergeStrategy;
+import org.apache.fesod.sheet.metadata.Head;
+import org.apache.fesod.sheet.write.merge.AbstractMergeStrategy;
 import com.matrix.excel.annotation.CellMerge;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;

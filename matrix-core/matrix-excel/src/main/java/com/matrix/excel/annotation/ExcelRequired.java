@@ -1,5 +1,7 @@
 package com.matrix.excel.annotation;
 
+import org.apache.poi.ss.usermodel.IndexedColors;
+
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -17,4 +19,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface ExcelRequired {
+
+    /**
+     * 表头字体颜色，默认红色
+     */
+    IndexedColors fontColor() default IndexedColors.RED;
 }

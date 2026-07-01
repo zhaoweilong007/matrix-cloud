@@ -6,6 +6,7 @@ import com.matrix.web.client.ApiAccessLogApi;
 import com.matrix.web.exception.GlobalExceptionHandler;
 import com.matrix.web.filter.ApiAccessLogFilter;
 import com.matrix.web.filter.CacheRequestBodyFilter;
+import com.matrix.web.filter.DemoFilter;
 import com.matrix.web.handler.I18nLocaleResolver;
 import jakarta.servlet.Filter;
 import org.springframework.beans.factory.annotation.Value;
@@ -71,6 +72,15 @@ public class WebAutoConfig implements WebMvcConfigurer {
             @Value("${spring.application.name}") String applicationName, ApiAccessLogApi apiAccessLogApi) {
         ApiAccessLogFilter filter = new ApiAccessLogFilter(applicationName, apiAccessLogApi);
         return createFilterBean(filter, WebFilterOrderConstants.API_ACCESS_LOG_FILTER);
+    }
+
+    /**
+     * 创建 DemoFilter Bean，演示模式下禁止写操作
+     */
+    @Bean
+    @ConditionalOnProperty(value = "matrix.demo", havingValue = "true")
+    public FilterRegistrationBean<DemoFilter> demoFilter() {
+        return createFilterBean(new DemoFilter(), WebFilterOrderConstants.DEMO_FILTER);
     }
 
     private static <T extends Filter> FilterRegistrationBean<T> createFilterBean(T filter, Integer order) {

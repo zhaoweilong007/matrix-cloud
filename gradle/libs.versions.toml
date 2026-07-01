@@ -39,7 +39,7 @@ caffeine = "3.2.4"
 transmittable = "2.14.5"
 commons-lang3 = "3.20.0"
 commons-collections4 = "4.4"
-easyexcel = "4.0.3"
+fesod-sheet = "2.0.2-incubating"
 userAgent = "1.21"
 streamex = "0.8.1"
 vavr = "0.10.4"
@@ -154,7 +154,7 @@ hutool = { module = "cn.hutool:hutool-all", version.ref = "hutool" }
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 fastjson2 = { module = "com.alibaba.fastjson2:fastjson2", version.ref = "fastjson2" }
-easyexcel = { module = "com.alibaba:easyexcel", version.ref = "easyexcel" }
+fesod-sheet = { module = "org.apache.fesod:fesod-sheet", version.ref = "fesod-sheet" }
 caffeine = { module = "com.github.ben-manes.caffeine:caffeine", version.ref = "caffeine" }
 commons-lang3 = { module = "org.apache.commons:commons-lang3", version.ref = "commons-lang3" }
 commons-collections4 = { module = "org.apache.commons:commons-collections4", version.ref = "commons-collections4" }
