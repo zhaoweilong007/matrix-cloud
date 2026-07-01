@@ -55,3 +55,4 @@ mysql_data/**
 
 ### SkyWalking agent 运行时日志 ###
 /skywalking-agent/logs/**
+rebel.xml
