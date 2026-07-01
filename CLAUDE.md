@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-**Matrix-Cloud** — Java 21 微服务脚手架。Spring Boot 4.1.0 + Spring Cloud 2025.1.2 + Spring Cloud Alibaba 2025.1.0.0。
+**Matrix-Cloud** — Java 21 微服务脚手架。Spring Boot 4.1.0 + Spring Cloud 2025.1.2 + Spring Cloud Alibaba 2025.1.0.0。39 个核心模块。
 
 **权威版本来源**: `gradle/libs.versions.toml` 和 `matrix-bom/build.gradle`，始终查阅这两个文件而非本文件中的版本号。
 
@@ -34,29 +34,29 @@ matrix-cloud/
 │   ├── matrix-tenant/        # 多租户：SQL自动拼接tenant_id、缓存隔离、@TenantIgnore
 │   ├── matrix-crypto/        # @ApiEncrypt AES/RSA 请求解密+响应加密
 │   ├── matrix-log/           # @Log操作日志 + @ExceptionNoticeLog异常通知
-│   ├── matrix-mq/            # RocketMQ：消息模板、Listener自动注册、租户上下文传播
+│   ├── matrix-mq/            # RocketMQ：消息模板、Listener自动注册、租户上下文传播、Redis MQ抽象(Pub/Sub+Stream)
 │   ├── matrix-job/           # XXL-Job：XxlJobSpringExecutor自动配置+自动端口IP
-│   ├── matrix-seata/         # Seata AT分布式事务
-│   ├── matrix-sentinel/      # Sentinel：自定义SlotChain、QPS监控
+│   ├── matrix-seata/         # Seata AT分布式事务、RestTemplate XID自动传播
+│   ├── matrix-sentinel/      # Sentinel：自定义SlotChain、QPS预警、Nacos持久化
 │   ├── matrix-strategy/      # @HandlerType → BusinessHandlerChooser 策略注入
 │   ├── matrix-translation/   # @Translation 字段翻译(字典/用户名/地区/图片URL)
-│   ├── matrix-data-permission/ # @DataPermission 行级数据权限 SQL拦截
+│   ├── matrix-data-permission/ # @DataPermission 行级数据权限 JSQLParser SQL拦截
 │   ├── matrix-idempotent/    # @RepeatSubmit 防重复提交
 │   ├── matrix-lock/          # Lock4j分布式锁(Redisson)
 │   ├── matrix-sensitive/     # 网易易盾内容审核
-│   ├── matrix-websocket/     # WebSocket多节点广播(Redis)、消息监听器SPI
+│   ├── matrix-websocket/     # WebSocket(Redis/RocketMQ广播) + SSE长连接、消息监听器SPI
 │   ├── matrix-ip/            # IP定位(ip2region)+行政区划(四级树形area.csv)
 │   ├── matrix-doc/           # SpringDoc OpenAPI文档(Swagger UI)、Sa-Token认证集成
 │   ├── matrix-mail/          # Jakarta Mail邮件发送、MailBuilder链式构建
-│   ├── matrix-social/        # JustAuth第三方登录(Gitee/GitHub/微信/钉钉/飞书)
+│   ├── matrix-social/        # JustAuth第三方登录(Gitee/GitHub/微信/钉钉/飞书/MaxKey/Gitea)
 │   ├── matrix-oss/           # S3兼容对象存储(AWS SDK)：上传/下载/预签名URL/批量删除
-│   ├── matrix-sms/           # SMS4J多供应商短信
-│   ├── matrix-excel/         # EasyExcel导入导出(@ExcelEnumFormat/@ExcelDynamicOptions/@ExcelNotation/@ExcelRequired + ExcelBuilder)
-│   ├── matrix-es/            # Easy-Es Elasticsearch
+│   ├── matrix-sms/           # SMS4J多供应商短信、Redis缓存Dao、全局异常处理
+│   ├── matrix-excel/         # fesod-sheet导入导出(@ExcelEnumFormat/@ExcelDynamicOptions/@ExcelNotation/@ExcelRequired) + ExcelBuilder + 下拉处理
 │   ├── matrix-es/            # Easy-Es Elasticsearch ORM自动配置
 │   ├── matrix-mongodb/       # MongoDB EasyMongoService
-│   ├── matrix-prometheus/    # Prometheus指标 + trace-id
+│   ├── matrix-prometheus/    # Prometheus指标 + trace-id + @BizTrace业务追踪
 │   ├── matrix-jpush/         # 极光推送
+│   ├── matrix-loadbalancer/  # 同主机优先负载均衡(SameHostLoadBalancer)
 │   ├── matrix-validator/     # @InEnum/@PhoneValue 校验
 │   ├── matrix-api/           # 常用模块聚合 + IBaseFeignClient
 │   ├── matrix-test/          # 测试基础设施
@@ -104,6 +104,17 @@ userClient.save(user).checkError(SystemErrorTypeEnum.OPERATE_FAIL); // 检查错
 | `@JsonSerialize(using=NumberSerializer)` / `@JsonSerialize(using=LongToStringSerializer)` | common | Long JS精度保护 |
 | `MPJLambdaWrapperX` / `LongListTypeHandler` / `IntegerListTypeHandler` / `LongSetTypeHandler` | mybatis | 连表查询+集合TypeHandler |
 | `WebSocketMessageListener<T>` / `IPUtils` | websocket/ip | 消息监听SPI/IP定位 |
+| `SseEmitterSessionManager` / `SseEmitterController` | websocket | SSE长连接管理 |
+| `@BizTrace` / `BizTraceAspect` | prometheus | SkyWalking业务Span标签(biz.type/biz.id) |
+| `RedisMqTemplate` / `RedisMessageInterceptor` | mq | Redis MQ Pub/Sub + Stream操作 + 拦截器链 |
+| `@ExcelRequired` / `@ExcelEnumFormat` / `@ExcelDynamicOptions` / `@ExcelNotation` | excel | 必填标红/枚举转换/动态下拉/表头批注 |
+| `ExcelDownHandler` / `DataWriteHandler` / `DropDownOptions` | excel | Excel下拉框(字典/枚举/动态/级联) + 批注必填样式 |
+| `SmsRedisDao` / `SmsExceptionHandler` | sms | Redis缓存Dao(重试/限流) + 全局异常拦截 |
+| `SameHostLoadBalancer` | loadbalancer | 同主机IP优先服务实例选择 |
+| `SeataRestTemplateInterceptor` | seata | RestTemplate XID自动传播 |
+| `TenantRedisMessageInterceptor` | tenant | Redis MQ租户上下文自动传播 |
+| `IdTypeEnvironmentPostProcessor` | mybatis | 数据库类型自动检测→主键策略 |
+| `DemoFilter` | web | 演示模式写操作拦截 |
 
 ### 认证
 Sa-Token JWT(simple) + Redis。`LoginHelper.loginByDevice(…)` 登录，`LoginHelper.getLoginUser()` 获取用户。网关内部校验：`SaSameUtil.checkCurrentRequestToken()`。
@@ -131,7 +142,34 @@ spring.config.import:
 
 环境：`PROFILE` 环境变量 (dev/prod) → Nacos namespace。本地配置：`config/dev/`，Nacos：`config/nacos/`，SQL：`deploy/sql/`。
 
-`matrix.*` 前缀：`captcha.validateUrl` | `access-log.enable` | `load-balance.gray` | `tenant.enable` | `mq.enabled` | `crypto.enabled/type/secretKey` | `rate-limiter.enabled` | `xss.enabled/excludeUrls` | `websocket.enabled/path/sender-type`
+自定义配置统一 `matrix.*` 前缀（第三方框架前缀保留：`xxl.job`/`redisson`/`lock4j`/`easy-trans`/`bean-searcher`）：
+
+| 前缀 | 说明 |
+|------|------|
+| `matrix.access-log` | API访问日志(enabled/ignoreUrls) |
+| `matrix.asyc-task` | 异步任务线程池配置 |
+| `matrix.black-list` | 黑名单配置 |
+| `matrix.captcha` | 验证码(type/category/enabled/validateUrl) |
+| `matrix.crypto` | API加解密(enabled/type/secretKey/publicKey/privateKey) |
+| `matrix.demo` | 演示模式(enabled=true启用DemoFilter) |
+| `matrix.doc` | SpringDoc文档(title/description/version) |
+| `matrix.jpush` | 极光推送(appKey/masterSecret) |
+| `matrix.load-balance.gray` | 灰度负载均衡(enabled/defaultVersion/chooser) |
+| `matrix.loadbalancer.same-host` | 同主机优先LB(enabled) |
+| `matrix.mail` | 邮件(enabled/from/fromName) |
+| `matrix.monitor` | 监控(traceEnable/metricsEnable) |
+| `matrix.mq` | RocketMQ(enabled/onsAddr) |
+| `matrix.mq.redis` | Redis MQ(enabled) |
+| `matrix.oss` | 对象存储(endpoint/accessKey/secretKey/bucket) |
+| `matrix.rate-limiter` | 限流(enabled) |
+| `matrix.security.ignore` | 安全白名单(whites) |
+| `matrix.security.tenant` | 租户认证(authUrl) |
+| `matrix.sms` | 短信(smsValidateIgnore + SMS4J blends配置) |
+| `matrix.social` | 第三方登录(enabled + justauth平台配置) |
+| `matrix.tenant` | 多租户(enable/ignoreTables/ignoreUrls) |
+| `matrix.websocket` | WebSocket(enabled/path/sender-type/allowedOrigins) |
+| `matrix.websocket.sse` | SSE长连接(enabled/path) |
+| `matrix.xss` | XSS过滤(enabled/excludeUrls) |
 
 ## Ports
 
