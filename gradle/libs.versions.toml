@@ -5,7 +5,7 @@
 
 [versions]
 # === 框架版本 ===
-springboot = "4.0.7"
+springboot = "4.1.0"
 springCloud = "2025.1.2"
 springCloudAlibaba = "2025.1.0.0"
 mica = "4.1.0"
@@ -13,7 +13,7 @@ dependency-management = "1.1.7"
 
 # === 核心组件 ===
 mybatis-plus = "3.5.16"
-mybatis-plus-join = "1.5.5"
+mybatis-plus-join = "1.5.7"
 sa-token = "1.45.0"
 redisson = "4.6.1"
 sentinel = "1.8.6"
@@ -37,7 +37,7 @@ fastjson2 = "2.0.62"
 commons-pool2 = "2.11.1"
 caffeine = "3.2.4"
 transmittable = "2.14.5"
-commons-lang3 = "3.12.0"
+commons-lang3 = "3.20.0"
 commons-collections4 = "4.4"
 easyexcel = "4.0.3"
 userAgent = "1.21"
@@ -50,7 +50,7 @@ validator = "3.0.2"
 swagger = "2.2.19"
 httpClient = "5.6.1"
 pinyin = "2.0.3.RELEASE"
-pinyin4j = "2.5.0"
+pinyin4j = "2.5.1"
 
 # === 认证 ===
 javaJwt = "3.8.3"
@@ -73,8 +73,17 @@ hessian = "4.0.66"
 yidun = "1.1.11"
 tencentcloud = "3.1.930"
 mockito = "5.2.0"
-podam = "8.0.0.RELEASE"
-junit = "5.10.2"
+podam = "8.0.2.RELEASE"
+# JUnit 由 Spring Boot BOM 统一管理版本
+
+# === 安全 ===
+jsoup = "1.22.2"
+
+# === 新增工具 ===
+tika = "3.3.1"
+sensitive-word = "0.29.5"
+jedis-mock = "1.1.15"
+anji-captcha = "1.4.0"
 
 # === 构建插件 ===
 jib = "3.5.2"
@@ -204,8 +213,18 @@ lombok-mapstruct-binding = { module = "org.projectlombok:lombok-mapstruct-bindin
 mockito-inline = { module = "org.mockito:mockito-inline", version.ref = "mockito" }
 podam = { module = "uk.co.jemos.podam:podam", version.ref = "podam" }
 spotbugs-annotations = { module = "com.github.spotbugs:spotbugs-annotations", version.ref = "spotbugs" }
-junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit" }
+# JUnit 由 Spring Boot BOM 统一管理版本
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
+
+# === 安全 ===
+jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
+
+# === 新增工具 ===
+tika-core = { module = "org.apache.tika:tika-core", version.ref = "tika" }
+sensitive-word = { module = "com.github.houbb:sensitive-word", version.ref = "sensitive-word" }
+jedis-mock = { module = "com.github.fppt:jedis-mock", version.ref = "jedis-mock" }
+anji-captcha = { module = "com.anji-plus:spring-boot-starter-captcha", version.ref = "anji-captcha" }
 
 [bundles]
 mybatis = ["mybatis-plus", "mybatis-plus-join", "dynamic-datasource", "druid"]
