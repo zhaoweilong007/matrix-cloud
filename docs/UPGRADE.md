@@ -285,3 +285,4 @@ SENTINEL_VERSION    = 1.8.5
 | Spotless 代码格式化 | 统一代码风格，应用 palantir-java-format | 2026-06-30 |
 | JDK 21 JVM 参数优化 | 启用虚拟线程、ZGC、内存优化 | 2026-06-30 |
 | matrix-core 全模块优化 | P0/P1/P2 问题修复，性能优化 | 2026-06-30 |
+| 测试基础设施完善 | 添加 JUnit 5 依赖，创建 StringUtils 单元测试 | 2026-06-30 |
