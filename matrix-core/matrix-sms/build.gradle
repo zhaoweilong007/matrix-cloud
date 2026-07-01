@@ -1,4 +1,5 @@
 dependencies {
     api(project(":matrix-core:matrix-auto"))
     api 'org.dromara.sms4j:sms4j-spring-boot-starter'
+    compileOnly project(':matrix-core:matrix-redis')
 }
