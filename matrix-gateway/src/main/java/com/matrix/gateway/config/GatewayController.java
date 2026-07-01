@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class GatewayController {
 
-    @RequestMapping(value = "/", method = {RequestMethod.HEAD, RequestMethod.GET})
-    public void response() {
-    }
+    @RequestMapping(
+            value = "/",
+            method = {RequestMethod.HEAD, RequestMethod.GET})
+    public void response() {}
 }

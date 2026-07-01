@@ -3,11 +3,9 @@ package com.matrix.common.util.collection;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.collection.IterUtil;
 import cn.hutool.core.util.ArrayUtil;
-
 import java.util.Collection;
 import java.util.function.Consumer;
 import java.util.function.Function;
-
 
 /**
  * Array 工具类
@@ -51,5 +49,4 @@ public class ArrayUtils {
         }
         return array[index];
     }
-
 }

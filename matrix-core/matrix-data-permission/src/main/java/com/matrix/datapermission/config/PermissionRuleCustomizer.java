@@ -6,7 +6,6 @@ package com.matrix.datapermission.config;
  * @author ZhaoWeiLong
  * @since 2023/8/25
  **/
-
 public interface PermissionRuleCustomizer<PR> {
     /**
      * 定制额外规则

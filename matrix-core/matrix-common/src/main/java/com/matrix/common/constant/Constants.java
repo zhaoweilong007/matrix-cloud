@@ -22,5 +22,4 @@ public interface Constants {
     String VERSION = "VERSION";
 
     String DEFAULT_VERSION = "default";
-
 }

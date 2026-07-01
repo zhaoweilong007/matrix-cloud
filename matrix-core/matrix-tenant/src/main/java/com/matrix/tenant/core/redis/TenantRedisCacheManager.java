@@ -14,7 +14,6 @@ import org.springframework.data.redis.cache.RedisCacheManager;
 @Slf4j
 public class TenantRedisCacheManager extends PlusSpringCacheManager {
 
-
     @Override
     public Cache getCache(String name) {
         // 如果开启多租户，则 name 拼接租户后缀
@@ -27,5 +26,4 @@ public class TenantRedisCacheManager extends PlusSpringCacheManager {
         // 继续基于父方法
         return super.getCache(name);
     }
-
 }

@@ -1,12 +1,11 @@
 package com.matrix.validator.annotation;
 
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
 import com.matrix.validator.FlagValueValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
-
 import java.lang.annotation.*;
-
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * 校验标识，只有Y和N两种状态的标识

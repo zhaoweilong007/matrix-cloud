@@ -44,7 +44,6 @@ public class LogEventListener {
         remoteLogService.saveLoginLog(loginLog);
     }
 
-
     /**
      * 消费异常事件
      *
@@ -55,9 +54,17 @@ public class LogEventListener {
     public void exceptionNotice(ExceptionEvent event) {
         HttpResponse httpResponse = null;
         try {
-            final String msg = String.format(ExceptionNoticeProperties.MSG_TEMPLATE, event.getApplication(), event.getApiPath(), DateUtil.now(),
-                    event.getTraceId(), event.getMessage(), event.getStackTrace());
-            httpResponse = HttpRequest.post(exceptionNoticeProperties.getAlertUrl()).body(msg).executeAsync();
+            final String msg = String.format(
+                    ExceptionNoticeProperties.MSG_TEMPLATE,
+                    event.getApplication(),
+                    event.getApiPath(),
+                    DateUtil.now(),
+                    event.getTraceId(),
+                    event.getMessage(),
+                    event.getStackTrace());
+            httpResponse = HttpRequest.post(exceptionNoticeProperties.getAlertUrl())
+                    .body(msg)
+                    .executeAsync();
         } catch (Exception e) {
             log.error("ExceptionEvent send msg error:{}", httpResponse);
         }

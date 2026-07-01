@@ -8,7 +8,6 @@ import com.matrix.sentinel.slot.flow.FlowEarlyWarningSlot;
 
 public class CustomSlotChainBuilder implements SlotChainBuilder {
 
-
     @Override
     public ProcessorSlotChain build() {
         ProcessorSlotChain chain = new DefaultSlotChainBuilder().build();

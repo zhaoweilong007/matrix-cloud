@@ -1,11 +1,10 @@
 package com.matrix.auto.properties;
 
+import java.util.Collections;
+import java.util.List;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
-
-import java.util.Collections;
-import java.util.List;
 
 /**
  * 微服务 黑名单 配置 运行时刷新
@@ -50,7 +49,5 @@ public class BlackListProperties {
          * 路径 拦截所有：/**
          */
         private List<String> pathList = Collections.singletonList("/**");
-
     }
-
 }

@@ -45,7 +45,6 @@ public class ExcelUtil {
         return EasyExcel.read(is).head(clazz).autoCloseStream(false).sheet().doReadSync();
     }
 
-
     /**
      * 使用校验监听器 异步导入 同步返回
      *
@@ -100,7 +99,8 @@ public class ExcelUtil {
      * @param merge     是否合并单元格
      * @param response  响应体
      */
-    public static <T> void exportExcel(List<T> list, String sheetName, Class<T> clazz, boolean merge, HttpServletResponse response) {
+    public static <T> void exportExcel(
+            List<T> list, String sheetName, Class<T> clazz, boolean merge, HttpServletResponse response) {
         try {
             resetResponse(sheetName, response);
             ServletOutputStream os = response.getOutputStream();
@@ -156,7 +156,8 @@ public class ExcelUtil {
      * @param data         模板需要的数据
      * @param response     响应体
      */
-    public static void exportTemplate(List<Object> data, String filename, String templatePath, HttpServletResponse response) {
+    public static void exportTemplate(
+            List<Object> data, String filename, String templatePath, HttpServletResponse response) {
         try {
             resetResponse(filename, response);
             ServletOutputStream os = response.getOutputStream();
@@ -204,7 +205,8 @@ public class ExcelUtil {
      * @param data         模板需要的数据
      * @param response     响应体
      */
-    public static void exportTemplateMultiList(Map<String, Object> data, String filename, String templatePath, HttpServletResponse response) {
+    public static void exportTemplateMultiList(
+            Map<String, Object> data, String filename, String templatePath, HttpServletResponse response) {
         try {
             resetResponse(filename, response);
             ServletOutputStream os = response.getOutputStream();
@@ -237,7 +239,8 @@ public class ExcelUtil {
         }
         for (Map.Entry<String, Object> map : data.entrySet()) {
             // 设置列表后续还有数据
-            FillConfig fillConfig = FillConfig.builder().forceNewRow(Boolean.TRUE).build();
+            FillConfig fillConfig =
+                    FillConfig.builder().forceNewRow(Boolean.TRUE).build();
             if (map.getValue() instanceof Collection) {
                 // 多表导出必须使用 FillWrapper
                 excelWriter.fill(new FillWrapper(map.getKey(), (Collection<?>) map.getValue()), fillConfig, writeSheet);
@@ -251,7 +254,8 @@ public class ExcelUtil {
     /**
      * 重置响应体
      */
-    private static void resetResponse(String sheetName, HttpServletResponse response) throws UnsupportedEncodingException {
+    private static void resetResponse(String sheetName, HttpServletResponse response)
+            throws UnsupportedEncodingException {
         String filename = encodingFilename(sheetName);
         FileUtils.setAttachmentResponseHeader(response, filename);
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8");
@@ -321,5 +325,4 @@ public class ExcelUtil {
     public static String encodingFilename(String filename) {
         return IdUtil.fastSimpleUUID() + "_" + filename + ".xlsx";
     }
-
 }

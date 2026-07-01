@@ -1,14 +1,12 @@
 package com.matrix.translation.api.client;
 
 import com.matrix.common.constant.ServerNameConstants;
-import com.matrix.common.model.SysDictData;
 import com.matrix.common.model.SysDictDataVo;
 import com.matrix.common.result.R;
+import java.util.List;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.List;
 
 /**
  * 字典服务
@@ -33,7 +31,6 @@ public interface IRemoteDictService {
      */
     @GetMapping(value = "/type")
     R<List<SysDictDataVo>> selectDictDataByType(@RequestParam("dictType") String dictType);
-
 
     /**
      * 根据字典类型查询字典数据

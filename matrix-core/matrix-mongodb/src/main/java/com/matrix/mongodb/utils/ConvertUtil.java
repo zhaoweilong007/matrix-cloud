@@ -1,8 +1,6 @@
 package com.matrix.mongodb.utils;
 
-
 import com.matrix.mongodb.core.sdk.base.SFunction;
-
 import java.io.Serializable;
 import java.lang.invoke.SerializedLambda;
 import java.lang.reflect.InvocationTargetException;
@@ -23,8 +21,7 @@ public class ConvertUtil {
      */
     private static final Map<Class<?>, String> CLASS_FIELD_META_MAP = new ConcurrentHashMap<>();
 
-    private ConvertUtil() {
-    }
+    private ConvertUtil() {}
 
     /**
      * 转换方法引用为属性名
@@ -51,7 +48,6 @@ public class ConvertUtil {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
     }
 
     /**
@@ -72,6 +68,5 @@ public class ConvertUtil {
             throw new RuntimeException(e);
         }
         return lambda;
-
     }
 }

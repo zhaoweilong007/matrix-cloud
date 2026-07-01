@@ -11,11 +11,10 @@ import com.fasterxml.jackson.databind.ser.ContextualSerializer;
 import com.matrix.common.annotation.Sensitive;
 import com.matrix.common.enums.SensitiveStrategyEnum;
 import com.matrix.common.service.ISensitiveService;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeansException;
-
 import java.io.IOException;
 import java.util.Objects;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeansException;
 
 /**
  * 数据脱敏json序列化工具
@@ -43,9 +42,11 @@ public class SensitiveJsonSerializer extends JsonSerializer<String> implements C
     }
 
     @Override
-    public JsonSerializer<?> createContextual(SerializerProvider prov, BeanProperty property) throws JsonMappingException {
+    public JsonSerializer<?> createContextual(SerializerProvider prov, BeanProperty property)
+            throws JsonMappingException {
         Sensitive annotation = property.getAnnotation(Sensitive.class);
-        if (Objects.nonNull(annotation) && Objects.equals(String.class, property.getType().getRawClass())) {
+        if (Objects.nonNull(annotation)
+                && Objects.equals(String.class, property.getType().getRawClass())) {
             this.strategy = annotation.strategy();
             return this;
         }

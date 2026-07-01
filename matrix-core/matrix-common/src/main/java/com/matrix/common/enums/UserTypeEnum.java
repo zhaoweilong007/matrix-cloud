@@ -27,7 +27,6 @@ public enum UserTypeEnum {
      */
     WX_USER(3, "wx_user"),
 
-
     /**
      * 微信小程序
      */

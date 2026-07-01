@@ -3,7 +3,6 @@ package com.matrix.datapermission.annotation;
 import com.matrix.common.entity.BaseEntity;
 import com.matrix.datapermission.rule.DataPermissionRule;
 import com.matrix.datapermission.rule.RoleDataPermissionRule;
-
 import java.lang.annotation.*;
 
 /**
@@ -36,5 +35,4 @@ public @interface DataPermission {
      * 排除指定的表
      */
     Class<? extends BaseEntity>[] excludeTables() default {};
-
 }

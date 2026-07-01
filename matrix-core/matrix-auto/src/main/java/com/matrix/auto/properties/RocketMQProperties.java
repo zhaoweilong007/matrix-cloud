@@ -15,7 +15,6 @@ import org.springframework.util.CollectionUtils;
  * @author ZhaoWeiLong
  * @since 2023/3/22
  */
-
 @ConfigurationProperties(prefix = "matrix.mq")
 @Data
 public class RocketMQProperties implements InitializingBean {
@@ -27,7 +26,6 @@ public class RocketMQProperties implements InitializingBean {
     private String accessKey;
 
     private String secretKey;
-
 
     private List<Properties> producers;
 
@@ -55,7 +53,6 @@ public class RocketMQProperties implements InitializingBean {
         }
     }
 
-
     private void checkProperties(Properties properties) {
         if (StringUtils.isEmpty(properties.getProperty("groupId"))) {
             throw new NullPointerException("groupId cannot be empty");
@@ -68,6 +65,4 @@ public class RocketMQProperties implements InitializingBean {
         properties.put(PropertyKeyConst.SecretKey, secretKey);
         properties.put(PropertyKeyConst.NAMESRV_ADDR, onsAddr);
     }
-
-
 }

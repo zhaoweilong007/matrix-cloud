@@ -21,7 +21,6 @@ import org.springframework.context.annotation.Configuration;
 @EnableConfigurationProperties({IgnoreWhiteProperties.class, TenantAuthProperties.class})
 public class SecurityConfig {
 
-
     @Bean
     public SaReactorFilter saReactorFilter(SecurityAuthStrategy securityAuthStrategy) {
         return new SaReactorFilter()
@@ -37,7 +36,6 @@ public class SecurityConfig {
                 });
     }
 
-
     @Bean
     public BlackListUrlFilter blackListUrlFilter() {
         return new BlackListUrlFilter();
@@ -47,7 +45,6 @@ public class SecurityConfig {
     public ForwardAuthFilter forwardAuthFilter() {
         return new ForwardAuthFilter();
     }
-
 
     @Bean
     public SecurityAuthStrategy securityAuthStrategy(IgnoreWhiteProperties ignoreWhite) {

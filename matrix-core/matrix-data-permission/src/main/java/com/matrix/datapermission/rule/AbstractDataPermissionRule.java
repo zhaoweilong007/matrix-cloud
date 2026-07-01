@@ -10,6 +10,7 @@ import com.matrix.common.enums.RoleEnum;
 import com.matrix.common.model.RoleDTO;
 import com.matrix.common.model.login.LoginUser;
 import com.matrix.mybatis.utils.MyBatisUtils;
+import java.util.*;
 import net.sf.jsqlparser.expression.Alias;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.LongValue;
@@ -17,8 +18,6 @@ import net.sf.jsqlparser.expression.NullValue;
 import net.sf.jsqlparser.expression.operators.relational.EqualsTo;
 import one.util.streamex.StreamEx;
 import org.apache.commons.lang3.ObjectUtils;
-
-import java.util.*;
 
 /**
  * @author ZhaoWeiLong
@@ -64,7 +63,6 @@ public abstract class AbstractDataPermissionRule implements DataPermissionRule {
         return TABLE_NAMES;
     }
 
-
     @Override
     public Expression getExpression(String tableName, Alias tableAlias) {
         final LoginUser loginUser = LoginUserContextHolder.getUser();
@@ -72,17 +70,17 @@ public abstract class AbstractDataPermissionRule implements DataPermissionRule {
         if (loginUser == null) {
             return null;
         }
-        //只有用户类型为B端用户类型的进行数据处理
+        // 只有用户类型为B端用户类型的进行数据处理
         final PlatformUserTypeEnum userType = TerminalContextHolder.getUserType();
         if (ObjectUtils.notEqual(userType, PlatformUserTypeEnum.SYS_USER)) {
             return null;
         }
-        //查询用户角色 无角色不处理 只有B端小程序自助注册的情况无角色 (就算是B端无角色 有租户校验+接口鉴权的情况下也无法查询到数据 所以直接放行
+        // 查询用户角色 无角色不处理 只有B端小程序自助注册的情况无角色 (就算是B端无角色 有租户校验+接口鉴权的情况下也无法查询到数据 所以直接放行
         final List<RoleDTO> roles = loginUser.getRoles();
         if (CollUtil.isEmpty(roles)) {
             return null;
         }
-        //是否是管理员 管理员则不进行处理
+        // 是否是管理员 管理员则不进行处理
         final Optional<RoleDTO> optional = StreamEx.of(roles)
                 .findFirst(roleDTO -> Objects.equals(RoleEnum.ADMIN.getRoleKey(), roleDTO.getRoleKey()));
         if (optional.isPresent()) {
@@ -106,9 +104,9 @@ public abstract class AbstractDataPermissionRule implements DataPermissionRule {
      */
     protected Expression buildExpression(String tableName, Alias tableAlias, LoginUser loginUser) {
         final String column = COLUMNS.get(tableName);
-        return new EqualsTo(MyBatisUtils.buildColumn(tableName, tableAlias, column), new LongValue(getColumnValue(loginUser)));
+        return new EqualsTo(
+                MyBatisUtils.buildColumn(tableName, tableAlias, column), new LongValue(getColumnValue(loginUser)));
     }
 
     protected abstract Long getColumnValue(LoginUser loginUser);
-
 }

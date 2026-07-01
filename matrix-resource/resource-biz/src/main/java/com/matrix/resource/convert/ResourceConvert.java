@@ -1,6 +1,5 @@
 package com.matrix.resource.convert;
 
-
 import com.matrix.api.resource.vo.IpInfoVo;
 import net.dreamlu.mica.ip2region.core.IpInfo;
 import org.mapstruct.Mapper;
@@ -18,5 +17,4 @@ public interface ResourceConvert {
     ResourceConvert INSTANCE = Mappers.getMapper(ResourceConvert.class);
 
     IpInfoVo convert(IpInfo info);
-
 }

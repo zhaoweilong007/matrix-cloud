@@ -6,10 +6,9 @@ import com.matrix.datapermission.aop.DataPermissionAnnotationAdvisor;
 import com.matrix.datapermission.db.DataPermissionDatabaseInterceptor;
 import com.matrix.datapermission.rule.*;
 import com.matrix.mybatis.utils.MyBatisUtils;
+import java.util.List;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Bean;
-
-import java.util.List;
 
 /**
  * 数据权限的自动配置类
@@ -19,7 +18,6 @@ import java.util.List;
  **/
 @AutoConfiguration
 public class DataPermissionConfig {
-
 
     /**
      * 数据权限规则工厂
@@ -40,8 +38,8 @@ public class DataPermissionConfig {
      * @return {@link DataPermissionDatabaseInterceptor}
      */
     @Bean
-    public DataPermissionDatabaseInterceptor dataPermissionDatabaseInterceptor(MybatisPlusInterceptor interceptor,
-                                                                               DataPermissionRuleFactory ruleFactory) {
+    public DataPermissionDatabaseInterceptor dataPermissionDatabaseInterceptor(
+            MybatisPlusInterceptor interceptor, DataPermissionRuleFactory ruleFactory) {
         // 创建 DataPermissionDatabaseInterceptor 拦截器
         DataPermissionDatabaseInterceptor inner = new DataPermissionDatabaseInterceptor(ruleFactory);
         // 添加到 interceptor 中
@@ -86,7 +84,6 @@ public class DataPermissionConfig {
         return userDataPermissionRule;
     }
 
-
     /**
      * 角色数据权限规则
      *
@@ -99,7 +96,6 @@ public class DataPermissionConfig {
         setPermissionRuleCustomizer(dataPermissionRule, customizers);
         return dataPermissionRule;
     }
-
 
     /**
      * 设置自定义权限规则
@@ -115,5 +111,4 @@ public class DataPermissionConfig {
             }
         });
     }
-
 }

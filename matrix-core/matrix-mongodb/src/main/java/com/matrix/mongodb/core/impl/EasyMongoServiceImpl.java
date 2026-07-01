@@ -8,16 +8,15 @@ import com.matrix.mongodb.utils.QueryBuildUtils;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import jakarta.annotation.Resource;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
-
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 
 /**
  * 默认的服务实现类
@@ -38,7 +37,6 @@ public class EasyMongoServiceImpl<ID extends Serializable, T> implements EasyMon
 
         Query query = QueryBuildUtils.buildQuery(queryWrapper);
         return mongoTemplate.findOne(query, targetClass);
-
     }
 
     @Override
@@ -51,7 +49,6 @@ public class EasyMongoServiceImpl<ID extends Serializable, T> implements EasyMon
 
         entityList.forEach(item -> mongoTemplate.save(item));
         return true;
-
     }
 
     @Override
@@ -61,7 +58,6 @@ public class EasyMongoServiceImpl<ID extends Serializable, T> implements EasyMon
         Query query = new Query(criteria);
         DeleteResult deleteResult = mongoTemplate.remove(query, targetClass);
         return deleteResult.getDeletedCount() > 0;
-
     }
 
     @Override
@@ -70,7 +66,6 @@ public class EasyMongoServiceImpl<ID extends Serializable, T> implements EasyMon
         Query query = QueryBuildUtils.buildQuery(queryWrapper);
         DeleteResult remove = mongoTemplate.remove(query, targetClass);
         return remove.getDeletedCount() > 0;
-
     }
 
     @Override
@@ -81,7 +76,6 @@ public class EasyMongoServiceImpl<ID extends Serializable, T> implements EasyMon
         Update update = getUpdate(entity);
         UpdateResult updateResult = mongoTemplate.updateFirst(query, update, targetClass);
         return updateResult.getModifiedCount() > 0;
-
     }
 
     /**
@@ -101,7 +95,6 @@ public class EasyMongoServiceImpl<ID extends Serializable, T> implements EasyMon
             }
         }
         return update;
-
     }
 
     @Override
@@ -111,7 +104,6 @@ public class EasyMongoServiceImpl<ID extends Serializable, T> implements EasyMon
         Update update = getUpdate(entity);
         UpdateResult updateResult = mongoTemplate.updateFirst(query, update, targetClass);
         return updateResult.getModifiedCount() > 0;
-
     }
 
     @Override
@@ -120,7 +112,6 @@ public class EasyMongoServiceImpl<ID extends Serializable, T> implements EasyMon
         Criteria criteria = Criteria.where("_id").is(id);
         Query query = new Query(criteria);
         return mongoTemplate.findOne(query, targetClass);
-
     }
 
     @Override
@@ -129,7 +120,6 @@ public class EasyMongoServiceImpl<ID extends Serializable, T> implements EasyMon
         Criteria criteria = Criteria.where("_id").in(idList);
         Query query = new Query(criteria);
         return mongoTemplate.find(query, targetClass);
-
     }
 
     @Override
@@ -137,7 +127,6 @@ public class EasyMongoServiceImpl<ID extends Serializable, T> implements EasyMon
 
         Query query = QueryBuildUtils.buildQuery(queryWrapper);
         return mongoTemplate.count(query, targetClass);
-
     }
 
     @Override
@@ -145,7 +134,6 @@ public class EasyMongoServiceImpl<ID extends Serializable, T> implements EasyMon
 
         Query query = QueryBuildUtils.buildQuery(queryWrapper);
         return mongoTemplate.find(query, targetClass);
-
     }
 
     @Override
@@ -164,7 +152,6 @@ public class EasyMongoServiceImpl<ID extends Serializable, T> implements EasyMon
         List<T> list = mongoTemplate.find(query, targetClass);
         page.setRecords(list);
         return page;
-
     }
 
     @Override
@@ -172,5 +159,4 @@ public class EasyMongoServiceImpl<ID extends Serializable, T> implements EasyMon
         Query query = QueryBuildUtils.buildQuery(queryWrapper);
         return mongoTemplate.exists(query, targetClass);
     }
-
 }

@@ -1,9 +1,8 @@
 package com.matrix.common.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.Data;
-
 import java.util.Date;
+import lombok.Data;
 
 /**
  * <p>
@@ -16,7 +15,6 @@ import java.util.Date;
 @Data
 @TableName("sys_login_log")
 public class SysLoginLog extends BaseIdEntity {
-
 
     /**
      * 登录登出类型

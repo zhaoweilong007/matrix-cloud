@@ -6,6 +6,9 @@ import com.matrix.auto.properties.RocketMQProperties;
 import com.matrix.mq.producer.RocketMqTemplate;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
@@ -14,10 +17,6 @@ import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.util.CollectionUtils;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
 
 /**
  * 生产者注册配置
@@ -34,7 +33,6 @@ public class ProducerRegister implements BeanPostProcessor, ApplicationContextAw
     private final List<Producer> producers = new ArrayList<>();
 
     private DefaultListableBeanFactory beanFactory;
-
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
@@ -67,5 +65,4 @@ public class ProducerRegister implements BeanPostProcessor, ApplicationContextAw
         beanFactory.registerSingleton(groupId, rocketMqTemplate);
         producers.add(producer);
     }
-
 }

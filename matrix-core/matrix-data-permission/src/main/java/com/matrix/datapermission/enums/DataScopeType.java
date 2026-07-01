@@ -36,12 +36,10 @@ public enum DataScopeType {
 
     private final String code;
 
-
     /**
      * 字段名
      */
     private final String column;
-
 
     /**
      * 语法 采用 spel 模板表达式

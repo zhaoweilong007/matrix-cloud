@@ -5,13 +5,12 @@ import com.fhs.trans.ds.DataSourceSetter;
 import com.fhs.trans.service.impl.SimpleTransService;
 import com.matrix.translation.entity.SysUserTrans;
 import jakarta.annotation.PostConstruct;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
-
-import java.util.Map;
 
 /**
  * easy-trans配置
@@ -28,19 +27,20 @@ public class TransConfig {
 
     @PostConstruct
     public void init() {
-        transCacheManager.setRpcTransCache(SysUserTrans.CLASS_NAME,
-                SimpleTransService.TransCacheSett.builder().cacheSeconds(60 * 60 * 24 * 7).maxCache(10000).build());
+        transCacheManager.setRpcTransCache(
+                SysUserTrans.CLASS_NAME,
+                SimpleTransService.TransCacheSett.builder()
+                        .cacheSeconds(60 * 60 * 24 * 7)
+                        .maxCache(10000)
+                        .build());
     }
-
 
     @Bean
     @ConditionalOnMissingBean
     public DataSourceSetter dataSourceSetter() {
         return new DataSourceSetter() {
             @Override
-            public void setDataSource(String s) {
-
-            }
+            public void setDataSource(String s) {}
 
             @Override
             public Map<Object, Object> getContext() {
@@ -48,9 +48,7 @@ public class TransConfig {
             }
 
             @Override
-            public void setContext(Map<Object, Object> map) {
-
-            }
+            public void setContext(Map<Object, Object> map) {}
         };
     }
 }

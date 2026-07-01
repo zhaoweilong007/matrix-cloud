@@ -25,10 +25,11 @@ public class ServletUtils extends JakartaServletUtil {
 
     public static final String REQUEST_ATTRIBUTE_COMMON_RESULT = "common_result";
 
-
     public static Long getUserIdByRequestHead() {
         try {
-            HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
+            HttpServletRequest request = ((ServletRequestAttributes)
+                            Objects.requireNonNull(RequestContextHolder.getRequestAttributes()))
+                    .getRequest();
             final String userId = request.getHeader(CommonConstants.USER_ID_HEADER);
             if (userId != null) {
                 return Long.valueOf(userId);
@@ -61,7 +62,8 @@ public class ServletUtils extends JakartaServletUtil {
      * @param content  附件内容
      * @throws IOException
      */
-    public static void writeAttachment(HttpServletResponse response, String filename, byte[] content) throws IOException {
+    public static void writeAttachment(HttpServletResponse response, String filename, byte[] content)
+            throws IOException {
         // 设置 header 和 contentType
         response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(filename, "UTF-8"));
         response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);

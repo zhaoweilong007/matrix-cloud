@@ -2,18 +2,15 @@ package com.matrix.log.event;
 
 import com.matrix.common.entity.SysLoginLog;
 import io.github.linpeilie.annotations.AutoMapper;
-import lombok.Data;
-
 import java.io.Serializable;
+import lombok.Data;
 
 /**
  * 登录事件
  */
-
 @Data
 @AutoMapper(target = SysLoginLog.class)
 public class LogininforEvent implements Serializable {
-
 
     /**
      * 登录登出类型 1:login、2:logout
@@ -59,6 +56,4 @@ public class LogininforEvent implements Serializable {
      * 提示消息
      */
     private String msg;
-
-
 }

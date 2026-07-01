@@ -9,5 +9,4 @@ public interface MQConstant {
     String ORDER_PREFIX = "order-";
 
     String CONSUMER_PREFIX = "consumer-";
-
 }

@@ -1,6 +1,5 @@
 package com.matrix.mongodb.utils;
 
-
 import com.matrix.mongodb.exception.EasyMongoException;
 
 /**
@@ -8,8 +7,7 @@ import com.matrix.mongodb.exception.EasyMongoException;
  */
 public final class ExceptionUtils {
 
-    private ExceptionUtils() {
-    }
+    private ExceptionUtils() {}
 
     /**
      * 返回一个新的异常，统一构建，方便统一处理
@@ -41,5 +39,4 @@ public final class ExceptionUtils {
     public static EasyMongoException mpe(Throwable t) {
         return new EasyMongoException(t);
     }
-
 }

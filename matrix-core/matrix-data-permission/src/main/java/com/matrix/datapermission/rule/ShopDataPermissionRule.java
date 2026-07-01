@@ -21,6 +21,4 @@ public class ShopDataPermissionRule extends AbstractDataPermissionRule {
     protected Long getColumnValue(LoginUser loginUser) {
         return loginUser.getShopId();
     }
-
-
 }

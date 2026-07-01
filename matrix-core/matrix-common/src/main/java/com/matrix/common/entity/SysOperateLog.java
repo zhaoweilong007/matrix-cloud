@@ -3,11 +3,10 @@ package com.matrix.common.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import lombok.Data;
 
 /**
  * <p>
@@ -24,7 +23,6 @@ public class SysOperateLog extends BaseIdEntity {
 
     @Schema(description = "链路id")
     private String traceId;
-
 
     /**
      * 用户id
@@ -73,7 +71,6 @@ public class SysOperateLog extends BaseIdEntity {
      */
     @Schema(description = "操作人员")
     private String operName;
-
 
     /**
      * 操作地点
@@ -130,8 +127,6 @@ public class SysOperateLog extends BaseIdEntity {
     @TableField(exist = false)
     private Map<String, Object> params = new HashMap<>();
 
-
     @Schema(hidden = true)
     private Long tenantId;
-
 }

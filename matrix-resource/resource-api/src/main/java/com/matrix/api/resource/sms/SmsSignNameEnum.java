@@ -9,14 +9,10 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum SmsSignNameEnum {
-
-
     ;
 
     /**
      * 短信签名
      */
     private final String name;
-
-
 }

@@ -12,8 +12,7 @@ public class TracerUtils {
     /**
      * 私有化构造方法
      */
-    private TracerUtils() {
-    }
+    private TracerUtils() {}
 
     /**
      * 获得链路追踪编号，直接返回 SkyWalking 的 TraceId。
@@ -24,5 +23,4 @@ public class TracerUtils {
     public static String getTraceId() {
         return TraceContext.traceId();
     }
-
 }

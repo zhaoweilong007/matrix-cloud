@@ -33,5 +33,4 @@ public class PhoneValueValidator implements ConstraintValidator<PhoneValue, Stri
             return ReUtil.isMatch(Validator.MOBILE, phoneValue);
         }
     }
-
 }

@@ -5,8 +5,6 @@ import jakarta.servlet.ReadListener;
 import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletRequestWrapper;
-import lombok.Getter;
-
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -14,6 +12,7 @@ import java.io.InputStreamReader;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+import lombok.Getter;
 
 /**
  * Request Body 缓存 Wrapper
@@ -24,6 +23,7 @@ public class CacheRequestBodyWrapper extends HttpServletRequestWrapper {
      * 缓存的内容
      */
     private final byte[] body;
+
     @Getter
     private final Map<String, String> headerMap = new HashMap<>();
 
@@ -64,15 +64,12 @@ public class CacheRequestBodyWrapper extends HttpServletRequestWrapper {
             }
 
             @Override
-            public void setReadListener(ReadListener readListener) {
-            }
+            public void setReadListener(ReadListener readListener) {}
 
             @Override
             public int available() {
                 return body.length;
             }
-
         };
     }
-
 }

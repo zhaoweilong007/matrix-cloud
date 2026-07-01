@@ -2,12 +2,11 @@ package com.matrix.auto.properties;
 
 import com.matrix.auto.enums.CaptchaCategory;
 import com.matrix.auto.enums.CaptchaType;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 验证码配置
@@ -45,6 +44,4 @@ public class CaptchaProperties {
      * 需要校验的地址
      */
     private List<String> validateUrl = new ArrayList<>();
-
-
 }

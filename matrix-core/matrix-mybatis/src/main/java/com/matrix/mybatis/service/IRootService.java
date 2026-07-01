@@ -5,7 +5,6 @@ import com.github.yulichang.base.MPJBaseService;
 import com.github.yulichang.interfaces.MPJBaseJoin;
 import com.matrix.common.vo.PageParam;
 import com.matrix.common.vo.PageResult;
-
 import java.io.Serializable;
 
 /**
@@ -27,7 +26,6 @@ public interface IRootService<T, V> extends MPJBaseService<T> {
      * 幂等性新增或更新记录
      */
     boolean saveOrUpdateIdempotency(T entity, Wrapper<T> countWrapper) throws Exception;
-
 
     <Q extends PageParam> PageResult<V> selectVoPage(Q pageParam);
 

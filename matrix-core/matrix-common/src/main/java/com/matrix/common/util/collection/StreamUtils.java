@@ -130,9 +130,7 @@ public class StreamUtils {
         if (CollUtil.isEmpty(collection)) {
             return MapUtil.newHashMap();
         }
-        return collection
-                .stream()
-                .collect(Collectors.groupingBy(key, LinkedHashMap::new, Collectors.toList()));
+        return collection.stream().collect(Collectors.groupingBy(key, LinkedHashMap::new, Collectors.toList()));
     }
 
     /**
@@ -147,13 +145,16 @@ public class StreamUtils {
      * @param <U>        第二个map中的key类型
      * @return 分类后的map
      */
-    public static <E, K, U> Map<K, Map<U, List<E>>> groupBy2Key(Collection<E> collection, Function<E, K> key1, Function<E, U> key2) {
+    public static <E, K, U> Map<K, Map<U, List<E>>> groupBy2Key(
+            Collection<E> collection, Function<E, K> key1, Function<E, U> key2) {
         if (CollUtil.isEmpty(collection)) {
             return MapUtil.newHashMap();
         }
-        return collection
-                .stream()
-                .collect(Collectors.groupingBy(key1, LinkedHashMap::new, Collectors.groupingBy(key2, LinkedHashMap::new, Collectors.toList())));
+        return collection.stream()
+                .collect(Collectors.groupingBy(
+                        key1,
+                        LinkedHashMap::new,
+                        Collectors.groupingBy(key2, LinkedHashMap::new, Collectors.toList())));
     }
 
     /**
@@ -168,13 +169,14 @@ public class StreamUtils {
      * @param <E>        collection中的泛型
      * @return 分类后的map
      */
-    public static <E, T, U> Map<T, Map<U, E>> group2Map(Collection<E> collection, Function<E, T> key1, Function<E, U> key2) {
+    public static <E, T, U> Map<T, Map<U, E>> group2Map(
+            Collection<E> collection, Function<E, T> key1, Function<E, U> key2) {
         if (CollUtil.isEmpty(collection) || key1 == null || key2 == null) {
             return MapUtil.newHashMap();
         }
-        return collection
-                .stream()
-                .collect(Collectors.groupingBy(key1, LinkedHashMap::new, Collectors.toMap(key2, Function.identity(), (l, r) -> l)));
+        return collection.stream()
+                .collect(Collectors.groupingBy(
+                        key1, LinkedHashMap::new, Collectors.toMap(key2, Function.identity(), (l, r) -> l)));
     }
 
     /**
@@ -191,11 +193,7 @@ public class StreamUtils {
         if (CollUtil.isEmpty(collection)) {
             return CollUtil.newArrayList();
         }
-        return collection
-                .stream()
-                .map(function)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+        return collection.stream().map(function).filter(Objects::nonNull).collect(Collectors.toList());
     }
 
     /**
@@ -212,13 +210,8 @@ public class StreamUtils {
         if (CollUtil.isEmpty(collection) || function == null) {
             return CollUtil.newHashSet();
         }
-        return collection
-                .stream()
-                .map(function)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toSet());
+        return collection.stream().map(function).filter(Objects::nonNull).collect(Collectors.toSet());
     }
-
 
     /**
      * 合并两个相同key类型的map
@@ -254,5 +247,4 @@ public class StreamUtils {
         }
         return map;
     }
-
 }

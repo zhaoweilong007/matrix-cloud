@@ -29,5 +29,4 @@ public class BusinessSmsCodeValidateDTO {
     @Schema(description = "验证码")
     @NotEmpty(message = "验证码")
     private String code;
-
 }

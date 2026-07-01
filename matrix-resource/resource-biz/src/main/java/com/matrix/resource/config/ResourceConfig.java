@@ -18,7 +18,6 @@ import org.springframework.context.annotation.Configuration;
 @EnableConfigurationProperties(OcrProperties.class)
 public class ResourceConfig {
 
-
     @Bean
     @ConditionalOnProperty(prefix = "matrix.ocr", name = "enabled", havingValue = "true")
     public OcrClient ocrClient(OcrProperties ocrProperties) {
@@ -33,5 +32,4 @@ public class ResourceConfig {
         clientProfile.setHttpProfile(httpProfile);
         return new OcrClient(cred, "ap-guangzhou", clientProfile);
     }
-
 }

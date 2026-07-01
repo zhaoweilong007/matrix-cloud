@@ -5,12 +5,11 @@ import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.matrix.common.util.EntityUtils;
 import jakarta.annotation.PostConstruct;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.concurrent.BasicThreadFactory;
-
 import java.io.Serializable;
 import java.util.*;
 import java.util.concurrent.*;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 
 /**
  * 基于MybatisPlus请求合并服务类
@@ -22,8 +21,7 @@ public class QueueServiceImpl<M extends BaseMapper<T>, T extends Model<T>> exten
      */
     private final ConcurrentLinkedQueue<FutureModel<T>> taskQueue = new ConcurrentLinkedQueue<>();
 
-    public QueueServiceImpl() {
-    }
+    public QueueServiceImpl() {}
 
     /**
      * 从队列中取出指定数量的元素，返回到集合中
@@ -49,8 +47,10 @@ public class QueueServiceImpl<M extends BaseMapper<T>, T extends Model<T>> exten
     public void init() {
         RequstConfig config = createRequstConfig();
         Runnable runnable = getRunnable(config.getMaxRequestSize());
-        BasicThreadFactory threadFactory = new BasicThreadFactory.Builder().namingPattern("scheduled-thread-pool-%d")
-                .daemon(true).build();
+        BasicThreadFactory threadFactory = new BasicThreadFactory.Builder()
+                .namingPattern("scheduled-thread-pool-%d")
+                .daemon(true)
+                .build();
         ScheduledExecutorService service = new ScheduledThreadPoolExecutor(config.getCorePoolSize(), threadFactory);
         service.scheduleAtFixedRate(runnable, 0L, config.getRequestInterval(), TimeUnit.MILLISECONDS);
     }

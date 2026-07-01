@@ -1,7 +1,6 @@
 package com.matrix.common.util;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-
 import java.util.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -16,7 +15,6 @@ import java.util.stream.Stream;
  * 3. 转换参数均为不可变类型，业务更加安全
  **/
 public class EntityUtils {
-
 
     /**
      * 将单个对象转化为集合
@@ -68,7 +66,8 @@ public class EntityUtils {
      * @param collector 收集器的类型
      * @return 变换后存储新元素的集合实例
      */
-    public static <R, S, T, A> R collectList(final Collection<S> source, Function<? super S, ? extends T> action, Collector<? super T, A, R> collector) {
+    public static <R, S, T, A> R collectList(
+            final Collection<S> source, Function<? super S, ? extends T> action, Collector<? super T, A, R> collector) {
         Objects.requireNonNull(source);
         Objects.requireNonNull(collector);
         return source.stream().map(action).collect(collector);
@@ -96,7 +95,8 @@ public class EntityUtils {
      * @param action 转换规则
      * @return 变换后存储新元素的集合实例
      */
-    public static <S> List<? extends S> collectList(final Collection<S> source, Function<? super S, ? extends S> action) {
+    public static <S> List<? extends S> collectList(
+            final Collection<S> source, Function<? super S, ? extends S> action) {
         return collectList(source, action, Collectors.toList());
     }
 
@@ -190,7 +190,10 @@ public class EntityUtils {
      * @param <V>         Value实体类型泛型
      * @return Map实例
      */
-    public static <T, K, V> Map<K, V> toMap(final Collection<T> data, Function<? super T, ? extends K> keyAction, Function<? super T, ? extends V> valueAction) {
+    public static <T, K, V> Map<K, V> toMap(
+            final Collection<T> data,
+            Function<? super T, ? extends K> keyAction,
+            Function<? super T, ? extends V> valueAction) {
         Objects.requireNonNull(data);
         Objects.requireNonNull(keyAction);
         Objects.requireNonNull(valueAction);
@@ -213,7 +216,6 @@ public class EntityUtils {
         }
         return new HashSet<>();
     }
-
 
     /**
      * <p>对集合中元素按照指定列进行分组</p>
@@ -245,12 +247,13 @@ public class EntityUtils {
      * @param <G>     分组列数据类型泛型
      * @return {@code Map}实例
      */
-    public static <E, G, U> Map<G, List<U>> groupBy(final Collection<E> data, final Function<E, G> gColumn, final Function<E, U> action) {
+    public static <E, G, U> Map<G, List<U>> groupBy(
+            final Collection<E> data, final Function<E, G> gColumn, final Function<E, U> action) {
         Objects.requireNonNull(gColumn);
         if (Objects.nonNull(data)) {
-            return data.stream().collect(Collectors.groupingBy(gColumn, Collectors.mapping(action, Collectors.toList())));
+            return data.stream()
+                    .collect(Collectors.groupingBy(gColumn, Collectors.mapping(action, Collectors.toList())));
         }
         return new HashMap<>(16);
     }
-
 }

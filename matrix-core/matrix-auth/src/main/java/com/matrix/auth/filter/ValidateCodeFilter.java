@@ -36,7 +36,8 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
     private final CaptchaProperties captchaProperties;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+            throws ServletException, IOException {
         final String path = request.getRequestURI();
 
         if (!SaRouter.isMatch(captchaProperties.getValidateUrl(), path)) {
@@ -49,7 +50,8 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
             checkCaptcha(obj.getStr(CODE), obj.getStr(UUID));
         } catch (Exception e) {
             if (e instanceof BaseException baseException) {
-                ServletUtils.writeJSON(response, R.fail(SystemErrorTypeEnum.VERIFICATION_CODE_ERROR, baseException.getMessage()));
+                ServletUtils.writeJSON(
+                        response, R.fail(SystemErrorTypeEnum.VERIFICATION_CODE_ERROR, baseException.getMessage()));
             } else {
                 ServletUtils.writeJSON(response, R.fail(SystemErrorTypeEnum.VERIFICATION_CODE_ERROR));
             }
@@ -77,5 +79,4 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
             throw new CaptchaException();
         }
     }
-
 }

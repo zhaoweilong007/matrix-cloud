@@ -51,7 +51,8 @@ public class RepeatSubmitAspect {
         String url = request.getRequestURI();
 
         // 唯一值（没有消息头则使用请求地址）
-        String submitKey = StringUtils.trimToEmpty(request.getHeader(SaManager.getConfig().getTokenName()));
+        String submitKey =
+                StringUtils.trimToEmpty(request.getHeader(SaManager.getConfig().getTokenName()));
 
         submitKey = SecureUtil.md5(submitKey + ":" + nowParams);
         // 唯一标识（指定key + url + 消息头）
@@ -139,8 +140,9 @@ public class RepeatSubmitAspect {
                 return entry.getValue() instanceof MultipartFile;
             }
         }
-        return o instanceof MultipartFile || o instanceof HttpServletRequest || o instanceof HttpServletResponse
+        return o instanceof MultipartFile
+                || o instanceof HttpServletRequest
+                || o instanceof HttpServletResponse
                 || o instanceof BindingResult;
     }
-
 }

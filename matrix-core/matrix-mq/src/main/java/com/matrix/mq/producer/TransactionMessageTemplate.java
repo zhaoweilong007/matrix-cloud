@@ -25,7 +25,8 @@ public class TransactionMessageTemplate {
      * @param transactionCheck
      */
     public void init(TransactionChecker transactionCheck) {
-        LocalTransactionCheckerImpl checkerImpl = (LocalTransactionCheckerImpl) transactionProducer.getLocalTransactionChecker();
+        LocalTransactionCheckerImpl checkerImpl =
+                (LocalTransactionCheckerImpl) transactionProducer.getLocalTransactionChecker();
         checkerImpl.init(transactionCheck);
     }
 
@@ -55,5 +56,4 @@ public class TransactionMessageTemplate {
     public SendResult send(MessageEvent event, TransactionExecuter transactionExecuter, Object arg) {
         return send(event, new LocalTransactionExecuteImpl(transactionExecuter), arg);
     }
-
 }

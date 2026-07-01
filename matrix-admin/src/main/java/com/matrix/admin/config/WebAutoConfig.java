@@ -45,8 +45,7 @@ public class WebAutoConfig implements WebMvcConfigurer {
                 .allowCredentials(true) // 是否发送 Cookie
                 .allowedOriginPatterns("*") // 支持域
                 .allowedMethods("*") // 支持方法
-                .allowedHeaders("*")// 允许请求头
-                .exposedHeaders("*");// 暴露出去的响应头
+                .allowedHeaders("*") // 允许请求头
+                .exposedHeaders("*"); // 暴露出去的响应头
     }
-
 }

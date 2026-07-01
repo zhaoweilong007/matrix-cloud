@@ -4,7 +4,6 @@ package com.matrix.mongodb.core.constant;
  * 比较类型
  */
 public enum ECompare {
-
     EQ,
     NE,
     LE,
@@ -14,5 +13,4 @@ public enum ECompare {
     BW,
     IN,
     NIN
-
 }

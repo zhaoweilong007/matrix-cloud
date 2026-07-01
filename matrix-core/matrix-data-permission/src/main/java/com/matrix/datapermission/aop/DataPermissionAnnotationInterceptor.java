@@ -1,14 +1,13 @@
 package com.matrix.datapermission.aop;
 
 import com.matrix.datapermission.annotation.DataPermission;
+import java.lang.reflect.Method;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.core.MethodClassKey;
 import org.springframework.core.annotation.AnnotationUtils;
-
-import java.lang.reflect.Method;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * {@link DataPermission} 注解的拦截器
@@ -21,7 +20,8 @@ public class DataPermissionAnnotationInterceptor implements MethodInterceptor {
     /**
      * DataPermission 空对象，用于方法无 {@link DataPermission} 注解时，使用 DATA_PERMISSION_NULL 进行占位
      */
-    static final DataPermission DATA_PERMISSION_NULL = DataPermissionAnnotationInterceptor.class.getAnnotation(DataPermission.class);
+    static final DataPermission DATA_PERMISSION_NULL =
+            DataPermissionAnnotationInterceptor.class.getAnnotation(DataPermission.class);
 
     private final Map<MethodClassKey, DataPermission> dataPermissionCache = new ConcurrentHashMap<>();
 
@@ -64,5 +64,4 @@ public class DataPermissionAnnotationInterceptor implements MethodInterceptor {
         dataPermissionCache.put(methodClassKey, dataPermission != null ? dataPermission : DATA_PERMISSION_NULL);
         return dataPermission;
     }
-
 }

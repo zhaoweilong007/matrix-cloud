@@ -64,5 +64,4 @@ public class FlowHelper {
     public Map<FlowType, Flower> getFlowMap() {
         return new HashMap<>(flowMap);
     }
-
 }

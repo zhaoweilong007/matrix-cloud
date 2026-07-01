@@ -8,13 +8,12 @@ import com.matrix.auto.properties.CaptchaProperties;
 import com.matrix.gateway.handler.ValidateCodeHandler;
 import com.matrix.gateway.service.ValidateCodeService;
 import com.matrix.gateway.service.impl.ValidateCodeServiceImpl;
+import java.awt.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
-
-import java.awt.*;
 
 /**
  * 验证码配置
@@ -65,7 +64,6 @@ public class CaptchaConfig {
         return captcha;
     }
 
-
     @Bean
     public ValidateCodeService validateCodeService(CaptchaProperties captchaProperties) {
         return new ValidateCodeServiceImpl(captchaProperties);
@@ -75,5 +73,4 @@ public class CaptchaConfig {
     public ValidateCodeHandler validateCodeHandler(ValidateCodeService validateCodeService) {
         return new ValidateCodeHandler(validateCodeService);
     }
-
 }

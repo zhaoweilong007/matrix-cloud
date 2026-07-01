@@ -2,6 +2,7 @@ package com.matrix.gateway.loadbalancer;
 
 import com.google.common.base.Joiner;
 import io.vavr.collection.Stream;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.cloud.client.ServiceInstance;
@@ -14,8 +15,6 @@ import org.springframework.cloud.loadbalancer.core.ReactorServiceInstanceLoadBal
 import org.springframework.cloud.loadbalancer.core.ServiceInstanceListSupplier;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
-
 /**
  * 偏向性路由
  */
@@ -25,8 +24,8 @@ public class DeflectionInstanceBalancer implements ReactorServiceInstanceLoadBal
     public String serviceId;
     public ObjectProvider<ServiceInstanceListSupplier> serviceInstanceListSupplierProvider;
 
-    public DeflectionInstanceBalancer(ObjectProvider<ServiceInstanceListSupplier> serviceInstanceListSupplierProvider,
-                                      String serviceId) {
+    public DeflectionInstanceBalancer(
+            ObjectProvider<ServiceInstanceListSupplier> serviceInstanceListSupplierProvider, String serviceId) {
         this.serviceId = serviceId;
         this.serviceInstanceListSupplierProvider = serviceInstanceListSupplierProvider;
     }
@@ -34,8 +33,8 @@ public class DeflectionInstanceBalancer implements ReactorServiceInstanceLoadBal
     @Override
     public Mono<Response<ServiceInstance>> choose(Request request) {
         if (serviceInstanceListSupplierProvider != null) {
-            ServiceInstanceListSupplier supplier = serviceInstanceListSupplierProvider
-                    .getIfAvailable(NoopServiceInstanceListSupplier::new);
+            ServiceInstanceListSupplier supplier =
+                    serviceInstanceListSupplierProvider.getIfAvailable(NoopServiceInstanceListSupplier::new);
             return supplier.get().next().map((instances) -> getInstanceResponse(request, instances));
         }
         return null;
@@ -49,13 +48,10 @@ public class DeflectionInstanceBalancer implements ReactorServiceInstanceLoadBal
         String instance = (String) request.getContext();
 
         ServiceInstance serviceInstance = instances.stream()
-                .filter(item -> instance
-                        .equals(Joiner.on(":").join(Stream.of(item.getHost(), item.getPort())))
-                )
-                .findFirst().orElse(null);
+                .filter(item -> instance.equals(Joiner.on(":").join(Stream.of(item.getHost(), item.getPort()))))
+                .findFirst()
+                .orElse(null);
 
         return new DefaultResponse(serviceInstance);
     }
-
-
 }

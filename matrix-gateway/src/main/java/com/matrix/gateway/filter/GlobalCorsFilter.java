@@ -16,7 +16,6 @@ import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
 
-
 /**
  * 跨域配置
  */
@@ -51,7 +50,6 @@ public class GlobalCorsFilter implements WebFilter, Ordered {
         }
         return chain.filter(exchange);
     }
-
 
     private void setCorsHeader(String reqOrigin, HttpHeaders headers) {
         if (reqOrigin == null) {

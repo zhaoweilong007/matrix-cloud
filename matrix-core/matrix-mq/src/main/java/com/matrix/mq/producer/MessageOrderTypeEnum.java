@@ -18,7 +18,6 @@ public enum MessageOrderTypeEnum {
      */
     TAG((byte) 3);
 
-
     private byte code;
 
     MessageOrderTypeEnum(byte code) {

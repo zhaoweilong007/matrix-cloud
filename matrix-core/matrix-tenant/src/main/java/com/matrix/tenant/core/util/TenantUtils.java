@@ -1,8 +1,6 @@
 package com.matrix.tenant.core.util;
 
-
 import com.matrix.common.context.TenantContextHolder;
-
 import java.util.function.Supplier;
 
 /**
@@ -32,7 +30,6 @@ public class TenantUtils {
             TenantContextHolder.setIgnore(oldIgnore);
         }
     }
-
 
     public static <R> R executeGet(Long tenantId, Supplier<R> supplier) {
         Long oldTenantId = TenantContextHolder.getTenantId();
@@ -86,5 +83,4 @@ public class TenantUtils {
             TenantContextHolder.setIgnore(oldIgnore);
         }
     }
-
 }

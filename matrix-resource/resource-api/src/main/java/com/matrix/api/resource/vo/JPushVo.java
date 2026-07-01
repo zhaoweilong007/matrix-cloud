@@ -2,9 +2,8 @@ package com.matrix.api.resource.vo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
-
 import java.util.Map;
+import lombok.Data;
 
 @Schema(description = "极光推送vo")
 @Data

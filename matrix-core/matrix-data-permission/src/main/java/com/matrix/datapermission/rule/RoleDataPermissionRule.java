@@ -27,7 +27,6 @@ import lombok.extern.slf4j.Slf4j;
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.expression.Alias;
 import net.sf.jsqlparser.expression.Expression;
-import net.sf.jsqlparser.expression.Parenthesis;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import one.util.streamex.StreamEx;
 import org.apache.commons.lang3.ObjectUtils;
@@ -59,7 +58,6 @@ public class RoleDataPermissionRule implements DataPermissionRule {
      * 表名
      */
     public final Set<String> TABLE_NAMES = new HashSet<>();
-
 
     /**
      * 表权限对应字段
@@ -112,19 +110,19 @@ public class RoleDataPermissionRule implements DataPermissionRule {
             log.debug("loginUser is null ignore data permission");
             return null;
         }
-        //只有用户类型为B端用户类型的进行数据处理
+        // 只有用户类型为B端用户类型的进行数据处理
         final PlatformUserTypeEnum userType = TerminalContextHolder.getUserType();
         if (ObjectUtils.notEqual(userType, PlatformUserTypeEnum.SYS_USER)) {
             log.debug("userType is not sys_user ignore data permission");
             return null;
         }
-        //查询用户角色 无角色不处理 只有B端小程序自助注册的情况无角色 (就算是B端无角色 有租户校验+接口鉴权的情况下也无法查询到数据 所以直接放行
+        // 查询用户角色 无角色不处理 只有B端小程序自助注册的情况无角色 (就算是B端无角色 有租户校验+接口鉴权的情况下也无法查询到数据 所以直接放行
         final List<RoleDTO> roles = loginUser.getRoles();
         if (CollUtil.isEmpty(roles)) {
             log.debug("role is empty ignore data permission");
             return null;
         }
-        //是否是管理员或店东 则不进行处理
+        // 是否是管理员或店东 则不进行处理
         final Optional<RoleDTO> optional = StreamEx.of(roles)
                 .findFirst(roleDTO -> Objects.equals(RoleEnum.ADMIN.getRoleKey(), roleDTO.getRoleKey())
                         || Objects.equals(RoleEnum.SHOP_OWNER.getRoleKey(), roleDTO.getRoleKey()));

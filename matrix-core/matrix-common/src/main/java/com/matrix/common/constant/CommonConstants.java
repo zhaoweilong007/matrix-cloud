@@ -27,6 +27,7 @@ public interface CommonConstants {
      * hash网关
      */
     String HASH_LB = "iphash";
+
     String LOGIN_USER_KEY = "loginUser";
     String USER_KEY = "userId";
     String TENANT_KEY = "tenantId";

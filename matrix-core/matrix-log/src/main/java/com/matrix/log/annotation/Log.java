@@ -1,9 +1,7 @@
 package com.matrix.log.annotation;
 
-
 import com.matrix.log.enums.BusinessType;
 import com.matrix.log.enums.OperatorType;
-
 import java.lang.annotation.*;
 
 /**
@@ -42,5 +40,4 @@ public @interface Log {
      * 排除指定的请求参数
      */
     String[] excludeParamNames() default {};
-
 }

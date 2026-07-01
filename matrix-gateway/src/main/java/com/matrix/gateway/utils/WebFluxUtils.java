@@ -36,7 +36,8 @@ public class WebFluxUtils {
      */
     public static String getOriginalRequestUrl(ServerWebExchange exchange) {
         ServerHttpRequest request = exchange.getRequest();
-        LinkedHashSet<URI> uris = exchange.getAttributeOrDefault(GATEWAY_ORIGINAL_REQUEST_URL_ATTR, new LinkedHashSet<>());
+        LinkedHashSet<URI> uris =
+                exchange.getAttributeOrDefault(GATEWAY_ORIGINAL_REQUEST_URL_ATTR, new LinkedHashSet<>());
         URI requestUri = uris.stream().findFirst().orElse(request.getURI());
         return UriComponentsBuilder.fromPath(requestUri.getRawPath()).build().toUriString();
     }
@@ -116,10 +117,12 @@ public class WebFluxUtils {
      * @param status      http状态码
      * @return Mono<Void>
      */
-    public static Mono<Void> webFluxResponseWriter(ServerHttpResponse response, String contentType, HttpStatus status, R<?> r) {
+    public static Mono<Void> webFluxResponseWriter(
+            ServerHttpResponse response, String contentType, HttpStatus status, R<?> r) {
         response.setStatusCode(status);
         response.getHeaders().add(HttpHeaders.CONTENT_TYPE, contentType);
-        DataBuffer dataBuffer = response.bufferFactory().wrap(JsonUtils.toJsonString(r).getBytes());
+        DataBuffer dataBuffer =
+                response.bufferFactory().wrap(JsonUtils.toJsonString(r).getBytes());
         return response.writeWith(Mono.just(dataBuffer));
     }
 }

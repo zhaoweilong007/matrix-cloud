@@ -20,7 +20,6 @@ public interface OcrApi {
 
     String PREFIX = "/ocr";
 
-
     /**
      * 身份证识别(自动识别正反面)
      *
@@ -32,7 +31,6 @@ public interface OcrApi {
     @GetMapping("/idCaredOCR")
     R<IDCardOCRVo> idCaredOCR(@RequestParam("imgUrl") String imgUrl);
 
-
     /**
      * 营业执照识别
      *
@@ -43,6 +41,4 @@ public interface OcrApi {
     @Operation(summary = "营业执照识别", description = "营业执照识别")
     @GetMapping("/bizLicenseOCR")
     R<BizLicenseOCRVo> bizLicenseOCR(@RequestParam("imgUrl") String imgUrl);
-
-
 }

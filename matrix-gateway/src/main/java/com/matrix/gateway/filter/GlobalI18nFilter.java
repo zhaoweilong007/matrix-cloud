@@ -1,6 +1,7 @@
 package com.matrix.gateway.filter;
 
 import com.matrix.gateway.order.FilterOrder;
+import java.util.Locale;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -9,8 +10,6 @@ import org.springframework.context.i18n.SimpleLocaleContext;
 import org.springframework.core.Ordered;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
-
-import java.util.Locale;
 
 /**
  * 全局国际化处理
@@ -34,5 +33,4 @@ public class GlobalI18nFilter implements GlobalFilter, Ordered {
     public int getOrder() {
         return FilterOrder.GLOBAL_I18N_FILTER;
     }
-
 }

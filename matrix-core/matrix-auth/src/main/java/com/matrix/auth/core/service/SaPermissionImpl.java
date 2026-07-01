@@ -5,7 +5,6 @@ import com.matrix.auth.utils.LoginHelper;
 import com.matrix.common.enums.UserTypeEnum;
 import com.matrix.common.model.login.LoginUser;
 import com.matrix.common.model.login.PcLoginUser;
-
 import java.util.ArrayList;
 import java.util.List;
 

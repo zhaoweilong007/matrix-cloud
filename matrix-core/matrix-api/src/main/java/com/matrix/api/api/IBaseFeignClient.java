@@ -1,6 +1,5 @@
 package com.matrix.api.api;
 
-
 import com.matrix.common.result.R;
 import com.matrix.common.vo.PageResult;
 import com.matrix.validator.group.AddGroup;
@@ -32,7 +31,6 @@ public interface IBaseFeignClient<T, V, Q> {
     @GetMapping
     R<T> queryById(@NotNull(message = "id不能为空") @RequestParam("id") Long id);
 
-
     /**
      * 通过id查询vo详情
      *
@@ -54,7 +52,6 @@ public interface IBaseFeignClient<T, V, Q> {
     @PostMapping("/save")
     R<Long> save(@RequestBody @Validated(value = AddGroup.class) T entity);
 
-
     /**
      * 通过id更新
      *
@@ -64,7 +61,6 @@ public interface IBaseFeignClient<T, V, Q> {
     @Operation(summary = "通过id更新", description = "通过id更新")
     @PostMapping("/updateById")
     R<Boolean> updateById(@RequestBody @Validated(value = EditGroup.class) T entity);
-
 
     /**
      * 分页查询
@@ -76,7 +72,6 @@ public interface IBaseFeignClient<T, V, Q> {
     @PostMapping("/pageQuery")
     R<PageResult<V>> pageQuery(@Valid @RequestBody Q query);
 
-
     /**
      * 通过id删除
      *
@@ -87,5 +82,4 @@ public interface IBaseFeignClient<T, V, Q> {
     @Operation(summary = "通过id删除", description = "通过id删除")
     @DeleteMapping
     R<Boolean> deleteById(@NotNull(message = "id不能为空") @RequestParam("id") Long id);
-
 }

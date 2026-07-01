@@ -3,12 +3,11 @@ package com.matrix.mq.handler;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ClassUtil;
 import jakarta.annotation.PostConstruct;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author ZhaoWeiLong
@@ -19,6 +18,7 @@ public class MessageHandlerManager {
 
     private final Map<String, MessageHandler<?>> handlerMap = new ConcurrentHashMap<>();
     private final Map<MessageHandler<?>, Class<?>> classMap = new ConcurrentHashMap<>();
+
     @Autowired(required = false)
     private List<MessageHandler<?>> messageHandler;
 
@@ -41,13 +41,10 @@ public class MessageHandlerManager {
         return classMap.get(handler);
     }
 
-
     public MessageHandler<?> getHandler(String consumerGroup, String topic, String tag) {
         if (handlerMap.isEmpty()) {
             return null;
         }
         return handlerMap.get(consumerGroup + "-" + topic + "-" + tag);
-
     }
-
 }

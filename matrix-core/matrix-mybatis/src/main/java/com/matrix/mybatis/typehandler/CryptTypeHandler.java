@@ -1,14 +1,13 @@
 package com.matrix.mybatis.typehandler;
 
 import com.matrix.mybatis.utils.UnicodeCryptUtil;
-import org.apache.ibatis.type.BaseTypeHandler;
-import org.apache.ibatis.type.JdbcType;
-import org.apache.ibatis.type.MappedTypes;
-
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.apache.ibatis.type.BaseTypeHandler;
+import org.apache.ibatis.type.JdbcType;
+import org.apache.ibatis.type.MappedTypes;
 
 /**
  * 自定义typehandler
@@ -18,16 +17,15 @@ import java.sql.SQLException;
 @MappedTypes(CryptType.class)
 public class CryptTypeHandler extends BaseTypeHandler<String> {
 
-
     @Override
-    public void setNonNullParameter(PreparedStatement preparedStatement, int i, String s, JdbcType jdbcType) throws SQLException {
+    public void setNonNullParameter(PreparedStatement preparedStatement, int i, String s, JdbcType jdbcType)
+            throws SQLException {
         try {
             String encryptStr = this.encode(s);
             preparedStatement.setString(i, encryptStr);
         } catch (Exception e) {
             preparedStatement.setString(i, s);
         }
-
     }
 
     @Override
@@ -55,7 +53,6 @@ public class CryptTypeHandler extends BaseTypeHandler<String> {
     public String getNullableResult(CallableStatement callableStatement, int columnIndex) throws SQLException {
         return decrypt(callableStatement.getString(columnIndex));
     }
-
 
     /**
      * Unicode 编码

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JacksonAnnotation;
 import com.fasterxml.jackson.annotation.JacksonAnnotationsInside;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.matrix.translation.core.handler.TranslationHandler;
-
 import java.lang.annotation.*;
 
 /**
@@ -41,10 +40,8 @@ public @interface Translation {
      */
     boolean skipIfNotNull() default false;
 
-
     /**
      * 指定序列话字段
      */
     String[] fields() default {};
-
 }

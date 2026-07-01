@@ -20,10 +20,9 @@ import com.alibaba.csp.sentinel.metric.extension.MetricExtension;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
 import io.micrometer.core.instrument.Metrics;
 import io.micrometer.core.instrument.Tags;
-import net.dreamlu.mica.auto.annotation.AutoService;
-
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
+import net.dreamlu.mica.auto.annotation.AutoService;
 
 /**
  * Sentinel Metrics Extension
@@ -40,6 +39,7 @@ public class SentinelMetricsExtension implements MetricExtension {
      * Metric name
      */
     public static final String PASS_REQUESTS_TOTAL = SENTINEL_METRIC_NAME_PREFIX + ".pass.requests.total";
+
     public static final String BLOCK_REQUESTS_TOTAL = SENTINEL_METRIC_NAME_PREFIX + ".block.requests.total";
     public static final String SUCCESS_REQUESTS_TOTAL = SENTINEL_METRIC_NAME_PREFIX + ".success.requests.total";
     public static final String EXCEPTION_REQUESTS_TOTAL = SENTINEL_METRIC_NAME_PREFIX + ".exception_requests_total";
@@ -55,7 +55,8 @@ public class SentinelMetricsExtension implements MetricExtension {
 
     @Override
     public void addBlock(String resource, int n, String origin, BlockException ex, Object... args) {
-        Metrics.counter(BLOCK_REQUESTS_TOTAL, resource, ex.getClass().getSimpleName(), ex.getRuleLimitApp(), origin).increment(n);
+        Metrics.counter(BLOCK_REQUESTS_TOTAL, resource, ex.getClass().getSimpleName(), ex.getRuleLimitApp(), origin)
+                .increment(n);
     }
 
     @Override

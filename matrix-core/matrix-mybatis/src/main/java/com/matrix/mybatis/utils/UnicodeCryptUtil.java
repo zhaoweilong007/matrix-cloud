@@ -1,9 +1,8 @@
 package com.matrix.mybatis.utils;
 
+import java.util.Arrays;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-
-import java.util.Arrays;
 
 /**
  * @author xh
@@ -12,7 +11,7 @@ import java.util.Arrays;
 @Slf4j
 public class UnicodeCryptUtil {
 
-    private final static char SALT = 'o' + 'c' + 'p';
+    private static final char SALT = 'o' + 'c' + 'p';
 
     /**
      * 转 unicode 编码
@@ -21,9 +20,10 @@ public class UnicodeCryptUtil {
         char[] utfBytes = data.toCharArray();
         StringBuilder sb = new StringBuilder();
         for (char utfByte : utfBytes) {
-            //转Unicode
-            String str = Integer.toHexString((((utfByte + SALT) & 0x0000FFFF) | 0xFFFF0000)).substring(4);
-            //倒序
+            // 转Unicode
+            String str = Integer.toHexString((((utfByte + SALT) & 0x0000FFFF) | 0xFFFF0000))
+                    .substring(4);
+            // 倒序
             String reverse = reverse(str);
             sb.append("u").append(reverse);
         }

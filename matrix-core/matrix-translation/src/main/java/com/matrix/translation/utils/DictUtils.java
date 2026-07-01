@@ -3,7 +3,6 @@ package com.matrix.translation.utils;
 import com.matrix.common.constant.CacheNames;
 import com.matrix.common.model.SysDictData;
 import com.matrix.redis.utils.CacheUtils;
-
 import java.util.List;
 
 /**
@@ -45,5 +44,4 @@ public class DictUtils {
     public static void clearDictCache() {
         CacheUtils.clear(CacheNames.SYS_DICT);
     }
-
 }

@@ -11,7 +11,6 @@ import cn.jpush.api.push.model.notification.Notification;
 import cn.jpush.api.push.model.notification.PlatformNotification;
 import com.google.gson.JsonObject;
 import com.matrix.jpush.domain.PushObject;
-
 import java.util.Map;
 
 public class JPushNotifications {
@@ -24,7 +23,8 @@ public class JPushNotifications {
         return builder.build();
     }
 
-    public static PushPayload buildPushPayloadForAndroidAndIos(boolean production, Audience audience, PushObject pushObject) {
+    public static PushPayload buildPushPayloadForAndroidAndIos(
+            boolean production, Audience audience, PushObject pushObject) {
         AndroidNotification.Builder androidBuilder = AndroidNotification.newBuilder();
         IosNotification.Builder iosBuilder = IosNotification.newBuilder();
         if (pushObject.getExtras() != null && !pushObject.getExtras().isEmpty()) {
@@ -72,5 +72,4 @@ public class JPushNotifications {
                 .build();
         return payload;
     }
-
 }

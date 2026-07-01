@@ -54,11 +54,11 @@ public class InvitationCodeGenerator {
         return result;
     }
 
-//    public static void main(String[] args) {
-//        System.out.println(generateUniqueCode(1686358638708563970L));
-//        System.out.println(generateUniqueCode(1686356187284729858L));
-//        System.out.println(generateUniqueCode(1686305396091322370L));
-//        System.out.println(generateUniqueCode(1685936241156132865L));
-//        System.out.println(generateUniqueCode(1685214139311505409L));
-//    }
+    //    public static void main(String[] args) {
+    //        System.out.println(generateUniqueCode(1686358638708563970L));
+    //        System.out.println(generateUniqueCode(1686356187284729858L));
+    //        System.out.println(generateUniqueCode(1686305396091322370L));
+    //        System.out.println(generateUniqueCode(1685936241156132865L));
+    //        System.out.println(generateUniqueCode(1685214139311505409L));
+    //    }
 }

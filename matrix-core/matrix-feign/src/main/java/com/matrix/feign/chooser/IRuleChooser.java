@@ -1,8 +1,7 @@
 package com.matrix.feign.chooser;
 
-import org.springframework.cloud.client.ServiceInstance;
-
 import java.util.List;
+import org.springframework.cloud.client.ServiceInstance;
 
 /**
  * service选择器类

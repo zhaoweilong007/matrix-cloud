@@ -3,12 +3,11 @@ package com.matrix.jpush;
 import com.matrix.common.push.enums.AppEnum;
 import com.matrix.jpush.factory.JPushFactory;
 import com.matrix.jpush.properties.JPushProperties;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.Assert;
-
-import java.util.Map;
 
 /**
  * @author ZhaoWeiLong
@@ -17,7 +16,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Slf4j
 public class JPushInitializer implements InitializingBean {
-
 
     private final Map<String, JPushProperties> jpushConfig;
 
@@ -34,7 +32,4 @@ public class JPushInitializer implements InitializingBean {
             JPushFactory.createTemplate(appEnum, properties);
         }
     }
-
-
 }
-

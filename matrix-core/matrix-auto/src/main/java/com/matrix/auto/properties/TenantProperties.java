@@ -1,11 +1,10 @@
 package com.matrix.auto.properties;
 
+import java.util.HashSet;
+import java.util.Set;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
-
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * 多租户配置
@@ -38,5 +37,4 @@ public class TenantProperties {
      * 即默认所有表都开启多租户的功能，所以记得添加对应的 tenant_id 字段哟
      */
     private Set<String> ignoreTables = new HashSet<>();
-
 }

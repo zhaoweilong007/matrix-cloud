@@ -50,7 +50,6 @@ public interface TransConstant {
      */
     String BUSINESS_DISTRICT_ID_TO_NAME = "business_district_id_to_name";
 
-
     /**
      * 用户名转用户信息
      */
@@ -60,5 +59,4 @@ public interface TransConstant {
      * user_id转公司名称
      */
     String USER_ID_TO_MERCHANT_NAME = "user_id_to_merchant_name";
-
 }

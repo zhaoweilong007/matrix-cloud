@@ -20,7 +20,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 @RestControllerAdvice
 public class I18nResponseBodyAdvice implements ResponseBodyAdvice<R<?>> {
 
-
     @Override
     public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
         final Class<?> clazz = returnType.getMethod().getReturnType();
@@ -28,11 +27,16 @@ public class I18nResponseBodyAdvice implements ResponseBodyAdvice<R<?>> {
     }
 
     @Override
-    public R<?> beforeBodyWrite(R<?> body, MethodParameter returnType, MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
+    public R<?> beforeBodyWrite(
+            R<?> body,
+            MethodParameter returnType,
+            MediaType selectedContentType,
+            Class<? extends HttpMessageConverter<?>> selectedConverterType,
+            ServerHttpRequest request,
+            ServerHttpResponse response) {
         if (body != null && StringUtils.isNotEmpty(body.getMessage())) {
             body.setMessage(MessageUtils.message(body.getMessage()));
         }
         return body;
     }
-
 }

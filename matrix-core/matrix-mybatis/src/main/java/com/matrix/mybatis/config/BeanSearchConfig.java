@@ -2,7 +2,6 @@ package com.matrix.mybatis.config;
 
 import cn.hutool.core.util.StrUtil;
 import cn.zhxu.bs.SqlExecutor;
-import cn.zhxu.bs.boot.prop.BeanSearcherProperties;
 import cn.zhxu.bs.boot.prop.BeanSearcherSql;
 import cn.zhxu.bs.implement.DefaultDbMapping;
 import cn.zhxu.bs.implement.DefaultSqlExecutor;
@@ -10,15 +9,14 @@ import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.matrix.mybatis.convert.JsonFieldConvert;
+import java.util.List;
+import java.util.function.Consumer;
+import javax.sql.DataSource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
-
-import javax.sql.DataSource;
-import java.util.List;
-import java.util.function.Consumer;
 
 /**
  * 兼容mybatis plus注解
@@ -30,7 +28,6 @@ import java.util.function.Consumer;
 @Slf4j
 public class BeanSearchConfig {
 
-
     /**
      * 适配dynamicDataSource 多数据源
      *
@@ -40,14 +37,14 @@ public class BeanSearchConfig {
      */
     @Bean
     @ConditionalOnMissingBean(SqlExecutor.class)
-    public SqlExecutor sqlExecutor(ObjectProvider<DataSource> dataSource,
-                                   ObjectProvider<DynamicRoutingDataSource> dataSourceRoute,
-                                   ObjectProvider<SqlExecutor.SlowListener> slowListener,
-                                   BeanSearcherSql sql) {
+    public SqlExecutor sqlExecutor(
+            ObjectProvider<DataSource> dataSource,
+            ObjectProvider<DynamicRoutingDataSource> dataSourceRoute,
+            ObjectProvider<SqlExecutor.SlowListener> slowListener,
+            BeanSearcherSql sql) {
         DefaultSqlExecutor executor = new DefaultSqlExecutor(dataSource.getIfAvailable());
         ifAvailable(dataSourceRoute, route -> {
             route.getDataSources().forEach(executor::setDataSource);
-
         });
         ifAvailable(slowListener, executor::setSlowListener);
         executor.setSlowSqlThreshold(sql.getSlowSqlThreshold());
@@ -67,7 +64,6 @@ public class BeanSearchConfig {
     public JsonFieldConvert jsonFieldConvert() {
         return new JsonFieldConvert();
     }
-
 
     @Bean
     @ConditionalOnMissingBean(cn.zhxu.bs.DbMapping.class)
@@ -91,7 +87,6 @@ public class BeanSearchConfig {
                 }
                 return super.toColumnName(field);
             }
-
         };
         BeanSearcherSql.DefaultMapping conf = sql.getDefaultMapping();
         mapping.setTablePrefix(conf.getTablePrefix());
@@ -104,18 +99,15 @@ public class BeanSearchConfig {
         return mapping;
     }
 
-
     @Bean
     public SqlExecutor.SlowListener slowSqlListener() {
-        return (
-                Class<?> beanClass,     // 发生慢 SQL 的实体类
-                String slowSql,         // 慢 SQL 字符串
-                List<Object> params,    // SQL 执行参数
-                long timeCost           // 执行耗时（单位：ms）
-        ) -> {
+        return (Class<?> beanClass, // 发生慢 SQL 的实体类
+                String slowSql, // 慢 SQL 字符串
+                List<Object> params, // SQL 执行参数
+                long timeCost // 执行耗时（单位：ms）
+                ) -> {
             // TODO: 监听处理
             log.warn("慢sql监听 beanClass=>{} timeCost=>{} sql=>{}", beanClass.getName(), timeCost, slowSql);
         };
     }
-
 }

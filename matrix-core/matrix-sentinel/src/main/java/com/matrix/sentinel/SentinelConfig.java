@@ -53,5 +53,4 @@ public class SentinelConfig {
     public CustomJsonConvert jsonParamFlowConverter() {
         return new CustomJsonConvert(this.objectMapper, ParamFlowRule.class);
     }
-
 }

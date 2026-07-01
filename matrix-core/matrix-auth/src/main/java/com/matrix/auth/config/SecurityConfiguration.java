@@ -52,9 +52,9 @@ public class SecurityConfiguration implements WebMvcConfigurer {
 
     @Bean
     public FilterRegistrationBean<ValidateCodeFilter> validateCodeFilter(CaptchaProperties captchaProperties) {
-        return createFilterBean(new ValidateCodeFilter(captchaProperties), WebFilterOrderConstants.VALIDATE_CODE_FILTER);
+        return createFilterBean(
+                new ValidateCodeFilter(captchaProperties), WebFilterOrderConstants.VALIDATE_CODE_FILTER);
     }
-
 
     /**
      * 校验是否从网关转发
@@ -74,7 +74,10 @@ public class SecurityConfiguration implements WebMvcConfigurer {
                     SaSameUtil.checkCurrentRequestToken();
                 })
                 .setError(e -> {
-                    log.warn("[SaServletFilter]认证失败,uri:[{}] msg:{}", ServletUtils.getRequest().getRequestURI(), e.getMessage());
+                    log.warn(
+                            "[SaServletFilter]认证失败,uri:[{}] msg:{}",
+                            ServletUtils.getRequest().getRequestURI(),
+                            e.getMessage());
                     return JsonUtil.toJson(R.fail(SystemErrorTypeEnum.UNAUTHORIZED));
                 });
     }
@@ -88,6 +91,4 @@ public class SecurityConfiguration implements WebMvcConfigurer {
     public AuthExceptionHandler authExceptionHandler() {
         return new AuthExceptionHandler();
     }
-
-
 }

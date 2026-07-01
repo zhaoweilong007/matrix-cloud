@@ -3,7 +3,6 @@ package com.matrix.mybatis.typehandler;
 import com.baomidou.mybatisplus.extension.handlers.AbstractJsonTypeHandler;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.matrix.common.util.json.JsonUtils;
-
 import java.util.Set;
 
 /**
@@ -14,8 +13,7 @@ import java.util.Set;
  */
 public class JsonLongSetTypeHandler extends AbstractJsonTypeHandler<Object> {
 
-    private static final TypeReference<Set<Long>> TYPE_REFERENCE = new TypeReference<Set<Long>>() {
-    };
+    private static final TypeReference<Set<Long>> TYPE_REFERENCE = new TypeReference<Set<Long>>() {};
 
     public JsonLongSetTypeHandler(Class<?> type) {
         super(type);
@@ -30,5 +28,4 @@ public class JsonLongSetTypeHandler extends AbstractJsonTypeHandler<Object> {
     public String toJson(Object obj) {
         return JsonUtils.toJsonString(obj);
     }
-
 }

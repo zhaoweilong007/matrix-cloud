@@ -83,5 +83,4 @@ public class DictServiceImpl implements IDictService {
             return map.getOrDefault(dictLabel, StringUtils.EMPTY);
         }
     }
-
 }

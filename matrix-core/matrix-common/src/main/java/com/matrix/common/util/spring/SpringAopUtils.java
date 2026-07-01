@@ -42,5 +42,4 @@ public class SpringAopUtils {
         AdvisedSupport advisedSupport = (AdvisedSupport) BeanUtil.getFieldValue(aopProxy, "advised");
         return advisedSupport.getTargetSource().getTarget();
     }
-
 }

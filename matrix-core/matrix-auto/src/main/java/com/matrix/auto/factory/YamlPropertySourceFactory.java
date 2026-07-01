@@ -1,15 +1,14 @@
 package com.matrix.auto.factory;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Properties;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
 import org.springframework.core.env.PropertiesPropertySource;
 import org.springframework.core.env.PropertySource;
 import org.springframework.core.io.support.EncodedResource;
 import org.springframework.core.io.support.PropertySourceFactory;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Properties;
 
 /**
  * 加载yml格式的自定义配置文件

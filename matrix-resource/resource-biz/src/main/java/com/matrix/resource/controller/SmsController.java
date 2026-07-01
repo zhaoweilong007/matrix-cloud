@@ -36,17 +36,23 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class SmsController implements SmsApi {
 
-
     @Override
     public R<Void> sendMsg(SmsDto smsDto) {
         if (smsDto.getParams() == null) {
             smsDto.setParams(new LinkedHashMap<>());
         }
-        final SmsBlendEnum smsBlendEnum = SmsBlendEnum.ofName(smsDto.getScene().getSignNameEnum().name());
+        final SmsBlendEnum smsBlendEnum =
+                SmsBlendEnum.ofName(smsDto.getScene().getSignNameEnum().name());
         final String name = smsBlendEnum.name();
         SmsBlend smsBlend = SmsFactory.getSmsBlend(name);
-        log.info("smsSendReq: smsBlend:{} phone:{} scene:{} params:{}", name, smsDto.getPhone(), smsDto.getScene(), smsDto.getParams());
-        SmsResponse smsResponse = smsBlend.sendMessage(smsDto.getPhone(), smsDto.getScene().getTemplateId(), smsDto.getParams());
+        log.info(
+                "smsSendReq: smsBlend:{} phone:{} scene:{} params:{}",
+                name,
+                smsDto.getPhone(),
+                smsDto.getScene(),
+                smsDto.getParams());
+        SmsResponse smsResponse =
+                smsBlend.sendMessage(smsDto.getPhone(), smsDto.getScene().getTemplateId(), smsDto.getParams());
         log.info("smsResponse：{}", smsResponse);
         final boolean sentSms = smsResponse.isSuccess();
         return sentSms ? R.success() : R.fail(SystemErrorTypeEnum.SMS_SEND_FAIL);
@@ -100,7 +106,6 @@ public class SmsController implements SmsApi {
         }
         return equals ? R.success() : R.fail(SystemErrorTypeEnum.SMS_VALIDATOR_FAIL);
     }
-
 
     @Override
     public R<Boolean> validateSmsCodeByBusinessId(BusinessSmsCodeValidateDTO reqDTO) {

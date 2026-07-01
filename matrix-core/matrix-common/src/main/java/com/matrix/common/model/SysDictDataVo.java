@@ -1,9 +1,8 @@
 package com.matrix.common.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-
 import java.io.Serializable;
+import lombok.Data;
 
 /**
  * <p>
@@ -72,5 +71,4 @@ public class SysDictDataVo implements Serializable {
      */
     @Schema(description = "备注")
     private String remark;
-
 }

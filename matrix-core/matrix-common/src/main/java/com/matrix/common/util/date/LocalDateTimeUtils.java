@@ -1,7 +1,6 @@
 package com.matrix.common.util.date;
 
 import cn.hutool.core.date.LocalDateTimeUtil;
-
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -13,7 +12,6 @@ public class LocalDateTimeUtils {
 
     private static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
     private static final String DEFAULT_DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
-
 
     /**
      * 空的 LocalDateTime 对象，主要用于 DB 唯一索引的默认值
@@ -44,9 +42,8 @@ public class LocalDateTimeUtils {
         return LocalDateTime.of(year, mouth, day, 0, 0, 0);
     }
 
-    public static LocalDateTime[] buildBetweenTime(int year1, int mouth1, int day1,
-                                                   int year2, int mouth2, int day2) {
-        return new LocalDateTime[]{buildTime(year1, mouth1, day1), buildTime(year2, mouth2, day2)};
+    public static LocalDateTime[] buildBetweenTime(int year1, int mouth1, int day1, int year2, int mouth2, int day2) {
+        return new LocalDateTime[] {buildTime(year1, mouth1, day1), buildTime(year2, mouth2, day2)};
     }
 
     /**
@@ -125,7 +122,9 @@ public class LocalDateTimeUtils {
      */
     public static String convertTime(String timeString) {
         LocalTime time = LocalTime.parse(timeString);
-        String hour = time.getHour() > 12 ? ("下午" + (time.getHour() - 12)) : (time.getHour() == 12 ? "中午12" : "上午" + time.getHour());
+        String hour = time.getHour() > 12
+                ? ("下午" + (time.getHour() - 12))
+                : (time.getHour() == 12 ? "中午12" : "上午" + time.getHour());
         return hour.concat("点").concat((time.getMinute() == 0 ? "" : time.getMinute() + "分"));
     }
 
@@ -135,7 +134,10 @@ public class LocalDateTimeUtils {
      * yyyy是本年的去掉年，只显示mm月dd日
      */
     public static String formatDateString(String dateString) {
-        return dateString.replaceFirst("-", "年").replaceFirst("-", "月").concat("日")
+        return dateString
+                .replaceFirst("-", "年")
+                .replaceFirst("-", "月")
+                .concat("日")
                 .replaceFirst(LocalDateTime.now().getYear() + "年", "");
     }
 

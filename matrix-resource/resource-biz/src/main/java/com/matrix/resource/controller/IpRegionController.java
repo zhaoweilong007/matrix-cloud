@@ -33,7 +33,6 @@ public class IpRegionController implements IpRegionApi {
     private final Ip2regionSearcher regionSearcher;
     private final BeanSearcher beanSearcher;
 
-
     @Override
     public R<IpInfoVo> ipInfo(Long ip) {
         final IpInfo ipInfo = regionSearcher.memorySearch(String.valueOf(ip));
@@ -51,7 +50,6 @@ public class IpRegionController implements IpRegionApi {
         return R.success(ipInfoVo);
     }
 
-
     private void setCityCode(IpInfoVo infoVo) {
         if (infoVo == null) {
             return;
@@ -60,15 +58,14 @@ public class IpRegionController implements IpRegionApi {
             return;
         }
 
-        final SysRegionDict regionDict = beanSearcher.searchFirst(SysRegionDict.class,
+        final SysRegionDict regionDict = beanSearcher.searchFirst(
+                SysRegionDict.class,
                 MapUtils.builder()
                         .field(SysRegionDict::getAreaName, infoVo.getCity())
-                        .build()
-        );
+                        .build());
 
         if (regionDict != null) {
             infoVo.setCityCode(regionDict.getAreaCode());
         }
-
     }
 }

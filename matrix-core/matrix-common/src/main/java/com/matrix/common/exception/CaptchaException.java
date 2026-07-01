@@ -1,6 +1,5 @@
 package com.matrix.common.exception;
 
-
 import com.matrix.common.enums.SystemErrorTypeEnum;
 import com.matrix.common.exception.base.BaseException;
 

@@ -6,10 +6,9 @@ import cn.hutool.core.io.file.FileNameUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.digest.DigestUtil;
-import lombok.SneakyThrows;
-
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import lombok.SneakyThrows;
 
 /**
  * 文件工具类
@@ -78,5 +77,4 @@ public class FileUtils {
         // 情况二：基于 content 计算
         return sha256Hex + '.' + FileTypeUtil.getType(new ByteArrayInputStream(content));
     }
-
 }

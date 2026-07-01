@@ -1,6 +1,5 @@
 package com.matrix.validator;
 
-
 import com.matrix.common.enums.StatusEnumEnum;
 import com.matrix.validator.annotation.StatusValue;
 import jakarta.validation.ConstraintValidator;

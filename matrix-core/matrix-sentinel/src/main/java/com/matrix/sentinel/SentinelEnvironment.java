@@ -2,8 +2,8 @@ package com.matrix.sentinel;
 
 import cn.hutool.core.util.StrUtil;
 import net.dreamlu.mica.auto.annotation.AutoEnvPostProcessor;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.EnvironmentPostProcessor;
+import org.springframework.boot.SpringApplication;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 /**
@@ -27,5 +27,4 @@ public class SentinelEnvironment implements EnvironmentPostProcessor {
             environment.getSystemProperties().put("spring.cloud.sentinel.transport.client-ip", clientIp);
         }
     }
-
 }

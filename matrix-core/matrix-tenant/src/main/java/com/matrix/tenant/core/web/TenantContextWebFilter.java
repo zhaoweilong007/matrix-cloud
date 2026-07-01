@@ -6,9 +6,8 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.web.filter.OncePerRequestFilter;
-
 import java.io.IOException;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 /**
  * 多租户 Context Web 过滤器
@@ -31,5 +30,4 @@ public class TenantContextWebFilter extends OncePerRequestFilter {
             TenantContextHolder.clear();
         }
     }
-
 }

@@ -3,12 +3,11 @@ package com.matrix.mybatis.utils;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.InnerInterceptor;
+import java.util.ArrayList;
+import java.util.List;
 import net.sf.jsqlparser.expression.Alias;
 import net.sf.jsqlparser.schema.Column;
 import net.sf.jsqlparser.schema.Table;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * MyBatis 工具类
@@ -16,7 +15,6 @@ import java.util.List;
 public class MyBatisUtils {
 
     private static final String MYSQL_ESCAPE_CHARACTER = "`";
-
 
     /**
      * 将拦截器添加到链中 由于 MybatisPlusInterceptor 不支持添加拦截器，所以只能全量设置
@@ -61,5 +59,4 @@ public class MyBatisUtils {
         }
         return new Column(tableName + StringPool.DOT + column);
     }
-
 }

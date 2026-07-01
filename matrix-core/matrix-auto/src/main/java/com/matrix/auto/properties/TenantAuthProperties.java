@@ -1,11 +1,10 @@
 package com.matrix.auto.properties;
 
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 租户认证配置

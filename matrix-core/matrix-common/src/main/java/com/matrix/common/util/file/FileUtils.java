@@ -2,12 +2,11 @@ package com.matrix.common.util.file;
 
 import cn.hutool.core.io.FileUtil;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 /**
  * 文件处理工具类
@@ -22,11 +21,13 @@ public class FileUtils extends FileUtil {
      * @param realFileName 真实文件名
      * @return
      */
-    public static void setAttachmentResponseHeader(HttpServletResponse response, String realFileName) throws UnsupportedEncodingException {
+    public static void setAttachmentResponseHeader(HttpServletResponse response, String realFileName)
+            throws UnsupportedEncodingException {
         String percentEncodedFileName = percentEncode(realFileName);
 
         StringBuilder contentDispositionValue = new StringBuilder();
-        contentDispositionValue.append("attachment; filename=")
+        contentDispositionValue
+                .append("attachment; filename=")
                 .append(percentEncodedFileName)
                 .append(";")
                 .append("filename*=")

@@ -2,7 +2,6 @@ package com.matrix.datapermission.aop;
 
 import com.alibaba.ttl.TransmittableThreadLocal;
 import com.matrix.datapermission.annotation.DataPermission;
-
 import java.util.LinkedList;
 import java.util.List;
 
@@ -66,5 +65,4 @@ public class DataPermissionContextHolder {
     public static void clear() {
         DATA_PERMISSIONS.remove();
     }
-
 }

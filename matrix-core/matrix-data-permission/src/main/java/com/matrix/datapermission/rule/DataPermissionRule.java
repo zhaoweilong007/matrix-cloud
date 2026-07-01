@@ -1,10 +1,9 @@
 package com.matrix.datapermission.rule;
 
 import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
+import java.util.Set;
 import net.sf.jsqlparser.expression.Alias;
 import net.sf.jsqlparser.expression.Expression;
-
-import java.util.Set;
 
 /**
  * 数据权限规则接口
@@ -30,5 +29,4 @@ public interface DataPermissionRule {
      * @return 过滤条件 Expression 表达式
      */
     Expression getExpression(String tableName, Alias tableAlias);
-
 }

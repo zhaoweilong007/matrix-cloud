@@ -17,10 +17,8 @@ import org.springframework.context.annotation.PropertySource;
 @Slf4j
 public class SentinelServletConfig {
 
-
     @Bean
     public IpParse ipParse() {
         return new IpParse();
     }
-
 }

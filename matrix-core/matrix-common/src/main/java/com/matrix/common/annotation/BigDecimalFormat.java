@@ -3,11 +3,10 @@ package com.matrix.common.annotation;
 import com.fasterxml.jackson.annotation.JacksonAnnotationsInside;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.matrix.common.jackson.BigDecimalSerializer;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
 import java.lang.annotation.*;
 import java.math.RoundingMode;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
  * @author ZhaoWeiLong
@@ -20,7 +19,6 @@ import java.math.RoundingMode;
 @JsonSerialize(using = BigDecimalSerializer.class)
 public @interface BigDecimalFormat {
 
-
     /**
      * 处理格式
      */
@@ -31,12 +29,10 @@ public @interface BigDecimalFormat {
      */
     int multiple() default 100;
 
-
     /**
      * 舍入模式 除以时指定
      */
     RoundingMode mode() default RoundingMode.HALF_UP;
-
 
     @Getter
     @RequiredArgsConstructor
@@ -56,6 +52,5 @@ public @interface BigDecimalFormat {
          * 除以
          */
         divide;
-
     }
 }

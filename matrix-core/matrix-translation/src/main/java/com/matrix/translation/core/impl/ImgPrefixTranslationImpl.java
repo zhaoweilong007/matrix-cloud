@@ -6,14 +6,13 @@ import com.matrix.translation.annotation.Translation;
 import com.matrix.translation.annotation.TranslationType;
 import com.matrix.translation.constant.TransConstant;
 import com.matrix.translation.core.TranslationInterface;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
 /**
  * 阿里云图片前缀
@@ -52,7 +51,6 @@ public class ImgPrefixTranslationImpl implements TranslationInterface<Object> {
             return ((List<?>) value).stream().map(o -> mapping(o, finalOther)).collect(Collectors.toList());
         }
 
-
         if (value instanceof Map) {
             final String[] fields = translation.fields();
             final Map<String, Object> map = (Map) value;
@@ -64,7 +62,8 @@ public class ImgPrefixTranslationImpl implements TranslationInterface<Object> {
                         mappingValue = mapping(val, other);
                     } else if (val instanceof List<?>) {
                         String finalOther = other;
-                        mappingValue = ((List<?>) val).stream().map(o -> mapping(o, finalOther)).collect(Collectors.toList());
+                        mappingValue = ((List<?>) val)
+                                .stream().map(o -> mapping(o, finalOther)).collect(Collectors.toList());
                     }
                     map.put(field, mappingValue);
                 }
@@ -72,13 +71,12 @@ public class ImgPrefixTranslationImpl implements TranslationInterface<Object> {
             return map;
         }
 
-
         return value;
     }
 
     private Object mapping(Object value, String other) {
         final String val = (String) value;
-        //添加支持字符串为多个路径的且以逗号分隔的情况
+        // 添加支持字符串为多个路径的且以逗号分隔的情况
         if (StrUtil.isBlank(val)) {
             return value;
         }
@@ -88,6 +86,7 @@ public class ImgPrefixTranslationImpl implements TranslationInterface<Object> {
                         return ossProperties.getPrefix() + url;
                     }
                     return url;
-                }).collect(Collectors.joining(other));
+                })
+                .collect(Collectors.joining(other));
     }
 }

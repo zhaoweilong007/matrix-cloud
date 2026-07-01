@@ -1,9 +1,8 @@
 package com.matrix.common.model.login;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-
 import java.util.Set;
+import lombok.Data;
 
 /**
  * pc后台登录
@@ -14,7 +13,6 @@ import java.util.Set;
 @Schema(description = "pc后台登录")
 @Data
 public class PcLoginUser extends LoginUser {
-
 
     /**
      * 菜单权限

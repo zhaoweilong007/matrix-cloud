@@ -34,7 +34,6 @@ public enum DeviceTypeEnum {
 
     private final Integer value;
 
-
     private final String device;
 
     public static String getUserType(DeviceTypeEnum deviceTypeEnum) {

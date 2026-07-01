@@ -2,7 +2,6 @@ package com.matrix.api.resource.model;
 
 import java.io.Serializable;
 import java.util.Date;
-
 import lombok.Data;
 
 /**
@@ -13,7 +12,6 @@ import lombok.Data;
  **/
 @Data
 public class MailMessageReq implements Serializable {
-
 
     private String from;
 
@@ -30,5 +28,4 @@ public class MailMessageReq implements Serializable {
     private String subject;
 
     private String text;
-
 }

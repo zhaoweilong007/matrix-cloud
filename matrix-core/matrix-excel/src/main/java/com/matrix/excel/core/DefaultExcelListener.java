@@ -58,8 +58,8 @@ public class DefaultExcelListener<T> extends AnalysisEventListener<T> implements
             ExcelDataConvertException excelDataConvertException = (ExcelDataConvertException) exception;
             Integer rowIndex = excelDataConvertException.getRowIndex();
             Integer columnIndex = excelDataConvertException.getColumnIndex();
-            errMsg = StrUtil.format("第{}行-第{}列-表头{}: 解析异常<br/>",
-                    rowIndex + 1, columnIndex + 1, headMap.get(columnIndex));
+            errMsg = StrUtil.format(
+                    "第{}行-第{}列-表头{}: 解析异常<br/>", rowIndex + 1, columnIndex + 1, headMap.get(columnIndex));
             if (log.isDebugEnabled()) {
                 log.error(errMsg);
             }
@@ -67,8 +67,10 @@ public class DefaultExcelListener<T> extends AnalysisEventListener<T> implements
         if (exception instanceof ConstraintViolationException) {
             ConstraintViolationException constraintViolationException = (ConstraintViolationException) exception;
             Set<ConstraintViolation<?>> constraintViolations = constraintViolationException.getConstraintViolations();
-            String constraintViolationsMsg = StreamUtils.join(constraintViolations, ConstraintViolation::getMessage, ", ");
-            errMsg = StrUtil.format("第{}行数据校验异常: {}", context.readRowHolder().getRowIndex() + 1, constraintViolationsMsg);
+            String constraintViolationsMsg =
+                    StreamUtils.join(constraintViolations, ConstraintViolation::getMessage, ", ");
+            errMsg = StrUtil.format(
+                    "第{}行数据校验异常: {}", context.readRowHolder().getRowIndex() + 1, constraintViolationsMsg);
             if (log.isDebugEnabled()) {
                 log.error(errMsg);
             }
@@ -100,5 +102,4 @@ public class DefaultExcelListener<T> extends AnalysisEventListener<T> implements
     public ExcelResult<T> getExcelResult() {
         return excelResult;
     }
-
 }

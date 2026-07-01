@@ -77,5 +77,4 @@ public interface Metric {
      * @return
      */
     int getSampleCount();
-
 }

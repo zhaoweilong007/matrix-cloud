@@ -16,14 +16,12 @@ public abstract class AbstractBusinessHandler<R, T> implements BusinessHandler<R
         return r;
     }
 
-
     /**
      * 前处理程序
      *
      * @param t t
      */
-    public void beforeHandler(T t) {
-    }
+    public void beforeHandler(T t) {}
 
     /**
      * 处理程序
@@ -39,7 +37,5 @@ public abstract class AbstractBusinessHandler<R, T> implements BusinessHandler<R
      * @param r r
      * @param t t
      */
-    public void afterHandler(R r, T t) {
-    }
-
+    public void afterHandler(R r, T t) {}
 }

@@ -1,24 +1,22 @@
 package com.matrix.common.sdkutils;
 
 import com.alibaba.fastjson2.JSONObject;
-
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.zip.Deflater;
-
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
 
 /**
  * @author ZhaoWeiLong
  * @since 2023/7/19
  **/
 public class TLSSigAPIv2 {
-    final private long sdkappid;
-    final private String key;
+    private final long sdkappid;
+    private final String key;
 
     public TLSSigAPIv2(long sdkappid, String key) {
         this.sdkappid = sdkappid;
@@ -102,7 +100,7 @@ public class TLSSigAPIv2 {
      * @return usersig - Generate signature with userbuf
      */
     public String genPrivateMapKey(String userid, long expire, long roomid, long privilegeMap) {
-        byte[] userbuf = genUserBuf(userid, roomid, expire, privilegeMap, 0, "");  //生成userbuf
+        byte[] userbuf = genUserBuf(userid, roomid, expire, privilegeMap, 0, ""); // 生成userbuf
         return genUserSig(userid, expire, userbuf);
     }
 
@@ -160,7 +158,7 @@ public class TLSSigAPIv2 {
      * @return usersig - Generate signature with userbuf
      */
     public String genPrivateMapKeyWithStringRoomID(String userid, long expire, String roomstr, long privilegeMap) {
-        byte[] userbuf = genUserBuf(userid, 0, expire, privilegeMap, 0, roomstr);  //生成userbuf
+        byte[] userbuf = genUserBuf(userid, 0, expire, privilegeMap, 0, roomstr); // 生成userbuf
         return genUserSig(userid, expire, userbuf);
     }
 
@@ -211,25 +209,25 @@ public class TLSSigAPIv2 {
         byte[] compressedBytes = new byte[2048];
         int compressedBytesLength = compressor.deflate(compressedBytes);
         compressor.end();
-        return (new String(Base64Url.base64EncodeUrl(Arrays.copyOfRange(compressedBytes,
-                0, compressedBytesLength)))).replaceAll("\\s*", "");
+        return (new String(Base64Url.base64EncodeUrl(Arrays.copyOfRange(compressedBytes, 0, compressedBytesLength))))
+                .replaceAll("\\s*", "");
     }
 
-    public byte[] genUserBuf(String account, long dwAuthID, long dwExpTime,
-                             long dwPrivilegeMap, long dwAccountType, String RoomStr) {
-        //视频校验位需要用到的字段,按照网络字节序放入buf中
+    public byte[] genUserBuf(
+            String account, long dwAuthID, long dwExpTime, long dwPrivilegeMap, long dwAccountType, String RoomStr) {
+        // 视频校验位需要用到的字段,按照网络字节序放入buf中
         /*
-         cVer    unsigned char/1 版本号，填0
-         wAccountLen unsigned short /2   第三方自己的帐号长度
-         account wAccountLen 第三方自己的帐号字符
-         dwSdkAppid  unsigned int/4  sdkappid
-         dwAuthID    unsigned int/4  群组号码
-         dwExpTime   unsigned int/4  过期时间 ，直接使用填入的值
-         dwPrivilegeMap  unsigned int/4  权限位，主播0xff，观众0xab
-         dwAccountType   unsigned int/4  第三方帐号类型
-         */
+        cVer    unsigned char/1 版本号，填0
+        wAccountLen unsigned short /2   第三方自己的帐号长度
+        account wAccountLen 第三方自己的帐号字符
+        dwSdkAppid  unsigned int/4  sdkappid
+        dwAuthID    unsigned int/4  群组号码
+        dwExpTime   unsigned int/4  过期时间 ，直接使用填入的值
+        dwPrivilegeMap  unsigned int/4  权限位，主播0xff，观众0xab
+        dwAccountType   unsigned int/4  第三方帐号类型
+        */
 
-        //The fields required for the video check digit are placed in buf according to the network byte order.
+        // The fields required for the video check digit are placed in buf according to the network byte order.
         /*
          cVer    unsigned char/1 Version number, fill in 0
          wAccountLen unsigned short /2   Third party's own account length
@@ -249,37 +247,37 @@ public class TLSSigAPIv2 {
         }
         byte[] userbuf = new byte[bufLength];
 
-        //cVer
+        // cVer
         if (roomStrLength > 0) {
             userbuf[offset++] = 1;
         } else {
             userbuf[offset++] = 0;
         }
 
-        //wAccountLen
+        // wAccountLen
         userbuf[offset++] = (byte) ((accountLength & 0xFF00) >> 8);
         userbuf[offset++] = (byte) (accountLength & 0x00FF);
 
-        //account
+        // account
         for (; offset < 3 + accountLength; ++offset) {
             userbuf[offset] = (byte) account.charAt(offset - 3);
         }
 
-        //dwSdkAppid
+        // dwSdkAppid
         userbuf[offset++] = (byte) ((sdkappid & 0xFF000000) >> 24);
         userbuf[offset++] = (byte) ((sdkappid & 0x00FF0000) >> 16);
         userbuf[offset++] = (byte) ((sdkappid & 0x0000FF00) >> 8);
         userbuf[offset++] = (byte) (sdkappid & 0x000000FF);
 
-        //dwAuthId,房间号
-        //dwAuthId, room number
+        // dwAuthId,房间号
+        // dwAuthId, room number
         userbuf[offset++] = (byte) ((dwAuthID & 0xFF000000) >> 24);
         userbuf[offset++] = (byte) ((dwAuthID & 0x00FF0000) >> 16);
         userbuf[offset++] = (byte) ((dwAuthID & 0x0000FF00) >> 8);
         userbuf[offset++] = (byte) (dwAuthID & 0x000000FF);
 
-        //expire，过期时间,当前时间 + 有效期（单位：秒）
-        //expire,Expiration time, current time + validity period (unit: seconds)
+        // expire，过期时间,当前时间 + 有效期（单位：秒）
+        // expire,Expiration time, current time + validity period (unit: seconds)
         long currTime = System.currentTimeMillis() / 1000;
         long expire = currTime + dwExpTime;
         userbuf[offset++] = (byte) ((expire & 0xFF000000) >> 24);
@@ -287,27 +285,26 @@ public class TLSSigAPIv2 {
         userbuf[offset++] = (byte) ((expire & 0x0000FF00) >> 8);
         userbuf[offset++] = (byte) (expire & 0x000000FF);
 
-        //dwPrivilegeMap，权限位
-        //dwPrivilegeMap，Permission bits
+        // dwPrivilegeMap，权限位
+        // dwPrivilegeMap，Permission bits
         userbuf[offset++] = (byte) ((dwPrivilegeMap & 0xFF000000) >> 24);
         userbuf[offset++] = (byte) ((dwPrivilegeMap & 0x00FF0000) >> 16);
         userbuf[offset++] = (byte) ((dwPrivilegeMap & 0x0000FF00) >> 8);
         userbuf[offset++] = (byte) (dwPrivilegeMap & 0x000000FF);
 
-        //dwAccountType，账户类型
-        //dwAccountType，account type
+        // dwAccountType，账户类型
+        // dwAccountType，account type
         userbuf[offset++] = (byte) ((dwAccountType & 0xFF000000) >> 24);
         userbuf[offset++] = (byte) ((dwAccountType & 0x00FF0000) >> 16);
         userbuf[offset++] = (byte) ((dwAccountType & 0x0000FF00) >> 8);
         userbuf[offset++] = (byte) (dwAccountType & 0x000000FF);
 
-
         if (roomStrLength > 0) {
-            //roomStrLen
+            // roomStrLen
             userbuf[offset++] = (byte) ((roomStrLength & 0xFF00) >> 8);
             userbuf[offset++] = (byte) (roomStrLength & 0x00FF);
 
-            //roomStr
+            // roomStr
             for (; offset < bufLength; ++offset) {
                 userbuf[offset] = (byte) RoomStr.charAt(offset - (bufLength - roomStrLength));
             }

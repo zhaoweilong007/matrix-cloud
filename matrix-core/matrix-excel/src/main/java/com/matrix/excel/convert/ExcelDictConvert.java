@@ -34,7 +34,8 @@ public class ExcelDictConvert implements Converter<Object> {
     }
 
     @Override
-    public Object convertToJavaData(ReadCellData<?> cellData, ExcelContentProperty contentProperty, GlobalConfiguration globalConfiguration) {
+    public Object convertToJavaData(
+            ReadCellData<?> cellData, ExcelContentProperty contentProperty, GlobalConfiguration globalConfiguration) {
         ExcelDictFormat anno = getAnnotation(contentProperty.getField());
         String type = anno.dictType();
         String label = cellData.getStringValue();
@@ -48,7 +49,8 @@ public class ExcelDictConvert implements Converter<Object> {
     }
 
     @Override
-    public WriteCellData<String> convertToExcelData(Object object, ExcelContentProperty contentProperty, GlobalConfiguration globalConfiguration) {
+    public WriteCellData<String> convertToExcelData(
+            Object object, ExcelContentProperty contentProperty, GlobalConfiguration globalConfiguration) {
         if (ObjectUtil.isNull(object)) {
             return new WriteCellData<>("");
         }

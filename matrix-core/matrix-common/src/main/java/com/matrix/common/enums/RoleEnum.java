@@ -1,12 +1,11 @@
 package com.matrix.common.enums;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import one.util.streamex.StreamEx;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import one.util.streamex.StreamEx;
 
 /**
  * 系统默认橘色
@@ -17,7 +16,6 @@ import java.util.stream.Collectors;
 @Getter
 @RequiredArgsConstructor
 public enum RoleEnum {
-
     ADMIN(1, "admin", "超级管理员"),
     SHOP_OWNER(2, "shop_owner", "店东"),
     SHOP_MANAGER(3, "shop_manager", "店长"),
@@ -30,13 +28,16 @@ public enum RoleEnum {
 
     private final String roleName;
 
-
     public static RoleEnum ofRoleKey(String roleKey) {
-        return StreamEx.of(values()).findFirst(roleEnum -> Objects.equals(roleEnum.getRoleKey(), roleKey)).orElse(null);
+        return StreamEx.of(values())
+                .findFirst(roleEnum -> Objects.equals(roleEnum.getRoleKey(), roleKey))
+                .orElse(null);
     }
 
-
     public static List<String> sortByRole(RoleEnum roleEnum) {
-        return StreamEx.of(values()).filter(r -> roleEnum.getValue() >= r.getValue()).map(RoleEnum::getRoleKey).collect(Collectors.toList());
+        return StreamEx.of(values())
+                .filter(r -> roleEnum.getValue() >= r.getValue())
+                .map(RoleEnum::getRoleKey)
+                .collect(Collectors.toList());
     }
 }

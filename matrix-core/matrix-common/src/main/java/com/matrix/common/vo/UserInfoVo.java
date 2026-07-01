@@ -1,8 +1,7 @@
 package com.matrix.common.vo;
 
-import lombok.Data;
-
 import java.io.Serializable;
+import lombok.Data;
 
 /**
  *
@@ -11,5 +10,4 @@ import java.io.Serializable;
  *
  **/
 @Data
-public class UserInfoVo implements Serializable {
-}
+public class UserInfoVo implements Serializable {}

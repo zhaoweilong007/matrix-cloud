@@ -13,7 +13,6 @@ public class TerminalContextHolder {
 
     private static final ThreadLocal<PlatformUserTypeEnum> USERTYPE = new TransmittableThreadLocal<>();
 
-
     public static void setUsertype(PlatformUserTypeEnum usertype) {
         USERTYPE.set(usertype);
     }
@@ -25,6 +24,4 @@ public class TerminalContextHolder {
     public static void clear() {
         USERTYPE.remove();
     }
-
-
 }

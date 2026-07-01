@@ -198,5 +198,4 @@ public interface Compare<LambdaQueryWrapper, R> extends Serializable {
      * @return 当前条件构建器
      */
     LambdaQueryWrapper notIn(boolean condition, R column, Collection<Object> val);
-
 }

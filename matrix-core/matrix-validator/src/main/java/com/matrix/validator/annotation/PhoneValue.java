@@ -1,12 +1,11 @@
 package com.matrix.validator.annotation;
 
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
 import com.matrix.validator.PhoneValueValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
-
 import java.lang.annotation.*;
-
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * 校验手机号码格式

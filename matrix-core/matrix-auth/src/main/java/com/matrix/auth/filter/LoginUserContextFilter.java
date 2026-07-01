@@ -8,10 +8,9 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.filter.OncePerRequestFilter;
-
-import java.io.IOException;
 
 /**
  * @author ZhaoWeiLong
@@ -20,7 +19,8 @@ import java.io.IOException;
 @Order(WebFilterOrderConstants.USER_CONTEXT_FILTER)
 public class LoginUserContextFilter extends OncePerRequestFilter {
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
         try {
             if (StpUtil.isLogin()) {
                 LoginUserContextHolder.setUser(LoginHelper.getLoginUser());

@@ -16,7 +16,6 @@ import org.springframework.context.annotation.Bean;
  * @author ZhaoWeiLong
  * @since 2023/6/9
  **/
-
 @AutoConfiguration
 @EnableConfigurationProperties(ExceptionNoticeProperties.class)
 public class LogAutoConfig {
@@ -34,9 +33,8 @@ public class LogAutoConfig {
 
     @Bean
     @ConditionalOnBean({RemoteUserService.class})
-    public LogEventListener logEventListener(ExceptionNoticeProperties noticeProperties,
-                                             RemoteLogService remoteLogService,
-                                             Converter converter) {
+    public LogEventListener logEventListener(
+            ExceptionNoticeProperties noticeProperties, RemoteLogService remoteLogService, Converter converter) {
         return new LogEventListener(noticeProperties, remoteLogService, converter);
     }
 }

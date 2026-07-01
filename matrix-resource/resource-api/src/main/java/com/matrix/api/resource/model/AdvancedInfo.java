@@ -9,11 +9,9 @@ import lombok.Data;
 @Data
 public class AdvancedInfo {
 
-
     private Integer Quality;
 
     private Integer BorderCodeValue;
 
     private Long[] WarnInfos;
-
 }

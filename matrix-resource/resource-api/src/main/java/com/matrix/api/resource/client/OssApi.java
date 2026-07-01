@@ -13,6 +13,4 @@ import org.springframework.cloud.openfeign.FeignClient;
 public interface OssApi {
 
     String PREFIX = "/oss";
-
-
 }

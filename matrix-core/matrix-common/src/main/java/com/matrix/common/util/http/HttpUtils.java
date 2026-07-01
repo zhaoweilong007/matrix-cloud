@@ -6,13 +6,12 @@ import cn.hutool.core.net.url.UrlBuilder;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.util.StringUtils;
-import org.springframework.web.util.UriComponents;
-import org.springframework.web.util.UriComponentsBuilder;
-
 import java.net.URI;
 import java.nio.charset.Charset;
 import java.util.Map;
+import org.springframework.util.StringUtils;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * HTTP 工具类
@@ -23,8 +22,8 @@ public class HttpUtils {
     public static String replaceUrlQuery(String url, String key, String value) {
         UrlBuilder builder = UrlBuilder.of(url, Charset.defaultCharset());
         // 先移除
-        TableMap<CharSequence, CharSequence> query = (TableMap<CharSequence, CharSequence>)
-                ReflectUtil.getFieldValue(builder.getQuery(), "query");
+        TableMap<CharSequence, CharSequence> query =
+                (TableMap<CharSequence, CharSequence>) ReflectUtil.getFieldValue(builder.getQuery(), "query");
         query.remove(key);
         // 后添加
         builder.addQuery(key, value);
@@ -54,8 +53,11 @@ public class HttpUtils {
             redirectUri = builder.build().toUri();
             builder = UriComponentsBuilder.fromUri(redirectUri);
         }
-        template.scheme(redirectUri.getScheme()).port(redirectUri.getPort()).host(redirectUri.getHost())
-                .userInfo(redirectUri.getUserInfo()).path(redirectUri.getPath());
+        template.scheme(redirectUri.getScheme())
+                .port(redirectUri.getPort())
+                .host(redirectUri.getHost())
+                .userInfo(redirectUri.getUserInfo())
+                .path(redirectUri.getPath());
 
         if (fragment) {
             StringBuilder values = new StringBuilder();
@@ -111,7 +113,7 @@ public class HttpUtils {
 
         // 如果两者非空，则返回
         if (StrUtil.isNotEmpty(clientId) && StrUtil.isNotEmpty(clientSecret)) {
-            return new String[]{clientId, clientSecret};
+            return new String[] {clientId, clientSecret};
         }
         return null;
     }
@@ -119,6 +121,4 @@ public class HttpUtils {
     private String append(String base, Map<String, ?> query, boolean fragment) {
         return append(base, query, null, fragment);
     }
-
-
 }

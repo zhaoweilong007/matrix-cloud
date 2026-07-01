@@ -1,8 +1,12 @@
 package com.matrix.gateway.filter;
 
+import static org.springframework.cloud.gateway.support.ServerWebExchangeUtils.GATEWAY_REQUEST_URL_ATTR;
+import static org.springframework.cloud.gateway.support.ServerWebExchangeUtils.addOriginalRequestUrl;
+
 import com.matrix.common.constant.CommonConstants;
 import com.matrix.gateway.loadbalancer.DeflectionInstanceBalancer;
 import com.matrix.gateway.order.FilterOrder;
+import java.net.URI;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.loadbalancer.DefaultRequest;
@@ -21,24 +25,17 @@ import org.springframework.core.Ordered;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
-import java.net.URI;
-
-import static org.springframework.cloud.gateway.support.ServerWebExchangeUtils.GATEWAY_REQUEST_URL_ATTR;
-import static org.springframework.cloud.gateway.support.ServerWebExchangeUtils.addOriginalRequestUrl;
-
 /**
  * 偏向性路由过滤
  */
 @Slf4j
 public class DeflectionIntanceFilter implements GlobalFilter, Ordered {
 
-
     private final LoadBalancerClientFactory clientFactory;
 
     private final GatewayLoadBalancerProperties properties;
 
-    public DeflectionIntanceFilter(LoadBalancerClientFactory clientFactory,
-                                   GatewayLoadBalancerProperties properties) {
+    public DeflectionIntanceFilter(LoadBalancerClientFactory clientFactory, GatewayLoadBalancerProperties properties) {
         this.clientFactory = clientFactory;
         this.properties = properties;
     }
@@ -60,29 +57,29 @@ public class DeflectionIntanceFilter implements GlobalFilter, Ordered {
                 log.trace(IpHashLoadBalancerClientFilter.class.getSimpleName() + " url before: " + url);
             }
 
-            return choose(exchange).doOnNext(response -> {
+            return choose(exchange)
+                    .doOnNext(response -> {
+                        if (!response.hasServer()) {
+                            throw NotFoundException.create(
+                                    properties.isUse404(), "Unable to find instance for " + url.getHost());
+                        }
 
-                if (!response.hasServer()) {
-                    throw NotFoundException.create(properties.isUse404(),
-                            "Unable to find instance for " + url.getHost());
-                }
-
-                URI uri = exchange.getRequest().getURI();
-                String overrideScheme = null;
-                if (schemePrefix != null) {
-                    overrideScheme = url.getScheme();
-                }
-                DelegatingServiceInstance serviceInstance = new DelegatingServiceInstance(response.getServer(),
-                        overrideScheme);
-                URI requestUrl = reconstructUri(serviceInstance, uri);
-                if (log.isTraceEnabled()) {
-                    log.trace("LoadBalancerClientFilter url chosen: " + requestUrl);
-                }
-                exchange.getAttributes().put(GATEWAY_REQUEST_URL_ATTR, requestUrl);
-            }).then(chain.filter(exchange));
+                        URI uri = exchange.getRequest().getURI();
+                        String overrideScheme = null;
+                        if (schemePrefix != null) {
+                            overrideScheme = url.getScheme();
+                        }
+                        DelegatingServiceInstance serviceInstance =
+                                new DelegatingServiceInstance(response.getServer(), overrideScheme);
+                        URI requestUrl = reconstructUri(serviceInstance, uri);
+                        if (log.isTraceEnabled()) {
+                            log.trace("LoadBalancerClientFilter url chosen: " + requestUrl);
+                        }
+                        exchange.getAttributes().put(GATEWAY_REQUEST_URL_ATTR, requestUrl);
+                    })
+                    .then(chain.filter(exchange));
         }
         return chain.filter(exchange);
-
     }
 
     protected URI reconstructUri(ServiceInstance serviceInstance, URI original) {
@@ -91,18 +88,17 @@ public class DeflectionIntanceFilter implements GlobalFilter, Ordered {
 
     private Mono<Response<ServiceInstance>> choose(ServerWebExchange exchange) {
 
-
         URI uri = exchange.getAttribute(ServerWebExchangeUtils.GATEWAY_REQUEST_URL_ATTR);
         DeflectionInstanceBalancer loadBalancer = new DeflectionInstanceBalancer(
                 clientFactory.getLazyProvider(uri.getHost(), ServiceInstanceListSupplier.class), uri.getHost());
         return loadBalancer.choose(this.createRequest(exchange));
-
     }
 
     private Request createRequest(ServerWebExchange exchange) {
-        String instance = exchange.getRequest().getHeaders().get(CommonConstants.INSTANCE_INFO).get(0);
+        String instance = exchange.getRequest()
+                .getHeaders()
+                .get(CommonConstants.INSTANCE_INFO)
+                .get(0);
         return new DefaultRequest<>(instance);
-
     }
-
 }

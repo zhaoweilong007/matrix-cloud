@@ -6,7 +6,6 @@ import com.matrix.common.util.string.StringUtils;
 import lombok.Getter;
 import net.dreamlu.mica.core.result.IResultCode;
 
-
 @Getter
 public class BaseException extends RuntimeException {
 
@@ -72,7 +71,6 @@ public class BaseException extends RuntimeException {
         this.args = args;
     }
 
-
     @Override
     public String getMessage() {
         String message = super.getMessage();
@@ -84,5 +82,4 @@ public class BaseException extends RuntimeException {
         }
         return message;
     }
-
 }

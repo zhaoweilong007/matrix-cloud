@@ -20,7 +20,8 @@ public class ImgPrefixRemoveDeSerializer extends JsonDeserializer<String> {
     private final OssProperties ossProperties = SpringUtils.getBean(OssProperties.class);
 
     @Override
-    public String deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException {
+    public String deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
+            throws IOException, JacksonException {
         final String text = jsonParser.getText();
         return StrUtil.removePrefix(text, ossProperties.getPrefix());
     }

@@ -14,12 +14,11 @@ import com.matrix.translation.annotation.TranslationType;
 import com.matrix.translation.api.client.IAreaNameService;
 import com.matrix.translation.constant.TransConstant;
 import com.matrix.translation.core.TranslationInterface;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 行政区域翻译实现
@@ -42,8 +41,7 @@ public class AreaTranslationImpl implements TranslationInterface<Object> {
         if (Objects.isNull(key)) {
             return null;
         }
-        if (!String.class.isAssignableFrom(key.getClass())
-                && !List.class.isAssignableFrom(key.getClass())) {
+        if (!String.class.isAssignableFrom(key.getClass()) && !List.class.isAssignableFrom(key.getClass())) {
             log.warn("字段类型不支持转换：{}", key.getClass());
             return null;
         }
@@ -60,9 +58,7 @@ public class AreaTranslationImpl implements TranslationInterface<Object> {
             }
             Map<String, String> result = new ConcurrentHashMap<>();
             String finalOther = other;
-            list.parallelStream().map(o -> (String) o).forEach(s ->
-                    result.put(s, mapping(s, finalOther))
-            );
+            list.parallelStream().map(o -> (String) o).forEach(s -> result.put(s, mapping(s, finalOther)));
             return result;
         }
 
@@ -110,7 +106,8 @@ public class AreaTranslationImpl implements TranslationInterface<Object> {
                 }
             });
             if (CollUtil.isNotEmpty(regionCodes)) {
-                final R<List<SysRegionDict>> r = areaNameService.selectRegionNameByCodes(Lists.newArrayList(regionCodes));
+                final R<List<SysRegionDict>> r =
+                        areaNameService.selectRegionNameByCodes(Lists.newArrayList(regionCodes));
                 if (VUtils.checkRes(r)) {
                     r.getData().forEach(region -> {
                         final String regionKey = String.format(AREA_CODE_PREFIX, region.getAreaCode());

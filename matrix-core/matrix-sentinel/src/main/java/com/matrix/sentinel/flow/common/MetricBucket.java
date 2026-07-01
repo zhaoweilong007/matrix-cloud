@@ -83,5 +83,4 @@ public class MetricBucket {
     public void addSuccess(int n) {
         add(MetricEvent.SUCCESS, n);
     }
-
 }

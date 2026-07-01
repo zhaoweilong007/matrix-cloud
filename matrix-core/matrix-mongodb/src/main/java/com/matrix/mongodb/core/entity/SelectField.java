@@ -10,8 +10,7 @@ public class SelectField {
      */
     private String col;
 
-    public SelectField() {
-    }
+    public SelectField() {}
 
     public SelectField(String col) {
         this.col = col;

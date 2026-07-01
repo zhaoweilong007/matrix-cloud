@@ -6,13 +6,12 @@ import com.matrix.translation.core.TranslationInterface;
 import com.matrix.translation.core.handler.TranslationBeanSerializerModifier;
 import com.matrix.translation.core.handler.TranslationHandler;
 import jakarta.annotation.PostConstruct;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfiguration;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 
 /**
  * 翻译模块配置类
@@ -41,7 +40,6 @@ public class TranslationConfig {
         TranslationHandler.TRANSLATION_MAPPER.putAll(map);
         // 设置 Bean 序列化修改器
         objectMapper.setSerializerFactory(
-                objectMapper.getSerializerFactory()
-                        .withSerializerModifier(new TranslationBeanSerializerModifier()));
+                objectMapper.getSerializerFactory().withSerializerModifier(new TranslationBeanSerializerModifier()));
     }
 }

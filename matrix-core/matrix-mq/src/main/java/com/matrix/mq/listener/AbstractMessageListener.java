@@ -26,8 +26,14 @@ public abstract class AbstractMessageListener<T> implements MessageListener {
             handle(JSON.parseObject(message.getBody(), clazz));
             return Action.CommitMessage;
         } catch (Exception e) {
-            //消费失败
-            log.warn("handle message fail consumerGroup:【{}】 topic:【{}】,tag:【{}】 msgId:【{}】", annotation.consumerGroup(), message.getTopic(), message.getTag(), message.getMsgID(), e);
+            // 消费失败
+            log.warn(
+                    "handle message fail consumerGroup:【{}】 topic:【{}】,tag:【{}】 msgId:【{}】",
+                    annotation.consumerGroup(),
+                    message.getTopic(),
+                    message.getTag(),
+                    message.getMsgID(),
+                    e);
             return Action.ReconsumeLater;
         }
     }

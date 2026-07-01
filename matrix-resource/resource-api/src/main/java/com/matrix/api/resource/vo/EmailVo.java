@@ -28,5 +28,4 @@ public class EmailVo {
     @Schema(description = "内容", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "内容(content)不能为空")
     private String content;
-
 }

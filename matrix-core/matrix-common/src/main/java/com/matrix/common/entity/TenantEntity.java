@@ -16,5 +16,4 @@ public abstract class TenantEntity extends BaseEntity {
      */
     @Schema(description = "多租户编号")
     private Long tenantId;
-
 }

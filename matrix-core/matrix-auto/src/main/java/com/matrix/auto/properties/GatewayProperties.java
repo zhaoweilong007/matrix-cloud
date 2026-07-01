@@ -1,11 +1,10 @@
 package com.matrix.auto.properties;
 
+import java.util.HashSet;
+import java.util.Set;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
-
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * 自定义gateway参数配置
@@ -20,10 +19,8 @@ public class GatewayProperties {
      */
     private Boolean requestLog;
 
-
     /**
      * 允许跨域
      */
     private Set<String> allowOrigins = new HashSet<>();
-
 }

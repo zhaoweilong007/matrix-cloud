@@ -10,5 +10,4 @@ import java.io.Serializable;
 public interface SFunction<T, R> extends Serializable {
 
     R apply(T t);
-
 }

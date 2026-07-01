@@ -28,5 +28,4 @@ public class BucketLeapArray extends LeapArray<MetricBucket> {
         w.value().reset();
         return w;
     }
-
 }

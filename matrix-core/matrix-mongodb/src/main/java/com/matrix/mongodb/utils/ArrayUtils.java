@@ -5,8 +5,7 @@ package com.matrix.mongodb.utils;
  */
 public final class ArrayUtils {
 
-    private ArrayUtils() {
-    }
+    private ArrayUtils() {}
 
     /**
      * 判断数据是否为空
@@ -28,5 +27,4 @@ public final class ArrayUtils {
     public static boolean isNotEmpty(Object[] array) {
         return !isEmpty(array);
     }
-
 }

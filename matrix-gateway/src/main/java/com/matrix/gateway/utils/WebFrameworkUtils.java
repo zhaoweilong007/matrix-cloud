@@ -24,8 +24,7 @@ public class WebFrameworkUtils {
 
     private static final String HEADER_TENANT_ID = "tenant-id";
 
-    private WebFrameworkUtils() {
-    }
+    private WebFrameworkUtils() {}
 
     /**
      * 将 Gateway 请求中的 header，设置到 HttpHeaders 中
@@ -78,7 +77,14 @@ public class WebFrameworkUtils {
      * @return 客户端 IP
      */
     public static String getClientIP(ServerWebExchange exchange, String... otherHeaderNames) {
-        String[] headers = {"X-Forwarded-For", "X-Real-IP", "Proxy-Client-IP", "WL-Proxy-Client-IP", "HTTP_CLIENT_IP", "HTTP_X_FORWARDED_FOR"};
+        String[] headers = {
+            "X-Forwarded-For",
+            "X-Real-IP",
+            "Proxy-Client-IP",
+            "WL-Proxy-Client-IP",
+            "HTTP_CLIENT_IP",
+            "HTTP_X_FORWARDED_FOR"
+        };
         if (ArrayUtil.isNotEmpty(otherHeaderNames)) {
             headers = ArrayUtil.addAll(headers, otherHeaderNames);
         }
@@ -108,5 +114,4 @@ public class WebFrameworkUtils {
     public static Route getGatewayRoute(ServerWebExchange exchange) {
         return exchange.getAttribute(ServerWebExchangeUtils.GATEWAY_ROUTE_ATTR);
     }
-
 }

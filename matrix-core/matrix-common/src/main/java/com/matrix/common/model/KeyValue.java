@@ -14,5 +14,4 @@ public class KeyValue<K, V> {
 
     private K key;
     private V value;
-
 }

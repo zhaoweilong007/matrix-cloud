@@ -4,13 +4,12 @@ import cn.hutool.core.lang.Assert;
 import cn.hutool.crypto.SecureUtil;
 import cn.hutool.crypto.symmetric.AES;
 import cn.hutool.extra.spring.SpringUtil;
-import org.apache.ibatis.type.BaseTypeHandler;
-import org.apache.ibatis.type.JdbcType;
-
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.apache.ibatis.type.BaseTypeHandler;
+import org.apache.ibatis.type.JdbcType;
 
 /**
  * 字段字段的 TypeHandler 实现类，基于 {@link AES} 实现
@@ -48,7 +47,8 @@ public class EncryptTypeHandler extends BaseTypeHandler<String> {
     }
 
     @Override
-    public void setNonNullParameter(PreparedStatement ps, int i, String parameter, JdbcType jdbcType) throws SQLException {
+    public void setNonNullParameter(PreparedStatement ps, int i, String parameter, JdbcType jdbcType)
+            throws SQLException {
         ps.setString(i, encrypt(parameter));
     }
 
@@ -69,5 +69,4 @@ public class EncryptTypeHandler extends BaseTypeHandler<String> {
         String value = cs.getString(columnIndex);
         return decrypt(value);
     }
-
 }

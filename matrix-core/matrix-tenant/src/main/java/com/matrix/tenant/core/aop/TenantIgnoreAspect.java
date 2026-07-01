@@ -18,7 +18,8 @@ import org.aspectj.lang.annotation.Aspect;
 @Slf4j
 public class TenantIgnoreAspect {
 
-    @Around("@annotation(com.matrix.tenant.core.aop.TenantIgnore)||execution(* com.aliyun.openservices.ons.api.MessageListener.consume(..))")
+    @Around(
+            "@annotation(com.matrix.tenant.core.aop.TenantIgnore)||execution(* com.aliyun.openservices.ons.api.MessageListener.consume(..))")
     public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
         Boolean oldIgnore = TenantContextHolder.isIgnore();
         try {
@@ -29,5 +30,4 @@ public class TenantIgnoreAspect {
             TenantContextHolder.setIgnore(oldIgnore);
         }
     }
-
 }

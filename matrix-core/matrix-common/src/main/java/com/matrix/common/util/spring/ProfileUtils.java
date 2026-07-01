@@ -18,7 +18,8 @@ public class ProfileUtils {
 
     public static final List<String> profiles = Lists.newArrayList("test", "dev", "local");
 
-    public static final List<String> activeProfile = StreamEx.of(SpringUtil.getActiveProfiles()).toList();
+    public static final List<String> activeProfile =
+            StreamEx.of(SpringUtil.getActiveProfiles()).toList();
 
     public static final Boolean isTest = CollUtil.containsAny(activeProfile, profiles);
 

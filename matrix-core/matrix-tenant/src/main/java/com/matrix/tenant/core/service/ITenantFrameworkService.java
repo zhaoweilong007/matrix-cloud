@@ -20,5 +20,4 @@ public interface ITenantFrameworkService {
      * @param id 租户编号
      */
     void validTenant(Long id);
-
 }

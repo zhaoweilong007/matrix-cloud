@@ -10,12 +10,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter
 public enum TopicEnum {
-
-
     FANGDX_ORDINARY("fangdx_ordinary"),
     ;
 
     private final String name;
-
-
 }

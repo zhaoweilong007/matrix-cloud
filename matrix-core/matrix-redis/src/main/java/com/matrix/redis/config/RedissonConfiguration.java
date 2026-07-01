@@ -13,9 +13,8 @@ import org.redisson.config.ClusterServersConfig;
 import org.redisson.config.MasterSlaveServersConfig;
 import org.redisson.config.SingleServerConfig;
 import org.redisson.spring.starter.RedissonAutoConfigurationCustomizer;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -37,7 +36,6 @@ public class RedissonConfiguration {
 
     @Autowired
     private ObjectMapper objectMapper;
-
 
     /**
      * 自定义 Redisson 自动配置的 RedisTemplate，使用 JSON 序列化方式。
@@ -69,15 +67,21 @@ public class RedissonConfiguration {
             if (ObjectUtil.isNotNull(singleServerConfigLocal) && singleServerConfigLocal.getEnable()) {
                 // 使用单机模式
                 SingleServerConfig singleServer = config.useSingleServer();
-                BeanUtil.copyProperties(singleServerConfigLocal, singleServer, CopyOptions.create().ignoreNullValue());
+                BeanUtil.copyProperties(
+                        singleServerConfigLocal,
+                        singleServer,
+                        CopyOptions.create().ignoreNullValue());
                 singleServer.setNameMapper(new KeyPrefixHandler(redissonProperties.getKeyPrefix()));
                 return;
             }
-            //主从模式配置
+            // 主从模式配置
             RedissonProperties.MasterSlaveConfig masterSlaveConfig = redissonProperties.getMasterSlaveServersConfig();
             if (ObjectUtil.isNotNull(masterSlaveConfig) && masterSlaveConfig.getEnable()) {
                 MasterSlaveServersConfig masterSlaveServersConfig = config.useMasterSlaveServers();
-                BeanUtil.copyProperties(masterSlaveConfig, masterSlaveServersConfig, CopyOptions.create().ignoreNullValue());
+                BeanUtil.copyProperties(
+                        masterSlaveConfig,
+                        masterSlaveServersConfig,
+                        CopyOptions.create().ignoreNullValue());
                 return;
             }
 
@@ -85,7 +89,10 @@ public class RedissonConfiguration {
             RedissonProperties.ClusterConfig clusterServersConfig = redissonProperties.getClusterServersConfig();
             if (ObjectUtil.isNotNull(clusterServersConfig) && clusterServersConfig.getEnable()) {
                 ClusterServersConfig clusterServers = config.useClusterServers();
-                BeanUtil.copyProperties(clusterServersConfig, clusterServers, CopyOptions.create().ignoreNullValue());
+                BeanUtil.copyProperties(
+                        clusterServersConfig,
+                        clusterServers,
+                        CopyOptions.create().ignoreNullValue());
                 return;
             }
             log.info("初始化 redis 配置");

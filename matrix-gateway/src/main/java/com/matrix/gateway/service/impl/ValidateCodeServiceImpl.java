@@ -50,7 +50,8 @@ public class ValidateCodeServiceImpl implements ValidateCodeService {
         boolean isMath = CaptchaType.MATH == captchaType;
         Integer length = isMath ? captchaProperties.getNumberLength() : captchaProperties.getCharLength();
         CodeGenerator codeGenerator = ReflectUtils.newInstance(captchaType.getClazz(), length);
-        AbstractCaptcha captcha = SpringUtils.getBean(captchaProperties.getCategory().getClazz());
+        AbstractCaptcha captcha =
+                SpringUtils.getBean(captchaProperties.getCategory().getClazz());
         captcha.setGenerator(codeGenerator);
         captcha.createCode();
         String code = captcha.getCode();
@@ -69,6 +70,5 @@ public class ValidateCodeServiceImpl implements ValidateCodeService {
                     }
                 })
                 .onErrorResume(throwable -> Mono.just(R.fail("获取验证码失败")));
-
     }
 }

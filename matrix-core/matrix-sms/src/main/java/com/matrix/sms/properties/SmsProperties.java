@@ -15,9 +15,8 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 @RefreshScope
 public class SmsProperties {
 
-
-  /**
-   * 验证码忽略白名单
-   */
-  private List<String> smsValidateIgnore = new ArrayList<>();
+    /**
+     * 验证码忽略白名单
+     */
+    private List<String> smsValidateIgnore = new ArrayList<>();
 }

@@ -12,7 +12,6 @@ import com.matrix.mongodb.core.sdk.base.Nested;
 import com.matrix.mongodb.core.sdk.base.SFunction;
 import com.matrix.mongodb.utils.ConvertUtil;
 import com.matrix.mongodb.utils.ExceptionUtils;
-
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -21,10 +20,9 @@ import java.util.stream.Collectors;
  * 条件构建器
  */
 public class LambdaQueryWrapper<T>
-        implements
-        Compare<LambdaQueryWrapper<T>, SFunction<T, ?>>,
-        Func<T, LambdaQueryWrapper<T>, SFunction<T, ?>>,
-        Nested<LambdaQueryWrapper<T>, LambdaQueryWrapper<T>> {
+        implements Compare<LambdaQueryWrapper<T>, SFunction<T, ?>>,
+                Func<T, LambdaQueryWrapper<T>, SFunction<T, ?>>,
+                Nested<LambdaQueryWrapper<T>, LambdaQueryWrapper<T>> {
 
     private final List<SelectField> fields = new ArrayList<>(5);
     private final List<Condition> conditions = new ArrayList<>(5);
@@ -112,7 +110,6 @@ public class LambdaQueryWrapper<T>
         return this;
     }
 
-
     @Override
     public LambdaQueryWrapper<T> and(boolean condition, Function<LambdaQueryWrapper<T>, LambdaQueryWrapper<T>> func) {
 
@@ -124,7 +121,6 @@ public class LambdaQueryWrapper<T>
             this.conditions.add(c);
         }
         return this;
-
     }
 
     @Override
@@ -142,7 +138,6 @@ public class LambdaQueryWrapper<T>
         Condition condition = sub.get(sub.size() - 1);
         condition.setConditionType(EConditionType.OR);
         return this;
-
     }
 
     @Override
@@ -152,7 +147,6 @@ public class LambdaQueryWrapper<T>
             appendSortField(column, ESortType.ASC);
         }
         return this;
-
     }
 
     @Override
@@ -162,7 +156,6 @@ public class LambdaQueryWrapper<T>
             appendSortField(column, ESortType.DESC);
         }
         return this;
-
     }
 
     @Override
@@ -170,7 +163,6 @@ public class LambdaQueryWrapper<T>
 
         this.skip = skip;
         return this;
-
     }
 
     @Override
@@ -178,7 +170,6 @@ public class LambdaQueryWrapper<T>
 
         this.limit = limit;
         return this;
-
     }
 
     @SafeVarargs
@@ -186,17 +177,16 @@ public class LambdaQueryWrapper<T>
     public final LambdaQueryWrapper<T> select(SFunction<T, ?>... columns) {
 
         if (Objects.nonNull(columns) && columns.length > 0) {
-            List<SelectField> fields = Arrays.stream(columns).map(column -> new SelectField(getFieldMeta(column))).collect(Collectors.toList());
+            List<SelectField> fields = Arrays.stream(columns)
+                    .map(column -> new SelectField(getFieldMeta(column)))
+                    .collect(Collectors.toList());
             this.fields.addAll(fields);
         }
         return this;
-
     }
 
     private void appendSortField(SFunction<T, ?> column, ESortType sortType) {
 
         sortConditions.add(new SortCondition(sortType, getFieldMeta(column)));
-
     }
-
 }

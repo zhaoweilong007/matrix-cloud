@@ -6,8 +6,8 @@ import lombok.Data;
 @Data
 public class SmsVo {
 
-    private String phone;//电话号码
-    private String signName;//签名
-    private String templateId;//模板ID
-    private JSONObject params;//短信内容
+    private String phone; // 电话号码
+    private String signName; // 签名
+    private String templateId; // 模板ID
+    private JSONObject params; // 短信内容
 }

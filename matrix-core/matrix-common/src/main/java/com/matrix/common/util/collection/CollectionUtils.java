@@ -3,7 +3,6 @@ package com.matrix.common.util.collection;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import com.google.common.collect.ImmutableMap;
-
 import java.util.*;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
@@ -57,7 +56,8 @@ public class CollectionUtils {
         if (CollUtil.isEmpty(from)) {
             return new ArrayList<>();
         }
-        return new ArrayList<>(convertMap(from, keyMapper, Function.identity(), cover).values());
+        return new ArrayList<>(
+                convertMap(from, keyMapper, Function.identity(), cover).values());
     }
 
     public static <T, U> List<U> convertList(Collection<T> from, Function<T, U> func) {
@@ -95,7 +95,8 @@ public class CollectionUtils {
         return convertMap(from, keyFunc, Function.identity());
     }
 
-    public static <T, K> Map<K, T> convertMap(Collection<T> from, Function<T, K> keyFunc, Supplier<? extends Map<K, T>> supplier) {
+    public static <T, K> Map<K, T> convertMap(
+            Collection<T> from, Function<T, K> keyFunc, Supplier<? extends Map<K, T>> supplier) {
         if (CollUtil.isEmpty(from)) {
             return supplier.get();
         }
@@ -109,21 +110,31 @@ public class CollectionUtils {
         return convertMap(from, keyFunc, valueFunc, (v1, v2) -> v1);
     }
 
-    public static <T, K, V> Map<K, V> convertMap(Collection<T> from, Function<T, K> keyFunc, Function<T, V> valueFunc, BinaryOperator<V> mergeFunction) {
+    public static <T, K, V> Map<K, V> convertMap(
+            Collection<T> from, Function<T, K> keyFunc, Function<T, V> valueFunc, BinaryOperator<V> mergeFunction) {
         if (CollUtil.isEmpty(from)) {
             return new HashMap<>();
         }
         return convertMap(from, keyFunc, valueFunc, mergeFunction, HashMap::new);
     }
 
-    public static <T, K, V> Map<K, V> convertMap(Collection<T> from, Function<T, K> keyFunc, Function<T, V> valueFunc, Supplier<? extends Map<K, V>> supplier) {
+    public static <T, K, V> Map<K, V> convertMap(
+            Collection<T> from,
+            Function<T, K> keyFunc,
+            Function<T, V> valueFunc,
+            Supplier<? extends Map<K, V>> supplier) {
         if (CollUtil.isEmpty(from)) {
             return supplier.get();
         }
         return convertMap(from, keyFunc, valueFunc, (v1, v2) -> v1, supplier);
     }
 
-    public static <T, K, V> Map<K, V> convertMap(Collection<T> from, Function<T, K> keyFunc, Function<T, V> valueFunc, BinaryOperator<V> mergeFunction, Supplier<? extends Map<K, V>> supplier) {
+    public static <T, K, V> Map<K, V> convertMap(
+            Collection<T> from,
+            Function<T, K> keyFunc,
+            Function<T, V> valueFunc,
+            BinaryOperator<V> mergeFunction,
+            Supplier<? extends Map<K, V>> supplier) {
         if (CollUtil.isEmpty(from)) {
             return new HashMap<>();
         }
@@ -137,7 +148,8 @@ public class CollectionUtils {
         return from.stream().collect(Collectors.groupingBy(keyFunc, Collectors.mapping(t -> t, Collectors.toList())));
     }
 
-    public static <T, K, V> Map<K, List<V>> convertMultiMap(Collection<T> from, Function<T, K> keyFunc, Function<T, V> valueFunc) {
+    public static <T, K, V> Map<K, List<V>> convertMultiMap(
+            Collection<T> from, Function<T, K> keyFunc, Function<T, V> valueFunc) {
         if (CollUtil.isEmpty(from)) {
             return new HashMap<>();
         }
@@ -146,7 +158,8 @@ public class CollectionUtils {
     }
 
     // 暂时没想好名字，先以 2 结尾噶
-    public static <T, K, V> Map<K, Set<V>> convertMultiMap2(Collection<T> from, Function<T, K> keyFunc, Function<T, V> valueFunc) {
+    public static <T, K, V> Map<K, Set<V>> convertMultiMap2(
+            Collection<T> from, Function<T, K> keyFunc, Function<T, V> valueFunc) {
         if (CollUtil.isEmpty(from)) {
             return new HashMap<>();
         }
@@ -196,5 +209,4 @@ public class CollectionUtils {
     public static <T> Collection<T> singleton(T deptId) {
         return deptId == null ? Collections.emptyList() : Collections.singleton(deptId);
     }
-
 }

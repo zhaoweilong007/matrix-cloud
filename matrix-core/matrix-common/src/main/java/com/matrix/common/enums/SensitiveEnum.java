@@ -10,8 +10,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter
 public enum SensitiveEnum {
-
-
     TEXT(),
 
     IMG();

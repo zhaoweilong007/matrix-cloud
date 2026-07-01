@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class DefaultSendCallback implements SendCallback {
 
-
     @Override
     public void onSuccess(SendResult sendResult) {
         log.info("消息发送成功:  topic=" + sendResult.getTopic() + ", msgId=" + sendResult.getMessageId());

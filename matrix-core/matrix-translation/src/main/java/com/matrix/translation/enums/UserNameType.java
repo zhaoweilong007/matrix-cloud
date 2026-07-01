@@ -1,10 +1,9 @@
 package com.matrix.translation.enums;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
 import java.util.Arrays;
 import java.util.Objects;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
  * @author ZhaoWeiLong
@@ -19,11 +18,13 @@ public enum UserNameType {
      */
     SYS_USER("sys_user", "matrix_sys_user_id:%s#30d");
 
-
     private final String type;
     private final String key;
 
     public static UserNameType valueOfByType(String other) {
-        return Arrays.stream(values()).filter(userNameType -> Objects.equals(other, userNameType.getType())).findFirst().orElse(null);
+        return Arrays.stream(values())
+                .filter(userNameType -> Objects.equals(other, userNameType.getType()))
+                .findFirst()
+                .orElse(null);
     }
 }

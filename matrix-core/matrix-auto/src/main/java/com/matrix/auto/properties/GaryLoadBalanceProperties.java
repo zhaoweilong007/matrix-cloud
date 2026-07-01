@@ -2,12 +2,11 @@ package com.matrix.auto.properties;
 
 import com.matrix.common.constant.ConfigConstants;
 import com.matrix.common.constant.Constants;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
-
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * 负载负载均衡配置

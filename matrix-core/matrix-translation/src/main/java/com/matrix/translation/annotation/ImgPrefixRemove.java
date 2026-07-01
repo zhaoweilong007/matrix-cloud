@@ -3,7 +3,6 @@ package com.matrix.translation.annotation;
 import com.fasterxml.jackson.annotation.JacksonAnnotationsInside;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.matrix.translation.config.ImgPrefixRemoveDeSerializer;
-
 import java.lang.annotation.*;
 
 /**
@@ -17,5 +16,4 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 @JsonDeserialize(using = ImgPrefixRemoveDeSerializer.class)
-public @interface ImgPrefixRemove {
-}
+public @interface ImgPrefixRemove {}

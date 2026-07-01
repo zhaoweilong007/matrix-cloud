@@ -40,5 +40,4 @@ public enum DbTypeEnum {
         this.code = code;
         this.name = name;
     }
-
 }

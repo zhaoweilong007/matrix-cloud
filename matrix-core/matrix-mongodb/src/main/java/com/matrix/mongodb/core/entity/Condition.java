@@ -1,10 +1,8 @@
 package com.matrix.mongodb.core.entity;
 
-
 import com.matrix.mongodb.core.constant.ECompare;
 import com.matrix.mongodb.core.constant.EConditionType;
 import com.matrix.mongodb.core.wrapper.ConditionWrapper;
-
 import java.util.List;
 
 /**
@@ -33,8 +31,7 @@ public class Condition {
      */
     private ConditionWrapper conditionWrapper;
 
-    public Condition() {
-    }
+    public Condition() {}
 
     public Condition(ECompare type, String col, List<Object> args) {
         this.type = type;

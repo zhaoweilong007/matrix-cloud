@@ -3,15 +3,14 @@ package com.matrix.feign.fallback;
 import com.matrix.common.enums.SystemErrorTypeEnum;
 import com.matrix.common.result.R;
 import feign.FeignException;
+import java.lang.reflect.Method;
+import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
 import org.springframework.lang.Nullable;
 import org.springframework.util.ObjectUtils;
-
-import java.lang.reflect.Method;
-import java.util.Objects;
 
 /**
  * fallback 代理处理
@@ -30,7 +29,12 @@ public class DefaultFeignFallback<T> implements MethodInterceptor {
     @Override
     public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
         String errorMessage = cause.getMessage();
-        log.error("DefaultFeignFallback:[{}.{}] serviceId:[{}] message:[{}]", targetType.getName(), method.getName(), targetName, errorMessage);
+        log.error(
+                "DefaultFeignFallback:[{}.{}] serviceId:[{}] message:[{}]",
+                targetType.getName(),
+                method.getName(),
+                targetName,
+                errorMessage);
         Class<?> returnType = method.getReturnType();
         // 暂时不支持 flux，rx，异步等，返回值不是 R，直接返回 null。
         if (R.class != returnType) {

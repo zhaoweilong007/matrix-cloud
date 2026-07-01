@@ -16,7 +16,6 @@ public enum SystemErrorTypeEnum implements IResultCode {
     NOT_FOUND(404, "请求地址不存在"),
     TOO_MANY_REQUESTS(429, "请求太频繁，请稍后重试"),
 
-
     SYSTEM_ERROR(9999, "系统异常"),
     FEIGN_INVOKE_ERROR(9998, "内部服务异常"),
     SERVICE_NOTE_FOUND(9997, "服务未找到"),
@@ -56,6 +55,4 @@ public enum SystemErrorTypeEnum implements IResultCode {
      * 错误类型描述信息
      */
     private final String msg;
-
-
 }

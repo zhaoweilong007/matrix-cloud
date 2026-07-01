@@ -57,5 +57,4 @@ public class WindowWrap<T> {
     public boolean isTimeInWindow(long timeMillis) {
         return windowStart <= timeMillis && timeMillis < windowStart + windowLengthInMs;
     }
-
 }

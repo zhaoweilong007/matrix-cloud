@@ -8,7 +8,6 @@ import com.matrix.feign.chooser.IRuleChooser;
 import com.matrix.gateway.filter.*;
 import com.matrix.gateway.handler.GatewayExceptionHandler;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.gateway.config.GatewayLoadBalancerProperties;
@@ -63,23 +62,21 @@ public class GatewayConfig {
         return new GatewayExceptionHandler();
     }
 
-
     /**
      * 偏向性路由
      */
     @Bean
-    public DeflectionIntanceFilter deflectionRouteFilter(LoadBalancerClientFactory clientFactory,
-                                                         GatewayLoadBalancerProperties properties) {
+    public DeflectionIntanceFilter deflectionRouteFilter(
+            LoadBalancerClientFactory clientFactory, GatewayLoadBalancerProperties properties) {
         return new DeflectionIntanceFilter(clientFactory, properties);
     }
-
 
     /**
      * 一致性hash路由
      */
     @Bean
-    public IpHashLoadBalancerClientFilter ipHashLoadBalancerClientFilter(LoadBalancerClientFactory clientFactory,
-                                                                         GatewayLoadBalancerProperties properties) {
+    public IpHashLoadBalancerClientFilter ipHashLoadBalancerClientFilter(
+            LoadBalancerClientFactory clientFactory, GatewayLoadBalancerProperties properties) {
         return new IpHashLoadBalancerClientFilter(clientFactory, properties);
     }
 
@@ -87,19 +84,22 @@ public class GatewayConfig {
      * 灰度路由
      */
     @Bean
-    @ConditionalOnProperty(prefix = ConfigConstants.CONFIG_LOADBALANCE_ISOLATION, name = "enabled", havingValue = "true")
-    public GrayVersionIsolationFilter grayReactiveLoadBalancerClientFilter(LoadBalancerClientFactory clientFactory,
-                                                                           GatewayLoadBalancerProperties properties,
-                                                                           IRuleChooser ruleChooser,
-                                                                           GaryLoadBalanceProperties loadBalanceProperties) {
+    @ConditionalOnProperty(
+            prefix = ConfigConstants.CONFIG_LOADBALANCE_ISOLATION,
+            name = "enabled",
+            havingValue = "true")
+    public GrayVersionIsolationFilter grayReactiveLoadBalancerClientFilter(
+            LoadBalancerClientFactory clientFactory,
+            GatewayLoadBalancerProperties properties,
+            IRuleChooser ruleChooser,
+            GaryLoadBalanceProperties loadBalanceProperties) {
         return new GrayVersionIsolationFilter(clientFactory, properties, ruleChooser, loadBalanceProperties);
     }
-
 
     @Bean(value = "remoteAddrKeyResolver")
     @Primary
     public KeyResolver remoteAddrKeyResolver() {
-        return exchange -> Mono.just(exchange.getRequest().getRemoteAddress().getAddress().getHostAddress());
+        return exchange ->
+                Mono.just(exchange.getRequest().getRemoteAddress().getAddress().getHostAddress());
     }
-
 }

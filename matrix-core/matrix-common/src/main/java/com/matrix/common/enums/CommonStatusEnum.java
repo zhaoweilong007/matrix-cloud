@@ -1,10 +1,9 @@
 package com.matrix.common.enums;
 
 import com.matrix.common.model.IntArrayValuable;
+import java.util.Arrays;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-
-import java.util.Arrays;
 
 /**
  * 通用状态枚举
@@ -12,11 +11,11 @@ import java.util.Arrays;
 @Getter
 @AllArgsConstructor
 public enum CommonStatusEnum implements IntArrayValuable {
-
     ENABLE(1, "开启"),
     DISABLE(0, "关闭");
 
-    public static final int[] ARRAYS = Arrays.stream(values()).mapToInt(CommonStatusEnum::getStatus).toArray();
+    public static final int[] ARRAYS =
+            Arrays.stream(values()).mapToInt(CommonStatusEnum::getStatus).toArray();
 
     /**
      * 状态值
@@ -31,5 +30,4 @@ public enum CommonStatusEnum implements IntArrayValuable {
     public int[] array() {
         return ARRAYS;
     }
-
 }

@@ -28,5 +28,4 @@ public enum YesOrNotEnum {
         this.code = code;
         this.message = message;
     }
-
 }

@@ -33,7 +33,6 @@ import java.lang.annotation.*;
  * @author ZhaoWeiLong
  * @since 2023/3/22
  */
-
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
@@ -55,5 +54,4 @@ public @interface RocketMQMessageListener {
      * tag name
      */
     String[] tag();
-
 }

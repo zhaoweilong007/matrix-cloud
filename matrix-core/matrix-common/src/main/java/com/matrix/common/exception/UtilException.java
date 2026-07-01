@@ -7,5 +7,4 @@ import com.matrix.common.exception.base.BaseException;
  */
 public class UtilException extends BaseException {
     private static final long serialVersionUID = 8247610319171014183L;
-
 }

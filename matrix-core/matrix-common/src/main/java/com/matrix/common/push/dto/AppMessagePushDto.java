@@ -4,14 +4,13 @@ import com.matrix.common.push.enums.AppEnum;
 import com.matrix.common.push.enums.PushMessageEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
+import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.io.Serializable;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author LeonZhou
@@ -22,7 +21,6 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AppMessagePushDto implements Serializable {
-
 
     @Schema(description = "模板")
     private PushMessageEnum messageEnum;
@@ -47,5 +45,4 @@ public class AppMessagePushDto implements Serializable {
 
     @Schema(description = "参数")
     private Map<String, Object> extras;
-
 }

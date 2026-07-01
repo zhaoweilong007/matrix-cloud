@@ -2,15 +2,13 @@ package com.matrix.log.event;
 
 import com.matrix.common.entity.SysOperateLog;
 import io.github.linpeilie.annotations.AutoMapper;
-import lombok.Data;
-
 import java.io.Serializable;
 import java.util.Date;
+import lombok.Data;
 
 /**
  * 操作日志事件
  */
-
 @Data
 @AutoMapper(target = SysOperateLog.class)
 public class OperLogEvent implements Serializable {
@@ -111,5 +109,4 @@ public class OperLogEvent implements Serializable {
      * 操作时间
      */
     private Date operTime;
-
 }

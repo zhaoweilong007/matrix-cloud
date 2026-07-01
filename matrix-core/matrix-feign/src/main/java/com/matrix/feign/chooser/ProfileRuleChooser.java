@@ -21,10 +21,10 @@ import org.springframework.core.env.Environment;
 @Slf4j
 public class ProfileRuleChooser implements IRuleChooser {
 
-    private final GaryLoadBalanceProperties loadBalanceProperties = SpringUtils.getBean(GaryLoadBalanceProperties.class);
+    private final GaryLoadBalanceProperties loadBalanceProperties =
+            SpringUtils.getBean(GaryLoadBalanceProperties.class);
 
     private final Environment environment = SpringUtils.getBean(Environment.class);
-
 
     @Override
     public ServiceInstance choose(List<ServiceInstance> instances) {

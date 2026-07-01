@@ -28,8 +28,8 @@ import org.springframework.web.bind.annotation.RequestParam;
  **/
 @Slf4j
 @Validated
-public abstract class BaseController<S extends IRootService<T, V>, T extends BaseIdEntity, V, Q extends PageParam> implements IBaseFeignClient<T, V, Q> {
-
+public abstract class BaseController<S extends IRootService<T, V>, T extends BaseIdEntity, V, Q extends PageParam>
+        implements IBaseFeignClient<T, V, Q> {
 
     @Resource
     public S service;
@@ -45,7 +45,6 @@ public abstract class BaseController<S extends IRootService<T, V>, T extends Bas
         return R.success(service.getById(id));
     }
 
-
     /**
      * 查询通过id
      *
@@ -56,7 +55,6 @@ public abstract class BaseController<S extends IRootService<T, V>, T extends Bas
     public R<V> queryVoById(@RequestParam Long id) {
         return R.success(service.selectVoById(id));
     }
-
 
     /**
      * 保存
@@ -69,7 +67,6 @@ public abstract class BaseController<S extends IRootService<T, V>, T extends Bas
         final boolean save = service.save(entity);
         return save ? R.success(entity.getId()) : R.fail(SystemErrorTypeEnum.OPERATE_FAIL);
     }
-
 
     /**
      * 更新通过id
@@ -84,7 +81,6 @@ public abstract class BaseController<S extends IRootService<T, V>, T extends Bas
         final boolean update = service.updateById(entity);
         return update ? R.success(true) : R.fail(SystemErrorTypeEnum.OPERATE_FAIL);
     }
-
 
     /**
      * 分页查询
@@ -101,7 +97,6 @@ public abstract class BaseController<S extends IRootService<T, V>, T extends Bas
     public Wrapper<T> buildPageQueryWrapper(Q query) {
         return new QueryWrapper<>();
     }
-
 
     /**
      * 删除通过id

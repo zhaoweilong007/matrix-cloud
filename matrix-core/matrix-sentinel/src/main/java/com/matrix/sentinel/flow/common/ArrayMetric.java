@@ -136,5 +136,4 @@ public class ArrayMetric implements Metric {
     public int getSampleCount() {
         return data.getSampleCount();
     }
-
 }

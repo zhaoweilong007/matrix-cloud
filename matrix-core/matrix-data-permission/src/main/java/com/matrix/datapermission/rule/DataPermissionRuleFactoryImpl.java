@@ -4,11 +4,10 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ArrayUtil;
 import com.matrix.datapermission.annotation.DataPermission;
 import com.matrix.datapermission.aop.DataPermissionContextHolder;
-import lombok.RequiredArgsConstructor;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 
 /**
  * 默认的 DataPermissionRuleFactoryImpl 实现类
@@ -45,16 +44,17 @@ public class DataPermissionRuleFactoryImpl implements DataPermissionRuleFactory 
 
         // 4. 已配置，只选择部分规则
         if (ArrayUtil.isNotEmpty(dataPermission.includeRules())) {
-            return rules.stream().filter(rule -> ArrayUtil.contains(dataPermission.includeRules(), rule.getClass()))
+            return rules.stream()
+                    .filter(rule -> ArrayUtil.contains(dataPermission.includeRules(), rule.getClass()))
                     .collect(Collectors.toList()); // 一般规则不会太多，所以不采用 HashSet 查询
         }
         // 5. 已配置，只排除部分规则
         if (ArrayUtil.isNotEmpty(dataPermission.excludeRules())) {
-            return rules.stream().filter(rule -> !ArrayUtil.contains(dataPermission.excludeRules(), rule.getClass()))
+            return rules.stream()
+                    .filter(rule -> !ArrayUtil.contains(dataPermission.excludeRules(), rule.getClass()))
                     .collect(Collectors.toList()); // 一般规则不会太多，所以不采用 HashSet 查询
         }
         // 6. 已配置，全部规则
         return rules;
     }
-
 }

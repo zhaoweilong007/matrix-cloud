@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 @FeignClient(contextId = "EmailApi", value = ServerNameConstants.RESOURCE, path = EmailApi.PREFIX)
 public interface EmailApi {
 
-
     String PREFIX = "/email";
 
     /**
@@ -29,5 +28,4 @@ public interface EmailApi {
     @Operation(summary = "邮件发送", description = "邮件发送")
     @PostMapping("/sendEmail")
     String sendEmail(@Valid @RequestBody EmailVo emailVo);
-
 }

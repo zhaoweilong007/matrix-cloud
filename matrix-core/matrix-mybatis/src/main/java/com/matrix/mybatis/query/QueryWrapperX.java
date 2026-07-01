@@ -3,9 +3,8 @@ package com.matrix.mybatis.query;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.ArrayUtils;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
-import org.springframework.util.StringUtils;
-
 import java.util.Collection;
+import org.springframework.util.StringUtils;
 
 /**
  * 拓展 MyBatis Plus QueryWrapper 类，主要增加如下功能：
@@ -146,6 +145,4 @@ public class QueryWrapperX<T> extends QueryWrapper<T> {
         super.last("LIMIT " + n);
         return this;
     }
-
-
 }

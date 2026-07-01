@@ -1,7 +1,6 @@
 package com.matrix.strategy.service;
 
 import com.matrix.strategy.annonation.HandlerType;
-
 import java.lang.annotation.Annotation;
 
 /**

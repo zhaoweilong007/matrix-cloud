@@ -16,14 +16,13 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Objects;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
-
-import java.io.IOException;
-import java.util.Objects;
-import java.util.Set;
 
 /**
  * 多租户 Security Web 过滤器
@@ -71,10 +70,17 @@ public class TenantSecurityWebFilter extends OncePerRequestFilter {
             tenantId = user.getTenantId();
             TenantContextHolder.setTenantId(tenantId);
             // 如果传递了租户编号，则进行比对租户编号，避免越权问题
-        } else if (!Objects.equals(user.getTenantId(), TenantContextHolder.getTenantId())) { // Cloud 特殊逻辑：如果是 RPC 请求，就不校验了。主要考虑，一些场景下，会调用 TenantUtils 去切换租户
-            log.error("[doFilterInternal][租户({}) User({}/{}) 越权访问租户({}) URL({}/{})]",
-                    user.getTenantId(), user.getUserId(), user.getDeviceType(),
-                    TenantContextHolder.getTenantId(), request.getRequestURI(), request.getMethod());
+        } else if (!Objects.equals(
+                user.getTenantId(),
+                TenantContextHolder.getTenantId())) { // Cloud 特殊逻辑：如果是 RPC 请求，就不校验了。主要考虑，一些场景下，会调用 TenantUtils 去切换租户
+            log.error(
+                    "[doFilterInternal][租户({}) User({}/{}) 越权访问租户({}) URL({}/{})]",
+                    user.getTenantId(),
+                    user.getUserId(),
+                    user.getDeviceType(),
+                    TenantContextHolder.getTenantId(),
+                    request.getRequestURI(),
+                    request.getMethod());
             ServletUtils.writeJSON(response, R.fail(SystemErrorTypeEnum.FORBIDDEN));
             return;
         }
@@ -87,7 +93,7 @@ public class TenantSecurityWebFilter extends OncePerRequestFilter {
         }
         // 3. 校验租户是合法，例如说被禁用、到期
         try {
-            //默认值过滤
+            // 默认值过滤
             if (!tenantId.equals(0L)) {
                 ITenantFrameworkService.validTenant(tenantId);
             }
@@ -96,7 +102,6 @@ public class TenantSecurityWebFilter extends OncePerRequestFilter {
             ServletUtils.writeJSON(response, R.fail(SystemErrorTypeEnum.VALID_TENANT_FAIL));
             return;
         }
-
 
         // 继续过滤
         chain.doFilter(request, response);
@@ -120,5 +125,4 @@ public class TenantSecurityWebFilter extends OncePerRequestFilter {
         }
         return false;
     }
-
 }

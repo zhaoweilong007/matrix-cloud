@@ -7,6 +7,10 @@ import com.matrix.auto.properties.GaryLoadBalanceProperties;
 import com.matrix.common.constant.CommonConstants;
 import com.matrix.feign.chooser.IRuleChooser;
 import com.matrix.feign.utils.QueryUtils;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.MapUtils;
@@ -19,18 +23,12 @@ import org.springframework.cloud.loadbalancer.core.ReactorServiceInstanceLoadBal
 import org.springframework.cloud.loadbalancer.core.ServiceInstanceListSupplier;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
-
 /**
  * 自定义版本路由选择
  */
 @Slf4j
 @RequiredArgsConstructor
 public class VersionLoadBalancer implements ReactorServiceInstanceLoadBalancer {
-
 
     /**
      * 服务实例的列表
@@ -47,14 +45,14 @@ public class VersionLoadBalancer implements ReactorServiceInstanceLoadBalancer {
      */
     private final IRuleChooser ruleChooser;
 
-
     private final GaryLoadBalanceProperties loadBalanceProperties;
 
     @Override
     public Mono<Response<ServiceInstance>> choose(Request request) {
         // 从request中获取版本，兼容webflux方式
         RequestData requestData = ((RequestDataContext) (request.getContext())).getClientRequest();
-        final ServiceInstanceListSupplier supplier = serviceInstanceListSuppliers.getIfAvailable(NoopServiceInstanceListSupplier::new);
+        final ServiceInstanceListSupplier supplier =
+                serviceInstanceListSuppliers.getIfAvailable(NoopServiceInstanceListSupplier::new);
         String version = getVersionFromRequestData(requestData);
         return supplier.get(request).next().map(instanceList -> getInstanceResponse(instanceList, version));
     }
@@ -65,7 +63,8 @@ public class VersionLoadBalancer implements ReactorServiceInstanceLoadBalancer {
         String versionHeader = requestData.getHeaders().toSingleValueMap().get(CommonConstants.VERSION_HEADER);
         if (StringUtils.isNotBlank(versionHeader)) {
             return versionHeader;
-        } else if (MapUtils.isNotEmpty(queryMap) && queryMap.containsKey(CommonConstants.VERSION_HEADER)
+        } else if (MapUtils.isNotEmpty(queryMap)
+                && queryMap.containsKey(CommonConstants.VERSION_HEADER)
                 && StringUtils.isNotBlank(queryMap.get(CommonConstants.VERSION_HEADER))) {
             return queryMap.get(CommonConstants.VERSION_HEADER);
         }
@@ -84,22 +83,24 @@ public class VersionLoadBalancer implements ReactorServiceInstanceLoadBalancer {
             log.warn("[getInstanceResponse][serviceId({}) 服务实例列表为空]", serviceId);
             return new EmptyResponse();
         }
-        //对服务列表进行版本号过滤
+        // 对服务列表进行版本号过滤
         List<ServiceInstance> filteredServiceIstanceList = null;
         if (StringUtils.isNotBlank(version)) {
             if (CollectionUtils.isNotEmpty(instances)) {
                 filteredServiceIstanceList = instances.stream()
-                        .filter(item -> item.getMetadata().containsKey(CommonConstants.VERSION_HEADER) &&
-                                version.equals(item.getMetadata().get(CommonConstants.VERSION_HEADER)))
+                        .filter(item -> item.getMetadata().containsKey(CommonConstants.VERSION_HEADER)
+                                && version.equals(item.getMetadata().get(CommonConstants.VERSION_HEADER)))
                         .collect(Collectors.toList());
             }
         }
         // 如果没有找到对应的版本实例时，选择版本号为空的或这版本为default的实例
         if (CollectionUtils.isEmpty(filteredServiceIstanceList)) {
             filteredServiceIstanceList = instances.stream()
-                    .filter(item -> !item.getMetadata().containsKey(CommonConstants.VERSION_HEADER) ||
-                            StringUtils.isBlank(item.getMetadata().get(CommonConstants.VERSION_HEADER))
-                            || Objects.equals(StrUtil.toString(item.getMetadata().get(CommonConstants.VERSION_HEADER)), loadBalanceProperties.getDefaultVersion()))
+                    .filter(item -> !item.getMetadata().containsKey(CommonConstants.VERSION_HEADER)
+                            || StringUtils.isBlank(item.getMetadata().get(CommonConstants.VERSION_HEADER))
+                            || Objects.equals(
+                                    StrUtil.toString(item.getMetadata().get(CommonConstants.VERSION_HEADER)),
+                                    loadBalanceProperties.getDefaultVersion()))
                     .collect(Collectors.toList());
         }
         if (CollectionUtils.isEmpty(filteredServiceIstanceList)) {
@@ -109,8 +110,12 @@ public class VersionLoadBalancer implements ReactorServiceInstanceLoadBalancer {
         // 经过两轮过滤后如果能找到的话就选择，不然返回空
         ServiceInstance serviceInstance = this.ruleChooser.choose(filteredServiceIstanceList);
         if (!Objects.isNull(serviceInstance)) {
-            log.debug("[getInstanceResponse] chose serviceId:[{}],version:{},address:[{}:{}]", serviceId, version
-                    , serviceInstance.getHost(), serviceInstance.getPort());
+            log.debug(
+                    "[getInstanceResponse] chose serviceId:[{}],version:{},address:[{}:{}]",
+                    serviceId,
+                    version,
+                    serviceInstance.getHost(),
+                    serviceInstance.getPort());
             return new DefaultResponse(serviceInstance);
         }
         log.warn("[getInstanceResponse][serviceId({}) 没有满足选择器的服务实例列表]", serviceId);

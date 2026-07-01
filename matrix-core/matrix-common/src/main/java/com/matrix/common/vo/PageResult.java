@@ -1,14 +1,12 @@
 package com.matrix.common.vo;
 
-
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.Collections;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.Collections;
-import java.util.List;
 
 /**
  * 分页对象
@@ -45,7 +43,6 @@ public class PageResult<E> {
      */
     @Schema(description = "数据")
     private List<E> data;
-
 
     public static <E> PageResult<E> emptyResult(PageParam param) {
         return PageResult.<E>builder()

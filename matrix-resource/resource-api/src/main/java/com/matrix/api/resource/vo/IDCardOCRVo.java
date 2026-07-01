@@ -3,7 +3,6 @@ package com.matrix.api.resource.vo;
 import com.alibaba.fastjson2.annotation.JSONField;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-
 ;
 
 /**

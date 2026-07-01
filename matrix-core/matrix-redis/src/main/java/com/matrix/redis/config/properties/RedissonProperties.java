@@ -1,13 +1,12 @@
 package com.matrix.redis.config.properties;
 
+import java.util.HashSet;
+import java.util.Set;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.redisson.config.ReadMode;
 import org.redisson.config.SubscriptionMode;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Redisson 配置属性
@@ -45,7 +44,6 @@ public class RedissonProperties {
      * 集群服务配置
      */
     private ClusterConfig clusterServersConfig;
-
 
     @Data
     @NoArgsConstructor
@@ -97,7 +95,6 @@ public class RedissonProperties {
          * 发布和订阅连接池大小
          */
         private Integer subscriptionConnectionPoolSize;
-
     }
 
     @Data
@@ -174,7 +171,6 @@ public class RedissonProperties {
          * 订阅模式
          */
         private SubscriptionMode subscriptionMode;
-
     }
 
     @Data
@@ -242,7 +238,5 @@ public class RedissonProperties {
          * 订阅模式
          */
         private SubscriptionMode subscriptionMode;
-
     }
-
 }

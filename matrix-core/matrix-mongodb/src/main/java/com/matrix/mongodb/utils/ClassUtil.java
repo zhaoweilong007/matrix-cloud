@@ -1,12 +1,11 @@
 package com.matrix.mongodb.utils;
 
-import org.springframework.data.annotation.Id;
-
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
+import org.springframework.data.annotation.Id;
 
 /**
  * 字节码工具
@@ -22,8 +21,7 @@ public class ClassUtil {
      */
     private static final Map<Class<?>, Field> FIELD_CACHE = new ConcurrentHashMap<>(64);
 
-    private ClassUtil() {
-    }
+    private ClassUtil() {}
 
     /**
      * 获取mongo集合实体的主键值
@@ -40,7 +38,6 @@ public class ClassUtil {
         } catch (IllegalAccessException e) {
             throw ExceptionUtils.mpe("not exist id value");
         }
-
     }
 
     /**
@@ -64,7 +61,6 @@ public class ClassUtil {
             }
         }
         throw ExceptionUtils.mpe("no exist id");
-
     }
 
     /**
@@ -86,7 +82,5 @@ public class ClassUtil {
         result = cn.hutool.core.util.ClassUtil.getTypeArgument(clazz, 1);
         CACHE.put(clazz, result);
         return result;
-
     }
-
 }

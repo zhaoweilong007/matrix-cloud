@@ -5,7 +5,6 @@ import cn.hutool.core.collection.CollectionUtil;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.matrix.common.model.KeyValue;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -60,5 +59,4 @@ public class MapUtils {
         keyValues.forEach(keyValue -> map.put(keyValue.getKey(), keyValue.getValue()));
         return map;
     }
-
 }

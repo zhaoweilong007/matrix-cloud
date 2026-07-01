@@ -51,7 +51,6 @@ public class XssFilter implements GlobalFilter, Ordered {
         }
         ServerHttpRequestDecorator httpRequestDecorator = requestDecorator(exchange);
         return chain.filter(exchange.mutate().request(httpRequestDecorator).build());
-
     }
 
     private ServerHttpRequestDecorator requestDecorator(ServerWebExchange exchange) {
@@ -70,7 +69,8 @@ public class XssFilter implements GlobalFilter, Ordered {
                     bodyStr = HtmlUtil.cleanHtmlTag(bodyStr);
                     // 转成字节
                     byte[] bytes = bodyStr.getBytes();
-                    NettyDataBufferFactory nettyDataBufferFactory = new NettyDataBufferFactory(ByteBufAllocator.DEFAULT);
+                    NettyDataBufferFactory nettyDataBufferFactory =
+                            new NettyDataBufferFactory(ByteBufAllocator.DEFAULT);
                     DataBuffer buffer = nettyDataBufferFactory.allocateBuffer(bytes.length);
                     buffer.write(bytes);
                     return buffer;
@@ -86,7 +86,6 @@ public class XssFilter implements GlobalFilter, Ordered {
                 httpHeaders.set(HttpHeaders.TRANSFER_ENCODING, "chunked");
                 return httpHeaders;
             }
-
         };
         return serverHttpRequestDecorator;
     }

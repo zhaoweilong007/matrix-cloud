@@ -3,9 +3,8 @@ package com.matrix.common.vo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import lombok.Data;
-
 import java.io.Serializable;
+import lombok.Data;
 
 /**
  * 描述：<p></p>
@@ -17,9 +16,9 @@ import java.io.Serializable;
 @Data
 public class PageParam implements Serializable {
 
-
     public static final Integer PAGE_NUM = 1;
     public static final Integer PAGE_SIZE = 10;
+
     @Schema(hidden = true)
     private final Boolean deleted = false;
     /**

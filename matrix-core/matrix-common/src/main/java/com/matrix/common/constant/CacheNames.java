@@ -13,7 +13,6 @@ package com.matrix.common.constant;
  */
 public interface CacheNames {
 
-
     /**
      * 系统配置
      */
@@ -82,18 +81,14 @@ public interface CacheNames {
      */
     String OMS_SYSTEM_LABEL = "oms_system_label";
 
-
     /**
      * 老版用户id
      */
     String FANGDX_USER_ID = "fangdx_user_id:";
 
-
     String matrix_HOUSE_SHARE = "matrix_house_share:%s";
 
-
     String matrix_HOUSE_ACTION = "matrix_house_action";
-
 
     String matrix_HOUSE_ROLE = "matrix_house_role";
 
@@ -104,5 +99,4 @@ public interface CacheNames {
     String REGION_RANK_COUNT = "region_rank_count";
 
     String COMMUNITY_BASE_INFO = "community_base_info:";
-
 }

@@ -5,8 +5,7 @@ package com.matrix.mongodb.utils;
  */
 public class StringUtils {
 
-    private StringUtils() {
-    }
+    private StringUtils() {}
 
     /**
      * 安全的进行字符串 format

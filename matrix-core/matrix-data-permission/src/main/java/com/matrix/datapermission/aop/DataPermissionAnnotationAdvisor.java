@@ -30,5 +30,4 @@ public class DataPermissionAnnotationAdvisor extends AbstractPointcutAdvisor {
         Pointcut methodPointcut = new AnnotationMatchingPointcut(null, DataPermission.class, true);
         return new ComposablePointcut(classPointcut).union(methodPointcut);
     }
-
 }

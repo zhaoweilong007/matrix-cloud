@@ -19,7 +19,6 @@ public interface JPushApi {
 
     String PREFIX = "/jpush";
 
-
     /**
      * 通过token获取手机号
      *
@@ -28,5 +27,4 @@ public interface JPushApi {
      */
     @GetMapping("/getPhoneNumberByToken")
     R<String> getPhoneNumberByToken(@NotBlank @RequestParam AppEnum appEnum, @NotBlank @RequestParam String token);
-
 }

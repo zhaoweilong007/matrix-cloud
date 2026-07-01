@@ -4,7 +4,6 @@ import com.matrix.common.constant.ConfigConstants;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-
 /**
  * 配置alertmanager告警地址
  */

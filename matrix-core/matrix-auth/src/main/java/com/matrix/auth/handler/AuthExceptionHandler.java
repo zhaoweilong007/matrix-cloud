@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class AuthExceptionHandler {
 
-
     /**
      * 权限码异常
      */
@@ -59,7 +58,11 @@ public class AuthExceptionHandler {
 
     @ExceptionHandler({SaTokenException.class})
     private R<?> saTokenExceptionHandler(HttpServletRequest request, SaTokenException ex) {
-        log.warn("[saTokenExceptionHandler][uri({}/{}) 认证异常:{}]", request.getRequestURI(), request.getMethod(), ex.getMessage());
+        log.warn(
+                "[saTokenExceptionHandler][uri({}/{}) 认证异常:{}]",
+                request.getRequestURI(),
+                request.getMethod(),
+                ex.getMessage());
         return R.fail(SystemErrorTypeEnum.UNAUTHORIZED);
     }
 }

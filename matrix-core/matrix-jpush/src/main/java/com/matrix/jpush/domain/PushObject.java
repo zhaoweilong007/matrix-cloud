@@ -1,9 +1,8 @@
 package com.matrix.jpush.domain;
 
-import lombok.Data;
-
 import java.util.HashMap;
 import java.util.Map;
+import lombok.Data;
 
 @Data
 public class PushObject {
@@ -21,5 +20,4 @@ public class PushObject {
     private String sound = "happy";
     // ios右上角条数
     private int badge = 1;
-
 }

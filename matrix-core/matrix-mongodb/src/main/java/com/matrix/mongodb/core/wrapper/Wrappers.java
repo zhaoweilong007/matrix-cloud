@@ -8,5 +8,4 @@ public final class Wrappers {
     public static <T> LambdaQueryWrapper<T> lambdaQuery() {
         return new LambdaQueryWrapper<>();
     }
-
 }

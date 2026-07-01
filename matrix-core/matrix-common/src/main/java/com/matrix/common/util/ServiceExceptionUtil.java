@@ -2,12 +2,11 @@ package com.matrix.common.util;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.matrix.common.exception.ServiceException;
-import lombok.extern.slf4j.Slf4j;
-import net.dreamlu.mica.core.result.IResultCode;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import lombok.extern.slf4j.Slf4j;
+import net.dreamlu.mica.core.result.IResultCode;
 
 /**
  * {@link ServiceException} 工具类
@@ -108,5 +107,4 @@ public class ServiceExceptionUtil {
         sbuf.append(messagePattern.substring(i));
         return sbuf.toString();
     }
-
 }

@@ -19,6 +19,9 @@ package com.matrix.common.result;
 import com.matrix.common.enums.SystemErrorTypeEnum;
 import com.matrix.common.exception.ServiceException;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.io.Serializable;
+import java.util.Optional;
+import java.util.function.Predicate;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,10 +29,6 @@ import lombok.ToString;
 import net.dreamlu.mica.core.result.IResultCode;
 import net.dreamlu.mica.core.result.SystemCode;
 import org.springframework.lang.Nullable;
-
-import java.io.Serializable;
-import java.util.Optional;
-import java.util.function.Predicate;
 
 /**
  * 响应信息主体
@@ -158,7 +157,6 @@ public class R<T> implements Serializable {
     public static <T> R<T> status(boolean status, IResultCode sCode) {
         return status ? R.success() : R.fail(sCode);
     }
-
 
     /**
      * 根据状态返回成功或者失败
@@ -349,5 +347,4 @@ public class R<T> implements Serializable {
     public static void throwFail(String message) {
         throwFail(SystemCode.FAILURE, message);
     }
-
 }

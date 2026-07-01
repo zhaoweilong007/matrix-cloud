@@ -15,7 +15,6 @@ public interface WebFilterOrderConstants {
 
     int VALIDATE_CODE_FILTER = REQUEST_BODY_CACHE_FILTER + 1;
 
-
     int USER_CONTEXT_FILTER = -99;
 
     /**
@@ -34,6 +33,4 @@ public interface WebFilterOrderConstants {
     int TENANT_SECURITY_FILTER = -96;
 
     int API_ACCESS_LOG_FILTER = -100;
-
-
 }

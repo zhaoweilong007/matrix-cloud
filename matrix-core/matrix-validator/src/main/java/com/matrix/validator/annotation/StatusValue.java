@@ -1,12 +1,11 @@
 package com.matrix.validator.annotation;
 
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
 import com.matrix.validator.StatusValueValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
-
 import java.lang.annotation.*;
-
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * 状态校验，校验参数的状态是否是 StatusEnum 中的值

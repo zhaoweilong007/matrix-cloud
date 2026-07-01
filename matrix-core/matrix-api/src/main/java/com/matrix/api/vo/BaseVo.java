@@ -1,10 +1,9 @@
 package com.matrix.api.vo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import lombok.Data;
 
 /**
  * 通用Vo
@@ -29,6 +28,4 @@ public class BaseVo implements Serializable {
 
     @Schema(description = "修改人id")
     private Long updatedBy;
-
-
 }

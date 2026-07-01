@@ -1,6 +1,5 @@
 package com.matrix.common.exception;
 
-
 import com.matrix.common.exception.base.BaseException;
 import com.matrix.common.result.R;
 import net.dreamlu.mica.core.result.IResultCode;
@@ -10,7 +9,7 @@ import net.dreamlu.mica.core.result.IResultCode;
  */
 public class ServiceException extends BaseException {
 
-    //TODO 对业务异常的返回码进行校验，规范到一定范围内
+    // TODO 对业务异常的返回码进行校验，规范到一定范围内
     public ServiceException(IResultCode resultCode) {
         super(resultCode);
     }
@@ -35,12 +34,10 @@ public class ServiceException extends BaseException {
 
     public ServiceException(IResultCode resultCode, String message) {
         super(resultCode, message);
-
     }
 
     public ServiceException(IResultCode resultCode, String message, Object[] args) {
         super(resultCode, message, args);
-
     }
 
     public ServiceException(Integer code, String message) {

@@ -12,12 +12,6 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
 import com.matrix.common.jackson.BigNumberSerializer;
 import com.matrix.common.util.json.JsonUtils;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.boot.jackson2.autoconfigure.Jackson2AutoConfiguration;
-import org.springframework.boot.jackson2.autoconfigure.Jackson2ObjectMapperBuilderCustomizer;
-import org.springframework.context.annotation.Bean;
-
 import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -25,6 +19,11 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.TimeZone;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.jackson2.autoconfigure.Jackson2AutoConfiguration;
+import org.springframework.boot.jackson2.autoconfigure.Jackson2ObjectMapperBuilderCustomizer;
+import org.springframework.context.annotation.Bean;
 
 /**
  * @author ZhaoWeiLong
@@ -33,7 +32,6 @@ import java.util.TimeZone;
 @Slf4j
 @AutoConfiguration(before = Jackson2AutoConfiguration.class)
 public class JacksonConfig {
-
 
     public static final String PATTERN_DATETIME = "yyyy-MM-dd HH:mm:ss";
 
@@ -44,7 +42,6 @@ public class JacksonConfig {
     public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(PATTERN_DATE);
     public static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern(PATTERN_TIME);
 
-
     @Bean
     public Jackson2ObjectMapperBuilderCustomizer customizer() {
         return builder -> {
@@ -54,7 +51,6 @@ public class JacksonConfig {
             log.info("jackson config init");
         };
     }
-
 
     private JavaTimeModule buildModule() {
         JavaTimeModule javaTimeModule = new JavaTimeModule();
@@ -69,7 +65,6 @@ public class JacksonConfig {
         javaTimeModule.addDeserializer(LocalTime.class, new LocalTimeDeserializer(TIME_FORMATTER));
         return javaTimeModule;
     }
-
 
     @Bean
     public JsonUtils jsonUtils(List<ObjectMapper> mappers) {

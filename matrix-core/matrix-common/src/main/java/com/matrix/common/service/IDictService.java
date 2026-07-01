@@ -1,6 +1,5 @@
 package com.matrix.common.service;
 
-
 import com.matrix.common.util.string.StringUtils;
 
 /**
@@ -49,5 +48,4 @@ public interface IDictService {
      * @return 字典值
      */
     String getDictValue(String dictType, String dictLabel, String separator);
-
 }

@@ -316,11 +316,9 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         if (isBlank(str)) {
             return new ArrayList<>(0);
         }
-        return StrUtil.split(str, separator)
-                .stream()
+        return StrUtil.split(str, separator).stream()
                 .filter(Objects::nonNull)
                 .map(mapper)
                 .collect(Collectors.toList());
     }
-
 }

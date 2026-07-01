@@ -3,6 +3,10 @@ package com.matrix.common.util.spring;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ArrayUtil;
+import java.lang.reflect.Method;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.DefaultParameterNameDiscoverer;
@@ -11,11 +15,6 @@ import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
-
-import java.lang.reflect.Method;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Spring EL 表达式的工具类
@@ -27,8 +26,7 @@ public class SpringExpressionUtils {
     private static final ExpressionParser EXPRESSION_PARSER = new SpelExpressionParser();
     private static final ParameterNameDiscoverer PARAMETER_NAME_DISCOVERER = new DefaultParameterNameDiscoverer();
 
-    private SpringExpressionUtils() {
-    }
+    private SpringExpressionUtils() {}
 
     /**
      * 从切面中，单个解析 EL 表达式的结果

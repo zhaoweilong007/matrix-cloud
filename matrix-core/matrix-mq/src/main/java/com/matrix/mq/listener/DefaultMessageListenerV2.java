@@ -20,16 +20,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Slf4j
 public class DefaultMessageListenerV2 implements MessageListener {
 
-
     public RocketMQMessageListener annotation = this.getClass().getAnnotation(RocketMQMessageListener.class);
+
     @Autowired
     private MessageHandlerManager messageHandlerManager;
 
     @Override
     public Action consume(Message message, ConsumeContext consumeContext) {
-        final MessageHandler messageHandler = messageHandlerManager.getHandler(annotation.consumerGroup(), message.getTopic(), message.getTag());
+        final MessageHandler messageHandler =
+                messageHandlerManager.getHandler(annotation.consumerGroup(), message.getTopic(), message.getTag());
         if (messageHandler == null) {
-            log.warn("msg handler fail not found MessageHandler consumerGroup:【{}】 topic:【{}】,tag:【{}】", annotation.consumerGroup(), message.getTopic(), message.getTag());
+            log.warn(
+                    "msg handler fail not found MessageHandler consumerGroup:【{}】 topic:【{}】,tag:【{}】",
+                    annotation.consumerGroup(),
+                    message.getTopic(),
+                    message.getTag());
             return Action.ReconsumeLater;
         }
         try {
@@ -37,8 +42,14 @@ public class DefaultMessageListenerV2 implements MessageListener {
             messageHandler.handler(JSON.parseObject(message.getBody(), handlerType));
             return Action.CommitMessage;
         } catch (Exception e) {
-            //消费失败
-            log.warn("handle message fail consumerGroup:【{}】 topic:【{}】,tag:【{}】 msgId:【{}】", annotation.consumerGroup(), message.getTopic(), message.getTag(), message.getMsgID(), e);
+            // 消费失败
+            log.warn(
+                    "handle message fail consumerGroup:【{}】 topic:【{}】,tag:【{}】 msgId:【{}】",
+                    annotation.consumerGroup(),
+                    message.getTopic(),
+                    message.getTag(),
+                    message.getMsgID(),
+                    e);
             return Action.ReconsumeLater;
         }
     }

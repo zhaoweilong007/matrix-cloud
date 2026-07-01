@@ -1,20 +1,17 @@
 package com.matrix.common.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.io.Serializable;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.io.Serializable;
 
 /**
  * 角色
  */
-
 @Schema(description = "角色")
 @Data
 @NoArgsConstructor
 public class RoleDTO implements Serializable {
-
 
     @Schema(description = "用户id")
     private Long userId;
@@ -36,5 +33,4 @@ public class RoleDTO implements Serializable {
      */
     @Schema(description = "角色标识")
     private String roleKey;
-
 }

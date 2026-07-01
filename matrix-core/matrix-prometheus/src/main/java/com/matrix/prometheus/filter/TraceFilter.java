@@ -26,5 +26,4 @@ public class TraceFilter extends OncePerRequestFilter {
         // 继续过滤
         chain.doFilter(request, response);
     }
-
 }

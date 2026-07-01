@@ -52,9 +52,7 @@ public class DictTypeTranslationImpl implements TranslationInterface<Object> {
             }
             Map<String, String> result = new ConcurrentHashMap<>();
             String finalOther = other;
-            list.parallelStream().map(o -> (String) o).forEach(s ->
-                    result.put(s, mapping(s, finalOther))
-            );
+            list.parallelStream().map(o -> (String) o).forEach(s -> result.put(s, mapping(s, finalOther)));
             return result;
         }
         return dictLabel;

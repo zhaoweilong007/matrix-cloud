@@ -1,13 +1,12 @@
 package com.matrix.redis.utils;
 
 import cn.hutool.extra.spring.SpringUtil;
+import java.util.Set;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.redisson.api.RMap;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
-
-import java.util.Set;
 
 /**
  * 缓存操作工具类 {@link }
@@ -27,7 +26,8 @@ public class CacheUtils {
      * @param cacheNames 缓存组名称
      */
     public static Set<Object> keys(String cacheNames) {
-        RMap<Object, Object> rmap = (RMap<Object, Object>) CACHE_MANAGER.getCache(cacheNames).getNativeCache();
+        RMap<Object, Object> rmap =
+                (RMap<Object, Object>) CACHE_MANAGER.getCache(cacheNames).getNativeCache();
         return rmap.keySet();
     }
 
@@ -71,5 +71,4 @@ public class CacheUtils {
     public static void clear(String cacheNames) {
         CACHE_MANAGER.getCache(cacheNames).clear();
     }
-
 }

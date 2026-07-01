@@ -21,15 +21,14 @@ import com.tencentcloudapi.ocr.v20181119.models.BizLicenseOCRResponse;
 import com.tencentcloudapi.ocr.v20181119.models.IDCardOCRRequest;
 import com.tencentcloudapi.ocr.v20181119.models.IDCardOCRResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * @author ZhaoWeiLong
@@ -51,7 +50,8 @@ public class OcrController implements OcrApi {
         req.setImageUrl(imgUrl);
         req.setEnableRecognitionRectify(true);
         req.setEnableReflectDetail(false);
-        req.setConfig("""
+        req.setConfig(
+                """
                 {
                     "CopyWarn":true,
                     "BorderCheckWarn":true,
@@ -67,20 +67,20 @@ public class OcrController implements OcrApi {
             IDCardOCRResponse resp = ocrClient.IDCardOCR(req);
             final String json = resp.getAdvancedInfo();
             final AdvancedInfo advancedInfo = JSON.parseObject(json, AdvancedInfo.class);
-            Assert.isTrue(advancedInfo.getQuality() >= 50,
-                    () -> new ServiceException(BusinessErrorTypeEnum.OCR_ERROR));
-            Assert.isTrue(advancedInfo.getBorderCodeValue() <= 50,
+            Assert.isTrue(advancedInfo.getQuality() >= 50, () -> new ServiceException(BusinessErrorTypeEnum.OCR_ERROR));
+            Assert.isTrue(
+                    advancedInfo.getBorderCodeValue() <= 50,
                     () -> new ServiceException(BusinessErrorTypeEnum.OCR_ERROR));
             if (ArrayUtil.isNotEmpty(advancedInfo.getWarnInfos())) {
                 final String msg = Arrays.stream(advancedInfo.getWarnInfos())
                         .map(WarnInfoEnum::getWarnInfoEnum)
-                        .filter(Objects::nonNull).map(WarnInfoEnum::getMsg)
+                        .filter(Objects::nonNull)
+                        .map(WarnInfoEnum::getMsg)
                         .collect(Collectors.joining(","));
                 log.warn("OCR识别警告：{}", msg);
                 throw new ServiceException(BusinessErrorTypeEnum.OCR_ERROR, msg);
             }
-            final IDCardOCRVo idCardOCRVo = JSON.parseObject(AbstractModel.toJsonString(resp),
-                    IDCardOCRVo.class);
+            final IDCardOCRVo idCardOCRVo = JSON.parseObject(AbstractModel.toJsonString(resp), IDCardOCRVo.class);
             return R.success(idCardOCRVo);
         } catch (TencentCloudSDKException e) {
             log.error("OCR调用失败 {}", e.toString());
@@ -103,13 +103,14 @@ public class OcrController implements OcrApi {
             if (ArrayUtil.isNotEmpty(resp.getRecognizeWarnCode())) {
                 final String msg = Arrays.stream(resp.getRecognizeWarnCode())
                         .map(LicenseWarnInfoEnum::getWarnInfoEnum)
-                        .filter(Objects::nonNull).map(LicenseWarnInfoEnum::getMsg)
+                        .filter(Objects::nonNull)
+                        .map(LicenseWarnInfoEnum::getMsg)
                         .collect(Collectors.joining(","));
                 log.warn("OCR识别警告：{}", msg);
                 throw new ServiceException(BusinessErrorTypeEnum.OCR_ERROR, msg);
             }
-            final BizLicenseOCRVo bizLicenseOCRVo = JSON.parseObject(AbstractModel.toJsonString(resp),
-                    BizLicenseOCRVo.class);
+            final BizLicenseOCRVo bizLicenseOCRVo =
+                    JSON.parseObject(AbstractModel.toJsonString(resp), BizLicenseOCRVo.class);
             return R.success(bizLicenseOCRVo);
         } catch (TencentCloudSDKException e) {
             log.error("OCR调用失败 {}", e.toString());

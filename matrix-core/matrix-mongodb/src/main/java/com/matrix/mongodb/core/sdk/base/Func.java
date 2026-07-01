@@ -53,7 +53,6 @@ public interface Func<T, LambdaQueryWrapper, R extends SFunction<T, ?>> extends 
      */
     LambdaQueryWrapper skip(Long skip);
 
-
     /**
      * 分页limit接口
      *
@@ -69,5 +68,4 @@ public interface Func<T, LambdaQueryWrapper, R extends SFunction<T, ?>> extends 
      * @return 当前构建器
      */
     LambdaQueryWrapper select(R... columns);
-
 }

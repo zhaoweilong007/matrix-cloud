@@ -17,14 +17,13 @@ import com.github.yulichang.interfaces.MPJBaseJoin;
 import com.matrix.common.vo.PageParam;
 import com.matrix.common.vo.PageResult;
 import com.matrix.mybatis.utils.PageUtils;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.logging.Log;
-import org.apache.ibatis.logging.LogFactory;
-
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.logging.Log;
+import org.apache.ibatis.logging.LogFactory;
 
 /**
  * 在 MyBatis Plus 的 BaseMapper 的基础上拓展，提供更多的能力
@@ -45,7 +44,6 @@ public interface BaseMapperX<M, T, V> extends MPJBaseMapper<T> {
      */
     List<T> selectListForUpdate(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
 
-
     /**
      * 选择一个用于更新
      *
@@ -53,7 +51,6 @@ public interface BaseMapperX<M, T, V> extends MPJBaseMapper<T> {
      * @return {@link T}
      */
     T selectOneForUpdate(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
-
 
     default Class<T> currentModelClass() {
         return (Class<T>) ReflectionKit.getSuperClassGenericType(this.getClass(), BaseMapperX.class, 1);
@@ -67,16 +64,18 @@ public interface BaseMapperX<M, T, V> extends MPJBaseMapper<T> {
         return (Class<V>) ReflectionKit.getSuperClassGenericType(this.getClass(), BaseMapperX.class, 2);
     }
 
-
     default <Q extends PageParam> PageResult<T> selectPage(Q pageParam, Wrapper<T> queryWrapper) {
         // MyBatis Plus 查询
         IPage<T> mpPage = PageUtils.build(pageParam);
         selectPage(mpPage, queryWrapper);
         // 转换返回
-        return PageResult.<T>builder().pageNum((int) mpPage.getCurrent()).pageSize((int) mpPage.getSize()).total((int) mpPage.getTotal()).data(mpPage.getRecords())
+        return PageResult.<T>builder()
+                .pageNum((int) mpPage.getCurrent())
+                .pageSize((int) mpPage.getSize())
+                .total((int) mpPage.getTotal())
+                .data(mpPage.getRecords())
                 .build();
     }
-
 
     /**
      * 批量插入
@@ -179,11 +178,9 @@ public interface BaseMapperX<M, T, V> extends MPJBaseMapper<T> {
         return selectList(new LambdaQueryWrapper<T>().le(leField, value).ge(geField, value));
     }
 
-
     default void updateBatch(T update) {
         update(update, new QueryWrapper<>());
     }
-
 
     default V selectVoById(Serializable id) {
         return selectVoById(id, this.currentVoClass());
@@ -279,7 +276,11 @@ public interface BaseMapperX<M, T, V> extends MPJBaseMapper<T> {
         final Page<T> page = PageUtils.build(pageParam);
         final IPage<E> voPage = selectVoPage(page, wrapper, voClass);
         // 转换返回
-        return PageResult.<E>builder().pageNum((int) voPage.getCurrent()).pageSize((int) voPage.getSize()).total((int) voPage.getTotal()).data(voPage.getRecords())
+        return PageResult.<E>builder()
+                .pageNum((int) voPage.getCurrent())
+                .pageSize((int) voPage.getSize())
+                .total((int) voPage.getTotal())
+                .data(voPage.getRecords())
                 .build();
     }
 
@@ -287,7 +288,6 @@ public interface BaseMapperX<M, T, V> extends MPJBaseMapper<T> {
         final Class<E> vClass = (Class<E>) this.currentVoClass();
         return selectVoPage(page, wrapper, vClass);
     }
-
 
     /**
      * 分页查询VO
@@ -305,8 +305,10 @@ public interface BaseMapperX<M, T, V> extends MPJBaseMapper<T> {
     default <DTO> PageResult<DTO> selectJoinPage(PageParam query, Class<DTO> clazz, MPJBaseJoin<T> wrapper) {
         final Page<DTO> page = PageUtils.build(query);
         final Page<DTO> pageData = selectJoinPage(page, clazz, wrapper);
-        return PageResult.<DTO>builder().pageNum((int) pageData.getCurrent())
-                .pageSize((int) pageData.getSize()).total((int) pageData.getTotal())
+        return PageResult.<DTO>builder()
+                .pageNum((int) pageData.getCurrent())
+                .pageSize((int) pageData.getSize())
+                .total((int) pageData.getTotal())
                 .data(pageData.getRecords())
                 .build();
     }

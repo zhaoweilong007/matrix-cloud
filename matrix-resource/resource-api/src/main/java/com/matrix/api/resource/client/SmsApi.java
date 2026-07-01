@@ -33,7 +33,6 @@ public interface SmsApi {
     @PostMapping("/sendMsg")
     R<Void> sendMsg(@Valid @RequestBody SmsDto smsVo);
 
-
     /**
      * 短信发送
      *
@@ -43,7 +42,6 @@ public interface SmsApi {
     @Operation(summary = "异步发送短信", description = "异步发送短信")
     @PostMapping("/sendMsgAsync")
     void sendMsgAsync(@Valid @RequestBody SmsDto smsVo);
-
 
     /**
      * 验证码发送
@@ -55,7 +53,6 @@ public interface SmsApi {
     @PostMapping("/sendSmsCode")
     R<Void> sendSmsCode(@Valid @RequestBody SmsCodeSendDTO smsCodeSendDTO);
 
-
     /**
      * 验证短信码
      *
@@ -65,7 +62,6 @@ public interface SmsApi {
     @Operation(summary = "检查验证码是否有效", description = "验证短信码")
     @PostMapping("/validate")
     R<Boolean> validateSmsCode(@Valid @RequestBody SmsCodeValidateDTO reqDTO);
-
 
     /**
      * 验证短信码-根据业务ID

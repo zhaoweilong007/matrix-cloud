@@ -20,14 +20,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
-
 /**
  * 全局异常处理器
  */
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
-
 
     /**
      * 处理所有异常，主要是提供给 Filter 使用 因为 Filter 不走 SpringMVC 的流程，但是我们又需要兜底处理异常，所以这里提供一个全量的异常处理过程，保持逻辑统一。
@@ -38,7 +36,8 @@ public class GlobalExceptionHandler {
      */
     public R<?> allExceptionHandler(HttpServletRequest request, Throwable ex) {
         if (ex instanceof MissingServletRequestParameterException) {
-            return missingServletRequestParameterExceptionHandler(request, (MissingServletRequestParameterException) ex);
+            return missingServletRequestParameterExceptionHandler(
+                    request, (MissingServletRequestParameterException) ex);
         }
         if (ex instanceof MethodArgumentTypeMismatchException) {
             return methodArgumentTypeMismatchExceptionHandler(request, (MethodArgumentTypeMismatchException) ex);
@@ -67,13 +66,21 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(FeignException.class)
     public R<?> handlerFeignException(HttpServletRequest request, FeignException ex) {
-        log.warn("[FeignException][uri({}/{}) feign调用异常:{}]", request.getRequestURI(), request.getMethod(), ex.getMessage());
+        log.warn(
+                "[FeignException][uri({}/{}) feign调用异常:{}]",
+                request.getRequestURI(),
+                request.getMethod(),
+                ex.getMessage());
         return R.fail(SystemErrorTypeEnum.FEIGN_INVOKE_ERROR);
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public R<?> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex, HttpServletRequest request) {
-        log.warn("[handleHttpMessageNotReadableException][uri({}/{}) 请求内容不正确:{}]", request.getRequestURI(), request.getMethod(), ex.getMessage());
+        log.warn(
+                "[handleHttpMessageNotReadableException][uri({}/{}) 请求内容不正确:{}]",
+                request.getRequestURI(),
+                request.getMethod(),
+                ex.getMessage());
         return R.fail(SystemErrorTypeEnum.ARGUMENT_NOT_VALID, "请求内容不正确");
     }
 
@@ -83,8 +90,13 @@ public class GlobalExceptionHandler {
      * 例如说，接口上设置了 @RequestParam("xx") 参数，结果并未传递 xx 参数
      */
     @ExceptionHandler(value = MissingServletRequestParameterException.class)
-    public R<?> missingServletRequestParameterExceptionHandler(HttpServletRequest request, MissingServletRequestParameterException ex) {
-        log.warn("[missingServletRequestParameterExceptionHandler][uri({}/{}) 请求参数缺失:{}]", request.getRequestURI(), request.getMethod(), ex.getMessage());
+    public R<?> missingServletRequestParameterExceptionHandler(
+            HttpServletRequest request, MissingServletRequestParameterException ex) {
+        log.warn(
+                "[missingServletRequestParameterExceptionHandler][uri({}/{}) 请求参数缺失:{}]",
+                request.getRequestURI(),
+                request.getMethod(),
+                ex.getMessage());
         return R.fail(SystemErrorTypeEnum.ARGUMENT_NOT_VALID, String.format("请求参数缺失:%s", ex.getParameterName()));
     }
 
@@ -94,8 +106,13 @@ public class GlobalExceptionHandler {
      * 例如说，接口上设置了 @RequestParam("xx") 参数为 Integer，结果传递 xx 参数类型为 String
      */
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public R<?> methodArgumentTypeMismatchExceptionHandler(HttpServletRequest request, MethodArgumentTypeMismatchException ex) {
-        log.warn("[methodArgumentTypeMismatchExceptionHandler][uri({}/{}) 请求参数类型错误:{}]", request.getRequestURI(), request.getMethod(), ex.getMessage());
+    public R<?> methodArgumentTypeMismatchExceptionHandler(
+            HttpServletRequest request, MethodArgumentTypeMismatchException ex) {
+        log.warn(
+                "[methodArgumentTypeMismatchExceptionHandler][uri({}/{}) 请求参数类型错误:{}]",
+                request.getRequestURI(),
+                request.getMethod(),
+                ex.getMessage());
         return R.fail(SystemErrorTypeEnum.ARGUMENT_NOT_VALID, String.format("请求参数类型错误:%s", ex.getMessage()));
     }
 
@@ -103,11 +120,18 @@ public class GlobalExceptionHandler {
      * 处理 SpringMVC 参数校验不正确
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public R<?> methodArgumentNotValidExceptionExceptionHandler(HttpServletRequest request, MethodArgumentNotValidException ex) {
-        log.warn("[methodArgumentNotValidExceptionExceptionHandler][uri({}/{}) 参数校验不正确:{}]", request.getRequestURI(), request.getMethod(), ex.getMessage());
+    public R<?> methodArgumentNotValidExceptionExceptionHandler(
+            HttpServletRequest request, MethodArgumentNotValidException ex) {
+        log.warn(
+                "[methodArgumentNotValidExceptionExceptionHandler][uri({}/{}) 参数校验不正确:{}]",
+                request.getRequestURI(),
+                request.getMethod(),
+                ex.getMessage());
         FieldError fieldError = ex.getBindingResult().getFieldError();
         assert fieldError != null; // 断言，避免告警
-        return R.fail(SystemErrorTypeEnum.ARGUMENT_NOT_VALID, String.format("请求参数不正确,字段%s:%s", fieldError.getField(), fieldError.getDefaultMessage()));
+        return R.fail(
+                SystemErrorTypeEnum.ARGUMENT_NOT_VALID,
+                String.format("请求参数不正确,字段%s:%s", fieldError.getField(), fieldError.getDefaultMessage()));
     }
 
     /**
@@ -118,7 +142,8 @@ public class GlobalExceptionHandler {
         log.warn("[handleBindException]", ex);
         FieldError fieldError = ex.getFieldError();
         assert fieldError != null; // 断言，避免告警
-        return R.fail(SystemErrorTypeEnum.ARGUMENT_NOT_VALID, String.format("请求参数不正确:%s", fieldError.getDefaultMessage()));
+        return R.fail(
+                SystemErrorTypeEnum.ARGUMENT_NOT_VALID, String.format("请求参数不正确:%s", fieldError.getDefaultMessage()));
     }
 
     /**
@@ -126,11 +151,16 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(value = ConstraintViolationException.class)
     public R<?> constraintViolationExceptionHandler(ConstraintViolationException ex, HttpServletRequest request) {
-        log.warn("[constraintViolationExceptionHandler][uri({}/{}) :{}]", request.getRequestURI(), request.getMethod(), ex.getMessage());
-        ConstraintViolation<?> constraintViolation = ex.getConstraintViolations().iterator().next();
-        return R.fail(SystemErrorTypeEnum.ARGUMENT_NOT_VALID, String.format("请求参数不正确:%s", constraintViolation.getMessage()));
+        log.warn(
+                "[constraintViolationExceptionHandler][uri({}/{}) :{}]",
+                request.getRequestURI(),
+                request.getMethod(),
+                ex.getMessage());
+        ConstraintViolation<?> constraintViolation =
+                ex.getConstraintViolations().iterator().next();
+        return R.fail(
+                SystemErrorTypeEnum.ARGUMENT_NOT_VALID, String.format("请求参数不正确:%s", constraintViolation.getMessage()));
     }
-
 
     /**
      * 处理 SpringMVC 请求地址不存在
@@ -149,11 +179,15 @@ public class GlobalExceptionHandler {
      * 例如说，A 接口的方法为 GET 方式，结果请求方法为 POST 方式，导致不匹配
      */
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    public R<?> httpRequestMethodNotSupportedExceptionHandler(HttpRequestMethodNotSupportedException ex, HttpServletRequest request) {
-        log.warn("[httpRequestMethodNotSupportedExceptionHandler uri({}/{})]", request.getMethod(), request.getRequestURI(), ex);
+    public R<?> httpRequestMethodNotSupportedExceptionHandler(
+            HttpRequestMethodNotSupportedException ex, HttpServletRequest request) {
+        log.warn(
+                "[httpRequestMethodNotSupportedExceptionHandler uri({}/{})]",
+                request.getMethod(),
+                request.getRequestURI(),
+                ex);
         return R.fail(SystemCode.METHOD_NOT_SUPPORTED, String.format("请求方法不正确:%s", ex.getMessage()));
     }
-
 
     /**
      * 处理业务异常 ServiceException
@@ -162,7 +196,12 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(value = ServiceException.class)
     public R<?> serviceExceptionHandler(HttpServletRequest request, ServiceException ex) {
-        log.warn("[serviceExceptionHandler][uri({}/{}) msg:{} 业务异常:{}]", request.getRequestURI(), request.getMethod(), ex.getErrorType().getMsg(), ex.getStackTrace()[0]);
+        log.warn(
+                "[serviceExceptionHandler][uri({}/{}) msg:{} 业务异常:{}]",
+                request.getRequestURI(),
+                request.getMethod(),
+                ex.getErrorType().getMsg(),
+                ex.getStackTrace()[0]);
         return R.fail(ex.getErrorType(), ex.getMessage());
     }
 
@@ -175,6 +214,4 @@ public class GlobalExceptionHandler {
         // 返回 ERROR R
         return R.fail(SystemErrorTypeEnum.SYSTEM_ERROR);
     }
-
-
 }

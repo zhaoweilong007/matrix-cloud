@@ -1,14 +1,13 @@
 package com.matrix.api.resource.vo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-import net.dreamlu.mica.core.utils.StringPool;
-import net.dreamlu.mica.core.utils.StringUtil;
-
 import java.io.Serializable;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
+import lombok.Data;
+import net.dreamlu.mica.core.utils.StringPool;
+import net.dreamlu.mica.core.utils.StringUtil;
 
 /**
  * @author ZhaoWeiLong
@@ -45,13 +44,11 @@ public class IpInfoVo implements Serializable {
     @Schema(description = "运营商")
     private String isp;
 
-
     /**
      * 城市code
      */
     @Schema(description = "城市code")
     private String cityCode;
-
 
     /**
      * 拼接完整的地址

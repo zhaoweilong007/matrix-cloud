@@ -13,6 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 @FeignClient(contextId = "ApiAccessLogApi", value = ServerNameConstants.RESOURCE, path = "/apiAccessLog")
 public interface ApiAccessLogApi {
 
-  @PostMapping("/createApiAccessLog")
-  void createApiAccessLog(@RequestBody ApiAccessLog apiAccessLog);
+    @PostMapping("/createApiAccessLog")
+    void createApiAccessLog(@RequestBody ApiAccessLog apiAccessLog);
 }

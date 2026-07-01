@@ -10,7 +10,6 @@ import cn.hutool.core.util.StrUtil;
  */
 public class DesensitizationUtil {
 
-
     /**
      * 【手机号码】保留前三位，其他隐藏，比如135********
      *
@@ -23,7 +22,6 @@ public class DesensitizationUtil {
         }
         return StrUtil.hide(num, 3, num.length());
     }
-
 
     public static String chineseName(String name) {
         if (StrUtil.isBlank(name)) {

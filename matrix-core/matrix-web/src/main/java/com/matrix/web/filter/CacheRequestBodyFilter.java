@@ -6,9 +6,8 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.web.filter.OncePerRequestFilter;
-
 import java.io.IOException;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 /**
  * Request Body 缓存 Filter，实现它的可重复读取
@@ -26,5 +25,4 @@ public class CacheRequestBodyFilter extends OncePerRequestFilter {
         // 只处理 json 请求内容
         return !ServletUtils.isJsonRequest(request);
     }
-
 }

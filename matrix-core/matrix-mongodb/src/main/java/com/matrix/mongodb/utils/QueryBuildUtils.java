@@ -7,17 +7,16 @@ import com.matrix.mongodb.core.entity.Condition;
 import com.matrix.mongodb.core.entity.SortCondition;
 import com.matrix.mongodb.core.wrapper.ConditionWrapper;
 import com.matrix.mongodb.core.wrapper.LambdaQueryWrapper;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Field;
-import org.springframework.data.mongodb.core.query.Query;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Field;
+import org.springframework.data.mongodb.core.query.Query;
 
 /**
  * 查询工具构建工具
@@ -82,7 +81,6 @@ public class QueryBuildUtils {
         }
 
         return query;
-
     }
 
     /**
@@ -93,14 +91,15 @@ public class QueryBuildUtils {
      */
     private static List<Sort.Order> buildSort(List<SortCondition> sortConditions) {
 
-        return sortConditions.stream().map(item -> {
-            if (item.getSortType() == ESortType.ASC) {
-                return Sort.Order.asc(item.getCol());
-            } else {
-                return Sort.Order.desc(item.getCol());
-            }
-        }).collect(Collectors.toList());
-
+        return sortConditions.stream()
+                .map(item -> {
+                    if (item.getSortType() == ESortType.ASC) {
+                        return Sort.Order.asc(item.getCol());
+                    } else {
+                        return Sort.Order.desc(item.getCol());
+                    }
+                })
+                .collect(Collectors.toList());
     }
 
     /**
@@ -112,8 +111,10 @@ public class QueryBuildUtils {
     private static Criteria[] buildCondition(ConditionWrapper arg) {
 
         Criteria criteria = new Criteria();
-        if (Objects.isNull(arg) || Objects.isNull(arg.getConditions()) || arg.getConditions().isEmpty()) {
-            return new Criteria[]{criteria};
+        if (Objects.isNull(arg)
+                || Objects.isNull(arg.getConditions())
+                || arg.getConditions().isEmpty()) {
+            return new Criteria[] {criteria};
         }
         List<Condition> conditions = arg.getConditions();
 
@@ -121,9 +122,12 @@ public class QueryBuildUtils {
         Criteria[] critters = new Criteria[conditions.size()];
         for (int index = 0; index < conditions.size(); index++) {
             Condition condition = conditions.get(index);
-            if (Objects.nonNull(condition.getConditionWrapper()) && Objects.isNull(condition.getCol()) && !condition.getConditionWrapper().getConditions().isEmpty()) {
+            if (Objects.nonNull(condition.getConditionWrapper())
+                    && Objects.isNull(condition.getCol())
+                    && !condition.getConditionWrapper().getConditions().isEmpty()) {
                 Criteria curCriteria = new Criteria();
-                Condition first = condition.getConditionWrapper().getConditions().get(0);
+                Condition first =
+                        condition.getConditionWrapper().getConditions().get(0);
                 if (first.getConditionType() == EConditionType.OR) {
                     curCriteria.orOperator(buildCondition(condition.getConditionWrapper()));
                 } else {
@@ -149,7 +153,6 @@ public class QueryBuildUtils {
             criteria.andOperator(critters);
         }
         return critters;
-
     }
 
     /**
@@ -219,7 +222,9 @@ public class QueryBuildUtils {
      * @return 构建好的查询条件
      */
     private static Criteria bwHandle(Condition condition) {
-        return Criteria.where(condition.getCol()).lte(condition.getArgs().get(0)).gt(condition.getArgs().get(1));
+        return Criteria.where(condition.getCol())
+                .lte(condition.getArgs().get(0))
+                .gt(condition.getArgs().get(1));
     }
 
     /**
@@ -243,5 +248,4 @@ public class QueryBuildUtils {
         List<Object> args = (List<Object>) condition.getArgs().get(0);
         return Criteria.where(condition.getCol()).nin(args.toArray());
     }
-
 }

@@ -60,10 +60,8 @@ public class GlobalLogFilter implements GlobalFilter, Ordered {
         }));
     }
 
-
     @Override
     public int getOrder() {
         return FilterOrder.GLOBAL_LOG_FILTER;
     }
-
 }

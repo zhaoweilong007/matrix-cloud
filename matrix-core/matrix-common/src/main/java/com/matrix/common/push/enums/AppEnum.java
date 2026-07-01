@@ -12,13 +12,8 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum AppEnum {
-
-
     ;
-
 
     private final String code;
     private final String name;
-
-
 }

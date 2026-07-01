@@ -1,11 +1,10 @@
 package com.matrix.datapermission.enums;
 
 import com.matrix.common.enums.RoleEnum;
+import java.util.Objects;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import one.util.streamex.StreamEx;
-
-import java.util.Objects;
 
 /**
  * 角色数据权限
@@ -40,13 +39,13 @@ public enum RoleDataScoop {
      */
     BROKER(RoleEnum.BROKER.getRoleKey(), DataScopeType.SELF);
 
-
     private final String roleKey;
 
     private final DataScopeType dataScope;
 
-
     public static RoleDataScoop ofRoleKey(String roleKey) {
-        return StreamEx.of(values()).findFirst(roleDataScoop -> Objects.equals(roleDataScoop.getRoleKey(), roleKey)).orElse(null);
+        return StreamEx.of(values())
+                .findFirst(roleDataScoop -> Objects.equals(roleDataScoop.getRoleKey(), roleKey))
+                .orElse(null);
     }
 }

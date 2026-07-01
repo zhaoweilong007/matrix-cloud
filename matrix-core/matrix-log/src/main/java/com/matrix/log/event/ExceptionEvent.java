@@ -1,10 +1,8 @@
 package com.matrix.log.event;
 
+import java.io.Serializable;
 import lombok.Builder;
 import lombok.Data;
-
-import java.io.Serializable;
-
 
 /**
  * @author owen
@@ -12,7 +10,6 @@ import java.io.Serializable;
 @Data
 @Builder
 public class ExceptionEvent implements Serializable {
-
 
     /**
      * 报警主题
@@ -43,5 +40,4 @@ public class ExceptionEvent implements Serializable {
      * 报警堆栈
      */
     private String stackTrace;
-
 }

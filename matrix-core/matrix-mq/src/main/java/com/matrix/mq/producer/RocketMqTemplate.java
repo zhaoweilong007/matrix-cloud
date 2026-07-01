@@ -7,13 +7,12 @@ import com.aliyun.openservices.ons.api.Producer;
 import com.aliyun.openservices.ons.api.SendCallback;
 import com.aliyun.openservices.ons.api.SendResult;
 import com.matrix.mq.event.MessageEvent;
-import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
-
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 普通消息,定时消息,延迟消息生产者
@@ -75,7 +74,6 @@ public class RocketMqTemplate {
         this.producer.sendAsync(message, new DefaultSendCallback());
     }
 
-
     /**
      * @Description: 异步发送(带延迟时间)
      * @Param: [event, delay]
@@ -94,7 +92,6 @@ public class RocketMqTemplate {
         Message message = getMessage(event);
         this.producer.sendAsync(message, callback);
     }
-
 
     /**
      * @Description: 异步发送(带延迟时间)
@@ -146,8 +143,9 @@ public class RocketMqTemplate {
     private long getDelay(LocalDateTime date) {
         ZoneId zone = ZoneId.systemDefault();
         LocalDateTime now = LocalDateTime.now();
-        //时间间隔秒数
-        long delay = date.atZone(zone).toInstant().getEpochSecond() - now.atZone(zone).toInstant().getEpochSecond();
+        // 时间间隔秒数
+        long delay = date.atZone(zone).toInstant().getEpochSecond()
+                - now.atZone(zone).toInstant().getEpochSecond();
         if (delay <= 0) {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             log.warn("消息发送时间:" + sdf.format(date) + " 小于当前时间:" + sdf.format(now));

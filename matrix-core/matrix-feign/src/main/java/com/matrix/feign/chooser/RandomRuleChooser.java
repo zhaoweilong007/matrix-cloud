@@ -1,11 +1,10 @@
 package com.matrix.feign.chooser;
 
 import cn.hutool.core.collection.CollUtil;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.cloud.client.ServiceInstance;
-
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.cloud.client.ServiceInstance;
 
 /**
  * 随机的选择器

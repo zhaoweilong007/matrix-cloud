@@ -50,6 +50,7 @@ public class LogAspect {
      * 排除敏感属性字段
      */
     public static final String[] EXCLUDE_PROPERTIES = {"password", "oldPwd", "newPwd"};
+
     private final RemoteUserService remoteUserService;
 
     public static String obtainMethodArgs(JoinPoint joinPoint) {
@@ -76,8 +77,7 @@ public class LogAspect {
         }
         // 递归，处理数组、Collection、Map 的情况
         if (Collection.class.isAssignableFrom(clazz)) {
-            return ((Collection<?>) object).stream()
-                    .anyMatch((Predicate<Object>) LogAspect::isIgnoreArgs);
+            return ((Collection<?>) object).stream().anyMatch((Predicate<Object>) LogAspect::isIgnoreArgs);
         }
         if (Map.class.isAssignableFrom(clazz)) {
             return isIgnoreArgs(((Map<?, ?>) object).values());
@@ -89,7 +89,7 @@ public class LogAspect {
                 || object instanceof BindingResult) {
             return true;
         }
-        //排除敏感字段
+        // 排除敏感字段
         try {
             final JSONObject jsonObject = JSON.parseObject(JSON.toJSONString(object));
             MapUtil.removeAny(jsonObject, EXCLUDE_PROPERTIES);
@@ -124,7 +124,9 @@ public class LogAspect {
         try {
             // *========数据库日志=========*//
             OperLogEvent operLog = new OperLogEvent();
-            operLog.setUserId(Optional.ofNullable(LoginUserContextHolder.getUser()).map(LoginUser::getUserId).orElseGet(ServletUtils::getUserIdByRequestHead));
+            operLog.setUserId(Optional.ofNullable(LoginUserContextHolder.getUser())
+                    .map(LoginUser::getUserId)
+                    .orElseGet(ServletUtils::getUserIdByRequestHead));
             operLog.setTenantId(TenantContextHolder.getTenantId());
             operLog.setTraceId(TracerUtils.getTraceId());
             operLog.setStatus(BusinessStatus.SUCCESS.ordinal());
@@ -155,16 +157,18 @@ public class LogAspect {
     }
 
     private String getUserName() {
-        return Optional.ofNullable(LoginUserContextHolder.getUser()).map(LoginUser::getUsername).orElseGet(() -> {
-            Long userId = ServletUtils.getUserIdByRequestHead();
-            if (userId != null) {
-                final R<String> res = remoteUserService.selectAuditUserByUserId(userId);
-                if (VUtils.checkRes(res)) {
-                    return res.getData();
-                }
-            }
-            return null;
-        });
+        return Optional.ofNullable(LoginUserContextHolder.getUser())
+                .map(LoginUser::getUsername)
+                .orElseGet(() -> {
+                    Long userId = ServletUtils.getUserIdByRequestHead();
+                    if (userId != null) {
+                        final R<String> res = remoteUserService.selectAuditUserByUserId(userId);
+                        if (VUtils.checkRes(res)) {
+                            return res.getData();
+                        }
+                    }
+                    return null;
+                });
     }
 
     /**
@@ -174,7 +178,8 @@ public class LogAspect {
      * @param operLog 操作日志
      * @throws Exception
      */
-    public void getControllerMethodDescription(JoinPoint joinPoint, Log log, OperLogEvent operLog, Object jsonResult) throws Exception {
+    public void getControllerMethodDescription(JoinPoint joinPoint, Log log, OperLogEvent operLog, Object jsonResult)
+            throws Exception {
         // 设置action动作
         operLog.setBusinessType(log.businessType().ordinal());
         // 设置标题
@@ -198,16 +203,16 @@ public class LogAspect {
      * @param operLog 操作日志
      * @throws Exception 异常
      */
-    private void setRequestValue(JoinPoint joinPoint, OperLogEvent operLog, String[] excludeParamNames) throws Exception {
+    private void setRequestValue(JoinPoint joinPoint, OperLogEvent operLog, String[] excludeParamNames)
+            throws Exception {
         final HttpServletRequest request = ServletUtils.getRequest();
         String requestMethod = operLog.getRequestMethod();
-        if (HttpMethod.GET.name().equals(requestMethod) || HttpMethod.DELETE.name().equals(requestMethod)) {
+        if (HttpMethod.GET.name().equals(requestMethod)
+                || HttpMethod.DELETE.name().equals(requestMethod)) {
             Map<String, String> paramsMap = ServletUtils.getParamMap(request);
             operLog.setOperParam(JSON.toJSONString(paramsMap));
         } else {
             operLog.setOperParam(obtainMethodArgs(joinPoint));
         }
     }
-
-
 }

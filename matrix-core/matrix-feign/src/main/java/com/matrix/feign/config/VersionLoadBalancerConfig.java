@@ -5,6 +5,8 @@ import com.matrix.common.constant.ConfigConstants;
 import com.matrix.feign.chooser.IRuleChooser;
 import com.matrix.feign.chooser.NacosRuleChooser;
 import com.matrix.feign.loadbalancer.VersionLoadBalancerClientFactory;
+import java.util.Collections;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.ObjectProvider;
@@ -22,9 +24,6 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.Environment;
 import org.springframework.util.ClassUtils;
 
-import java.util.Collections;
-import java.util.List;
-
 /**
  * 版本控制的路由选择类配置
  */
@@ -40,11 +39,13 @@ public class VersionLoadBalancerConfig {
     public IRuleChooser customRuleChooser(Environment environment, ApplicationContext context) {
         IRuleChooser defaultRuleChooser = defaultRuleChooser();
         if (environment.containsProperty(ConfigConstants.CONFIG_LOADBALANCE_ISOLATION_CHOOSER)) {
-            String chooserRuleClassString = environment.getProperty(ConfigConstants.CONFIG_LOADBALANCE_ISOLATION_CHOOSER);
+            String chooserRuleClassString =
+                    environment.getProperty(ConfigConstants.CONFIG_LOADBALANCE_ISOLATION_CHOOSER);
             if (StringUtils.isNotBlank(chooserRuleClassString)) {
                 try {
                     Class<?> ruleClass = ClassUtils.forName(chooserRuleClassString, context.getClassLoader());
-                    defaultRuleChooser = (IRuleChooser) ruleClass.getDeclaredConstructor().newInstance();
+                    defaultRuleChooser =
+                            (IRuleChooser) ruleClass.getDeclaredConstructor().newInstance();
                 } catch (Exception e) {
                     log.warn("没有找到定义的选择器，将使用内置的选择器：com.matrix.feign.chooser.NacosRuleChooser", e);
                 }
@@ -59,15 +60,19 @@ public class VersionLoadBalancerConfig {
         return new NacosRuleChooser();
     }
 
-
     @Bean
     @Primary
-    @ConditionalOnProperty(prefix = ConfigConstants.CONFIG_LOADBALANCE_ISOLATION, name = "enabled", havingValue = "true")
-    public LoadBalancerClientFactory versionLoadBalancerConfig(LoadBalancerClientsProperties properties,
-                                                               ObjectProvider<List<LoadBalancerClientSpecification>> configurations,
-                                                               IRuleChooser ruleChooser,
-                                                               GaryLoadBalanceProperties loadBalanceProperties) {
-        final VersionLoadBalancerClientFactory versionLoadBalancerConfig = new VersionLoadBalancerClientFactory(properties, ruleChooser, loadBalanceProperties);
+    @ConditionalOnProperty(
+            prefix = ConfigConstants.CONFIG_LOADBALANCE_ISOLATION,
+            name = "enabled",
+            havingValue = "true")
+    public LoadBalancerClientFactory versionLoadBalancerConfig(
+            LoadBalancerClientsProperties properties,
+            ObjectProvider<List<LoadBalancerClientSpecification>> configurations,
+            IRuleChooser ruleChooser,
+            GaryLoadBalanceProperties loadBalanceProperties) {
+        final VersionLoadBalancerClientFactory versionLoadBalancerConfig =
+                new VersionLoadBalancerClientFactory(properties, ruleChooser, loadBalanceProperties);
         versionLoadBalancerConfig.setConfigurations(configurations.getIfAvailable(Collections::emptyList));
         return versionLoadBalancerConfig;
     }

@@ -1,6 +1,5 @@
 package com.matrix.common.sdkutils;
 
-
 import java.util.Base64;
 
 public class Base64Url {

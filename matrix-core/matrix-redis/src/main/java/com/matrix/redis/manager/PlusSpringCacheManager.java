@@ -1,4 +1,5 @@
-package com.matrix.redis.manager; /**
+package com.matrix.redis.manager;
+/**
  * Copyright (c) 2013-2021 Nikita Koksharov
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,8 +14,12 @@ package com.matrix.redis.manager; /**
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 import com.matrix.redis.utils.RedisUtils;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import org.redisson.api.RMap;
 import org.redisson.api.RMapCache;
 import org.redisson.spring.cache.CacheConfig;
@@ -24,12 +29,6 @@ import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.transaction.TransactionAwareCacheDecorator;
 import org.springframework.util.StringUtils;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 /**
  * A {@link CacheManager} implementation
@@ -52,9 +51,7 @@ public class PlusSpringCacheManager implements CacheManager {
     /**
      * Creates CacheManager supplied by Redisson instance
      */
-    public PlusSpringCacheManager() {
-    }
-
+    public PlusSpringCacheManager() {}
 
     /**
      * Defines possibility of storing {@code null} values.
@@ -182,6 +179,4 @@ public class PlusSpringCacheManager implements CacheManager {
             dynamic = true;
         }
     }
-
-
 }

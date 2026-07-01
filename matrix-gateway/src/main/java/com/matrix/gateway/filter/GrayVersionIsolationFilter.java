@@ -1,9 +1,15 @@
 package com.matrix.gateway.filter;
 
+import static org.springframework.cloud.gateway.support.ServerWebExchangeUtils.*;
+
 import com.matrix.auto.properties.GaryLoadBalanceProperties;
 import com.matrix.feign.chooser.IRuleChooser;
 import com.matrix.gateway.loadbalancer.GrayLoadBalancer;
 import com.matrix.gateway.order.FilterOrder;
+import java.net.URI;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.client.ServiceInstance;
@@ -22,13 +28,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
-import java.net.URI;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import static org.springframework.cloud.gateway.support.ServerWebExchangeUtils.*;
-
 /**
  * 自定义权重灰度 + 前端版本控制灰度
  */
@@ -42,7 +41,6 @@ public class GrayVersionIsolationFilter implements GlobalFilter, Ordered {
     private final IRuleChooser ruleChooser;
     private final GaryLoadBalanceProperties loadBalanceProperties;
 
-
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         URI url = exchange.getAttribute(GATEWAY_REQUEST_URL_ATTR);
@@ -52,7 +50,7 @@ public class GrayVersionIsolationFilter implements GlobalFilter, Ordered {
         }
         // preserve the original url
         addOriginalRequestUrl(exchange, url);
-        //前端版本控制
+        // 前端版本控制
         if (log.isTraceEnabled()) {
             log.trace(ReactiveLoadBalancerClientFilter.class.getSimpleName() + " url before: " + url);
         }
@@ -60,18 +58,20 @@ public class GrayVersionIsolationFilter implements GlobalFilter, Ordered {
         URI requestUri = exchange.getAttribute(GATEWAY_REQUEST_URL_ATTR);
         String serviceId = requestUri.getHost();
         // SC 5.0 移除了 LoadBalancerLifecycleValidator，内联其 supports() 过滤逻辑
-        Set<LoadBalancerLifecycle> supportedLifecycleProcessors = clientFactory
-                .getInstances(serviceId, LoadBalancerLifecycle.class).values().stream()
-                .filter(l -> l.supports(RequestDataContext.class, ResponseData.class, ServiceInstance.class))
-                .collect(Collectors.toSet());
+        Set<LoadBalancerLifecycle> supportedLifecycleProcessors =
+                clientFactory.getInstances(serviceId, LoadBalancerLifecycle.class).values().stream()
+                        .filter(l -> l.supports(RequestDataContext.class, ResponseData.class, ServiceInstance.class))
+                        .collect(Collectors.toSet());
         DefaultRequest<RequestDataContext> lbRequest = new DefaultRequest<>(
                 new RequestDataContext(new RequestData(exchange.getRequest()), getHint(serviceId)));
 
-        return this.choose(exchange).doOnNext(response -> {
+        return this.choose(exchange)
+                .doOnNext(response -> {
                     if (!response.hasServer()) {
-                        supportedLifecycleProcessors.forEach(lifecycle -> lifecycle
-                                .onComplete(new CompletionContext<>(CompletionContext.Status.DISCARD, lbRequest, response)));
-                        throw NotFoundException.create(properties.isUse404(), "Unable to find instance for " + url.getHost());
+                        supportedLifecycleProcessors.forEach(lifecycle -> lifecycle.onComplete(
+                                new CompletionContext<>(CompletionContext.Status.DISCARD, lbRequest, response)));
+                        throw NotFoundException.create(
+                                properties.isUse404(), "Unable to find instance for " + url.getHost());
                     }
 
                     ServiceInstance retrievedInstance = response.getServer();
@@ -85,8 +85,8 @@ public class GrayVersionIsolationFilter implements GlobalFilter, Ordered {
                         overrideScheme = url.getScheme();
                     }
 
-                    DelegatingServiceInstance serviceInstance = new DelegatingServiceInstance(retrievedInstance,
-                            overrideScheme);
+                    DelegatingServiceInstance serviceInstance =
+                            new DelegatingServiceInstance(retrievedInstance, overrideScheme);
 
                     URI requestUrl = reconstructUri(serviceInstance, uri);
 
@@ -96,14 +96,18 @@ public class GrayVersionIsolationFilter implements GlobalFilter, Ordered {
                     exchange.getAttributes().put(GATEWAY_REQUEST_URL_ATTR, requestUrl);
                     exchange.getAttributes().put(GATEWAY_LOADBALANCER_RESPONSE_ATTR, response);
                     supportedLifecycleProcessors.forEach(lifecycle -> lifecycle.onStartRequest(lbRequest, response));
-                }).then(chain.filter(exchange))
-                .doOnError(throwable -> supportedLifecycleProcessors.forEach(lifecycle -> lifecycle
-                        .onComplete(new CompletionContext<ResponseData, ServiceInstance, RequestDataContext>(
-                                CompletionContext.Status.FAILED, throwable, lbRequest,
+                })
+                .then(chain.filter(exchange))
+                .doOnError(throwable -> supportedLifecycleProcessors.forEach(lifecycle ->
+                        lifecycle.onComplete(new CompletionContext<ResponseData, ServiceInstance, RequestDataContext>(
+                                CompletionContext.Status.FAILED,
+                                throwable,
+                                lbRequest,
                                 exchange.getAttribute(GATEWAY_LOADBALANCER_RESPONSE_ATTR)))))
-                .doOnSuccess(aVoid -> supportedLifecycleProcessors.forEach(lifecycle -> lifecycle
-                        .onComplete(new CompletionContext<ResponseData, ServiceInstance, RequestDataContext>(
-                                CompletionContext.Status.SUCCESS, lbRequest,
+                .doOnSuccess(aVoid -> supportedLifecycleProcessors.forEach(lifecycle ->
+                        lifecycle.onComplete(new CompletionContext<ResponseData, ServiceInstance, RequestDataContext>(
+                                CompletionContext.Status.SUCCESS,
+                                lbRequest,
                                 exchange.getAttribute(GATEWAY_LOADBALANCER_RESPONSE_ATTR),
                                 new ResponseData(exchange.getResponse(), new RequestData(exchange.getRequest()))))));
     }
@@ -127,8 +131,11 @@ public class GrayVersionIsolationFilter implements GlobalFilter, Ordered {
 
     private Mono<Response<ServiceInstance>> choose(ServerWebExchange exchange) {
         URI uri = exchange.getAttribute(ServerWebExchangeUtils.GATEWAY_REQUEST_URL_ATTR);
-        GrayLoadBalancer loadBalancer = new GrayLoadBalancer(clientFactory.getLazyProvider(uri.getHost(), ServiceInstanceListSupplier.class)
-                , uri.getHost(), this.ruleChooser, loadBalanceProperties);
+        GrayLoadBalancer loadBalancer = new GrayLoadBalancer(
+                clientFactory.getLazyProvider(uri.getHost(), ServiceInstanceListSupplier.class),
+                uri.getHost(),
+                this.ruleChooser,
+                loadBalanceProperties);
         return loadBalancer.choose(this.createRequest(exchange));
     }
 

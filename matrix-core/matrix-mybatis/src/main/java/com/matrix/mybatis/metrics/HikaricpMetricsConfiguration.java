@@ -25,5 +25,4 @@ public class HikaricpMetricsConfiguration {
     public MetricsTrackerFactory druidFilterRegistrationBean() {
         return new PrometheusMetricsTrackerFactory();
     }
-
 }

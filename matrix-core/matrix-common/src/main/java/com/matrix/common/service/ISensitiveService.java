@@ -13,5 +13,4 @@ public interface ISensitiveService {
      * 是否脱敏
      */
     boolean isSensitive();
-
 }

@@ -22,7 +22,6 @@ import org.springframework.context.annotation.Conditional;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-
 /**
  * @author owen
  * 告警通知切面
@@ -33,10 +32,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 @ConditionalOnClass({HttpServletRequest.class, RequestContextHolder.class})
 public class ExceptionNoticeAspect {
 
-
     @Resource
     private ObjectMapper objectMapper;
-
 
     @After("@within(exceptionNoticeLog) || @annotation(exceptionNoticeLog)")
     public void beforeMethod(JoinPoint joinPoint, ExceptionNoticeLog exceptionNoticeLog) {
@@ -57,7 +54,8 @@ public class ExceptionNoticeAspect {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
         ExceptionEvent event = ExceptionEvent.builder().build();
-        event.setApplication(Optional.ofNullable(SpringUtil.getProperty("spring.application.name")).orElseGet(() -> "default"));
+        event.setApplication(Optional.ofNullable(SpringUtil.getProperty("spring.application.name"))
+                .orElseGet(() -> "default"));
         event.setApiPath(request.getRequestURI());
         event.setTraceId(TracerUtils.getTraceId());
         event.setMessage(objectMapper.writeValueAsString(exception.getMessage()));
@@ -69,16 +67,19 @@ public class ExceptionNoticeAspect {
         try {
             StackTraceElement callInfo = exception.getStackTrace()[0];
             StringBuffer stringBuffer = new StringBuffer();
-            stringBuffer.append(DateUtil.formatDateTime(new Date())).append(" ")
-                    .append("[" + callInfo.getClassName() + "#" + callInfo.getMethodName() + "]").append("-")
-                    .append("[" + callInfo.getLineNumber() + "]").append("-")
-                    .append("[" + Thread.currentThread().getName() + "]").append(" ");
+            stringBuffer
+                    .append(DateUtil.formatDateTime(new Date()))
+                    .append(" ")
+                    .append("[" + callInfo.getClassName() + "#" + callInfo.getMethodName() + "]")
+                    .append("-")
+                    .append("[" + callInfo.getLineNumber() + "]")
+                    .append("-")
+                    .append("[" + Thread.currentThread().getName() + "]")
+                    .append(" ");
             return stringBuffer.toString();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
-
-
 }

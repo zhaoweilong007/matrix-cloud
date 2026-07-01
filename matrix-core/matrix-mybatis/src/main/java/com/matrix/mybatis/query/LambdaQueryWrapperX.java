@@ -5,11 +5,10 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.TableFieldInfo;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
-import org.springframework.util.StringUtils;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
+import org.springframework.util.StringUtils;
 
 /**
  * 拓展 MyBatis Plus QueryWrapper 类，主要增加如下功能：
@@ -37,7 +36,6 @@ public class LambdaQueryWrapperX<T> extends LambdaQueryWrapper<T> {
     public LambdaQueryWrapperX<T> select(Class<T> entityClass, Predicate<TableFieldInfo> predicate) {
         return (LambdaQueryWrapperX<T>) super.select(entityClass, predicate);
     }
-
 
     public LambdaQueryWrapperX<T> likeIfPresent(SFunction<T, ?> column, String val) {
         if (StringUtils.hasText(val)) {
@@ -157,5 +155,4 @@ public class LambdaQueryWrapperX<T> extends LambdaQueryWrapper<T> {
         super.in(column, coll);
         return this;
     }
-
 }

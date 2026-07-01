@@ -19,9 +19,8 @@ public class ValidateCodeHandler implements HandlerFunction<ServerResponse> {
 
     @Override
     public Mono<ServerResponse> handle(ServerRequest serverRequest) {
-        return validateCodeService.createCaptcha()
-                .onErrorResume(Mono::error)
-                .flatMap(ajax -> ServerResponse.status(HttpStatus.OK)
-                        .body(BodyInserters.fromValue(ajax)));
+        return validateCodeService.createCaptcha().onErrorResume(Mono::error).flatMap(ajax -> ServerResponse.status(
+                        HttpStatus.OK)
+                .body(BodyInserters.fromValue(ajax)));
     }
 }

@@ -22,9 +22,16 @@ public class SelectOneForUpdate extends AbstractMethod {
 
     @Override
     public MappedStatement injectMappedStatement(Class<?> mapperClass, Class<?> modelClass, TableInfo tableInfo) {
-        SqlSource sqlSource = languageDriver.createSqlSource(configuration, String.format(SQL_TEMPLATE,
-                sqlFirst(), sqlSelectColumns(tableInfo, true), tableInfo.getTableName(),
-                sqlWhereEntityWrapper(true, tableInfo), sqlComment()), modelClass);
+        SqlSource sqlSource = languageDriver.createSqlSource(
+                configuration,
+                String.format(
+                        SQL_TEMPLATE,
+                        sqlFirst(),
+                        sqlSelectColumns(tableInfo, true),
+                        tableInfo.getTableName(),
+                        sqlWhereEntityWrapper(true, tableInfo),
+                        sqlComment()),
+                modelClass);
         return this.addSelectMappedStatementForTable(mapperClass, MAPPER_METHOD, sqlSource, tableInfo);
     }
 }

@@ -28,5 +28,4 @@ public enum MethodTypeEnum {
     OPTIONS(false);
 
     private final boolean hasContent;
-
 }

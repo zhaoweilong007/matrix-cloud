@@ -3,7 +3,6 @@ package com.matrix.mongodb.core.wrapper;
 import com.matrix.mongodb.core.entity.Condition;
 import com.matrix.mongodb.core.entity.SelectField;
 import com.matrix.mongodb.core.entity.SortCondition;
-
 import java.util.Collections;
 import java.util.List;
 
@@ -37,10 +36,14 @@ public class ConditionWrapper {
      */
     private Integer limit;
 
-    public ConditionWrapper() {
-    }
+    public ConditionWrapper() {}
 
-    public ConditionWrapper(List<SelectField> fields, List<Condition> conditions, List<SortCondition> sortConditions, Long skip, Integer limit) {
+    public ConditionWrapper(
+            List<SelectField> fields,
+            List<Condition> conditions,
+            List<SortCondition> sortConditions,
+            Long skip,
+            Integer limit) {
         this.fields = fields;
         this.conditions = conditions;
         this.sortConditions = sortConditions;

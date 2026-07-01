@@ -2,14 +2,13 @@ package com.matrix.seata.config;
 
 import com.matrix.auto.factory.YamlPropertySourceFactory;
 import jakarta.annotation.PostConstruct;
+import java.sql.SQLException;
+import javax.sql.DataSource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.PropertySource;
-
-import javax.sql.DataSource;
-import java.sql.SQLException;
 
 /**
  * Seata配置
@@ -22,7 +21,8 @@ import java.sql.SQLException;
 @Slf4j
 public class SeataConfiguration {
 
-    public static final String undoLogSql = """
+    public static final String undoLogSql =
+            """
             CREATE TABLE IF NOT EXISTS `undo_log`
             (
                 `branch_id`     BIGINT       NOT NULL COMMENT 'branch transaction id',
@@ -37,6 +37,7 @@ public class SeataConfiguration {
               AUTO_INCREMENT = 1
               DEFAULT CHARSET = utf8mb4 COMMENT ='AT transaction mode undo table';
             """;
+
     @Autowired
     public DataSource dataSource;
 
@@ -52,5 +53,4 @@ public class SeataConfiguration {
             log.error("创建[seata] undo_log表错误。", e);
         }
     }
-
 }

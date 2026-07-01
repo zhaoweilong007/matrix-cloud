@@ -14,5 +14,4 @@ public class IdempotentAutoConfiguration {
     public RepeatSubmitAspect repeatSubmitAspect() {
         return new RepeatSubmitAspect();
     }
-
 }

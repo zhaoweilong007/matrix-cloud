@@ -15,7 +15,6 @@ public interface UserConstants {
      */
     Integer MENU_NORMAL = 1;
 
-
     /**
      * 菜单类型（菜单）
      */

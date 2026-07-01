@@ -35,5 +35,4 @@ public final class TimeUtil {
     public static long currentTimeMillis() {
         return currentTimeMillis;
     }
-
 }

@@ -1,10 +1,6 @@
 package com.matrix.redis.utils;
 
 import cn.hutool.extra.spring.SpringUtil;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-import org.redisson.api.*;
-
 import java.time.Duration;
 import java.util.Collection;
 import java.util.List;
@@ -13,6 +9,9 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import org.redisson.api.*;
 
 /**
  * redis 工具类
@@ -232,7 +231,6 @@ public class RedisUtils {
     public static long remainTimeToLive(final String key) {
         return CLIENT.getBucket(key).remainTimeToLive();
     }
-
 
     /**
      * 缓存List数据
@@ -460,7 +458,6 @@ public class RedisUtils {
         return atomic.getAndIncrement();
     }
 
-
     /**
      * 递减原子值
      *
@@ -502,7 +499,6 @@ public class RedisUtils {
         return rKeys.countExists(key) > 0;
     }
 
-
     /**
      * 如果不存在则设置 并返回 true 如果存在则返回 false
      *
@@ -514,5 +510,4 @@ public class RedisUtils {
         RBucket<T> bucket = CLIENT.getBucket(key);
         return bucket.setIfAbsent(value, duration);
     }
-
 }

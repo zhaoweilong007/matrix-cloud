@@ -2,9 +2,8 @@ package com.matrix.common.model;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.matrix.common.entity.BaseIdEntity;
-import lombok.Data;
-
 import java.io.Serializable;
+import lombok.Data;
 
 /**
  * <p>
@@ -17,7 +16,6 @@ import java.io.Serializable;
 @Data
 @TableName("sys_region_dict")
 public class SysRegionDict extends BaseIdEntity implements Serializable {
-
 
     /**
      * 地区编码

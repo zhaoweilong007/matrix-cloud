@@ -13,15 +13,14 @@ import com.matrix.common.entity.BaseEntity;
 import com.matrix.common.model.login.LoginUser;
 import com.matrix.common.util.servlet.ServletUtils;
 import io.vavr.control.Option;
+import java.time.LocalDateTime;
+import java.util.Objects;
 import org.apache.ibatis.reflection.MetaObject;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-
-import java.time.LocalDateTime;
-import java.util.Objects;
 
 /**
  * 描述：<p>mybatis plus配置</p>
@@ -38,9 +37,9 @@ public class MybatisPlusConfig {
     public MybatisPlusInterceptor mybatisPlusInterceptor() {
         MybatisPlusInterceptor mybatisPlusInterceptor = new MybatisPlusInterceptor();
         final PaginationInnerInterceptor paginationInnerInterceptor = new PaginationInnerInterceptor();
-        //分页合理化
+        // 分页合理化
         paginationInnerInterceptor.setOverflow(false);
-        //查询最大数量 防止sql没有限制条件 数据量太大
+        // 查询最大数量 防止sql没有限制条件 数据量太大
         paginationInnerInterceptor.setMaxLimit(1000L);
         mybatisPlusInterceptor.addInnerInterceptor(paginationInnerInterceptor);
         mybatisPlusInterceptor.addInnerInterceptor(new OptimisticLockerInnerInterceptor());
@@ -56,7 +55,6 @@ public class MybatisPlusConfig {
     public IdentifierGenerator idGenerator() {
         return new DefaultIdentifierGenerator(NetUtil.getLocalhost());
     }
-
 
     @Bean
     public MetaObjectHandler defaultMetaObjectHandler() {
@@ -75,7 +73,6 @@ public class MybatisPlusConfig {
                     }
                     this.updateFill(metaObject);
                 }
-
             }
 
             @Override
@@ -91,8 +88,8 @@ public class MybatisPlusConfig {
     }
 
     private Long getUserId() {
-        return Option.of(LoginUserContextHolder.getUser()).map(LoginUser::getUserId)
+        return Option.of(LoginUserContextHolder.getUser())
+                .map(LoginUser::getUserId)
                 .getOrElse(ServletUtils.getUserIdByRequestHead());
     }
-
 }

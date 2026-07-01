@@ -22,7 +22,6 @@ public interface IUserNameService {
     @GetMapping("/sys/user/selectUserNameById")
     R<String> selectUserNameById(@RequestParam("userId") Long userId);
 
-
     /**
      * 选择用户信息通过id
      *

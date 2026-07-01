@@ -7,15 +7,14 @@ import com.matrix.common.context.TenantContextHolder;
 import com.matrix.common.request.CacheRequestBodyWrapper;
 import feign.RequestInterceptor;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 /**
  * @author ZhaoWeiLong
@@ -31,7 +30,7 @@ public class FeignAutoConfig {
         requestHeaders.add(CommonConstants.USER_ID_HEADER);
         requestHeaders.add(CommonConstants.VERSION_HEADER);
         requestHeaders.add(CommonConstants.TOKEN_HEADER);
-        array = requestHeaders.toArray(new String[]{});
+        array = requestHeaders.toArray(new String[] {});
     }
 
     /**
@@ -40,15 +39,15 @@ public class FeignAutoConfig {
     @Bean
     public RequestInterceptor requestInterceptor() {
         return requestTemplate -> {
-            //服务内部调用携带token
+            // 服务内部调用携带token
             requestTemplate.header(SaSameUtil.SAME_TOKEN, SaSameUtil.getToken());
-            //传递tenantId
+            // 传递tenantId
             Long tenantId = TenantContextHolder.getTenantId();
             if (tenantId != null) {
                 requestTemplate.header(CommonConstants.TENANT_ID_HEADER, String.valueOf(tenantId));
             }
-            ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder
-                    .getRequestAttributes();
+            ServletRequestAttributes attributes =
+                    (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
             if (attributes != null) {
                 final HttpServletRequest httpServletRequest = attributes.getRequest();
                 if (httpServletRequest instanceof CacheRequestBodyWrapper request) {

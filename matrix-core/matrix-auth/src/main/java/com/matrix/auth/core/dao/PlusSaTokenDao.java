@@ -1,10 +1,8 @@
 package com.matrix.auth.core.dao;
 
-import cn.dev33.satoken.dao.SaTokenDao;
 import cn.dev33.satoken.dao.auto.SaTokenDaoBySessionFollowObject;
 import cn.dev33.satoken.util.SaFoxUtil;
 import com.matrix.redis.utils.RedisUtils;
-
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -88,7 +86,6 @@ public class PlusSaTokenDao implements SaTokenDaoBySessionFollowObject {
         RedisUtils.expire(key, Duration.ofSeconds(timeout));
     }
 
-
     /**
      * 获取Object，如无返空
      */
@@ -166,7 +163,6 @@ public class PlusSaTokenDao implements SaTokenDaoBySessionFollowObject {
         }
         RedisUtils.expire(key, Duration.ofSeconds(timeout));
     }
-
 
     /**
      * 搜索数据

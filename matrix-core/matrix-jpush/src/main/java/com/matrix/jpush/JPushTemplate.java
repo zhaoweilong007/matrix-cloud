@@ -19,15 +19,14 @@ import com.matrix.common.enums.SystemErrorTypeEnum;
 import com.matrix.common.exception.ServiceException;
 import com.matrix.jpush.domain.PushObject;
 import com.matrix.jpush.properties.JPushProperties;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-
-import javax.crypto.Cipher;
 import java.security.KeyFactory;
 import java.security.PrivateKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Base64;
 import java.util.List;
+import javax.crypto.Cipher;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author ZhaoWeiLong
@@ -39,7 +38,6 @@ public class JPushTemplate {
 
     private final JPushClient jPushClient;
     private final JPushProperties properties;
-
 
     public JPushTemplate(JPushProperties properties) {
         this.properties = properties;
@@ -59,7 +57,8 @@ public class JPushTemplate {
     }
 
     public boolean sendPush(Audience audience, PushObject pushObject) {
-        PushPayload payload = JPushNotifications.buildPushPayloadForAndroidAndIos(properties.getApnsProduction(), audience, pushObject);
+        PushPayload payload = JPushNotifications.buildPushPayloadForAndroidAndIos(
+                properties.getApnsProduction(), audience, pushObject);
         try {
             PushResult result = jPushClient.sendPush(payload);
             log.debug("sendPush result:{}", result);
@@ -81,7 +80,6 @@ public class JPushTemplate {
             log.error("清理Alias异常", e);
         }
     }
-
 
     /**
      * 通过token获取手机号
@@ -114,7 +112,8 @@ public class JPushTemplate {
 
     public String decrypt(String phone) {
         try {
-            PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(Base64.getDecoder().decode(properties.getPrivateKey()));
+            PKCS8EncodedKeySpec keySpec =
+                    new PKCS8EncodedKeySpec(Base64.getDecoder().decode(properties.getPrivateKey()));
             PrivateKey privateKey = KeyFactory.getInstance("RSA").generatePrivate(keySpec);
             Cipher cipher = Cipher.getInstance("RSA");
             cipher.init(Cipher.DECRYPT_MODE, privateKey);
@@ -125,6 +124,4 @@ public class JPushTemplate {
             throw new ServiceException(SystemErrorTypeEnum.SYSTEM_ERROR);
         }
     }
-
-
 }

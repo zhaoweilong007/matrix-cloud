@@ -6,10 +6,9 @@ import cn.hutool.core.lang.tree.TreeNodeConfig;
 import cn.hutool.core.lang.tree.TreeUtil;
 import cn.hutool.core.lang.tree.parser.NodeParser;
 import com.matrix.common.util.reflect.ReflectUtils;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 /**
  * 扩展 hutool TreeUtil 封装系统树构建
@@ -29,5 +28,4 @@ public class TreeBuildUtils extends TreeUtil {
         K k = ReflectUtils.invokeGetter(list.get(0), "parentId");
         return TreeUtil.build(list, k, DEFAULT_CONFIG, nodeParser);
     }
-
 }

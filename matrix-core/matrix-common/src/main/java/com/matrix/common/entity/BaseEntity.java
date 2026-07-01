@@ -6,9 +6,8 @@ import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-
 import java.time.LocalDateTime;
+import lombok.Data;
 
 /**
  * 描述：<p>实体类基类 mybatis plus通用</p>
@@ -55,5 +54,4 @@ public abstract class BaseEntity extends BaseIdEntity {
     @TableLogic
     @JsonIgnore
     private Boolean deleted;
-
 }

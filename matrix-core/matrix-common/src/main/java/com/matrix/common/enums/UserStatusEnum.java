@@ -9,9 +9,10 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum UserStatusEnum {
-    OK("1", "正常"), DISABLE("0", "停用"), DELETED("2", "删除");
+    OK("1", "正常"),
+    DISABLE("0", "停用"),
+    DELETED("2", "删除");
 
     private final String code;
     private final String info;
-
 }

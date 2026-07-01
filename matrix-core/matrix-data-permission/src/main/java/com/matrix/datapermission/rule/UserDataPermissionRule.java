@@ -12,7 +12,6 @@ public class UserDataPermissionRule extends AbstractDataPermissionRule {
 
     public static final String USER_COLUMN = "created_by";
 
-
     @Override
     public String getColumnName() {
         return USER_COLUMN;

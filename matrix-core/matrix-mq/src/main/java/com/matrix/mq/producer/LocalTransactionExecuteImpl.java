@@ -37,10 +37,10 @@ public class LocalTransactionExecuteImpl implements LocalTransactionExecuter {
             transactionStatus = transactionExecuter.executer(messageEvent, crc32Id, arg);
         } catch (Exception e) {
             log.error(
-                    "TransactionChecker.check has error.message id:" + msgId + " , message:" + JSON.toJSONString(messageEvent) + ", arg:" + JSON.toJSONString(
-                            arg), e);
+                    "TransactionChecker.check has error.message id:" + msgId + " , message:"
+                            + JSON.toJSONString(messageEvent) + ", arg:" + JSON.toJSONString(arg),
+                    e);
         }
         return transactionStatus == null ? TransactionStatus.Unknow : transactionStatus;
     }
-
 }

@@ -2,7 +2,6 @@ package com.matrix.common.util.object;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.ReflectUtil;
-
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.function.Consumer;
@@ -57,5 +56,4 @@ public class ObjectUtils {
     public static <T> boolean equalsAny(T obj, T... array) {
         return Arrays.asList(array).contains(obj);
     }
-
 }

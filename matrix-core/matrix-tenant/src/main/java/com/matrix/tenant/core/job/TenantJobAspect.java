@@ -8,6 +8,10 @@ import com.matrix.tenant.core.service.ITenantFrameworkService;
 import com.matrix.tenant.core.util.TenantUtils;
 import com.xxl.job.core.context.XxlJobHelper;
 import com.xxl.job.core.handler.annotation.XxlJob;
+import java.lang.annotation.Annotation;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -15,11 +19,6 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
-
-import java.lang.annotation.Annotation;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Aspect
 @RequiredArgsConstructor
@@ -29,8 +28,12 @@ public class TenantJobAspect {
     private final ITenantFrameworkService ITenantFrameworkService;
 
     @SuppressWarnings("SameParameterValue")
-    private static <T extends Annotation> T getClassAnnotation(ProceedingJoinPoint joinPoint, Class<T> annotationClass) {
-        return ((MethodSignature) joinPoint.getSignature()).getMethod().getDeclaringClass().getAnnotation(annotationClass);
+    private static <T extends Annotation> T getClassAnnotation(
+            ProceedingJoinPoint joinPoint, Class<T> annotationClass) {
+        return ((MethodSignature) joinPoint.getSignature())
+                .getMethod()
+                .getDeclaringClass()
+                .getAnnotation(annotationClass);
     }
 
     @Around("@annotation(xxlJob)")
@@ -56,15 +59,15 @@ public class TenantJobAspect {
         // 逐个租户，执行 Job
         Map<Long, String> results = new ConcurrentHashMap<>();
         tenantIds.parallelStream().forEach(tenantId -> {
-            //通过 parallel 实现并行；1）多个租户，是一条执行日志；2）异常的情况
+            // 通过 parallel 实现并行；1）多个租户，是一条执行日志；2）异常的情况
             TenantUtils.execute(tenantId, () -> {
                 try {
                     joinPoint.proceed();
                 } catch (Throwable e) {
                     results.put(tenantId, ExceptionUtil.getRootCauseMessage(e));
                     // 打印异常
-                    XxlJobHelper.log(StrUtil.format("[多租户({}) 执行任务({})，发生异常：{}]",
-                            tenantId, xxlJob.value(), ExceptionUtils.getStackTrace(e)));
+                    XxlJobHelper.log(StrUtil.format(
+                            "[多租户({}) 执行任务({})，发生异常：{}]", tenantId, xxlJob.value(), ExceptionUtils.getStackTrace(e)));
                 }
             });
         });
@@ -73,5 +76,4 @@ public class TenantJobAspect {
             XxlJobHelper.handleFail(JsonUtils.toJsonString(results));
         }
     }
-
 }

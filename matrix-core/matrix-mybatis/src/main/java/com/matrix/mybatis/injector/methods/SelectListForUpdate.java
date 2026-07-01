@@ -19,8 +19,13 @@ public class SelectListForUpdate extends AbstractMethod {
 
     @Override
     public MappedStatement injectMappedStatement(Class<?> mapperClass, Class<?> modelClass, TableInfo tableInfo) {
-        String sql = String.format(SQL_TEMPLATE, sqlFirst(), sqlSelectColumns(tableInfo, true), tableInfo.getTableName(),
-                sqlWhereEntityWrapper(true, tableInfo), sqlComment());
+        String sql = String.format(
+                SQL_TEMPLATE,
+                sqlFirst(),
+                sqlSelectColumns(tableInfo, true),
+                tableInfo.getTableName(),
+                sqlWhereEntityWrapper(true, tableInfo),
+                sqlComment());
         SqlSource sqlSource = languageDriver.createSqlSource(configuration, sql, modelClass);
         return this.addSelectMappedStatementForTable(mapperClass, MAPPER_METHOD, sqlSource, tableInfo);
     }

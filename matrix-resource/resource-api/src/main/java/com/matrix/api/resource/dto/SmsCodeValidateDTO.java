@@ -31,5 +31,4 @@ public class SmsCodeValidateDTO {
     @Schema(description = "验证码")
     @NotEmpty(message = "验证码不能为空")
     private String code;
-
 }

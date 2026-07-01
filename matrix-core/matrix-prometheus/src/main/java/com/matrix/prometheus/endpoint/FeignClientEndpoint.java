@@ -1,5 +1,10 @@
 package com.matrix.prometheus.endpoint;
 
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,12 +17,6 @@ import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Feign client 端点
@@ -68,7 +67,8 @@ public class FeignClientEndpoint implements SmartInitializingSingleton {
                     if (method.isDefault()) {
                         continue;
                     }
-                    RequestMapping requestMapping = AnnotatedElementUtils.getMergedAnnotation(method, RequestMapping.class);
+                    RequestMapping requestMapping =
+                            AnnotatedElementUtils.getMergedAnnotation(method, RequestMapping.class);
                     if (requestMapping == null) {
                         continue;
                     }
@@ -108,5 +108,4 @@ public class FeignClientEndpoint implements SmartInitializingSingleton {
         private final RequestMethod[] methods;
         private final String[] mappings;
     }
-
 }

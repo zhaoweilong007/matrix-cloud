@@ -2,7 +2,6 @@ package com.matrix.sentinel.flow;
 
 import com.matrix.sentinel.flow.common.ArrayMetric;
 
-
 /**
  * 统计一小时及每分钟的流量
  *
@@ -24,5 +23,4 @@ public class HourFlower extends BaseFlower {
         // 将毫秒转为分钟（平均每分钟）
         return windowInterval / (60 * 1000L);
     }
-
 }

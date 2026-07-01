@@ -26,29 +26,27 @@ public class WebSecurityConfigurer {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-        SavedRequestAwareAuthenticationSuccessHandler successHandler = new SavedRequestAwareAuthenticationSuccessHandler();
+        SavedRequestAwareAuthenticationSuccessHandler successHandler =
+                new SavedRequestAwareAuthenticationSuccessHandler();
         successHandler.setTargetUrlParameter("redirectTo");
         successHandler.setDefaultTargetUrl(adminContextPath + "/");
 
         return httpSecurity
-                .headers((header) ->
-                        header.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
+                .headers((header) -> header.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(
                                 adminContextPath + "/assets/**",
                                 adminContextPath + "/login",
                                 "/actuator",
-                                "/actuator/**"
-                        ).permitAll()
-                        .anyRequest().authenticated()
-                )
+                                "/actuator/**")
+                        .permitAll()
+                        .anyRequest()
+                        .authenticated())
                 .formLogin((formLogin) ->
                         formLogin.loginPage(adminContextPath + "/login").successHandler(successHandler))
-                .logout((logout) ->
-                        logout.logoutUrl(adminContextPath + "/logout"))
+                .logout((logout) -> logout.logoutUrl(adminContextPath + "/logout"))
                 .httpBasic(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .build();
     }
-
 }

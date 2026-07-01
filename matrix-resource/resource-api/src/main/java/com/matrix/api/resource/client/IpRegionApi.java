@@ -20,14 +20,12 @@ public interface IpRegionApi {
 
     String PREFIX = "/ip/region";
 
-
     /**
      * 根据ip获取ip信息
      *
      * @param ip ip地址
      * @return {@link R}<{@link IpInfoVo}>
      */
-
     @Parameter(name = "ip", description = "ip地址", in = ParameterIn.QUERY, required = true)
     @Operation(summary = "根据ip获取ip信息", description = "根据ip获取ip信息")
     @GetMapping("/byIp")
@@ -38,10 +36,7 @@ public interface IpRegionApi {
      *
      * @return {@link R}<{@link IpInfoVo}>
      */
-
     @Operation(summary = "获取ip信息", description = "获取ip信息")
     @GetMapping
     R<IpInfoVo> ipInfo();
-
-
 }

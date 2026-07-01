@@ -4,7 +4,6 @@ import com.matrix.common.entity.BaseEntity;
 import com.matrix.datapermission.annotation.DataPermission;
 import com.matrix.datapermission.aop.DataPermissionContextHolder;
 import com.matrix.datapermission.rule.DataPermissionRule;
-
 import java.lang.annotation.Annotation;
 
 /**
@@ -39,7 +38,6 @@ public class DataPermissionUtils {
         }
     };
 
-
     /**
      * 忽略数据权限，执行对应的逻辑
      *
@@ -54,6 +52,4 @@ public class DataPermissionUtils {
             DataPermissionContextHolder.remove();
         }
     }
-
-
 }

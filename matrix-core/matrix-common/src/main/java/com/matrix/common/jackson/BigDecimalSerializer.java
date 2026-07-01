@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.ContextualSerializer;
 import com.matrix.common.annotation.BigDecimalFormat;
-
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -18,18 +17,18 @@ import java.util.Objects;
  **/
 public class BigDecimalSerializer extends JsonSerializer<Object> implements ContextualSerializer {
 
-    protected final static int MAX_BIG_DECIMAL_SCALE = 9999;
+    protected static final int MAX_BIG_DECIMAL_SCALE = 9999;
     private BigDecimalFormat bigDecimalFormat;
 
     @Override
-    public JsonSerializer<?> createContextual(SerializerProvider prov, BeanProperty property) throws JsonMappingException {
+    public JsonSerializer<?> createContextual(SerializerProvider prov, BeanProperty property)
+            throws JsonMappingException {
         BigDecimalFormat bigDecimalFormat = property.getAnnotation(BigDecimalFormat.class);
         if (Objects.nonNull(bigDecimalFormat)) {
             this.bigDecimalFormat = bigDecimalFormat;
         }
         return this;
     }
-
 
     // 24-Aug-2016, tatu: [core#315] prevent possible DoS vector, so we need this
     protected boolean _verifyBigDecimalRange(JsonGenerator gen, BigDecimal value) throws IOException {
@@ -67,13 +66,13 @@ public class BigDecimalSerializer extends JsonSerializer<Object> implements Cont
         }
 
         final BigDecimalFormat.Format format = bigDecimalFormat.format();
-        var mappingResult = switch (format) {
-            case normal -> bigDecimal;
-            case multi -> bigDecimal.multiply(BigDecimal.valueOf(bigDecimalFormat.multiple()));
-            case divide -> bigDecimal.divide(BigDecimal.valueOf(bigDecimalFormat.multiple()), bigDecimalFormat.mode());
-        };
+        var mappingResult =
+                switch (format) {
+                    case normal -> bigDecimal;
+                    case multi -> bigDecimal.multiply(BigDecimal.valueOf(bigDecimalFormat.multiple()));
+                    case divide -> bigDecimal.divide(
+                            BigDecimal.valueOf(bigDecimalFormat.multiple()), bigDecimalFormat.mode());
+                };
         gen.writeString(mappingResult.toPlainString());
     }
-
-
 }

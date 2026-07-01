@@ -11,11 +11,10 @@ import com.matrix.common.exception.ServiceException;
 import com.matrix.common.util.SqlUtil;
 import com.matrix.common.vo.PageParam;
 import com.matrix.common.vo.PageResult;
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * 描述：<p>分页查询工具类</p>
@@ -28,7 +27,6 @@ public class PageUtils {
     public static int getStart(PageParam pageParam) {
         return (pageParam.getPageNum() - 1) * pageParam.getPageSize();
     }
-
 
     /**
      * 执行分页请求
@@ -45,19 +43,20 @@ public class PageUtils {
                 .pageNum((int) result.getCurrent())
                 .pageSize((int) result.getSize())
                 .total((int) result.getTotal())
-                .data(result.getRecords()).build();
+                .data(result.getRecords())
+                .build();
     }
 
-
-    public static <Q extends PageParam, E, T> PageResult<E> pageQuery(Q query, Wrapper<T> wrapper, BiFunction<Page<T>, Wrapper<T>, Page<E>> fun) {
+    public static <Q extends PageParam, E, T> PageResult<E> pageQuery(
+            Q query, Wrapper<T> wrapper, BiFunction<Page<T>, Wrapper<T>, Page<E>> fun) {
         final Page<E> result = fun.apply(build(query), wrapper);
         return PageResult.<E>builder()
                 .pageNum((int) result.getCurrent())
                 .pageSize((int) result.getSize())
                 .total((int) result.getTotal())
-                .data(result.getRecords()).build();
+                .data(result.getRecords())
+                .build();
     }
-
 
     /**
      * mybatis plus使用
@@ -98,7 +97,7 @@ public class PageUtils {
         orderBy = StrUtil.toUnderlineCase(orderBy);
 
         // 兼容前端排序类型
-        isAsc = StringUtils.replaceEach(isAsc, new String[]{"ascending", "descending"}, new String[]{"asc", "desc"});
+        isAsc = StringUtils.replaceEach(isAsc, new String[] {"ascending", "descending"}, new String[] {"asc", "desc"});
 
         String[] orderByArr = orderBy.split(",");
         String[] isAscArr = isAsc.split(",");
@@ -122,13 +121,13 @@ public class PageUtils {
         return list;
     }
 
-
     public static <Q> PageResult<Q> buildPageResult(Page<Q> page) {
         return PageResult.<Q>builder()
                 .pageNum((int) page.getCurrent())
                 .pageSize((int) page.getSize())
                 .total((int) page.getTotal())
-                .data(page.getRecords()).build();
+                .data(page.getRecords())
+                .build();
     }
 
     public static <E> PageResult<E> buildPageResultEmpty(PageResult pageResult, List<E> data) {
@@ -136,7 +135,8 @@ public class PageUtils {
                 .pageNum(pageResult.getPageNum())
                 .pageSize(pageResult.getPageSize())
                 .total(pageResult.getTotal())
-                .data(data).build();
+                .data(data)
+                .build();
     }
 
     public static <Q> PageResult<Q> buildPageResult(Page page, List<Q> records) {
@@ -144,7 +144,8 @@ public class PageUtils {
                 .pageNum((int) page.getCurrent())
                 .pageSize((int) page.getSize())
                 .total((int) page.getTotal())
-                .data(records).build();
+                .data(records)
+                .build();
     }
 
     public static <Q> PageResult<Q> buildPageResult(PageResult page, List<Q> records) {
@@ -152,6 +153,7 @@ public class PageUtils {
                 .pageNum((int) page.getPageNum())
                 .pageSize((int) page.getPageSize())
                 .total((int) page.getTotal())
-                .data(records).build();
+                .data(records)
+                .build();
     }
 }

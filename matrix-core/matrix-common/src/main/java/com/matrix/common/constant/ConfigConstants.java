@@ -19,5 +19,4 @@ public interface ConfigConstants {
     String CONFIG_LOADBALANCE_ISOLATION_DEFAULT_VERSION = "matrix.load-balance.gray.defaultVersion";
 
     String CONFIG_LOADBALANCE_ISOLATION_CHOOSER = CONFIG_LOADBALANCE_ISOLATION + ".chooser";
-
 }

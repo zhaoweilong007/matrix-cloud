@@ -14,15 +14,14 @@ import com.matrix.common.vo.PageParam;
 import com.matrix.common.vo.PageResult;
 import com.matrix.mybatis.mapper.BaseMapperX;
 import com.matrix.mybatis.service.IRootService;
-
 import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * IRootService实现类
  */
-public class RootServiceImpl<M extends BaseMapperX<M, T, V>, T, V> extends MPJBaseServiceImpl<M, T> implements IRootService<T, V> {
-
+public class RootServiceImpl<M extends BaseMapperX<M, T, V>, T, V> extends MPJBaseServiceImpl<M, T>
+        implements IRootService<T, V> {
 
     @Override
     public boolean saveIdempotency(T entity, Wrapper<T> countWrapper) {
@@ -30,7 +29,6 @@ public class RootServiceImpl<M extends BaseMapperX<M, T, V>, T, V> extends MPJBa
         Assert.isTrue(count == 0, "记录已存在");
         return super.save(entity);
     }
-
 
     @Override
     public boolean saveOrUpdateIdempotency(T entity, Wrapper<T> countWrapper) {
@@ -50,7 +48,6 @@ public class RootServiceImpl<M extends BaseMapperX<M, T, V>, T, V> extends MPJBa
         }
         return false;
     }
-
 
     @Override
     public <Q extends PageParam> PageResult<V> selectVoPage(Q pageParam) {

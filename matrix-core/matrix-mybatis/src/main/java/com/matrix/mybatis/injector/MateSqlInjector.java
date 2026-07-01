@@ -21,7 +21,6 @@ import com.baomidou.mybatisplus.core.injector.DefaultSqlInjector;
 import com.baomidou.mybatisplus.core.metadata.TableInfo;
 import com.matrix.mybatis.injector.methods.SelectListForUpdate;
 import com.matrix.mybatis.injector.methods.SelectOneForUpdate;
-
 import java.util.List;
 
 /**
@@ -30,7 +29,6 @@ import java.util.List;
  * @author L.cm
  */
 public class MateSqlInjector extends DefaultSqlInjector {
-
 
     @Override
     public List<AbstractMethod> getMethodList(Class<?> mapperClass, TableInfo tableInfo) {

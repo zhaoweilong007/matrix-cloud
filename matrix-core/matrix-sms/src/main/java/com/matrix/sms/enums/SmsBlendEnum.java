@@ -10,12 +10,12 @@ import java.util.Objects;
  * @since 2023/10/19
  **/
 public enum SmsBlendEnum {
-
     ALIYUN();
 
-
     public static SmsBlendEnum ofName(String name) {
-        return Arrays.stream(values()).filter(smsBlendEnum -> Objects.equals(smsBlendEnum.name(), name)).findFirst()
-            .orElse(null);
+        return Arrays.stream(values())
+                .filter(smsBlendEnum -> Objects.equals(smsBlendEnum.name(), name))
+                .findFirst()
+                .orElse(null);
     }
 }

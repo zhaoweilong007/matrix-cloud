@@ -34,5 +34,4 @@ public interface Nested<Param, LambdaQueryWrapper> extends Serializable {
      * @return 当前条件构造器
      */
     LambdaQueryWrapper and(boolean condition, Function<Param, Param> func);
-
 }

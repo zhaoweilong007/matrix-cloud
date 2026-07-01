@@ -1,8 +1,7 @@
 package com.matrix.common.exception;
 
-import lombok.Data;
-
 import java.util.List;
+import lombok.Data;
 
 /**
  * 描述：<p></p>
@@ -29,7 +28,6 @@ public class ExcelCheckException extends RuntimeException {
 
         private final List<T> newData;
 
-
         public ExcelCheckData(List<T> repeatData, List<T> noExistData, List<T> newData) {
             this.repeatData = repeatData;
             this.noExistData = noExistData;
@@ -37,4 +35,3 @@ public class ExcelCheckException extends RuntimeException {
         }
     }
 }
-

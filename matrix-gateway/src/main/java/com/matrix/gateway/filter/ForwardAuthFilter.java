@@ -15,8 +15,7 @@ import reactor.core.publisher.Mono;
 public class ForwardAuthFilter implements GlobalFilter, Ordered {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        ServerHttpRequest newRequest = exchange
-                .getRequest()
+        ServerHttpRequest newRequest = exchange.getRequest()
                 .mutate()
                 // 为请求追加 Same-Token 参数
                 .header(SaSameUtil.SAME_TOKEN, SaSameUtil.getToken())
@@ -30,4 +29,3 @@ public class ForwardAuthFilter implements GlobalFilter, Ordered {
         return FilterOrder.FORWARD_AUTH_FILTER;
     }
 }
-

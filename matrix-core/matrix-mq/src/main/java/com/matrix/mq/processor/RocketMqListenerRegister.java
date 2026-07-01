@@ -10,6 +10,8 @@ import com.matrix.mq.annotation.RocketMQMessageListener;
 import com.matrix.mq.constans.MQConstant;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
+import java.util.*;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.support.AopUtils;
@@ -18,9 +20,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
-
-import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * 消费者监听器注册
@@ -47,23 +46,25 @@ public class RocketMqListenerRegister implements ApplicationContextAware {
         consumers.forEach(this::registerConsumer);
 
         final Map<String, MessageListener> beansOfType = applicationContext.getBeansOfType(MessageListener.class);
-        Map<String, List<Object>> annotationMap = beansOfType.values().stream().filter(messageListener -> {
-            Class<?> clazz = AopUtils.getTargetClass(messageListener);
-            RocketMQMessageListener annotation = clazz.getAnnotation(RocketMQMessageListener.class);
-            return annotation != null;
-        }).collect(Collectors.groupingBy(bean -> {
-            Class<?> clazz = AopUtils.getTargetClass(bean);
-            RocketMQMessageListener annotation = clazz.getAnnotation(RocketMQMessageListener.class);
-            if (StrUtil.isEmpty(annotation.consumerGroup())) {
-                throw new IllegalArgumentException("consumerGroup can not be null");
-            }
-            if (ArrayUtil.isEmpty(annotation.tag())) {
-                throw new IllegalArgumentException("tag can not be null");
-            }
-            return annotation.consumerGroup();
-        }));
+        Map<String, List<Object>> annotationMap = beansOfType.values().stream()
+                .filter(messageListener -> {
+                    Class<?> clazz = AopUtils.getTargetClass(messageListener);
+                    RocketMQMessageListener annotation = clazz.getAnnotation(RocketMQMessageListener.class);
+                    return annotation != null;
+                })
+                .collect(Collectors.groupingBy(bean -> {
+                    Class<?> clazz = AopUtils.getTargetClass(bean);
+                    RocketMQMessageListener annotation = clazz.getAnnotation(RocketMQMessageListener.class);
+                    if (StrUtil.isEmpty(annotation.consumerGroup())) {
+                        throw new IllegalArgumentException("consumerGroup can not be null");
+                    }
+                    if (ArrayUtil.isEmpty(annotation.tag())) {
+                        throw new IllegalArgumentException("tag can not be null");
+                    }
+                    return annotation.consumerGroup();
+                }));
 
-        //注册监听器
+        // 注册监听器
         annotationMap.forEach((group, beans) -> {
             Consumer consumer = consumerBeanMap.get(buildBeanName(group));
             if (consumer != null) {
@@ -97,6 +98,4 @@ public class RocketMqListenerRegister implements ApplicationContextAware {
     private String buildBeanName(String groupId) {
         return MQConstant.CONSUMER_PREFIX + groupId;
     }
-
-
 }

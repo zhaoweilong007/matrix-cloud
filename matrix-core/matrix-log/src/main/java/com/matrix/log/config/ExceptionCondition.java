@@ -16,5 +16,4 @@ public class ExceptionCondition implements Condition {
     public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
         return context.getEnvironment().containsProperty("matrix.exception.notice.alertUrl");
     }
-
 }

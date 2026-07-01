@@ -1,7 +1,6 @@
 package com.matrix.mq.handler;
 
 import com.matrix.mq.annotation.RocketMQMessageListener;
-
 import java.lang.annotation.Annotation;
 
 /**

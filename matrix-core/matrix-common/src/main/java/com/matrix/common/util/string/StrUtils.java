@@ -3,7 +3,6 @@ package com.matrix.common.util.string;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
-
 import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -66,5 +65,4 @@ public class StrUtils extends StrUtil {
         Matcher matcher = pattern.matcher(phoneNumber);
         return matcher.matches();
     }
-
 }

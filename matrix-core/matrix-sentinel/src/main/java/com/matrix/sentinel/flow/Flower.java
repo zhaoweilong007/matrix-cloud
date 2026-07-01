@@ -2,7 +2,6 @@ package com.matrix.sentinel.flow;
 
 import com.matrix.sentinel.flow.common.MetricBucket;
 import com.matrix.sentinel.flow.common.WindowWrap;
-
 import java.util.List;
 
 /**
@@ -96,5 +95,4 @@ public interface Flower {
      * @return
      */
     List<WindowWrap<MetricBucket>> windows();
-
 }

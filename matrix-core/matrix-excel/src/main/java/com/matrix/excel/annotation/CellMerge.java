@@ -1,6 +1,5 @@
 package com.matrix.excel.annotation;
 
-
 import java.lang.annotation.*;
 
 /**
@@ -17,5 +16,4 @@ public @interface CellMerge {
      * col index
      */
     int index() default -1;
-
 }

@@ -5,12 +5,11 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.matrix.common.constant.CacheConstants;
 import com.matrix.common.model.RoleDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.io.Serializable;
 import java.security.Principal;
 import java.util.List;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 用户信息

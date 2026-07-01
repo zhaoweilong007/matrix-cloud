@@ -23,5 +23,4 @@ public class JPushController implements JPushApi {
         Assert.notNull(template, "app类型不支持：" + appEnum);
         return R.success(template.getPhoneNumberByToken(token));
     }
-
 }

@@ -1,9 +1,7 @@
 package com.matrix.mongodb.core.sdk;
 
-
 import com.matrix.mongodb.core.entity.Page;
 import com.matrix.mongodb.core.wrapper.LambdaQueryWrapper;
-
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
@@ -122,5 +120,4 @@ public interface EasyMongoService<ID extends Serializable, T> {
      * @return 是否存在数据
      */
     boolean exist(LambdaQueryWrapper<T> queryWrapper);
-
 }

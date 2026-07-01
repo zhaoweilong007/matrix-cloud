@@ -247,5 +247,4 @@ public abstract class LeapArray<T> {
     public int getIntervalInMs() {
         return intervalInMs;
     }
-
 }

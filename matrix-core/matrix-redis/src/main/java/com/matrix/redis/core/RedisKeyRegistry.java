@@ -24,5 +24,4 @@ public class RedisKeyRegistry {
     public static int size() {
         return DEFINES.size();
     }
-
 }

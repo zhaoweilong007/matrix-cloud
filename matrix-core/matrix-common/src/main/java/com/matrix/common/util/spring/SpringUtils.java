@@ -65,5 +65,4 @@ public final class SpringUtils extends SpringUtil {
     public static ApplicationContext context() {
         return getApplicationContext();
     }
-
 }

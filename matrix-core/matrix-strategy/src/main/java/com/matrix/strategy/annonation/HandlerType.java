@@ -1,8 +1,7 @@
 package com.matrix.strategy.annonation;
 
-import org.springframework.stereotype.Service;
-
 import java.lang.annotation.*;
+import org.springframework.stereotype.Service;
 
 /**
  * 策略模式注解

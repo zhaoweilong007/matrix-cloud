@@ -1,11 +1,8 @@
 package com.matrix.api.resource.model;
 
-
 import cn.hutool.core.lang.Dict;
-
 import java.io.Serializable;
 import java.util.Date;
-
 import lombok.Data;
 
 @Data

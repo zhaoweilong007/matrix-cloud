@@ -1,6 +1,5 @@
 package com.matrix.tenant.config;
 
-
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.TenantLineInnerInterceptor;
 import com.matrix.auto.properties.TenantProperties;
@@ -43,8 +42,8 @@ public class TenantAutoConfiguration {
     // ========== DB ==========
 
     @Bean
-    public TenantLineInnerInterceptor tenantLineInnerInterceptor(TenantProperties properties,
-                                                                 MybatisPlusInterceptor interceptor) {
+    public TenantLineInnerInterceptor tenantLineInnerInterceptor(
+            TenantProperties properties, MybatisPlusInterceptor interceptor) {
         TenantLineInnerInterceptor inner = new TenantLineInnerInterceptor(new TenantDatabaseInterceptor(properties));
         // 添加到 interceptor 中
         // 需要加在首个，主要是为了在分页插件前面。这个是 MyBatis Plus 的规定
@@ -65,8 +64,8 @@ public class TenantAutoConfiguration {
     // ========== Security ==========
 
     @Bean
-    public FilterRegistrationBean<TenantSecurityWebFilter> tenantSecurityWebFilter(TenantProperties tenantProperties,
-                                                                                   ITenantFrameworkService tenantFrameworkService) {
+    public FilterRegistrationBean<TenantSecurityWebFilter> tenantSecurityWebFilter(
+            TenantProperties tenantProperties, ITenantFrameworkService tenantFrameworkService) {
         FilterRegistrationBean<TenantSecurityWebFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(new TenantSecurityWebFilter(tenantProperties, tenantFrameworkService));
         registrationBean.setOrder(WebFilterOrderConstants.TENANT_SECURITY_FILTER);
@@ -89,5 +88,4 @@ public class TenantAutoConfiguration {
         // 创建 TenantRedisCacheManager 对象
         return new TenantRedisCacheManager();
     }
-
 }

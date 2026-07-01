@@ -38,7 +38,6 @@ public class MybatisExceptionHandler {
         return R.fail(SystemErrorTypeEnum.SYSTEM_ERROR);
     }
 
-
     @ExceptionHandler(BadSqlGrammarException.class)
     public R<Void> dadSqlGrammarExceptionHandler(BadSqlGrammarException e, HttpServletRequest request) {
         String requestUri = request.getRequestURI();
@@ -52,5 +51,4 @@ public class MybatisExceptionHandler {
         log.error("请求地址'{}', sql执行异常", requestUri, e);
         return R.fail(SystemErrorTypeEnum.SYSTEM_ERROR);
     }
-
 }

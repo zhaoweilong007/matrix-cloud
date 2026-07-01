@@ -23,5 +23,4 @@ public class MinuteFlower extends BaseFlower {
         // 将毫秒转为秒
         return windowInterval / 1000;
     }
-
 }

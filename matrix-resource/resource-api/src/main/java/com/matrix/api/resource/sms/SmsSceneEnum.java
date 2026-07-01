@@ -4,10 +4,9 @@ import cn.hutool.core.util.ArrayUtil;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.matrix.common.model.IntArrayValuable;
+import java.util.Arrays;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-
-import java.util.Arrays;
 
 /**
  * 用户短信验证码发送场景的枚举
@@ -15,11 +14,10 @@ import java.util.Arrays;
 @Getter
 @AllArgsConstructor
 public enum SmsSceneEnum implements IntArrayValuable {
-
     ;
 
-
-    public static final int[] ARRAYS = Arrays.stream(values()).mapToInt(SmsSceneEnum::getScene).toArray();
+    public static final int[] ARRAYS =
+            Arrays.stream(values()).mapToInt(SmsSceneEnum::getScene).toArray();
 
     /**
      * 短信签名
@@ -47,8 +45,7 @@ public enum SmsSceneEnum implements IntArrayValuable {
         if (scene == null) {
             return null;
         }
-        return ArrayUtil.firstMatch(sceneEnum -> sceneEnum.getScene().equals(scene),
-                values());
+        return ArrayUtil.firstMatch(sceneEnum -> sceneEnum.getScene().equals(scene), values());
     }
 
     public String getSmsCodeKey(String mobile) {

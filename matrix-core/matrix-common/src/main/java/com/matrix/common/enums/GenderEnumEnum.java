@@ -24,6 +24,7 @@ public enum GenderEnumEnum {
      * 女
      */
     F("F", "女");
+
     @EnumValue
     private final String code;
 

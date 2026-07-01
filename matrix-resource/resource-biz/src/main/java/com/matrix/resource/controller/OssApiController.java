@@ -8,7 +8,4 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value = OssApi.PREFIX)
 @Tag(name = "对象存储服务", description = "对象存储服务")
-public class OssApiController implements OssApi {
-
-
-}
+public class OssApiController implements OssApi {}

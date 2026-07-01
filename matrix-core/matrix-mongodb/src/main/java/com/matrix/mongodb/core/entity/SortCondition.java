@@ -1,6 +1,5 @@
 package com.matrix.mongodb.core.entity;
 
-
 import com.matrix.mongodb.core.constant.ESortType;
 
 /**
@@ -18,8 +17,7 @@ public class SortCondition {
      */
     private String col;
 
-    public SortCondition() {
-    }
+    public SortCondition() {}
 
     public SortCondition(ESortType sortType, String col) {
         this.sortType = sortType;

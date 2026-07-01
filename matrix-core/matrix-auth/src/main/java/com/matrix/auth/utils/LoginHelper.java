@@ -17,14 +17,13 @@ import com.matrix.common.model.RoleDTO;
 import com.matrix.common.model.login.LoginUser;
 import com.matrix.common.result.R;
 import com.matrix.common.util.servlet.ServletUtils;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-import one.util.streamex.StreamEx;
-
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import one.util.streamex.StreamEx;
 
 /**
  * 登录鉴权助手
@@ -38,7 +37,6 @@ import java.util.Objects;
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class LoginHelper {
-
 
     /**
      * 登录系统 基于 设备类型
@@ -55,13 +53,12 @@ public class LoginHelper {
         if (ObjectUtil.isNotNull(deviceTypeEnum)) {
             model.setDevice(deviceTypeEnum.getDevice());
         }
-        StpUtil.login(loginUser.obtainedLoginId(),
+        StpUtil.login(
+                loginUser.obtainedLoginId(),
                 model.setExtra(CommonConstants.USER_KEY, loginUser.getUserId())
-                        .setExtra(CommonConstants.TENANT_KEY, loginUser.getTenantId())
-        );
+                        .setExtra(CommonConstants.TENANT_KEY, loginUser.getTenantId()));
         StpUtil.getSession().set(CommonConstants.LOGIN_USER_KEY, loginUser);
     }
-
 
     public static void loginByOpenId(String openId, LoginUser loginUser, DeviceTypeEnum deviceTypeEnum) {
         SaStorage storage = SaHolder.getStorage();
@@ -158,13 +155,11 @@ public class LoginHelper {
         return UserTypeEnum.getUserType(loginId);
     }
 
-
     /**
      * 检查租户是否认证
      *
      * @return boolean
      */
-
     public static boolean checkTenantAuth() {
         final LoginUser loginUser = getLoginUser();
         if (loginUser == null) {
@@ -178,8 +173,8 @@ public class LoginHelper {
 
         final List<RoleDTO> roles = loginUser.getRoles();
         if (CollUtil.isNotEmpty(roles)) {
-            final boolean anyMatch = StreamEx.of(roles).anyMatch(roleDTO -> Objects
-                    .equals(roleDTO.getRoleKey(), RoleEnum.SHOP_MANAGER.getRoleKey()));
+            final boolean anyMatch = StreamEx.of(roles)
+                    .anyMatch(roleDTO -> Objects.equals(roleDTO.getRoleKey(), RoleEnum.SHOP_MANAGER.getRoleKey()));
             if (anyMatch) {
                 return true;
             }
@@ -192,7 +187,9 @@ public class LoginHelper {
     }
 
     public static void logout(Long userId) {
-        final List<String> deviceType = Arrays.stream(DeviceTypeEnum.values()).map(DeviceTypeEnum::getDevice).toList();
+        final List<String> deviceType = Arrays.stream(DeviceTypeEnum.values())
+                .map(DeviceTypeEnum::getDevice)
+                .toList();
         deviceType.forEach(device -> {
             final String loginId = LoginUser.getLoginId(device, userId);
             StpUtil.logout(loginId);

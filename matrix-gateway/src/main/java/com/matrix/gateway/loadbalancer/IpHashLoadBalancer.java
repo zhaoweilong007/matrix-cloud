@@ -1,6 +1,7 @@
 package com.matrix.gateway.loadbalancer;
 
 import com.google.common.hash.Hashing;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.cloud.client.ServiceInstance;
@@ -13,9 +14,6 @@ import org.springframework.cloud.loadbalancer.core.ReactorServiceInstanceLoadBal
 import org.springframework.cloud.loadbalancer.core.ServiceInstanceListSupplier;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
-
-
 /**
  * 一致性 IP Hash负载均衡器
  */
@@ -26,8 +24,7 @@ public class IpHashLoadBalancer implements ReactorServiceInstanceLoadBalancer {
     public ObjectProvider<ServiceInstanceListSupplier> serviceInstanceListSupplierProvider;
 
     public IpHashLoadBalancer(
-            ObjectProvider<ServiceInstanceListSupplier> serviceInstanceListSupplierProvider,
-            String serviceId) {
+            ObjectProvider<ServiceInstanceListSupplier> serviceInstanceListSupplierProvider, String serviceId) {
         this.serviceId = serviceId;
         this.serviceInstanceListSupplierProvider = serviceInstanceListSupplierProvider;
     }
@@ -35,16 +32,14 @@ public class IpHashLoadBalancer implements ReactorServiceInstanceLoadBalancer {
     @Override
     public Mono<Response<ServiceInstance>> choose(Request request) {
         if (serviceInstanceListSupplierProvider != null) {
-            ServiceInstanceListSupplier supplier = serviceInstanceListSupplierProvider
-                    .getIfAvailable(NoopServiceInstanceListSupplier::new);
+            ServiceInstanceListSupplier supplier =
+                    serviceInstanceListSupplierProvider.getIfAvailable(NoopServiceInstanceListSupplier::new);
             return supplier.get().next().map((instances) -> getInstanceResponse(request, instances));
         }
         return null;
     }
 
-    private Response<ServiceInstance> getInstanceResponse(
-            Request request,
-            List<ServiceInstance> instances) {
+    private Response<ServiceInstance> getInstanceResponse(Request request, List<ServiceInstance> instances) {
         if (instances.isEmpty()) {
             log.warn("No servers available for service: " + this.serviceId);
             return new EmptyResponse();

@@ -3,7 +3,6 @@ package com.matrix.sentinel.flow;
 import com.matrix.sentinel.flow.common.Metric;
 import com.matrix.sentinel.flow.common.MetricBucket;
 import com.matrix.sentinel.flow.common.WindowWrap;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -110,5 +109,4 @@ public abstract class BaseFlower implements Flower {
     public MetricBucket[] buckets() {
         return metric.buckets();
     }
-
 }

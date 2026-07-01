@@ -18,5 +18,4 @@ public class WxLoginUser extends LoginUser {
      */
     @Schema(description = "微信openId")
     private String wxOpenid;
-
 }

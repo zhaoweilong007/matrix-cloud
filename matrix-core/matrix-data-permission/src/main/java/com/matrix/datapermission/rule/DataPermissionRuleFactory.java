@@ -22,5 +22,4 @@ public interface DataPermissionRuleFactory {
      * @return 数据权限规则数组
      */
     List<DataPermissionRule> getDataPermissionRule(String mappedStatementId);
-
 }

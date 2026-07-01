@@ -49,7 +49,6 @@ public class WebAutoConfig implements WebMvcConfigurer {
         return createFilterBean(new CorsFilter(source), WebFilterOrderConstants.CORS_FILTER);
     }
 
-
     /**
      * 创建 RequestBodyCacheFilter Bean，可重复读取请求内容
      */
@@ -58,12 +57,10 @@ public class WebAutoConfig implements WebMvcConfigurer {
         return createFilterBean(new CacheRequestBodyFilter(), WebFilterOrderConstants.REQUEST_BODY_CACHE_FILTER);
     }
 
-
     @Bean
     public GlobalExceptionHandler globalExceptionHandler() {
         return new GlobalExceptionHandler();
     }
-
 
     /**
      * 创建 ApiAccessLogFilter Bean，记录 API 请求日志
@@ -71,19 +68,16 @@ public class WebAutoConfig implements WebMvcConfigurer {
     @Bean
     @ConditionalOnProperty(prefix = "matrix.access-log", value = "enable", matchIfMissing = true)
     public FilterRegistrationBean<ApiAccessLogFilter> apiAccessLogFilter(
-        @Value("${spring.application.name}") String applicationName,
-        ApiAccessLogApi apiAccessLogApi) {
+            @Value("${spring.application.name}") String applicationName, ApiAccessLogApi apiAccessLogApi) {
         ApiAccessLogFilter filter = new ApiAccessLogFilter(applicationName, apiAccessLogApi);
         return createFilterBean(filter, WebFilterOrderConstants.API_ACCESS_LOG_FILTER);
     }
-
 
     private static <T extends Filter> FilterRegistrationBean<T> createFilterBean(T filter, Integer order) {
         FilterRegistrationBean<T> bean = new FilterRegistrationBean<>(filter);
         bean.setOrder(order);
         return bean;
     }
-
 
     @Bean
     @ConditionalOnMissingBean(LocaleResolver.class)

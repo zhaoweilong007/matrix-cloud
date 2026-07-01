@@ -3,11 +3,11 @@ package com.matrix.prometheus.config;
 import com.matrix.prometheus.endpoint.FeignClientEndpoint;
 import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.micrometer.metrics.autoconfigure.MeterRegistryCustomizer;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.micrometer.metrics.autoconfigure.MeterRegistryCustomizer;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
@@ -26,11 +26,9 @@ public class MetricsAutoConfiguration {
         return registry -> registry.config().commonTags("application", applicationName);
     }
 
-
     @Bean
     @ConditionalOnMissingBean
     public FeignClientEndpoint feignClientEndpoint(ApplicationContext context) {
         return new FeignClientEndpoint(context);
     }
-
 }

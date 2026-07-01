@@ -8,5 +8,4 @@ import org.apache.ibatis.type.Alias;
  * @author xh
  */
 @Alias("crypt")
-public class CryptType {
-}
+public class CryptType {}

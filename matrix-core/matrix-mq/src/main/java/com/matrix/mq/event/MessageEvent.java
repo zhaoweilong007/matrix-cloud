@@ -1,19 +1,17 @@
 package com.matrix.mq.event;
 
 import com.aliyun.openservices.shade.io.netty.util.internal.StringUtil;
+import java.io.Serializable;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-import java.io.Serializable;
-import java.util.UUID;
-
 /**
  * MQ统一事件对象，用在跨业务整合中
  */
-
 @Data
 @Builder
 @AllArgsConstructor
@@ -62,5 +60,4 @@ public class MessageEvent implements Serializable {
         }
         return txId;
     }
-
 }

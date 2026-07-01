@@ -4,22 +4,19 @@ import com.matrix.common.model.IntArrayValuable;
 import com.matrix.validator.InEnumValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
-
 import java.lang.annotation.*;
 
 @Target({
-        ElementType.METHOD,
-        ElementType.FIELD,
-        ElementType.ANNOTATION_TYPE,
-        ElementType.CONSTRUCTOR,
-        ElementType.PARAMETER,
-        ElementType.TYPE_USE
+    ElementType.METHOD,
+    ElementType.FIELD,
+    ElementType.ANNOTATION_TYPE,
+    ElementType.CONSTRUCTOR,
+    ElementType.PARAMETER,
+    ElementType.TYPE_USE
 })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Constraint(
-        validatedBy = InEnumValidator.class
-)
+@Constraint(validatedBy = InEnumValidator.class)
 public @interface InEnum {
 
     /**
@@ -32,5 +29,4 @@ public @interface InEnum {
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};
-
 }

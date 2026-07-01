@@ -14,7 +14,6 @@ import net.dreamlu.mica.core.result.IResultCode;
 @RequiredArgsConstructor
 public enum BusinessErrorTypeEnum implements IResultCode {
 
-
     /**
      * 业务异常
      */
@@ -70,8 +69,7 @@ public enum BusinessErrorTypeEnum implements IResultCode {
     JPUSH_TOKEN_INVALID(5002, "一键登陆无效或过期"),
     MOBILE_IS_BINDING(5003, "手机号已经绑定无法重复绑定"),
     ERROR_APPLE_TOKEN_FAIL(5004, "苹果授权失败"),
-    OCR_ERROR(5005,"orc识别错误" );
-
+    OCR_ERROR(5005, "orc识别错误");
 
     public final int code;
     public final String msg;

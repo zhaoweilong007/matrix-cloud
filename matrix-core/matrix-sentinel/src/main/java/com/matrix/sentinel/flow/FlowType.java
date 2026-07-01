@@ -24,5 +24,4 @@ public enum FlowType {
     public byte getFlag() {
         return flag;
     }
-
 }

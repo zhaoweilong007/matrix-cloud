@@ -13,11 +13,9 @@ import lombok.Data;
 @Schema(description = "app登录信息")
 public class AppLoginUser extends LoginUser {
 
-
     /**
      * 是否已绑定账号
      */
     @Schema(description = "是否已绑定账号")
     private Boolean isBinding = false;
-
 }

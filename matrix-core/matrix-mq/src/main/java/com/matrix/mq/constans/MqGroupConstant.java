@@ -13,12 +13,10 @@ public interface MqGroupConstant {
      */
     String WX_MESSAGE_SUBSCRIBE = "GID_wx_message_subscribe";
 
-
     /**
      * 系统消息通知
      */
     String SYSTEM_NOTIFY_MESSAGE = "GID_system_notify_message";
-
 
     /**
      * webSocket订阅通知
