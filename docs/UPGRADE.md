@@ -283,3 +283,4 @@ SENTINEL_VERSION    = 1.8.5
 | SkyWalking 使用 BanyanDB 替代 ES | WSL2 环境下 OAP 10.4.0 的 Netty epoll 与 ES 存在兼容性问题，BanyanDB 是 SkyWalking 原生存储，兼容性更好 | 2026-06-30 |
 | Gradle DSL 语法更新 | Gradle 10.0 将移除 Groovy 空格赋值语法，统一使用 `=` 赋值 | 2026-06-30 |
 | Spotless 代码格式化 | 统一代码风格，应用 palantir-java-format | 2026-06-30 |
+| JDK 21 JVM 参数优化 | 启用虚拟线程、ZGC、内存优化 | 2026-06-30 |
