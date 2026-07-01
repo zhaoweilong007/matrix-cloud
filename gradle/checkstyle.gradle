@@ -1,7 +1,7 @@
 apply plugin: 'checkstyle'
 
 checkstyle {
-    toolVersion = libs.versions.checkstyle.get()
+    toolVersion = rootProject.ext.checkstyleVersion
     configFile = rootProject.file('code-analysis/checkstyle/matrix-checks.xml')
     ignoreFailures = true
     showViolations = true

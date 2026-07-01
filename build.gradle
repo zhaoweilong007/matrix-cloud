@@ -20,6 +20,13 @@ def appModules = ext.appModules
 // 所有 Java 模块（排除 BOM）
 def commons = subprojects - project(':matrix-bom')
 
+// Gradle 9.x: 提取版本目录引用，避免子项目隐式查找父项目属性
+ext.scaVersion = libs.versions.springCloudAlibaba.get()
+ext.scVersion = libs.versions.springCloud.get()
+ext.micaVersion = libs.versions.mica.get()
+ext.checkstyleVersion = libs.versions.checkstyle.get()
+ext.pmdVersion = libs.versions.pmd.get()
+
 wrapper {
     gradleVersion = GRADLE_VERSION
 }
@@ -78,9 +85,9 @@ configure(commons) {
 
     dependencyManagement {
         imports {
-            mavenBom "com.alibaba.cloud:spring-cloud-alibaba-dependencies:${libs.versions.springCloudAlibaba.get()}"
-            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${libs.versions.springCloud.get()}"
-            mavenBom "net.dreamlu:mica-bom:${libs.versions.mica.get()}"
+            mavenBom "com.alibaba.cloud:spring-cloud-alibaba-dependencies:${rootProject.ext.scaVersion}"
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${rootProject.ext.scVersion}"
+            mavenBom "net.dreamlu:mica-bom:${rootProject.ext.micaVersion}"
         }
     }
 
@@ -88,23 +95,23 @@ configure(commons) {
         implementation platform(project(':matrix-bom'))
 
         // Lombok：所有模块通用
-        compileOnly libs.lombok
-        annotationProcessor libs.lombok
-        annotationProcessor libs.lombok.mapstruct.binding
-        testCompileOnly libs.lombok
-        testAnnotationProcessor libs.lombok
+        compileOnly rootProject.libs.lombok
+        annotationProcessor rootProject.libs.lombok
+        annotationProcessor rootProject.libs.lombok.mapstruct.binding
+        testCompileOnly rootProject.libs.lombok
+        testAnnotationProcessor rootProject.libs.lombok
 
         // MapStruct Plus：所有模块通用
-        implementation libs.mapstruct.plus.starter
-        annotationProcessor libs.mapstruct.plus.processor
-        testAnnotationProcessor libs.mapstruct.plus.processor
+        implementation rootProject.libs.mapstruct.plus.starter
+        annotationProcessor rootProject.libs.mapstruct.plus.processor
+        testAnnotationProcessor rootProject.libs.mapstruct.plus.processor
 
         // mica-auto：自动配置注册器，所有模块统一应用
-        compileOnly libs.mica.auto
-        annotationProcessor libs.mica.auto
+        compileOnly rootProject.libs.mica.auto
+        annotationProcessor rootProject.libs.mica.auto
 
         // SpotBugs 注解
-        compileOnly libs.spotbugs.annotations
+        compileOnly rootProject.libs.spotbugs.annotations
     }
 
     test {

@@ -1,7 +1,7 @@
 apply plugin: 'pmd'
 
 pmd {
-    toolVersion = libs.versions.pmd.get()
+    toolVersion = rootProject.ext.pmdVersion
     ignoreFailures = true
     incrementalAnalysis = true
     threads = 4
