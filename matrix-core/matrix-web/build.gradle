@@ -8,5 +8,5 @@ dependencies {
     api 'org.springframework.cloud:spring-cloud-starter-openfeign'
 
     // Jsoup XSS 清理
-    api 'org.jsoup:jsoup:1.17.2'
+    api libs.jsoup
 }

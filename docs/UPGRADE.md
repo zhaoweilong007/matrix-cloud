@@ -287,3 +287,19 @@ SENTINEL_VERSION    = 1.8.5
 | matrix-core 全模块优化 | P0/P1/P2 问题修复，性能优化 | 2026-06-30 |
 | 测试基础设施完善 | 添加 JUnit 5 依赖，创建 StringUtils 单元测试 | 2026-06-30 |
 | Docker 镜像优化 | Jib 配置优化，添加标签和健康检查 | 2026-06-30 |
+| R 类增强 checkError 模式 | 新增 checkError()/getCheckedData()，简化 Feign 异常处理 | 2026-07-01 |
+| BaseEntity 防御方法 | 新增 clean()/cleanCreateFields()/cleanUpdateFields() | 2026-07-01 |
+| 10 种独立脱敏注解 | @MobileDesensitize/@IdCardDesensitize/@BankCardDesensitize 等 | 2026-07-01 |
+| API 加解密模块 matrix-crypto | @ApiEncrypt 注解，AES/RSA 请求解密+响应加密 | 2026-07-01 |
+| MQ 租户消息传播 | TenantMqUtils + TenantRocketMqTemplate + TenantAbstractMessageListener | 2026-07-01 |
+| 测试基础设施增强 | BaseDbUnitTest/BaseRedisUnitTest/RandomUtils/AssertUtils | 2026-07-01 |
+| @RateLimiter 注解式限流 | Redis 令牌桶，5 种 Key 策略（全局/用户/IP/节点/SpEL） | 2026-07-01 |
+| XSS 过滤模块 | Jsoup XssFilter + XssRequestWrapper + XssCleaner | 2026-07-01 |
+| TimeoutRedisCacheManager | @Cacheable("key#5m") 自定义 TTL | 2026-07-01 |
+| CacheUtils 增强 | buildAsyncReloadingCache/buildCache 三种缓存模式 | 2026-07-01 |
+| NumberSerializer JS 精度保护 | 超过 2^53-1 的 Long 自动序列化为 String | 2026-07-01 |
+| ErrorCode 值对象 | 支持参数占位符格式化的错误码对象 | 2026-07-01 |
+| @ApiSignature API 签名校验 | appId/timestamp/nonce/sign 防篡改+防重放 | 2026-07-01 |
+| IpUtils 增强 | isInternalIp/getHostName/getHostIp | 2026-07-01 |
+| 依赖版本升级 | commons-lang3 3.12→3.20(CVE), mybatis-plus-join 1.5.5→1.5.7, podam 8.0.0→8.0.2, pinyin4j 2.5.0→2.5.1, jsoup 提取到 version catalog | 2026-07-01 |
+| 新增依赖引入 | tika-core 3.3.1, sensitive-word 0.29.5, jedis-mock 1.1.15, anji-captcha 1.4.0 | 2026-07-01 |

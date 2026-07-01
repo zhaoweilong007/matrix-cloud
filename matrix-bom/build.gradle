@@ -79,5 +79,6 @@ dependencies {
         api libs.java.jwt
         api libs.jwks.rsa
         api libs.pinyin4j
+        api libs.jsoup
     }
 }
