@@ -2,204 +2,140 @@
 
 ## Project Overview
 
-**Matrix-Cloud** — Java 21 微服务脚手架框架。Spring Boot 4.0.7 + Spring Cloud 2025.1.2 + Spring Cloud Alibaba 2025.1.0.0。
+**Matrix-Cloud** — Java 21 微服务脚手架。Spring Boot 4.1.0 + Spring Cloud 2025.1.2 + Spring Cloud Alibaba 2025.1.0.0。
 
-**权威版本来源**: `gradle/libs.versions.toml` 和 `matrix-bom/build.gradle`，不要依赖本文件中的版本号，始终查阅这两个文件。
+**权威版本来源**: `gradle/libs.versions.toml` 和 `matrix-bom/build.gradle`，始终查阅这两个文件而非本文件中的版本号。
 
 ## Build
 
 ```bash
-./gradlew build                          # 构建全部模块
-./gradlew :matrix-core:matrix-common:build  # 构建指定模块
-./gradlew clean build                    # 清理构建
-./gradlew jib                            # Docker镜像构建推送(Jib)
-./gradlew test                           # 测试(默认禁用 test.enabled=false)
+./gradlew build                              # 构建全部
+./gradlew :matrix-core:matrix-common:build   # 构建指定模块
+./gradlew jib                                # Docker镜像(Jib)
+./gradlew test                               # 测试(默认禁用)
 ```
 
-关键构建文件：
-- `build.gradle` — 根构建配置，所有子模块共享 `commons` 配置块
-- `gradle/libs.versions.toml` — **统一版本管理**，所有第三方依赖版本在此声明（Version Catalog）
-- `matrix-bom/build.gradle` — BOM平台，约束所有依赖版本
-- `deploy.gradle` — Jib Docker构建，`microservices` 列表控制哪些服务打包镜像
-- `settings.gradle` — 模块定义，matrix-system 已注释掉（未启用）
+关键文件：`gradle/libs.versions.toml`(版本目录) | `matrix-bom/build.gradle`(BOM约束) | `deploy.gradle`(Jib) | `settings.gradle`(模块定义)
 
-Java 21 通过 toolchain 配置（`JavaLanguageVersion.of(21)`），非 sourceCompatibility。
-
-测试默认关闭（`build.gradle` `test { enabled = false }`）。测试基础设施在 `matrix-core/matrix-test`。
+Java 21 通过 toolchain (`JavaLanguageVersion.of(21)`)，测试默认禁用 (`test.enabled=false`)。
 
 ## Architecture
 
 ```
 matrix-cloud/
-├── matrix-bom/               # BOM 统一依赖版本约束
-├── matrix-core/              # 33个可插拔核心模块
-│   ├── matrix-common/        # 基础：R<T>响应、异常体系(IResultCode/ErrorCode)、实体基类(含clean防御方法)、上下文Holder、脱敏(10种注解)、缓存工具(CacheUtils)、JS精度保护序列化器、工具集
-│   ├── matrix-auto/          # 全局 @ConfigurationProperties + mica-auto注解处理器
-│   ├── matrix-web/           # Web Starter：全局异常、Jackson、i18n、访问日志、XSS过滤、上下文传播
-│   ├── matrix-auth/          # Sa-Token+JWT认证：登录、权限、网关内部令牌、验证码、租户鉴权、API签名校验(@ApiSignature)
-│   ├── matrix-feign/         # OpenFeign：请求头传播(租户/认证/灰度版本)、版本路由负载均衡
-│   ├── matrix-mybatis/       # MyBatis-Plus 3.5.16：BaseMapperX/Vo查询/乐观锁/雪花ID/自动填充
-│   ├── matrix-redis/         # Redis+Redisson：单机/主从/集群、Spring Cache、RedisUtils、限流(@RateLimiter)、自定义TTL缓存
-│   ├── matrix-tenant/        # 多租户：SQL自动拼接tenant_id、缓存隔离、租户Job遍历、@TenantIgnore
-│   ├── matrix-crypto/        # API加解密：@ApiEncrypt注解、AES/RSA请求解密+响应加密
-│   ├── matrix-log/           # 操作日志(@Log) + 异常通知(@ExceptionNoticeLog)
-│   ├── matrix-mq/            # RocketMQ：同步/异步/顺序/事务消息模板、自动注册Listener、MQ租户上下文传播
-│   ├── matrix-job/           # XXL-Job：自动计算executor端口
-│   ├── matrix-seata/         # Seata AT模式分布式事务，自动建undo_log表
-│   ├── matrix-sentinel/      # Sentinel增强：自定义SlotChain(流量/降级预警)、QPS监控
-│   ├── matrix-strategy/      # 策略模式自动注入(@HandlerType → BusinessHandlerChooser)
-│   ├── matrix-translation/   # 字段翻译(@Translation)：字典/用户名/地区/图片URL
-│   ├── matrix-data-permission/ # 行级数据权限：@DataPermission、SQL拦截改写
-│   ├── matrix-idempotent/    # 防重复提交(@RepeatSubmit)、Redis存储
+├── matrix-bom/               # BOM 依赖版本约束
+├── matrix-core/              # 35个可插拔核心模块
+│   ├── matrix-common/        # R<T>响应、IResultCode/ErrorCode异常、BaseEntity(含clean防御)、脱敏(10种注解)、TTL上下文、JS精度序列化
+│   ├── matrix-web/           # Web Starter：全局异常、Jackson、i18n、XSS过滤(Jsoup)
+│   ├── matrix-auth/          # Sa-Token+JWT：登录、权限、@ApiSignature、验证码、租户鉴权
+│   ├── matrix-feign/         # OpenFeign：租户/认证/灰度版本请求头传播、版本路由LB
+│   ├── matrix-mybatis/       # MyBatis-Plus：BaseMapperX/Vo/乐观锁/雪花ID/多数据源/连表查询/跨数据库兼容
+│   ├── matrix-redis/         # Redis+Redisson：Spring Cache、@RateLimiter、自定义TTL缓存
+│   ├── matrix-tenant/        # 多租户：SQL自动拼接tenant_id、缓存隔离、@TenantIgnore
+│   ├── matrix-crypto/        # @ApiEncrypt AES/RSA 请求解密+响应加密
+│   ├── matrix-log/           # @Log操作日志 + @ExceptionNoticeLog异常通知
+│   ├── matrix-mq/            # RocketMQ：消息模板、Listener自动注册、租户上下文传播
+│   ├── matrix-job/           # XXL-Job
+│   ├── matrix-seata/         # Seata AT分布式事务
+│   ├── matrix-sentinel/      # Sentinel：自定义SlotChain、QPS监控
+│   ├── matrix-strategy/      # @HandlerType → BusinessHandlerChooser 策略注入
+│   ├── matrix-translation/   # @Translation 字段翻译(字典/用户名/地区/图片URL)
+│   ├── matrix-data-permission/ # @DataPermission 行级数据权限 SQL拦截
+│   ├── matrix-idempotent/    # @RepeatSubmit 防重复提交
 │   ├── matrix-lock/          # Lock4j分布式锁(Redisson)
-│   ├── matrix-sensitive/     # 网易易盾内容审核(文本/图片)
-│   ├── matrix-oss/           # 阿里云OSS依赖聚合
+│   ├── matrix-sensitive/     # 网易易盾内容审核
+│   ├── matrix-websocket/     # WebSocket多节点广播(Redis)、消息监听器SPI
+│   ├── matrix-ip/            # IP定位(ip2region)+行政区划(四级树形area.csv)
+│   ├── matrix-oss/           # 阿里云OSS
 │   ├── matrix-sms/           # SMS4J多供应商短信
-│   ├── matrix-excel/         # EasyExcel 4.x 导入导出(字典转换/单元格合并)
-│   ├── matrix-es/            # Easy-Es Elasticsearch ORM聚合
-│   ├── matrix-mongodb/       # MongoDB MyBatis-Plus风格封装(EasyMongoService)
-│   ├── matrix-prometheus/    # Prometheus指标 + trace-id响应头
-│   ├── matrix-jpush/         # 极光推送多App客户端
-│   ├── matrix-validator/     # 自定义校验(@InEnum/@PhoneValue/@DateValue)
-│   ├── matrix-api/           # 常用模块聚合 + IBaseFeignClient标准CRUD契约
-│   ├── matrix-test/          # 测试基础设施(BaseDbUnitTest/BaseRedisUnitTest/RandomUtils/AssertUtils)
-│   └── matrix-config/        # Nacos配置中心依赖聚合
-├── matrix-admin/             # Spring Boot Admin 监控 (端口9002)
-├── matrix-gateway/           # API网关 (端口9000) — 认证/灰度/XSS/黑名单/限流/i18n
-├── matrix-resource/          # 资源服务 (端口9003)
-│   ├── resource-api/         # Feign API契约(DTO/VO/枚举)
-│   └── resource-biz/         # 业务实现(OSS/SMS/OCR/极光/IP地区)
-└── matrix-system/            # 系统服务(已注释，未启用)
+│   ├── matrix-excel/         # EasyExcel导入导出
+│   ├── matrix-es/            # Easy-Es Elasticsearch
+│   ├── matrix-mongodb/       # MongoDB EasyMongoService
+│   ├── matrix-prometheus/    # Prometheus指标 + trace-id
+│   ├── matrix-jpush/         # 极光推送
+│   ├── matrix-validator/     # @InEnum/@PhoneValue 校验
+│   ├── matrix-api/           # 常用模块聚合 + IBaseFeignClient
+│   ├── matrix-test/          # 测试基础设施
+│   ├── matrix-auto/          # mica-auto注解处理器
+│   └── matrix-config/        # Nacos配置中心聚合
+├── matrix-admin/             # Spring Boot Admin (9002)
+├── matrix-gateway/           # API网关(9000)：认证/灰度/XSS/黑名单/限流
+├── matrix-resource/          # 资源服务(9003)：api→biz分层
+└── matrix-system/            # 系统服务(未启用)
 ```
 
-## Coding Patterns (关键约定)
+## Coding Patterns
 
-### 统一API响应
-所有接口返回 `R<T>`（`com.matrix.common.result.R`）。工厂方法：`R.success()`, `R.fail(msg)`, `R.fail(IResultCode)`。
-
-Feign 调用后使用链式方法处理远程错误：
+### API响应与异常
+所有接口返回 `R<T>`，工厂方法 `R.success()` / `R.fail(msg)` / `R.fail(IResultCode)`。
 ```java
-// 直接获取数据，失败自动抛异常
-UserDTO user = userClient.getUser(id).getCheckedData();
-// 检查错误并自定义异常
-userClient.save(user).checkError(SystemErrorTypeEnum.OPERATE_FAIL);
+UserDTO user = userClient.getUser(id).getCheckedData();          // Feign获取数据，失败自动抛异常
+userClient.save(user).checkError(SystemErrorTypeEnum.OPERATE_FAIL); // 检查错误并自定义异常
 ```
-
-### 异常体系
-- 错误码接口：`IResultCode` → 实现：`SystemErrorTypeEnum`(1xxx), `BusinessErrorTypeEnum`(2xxx-5xxx)
-- 错误码对象：`ErrorCode(code, message)` — 支持占位符参数 `ErrorCode(1001, "用户{}不存在").exception(id)`
-- 业务异常：`ServiceException(IResultCode)` 或 `ServiceException(R<?>)`
-- 工具构造：`ServiceExceptionUtil.exception(...)` 支持i18n模板
+- `IResultCode` → `SystemErrorTypeEnum`(1xxx) / `BusinessErrorTypeEnum`(2xxx-5xxx)
+- `ErrorCode(1001, "用户{}不存在").exception(id)` — 占位符+异常构造链
+- `ServiceException(IResultCode)` 或 `ServiceException(R<?>)`
 
 ### 实体继承
-- `BaseIdEntity` — snowflake id + TransPojo
-- `BaseEntity` — + createdBy/createdAt/updatedBy/updatedAt/deleted(@TableLogic)
-  - `clean()` — 清理所有审计字段
-  - `cleanCreateFields()` — 仅清理创建审计字段
-  - `cleanUpdateFields()` — 仅清理更新审计字段
-- `TenantEntity` — + tenantId
-- `TreeEntity<T>` — + parentId/children
-
-### Mapper/Service继承
-- Mapper：`BaseMapperX<M,T,V>` — Vo查询、批量操作、FOR UPDATE
-- Service：`IRootService<T,V>` / `RootServiceImpl` — idempotent save、Vo分页
+`BaseIdEntity`(雪花id) → `BaseEntity`(+审计字段+@TableLogic) → `TenantEntity`(+tenantId) / `TreeEntity<T>`(+parentId/children)
+- `clean()` / `cleanCreateFields()` / `cleanUpdateFields()` — 防御性清理审计字段
 
 ### 上下文传播
-所有 ThreadLocal 使用 `TransmittableThreadLocal`（阿里TTL），异步线程通过 `ContextCopyingDecorator` 或 `CustomThreadPoolTaskExecutor`(TtlRunnable/TtlCallable) 自动传播：
-- `LoginUserContextHolder` — 当前登录用户
-- `TenantContextHolder` — 当前租户ID + 忽略租户标志
-- `LbIsolationContextHolder` — 灰度版本字符串
+全部使用 `TransmittableThreadLocal`(阿里TTL)，异步自动传播：
+`LoginUserContextHolder` → `TenantContextHolder` → `LbIsolationContextHolder`
 
-### 模块自动配置注册
-使用 **mica-auto** 注解处理器（compile-time），不要手动写 `spring.factories` 或 `.imports` 文件。配置类标注 `@AutoConfiguration` 即自动注册。
+### 自动配置
+使用 **mica-auto** 注解处理器，`@AutoConfiguration` 标注即自动注册，禁止手写 `spring.factories`。
 
 ### 常用注解速查
 | 注解 | 模块 | 用途 |
 |------|------|------|
-| `@Sensitive(strategy=...)` | common | 字段脱敏(Jackson序列化时) |
-| `@MobileDesensitize` / `@IdCardDesensitize` / `@BankCardDesensitize` | common | 独立脱敏注解，无需指定策略 |
-| `@EmailDesensitize` / `@NameDesensitize` / `@PasswordDesensitize` | common | 独立脱敏注解 |
-| `@AddressDesensitize` / `@FixedPhoneDesensitize` / `@IpDesensitize` / `@LicensePlateDesensitize` | common | 独立脱敏注解 |
-| `@SensitiveCheck` | common | 内容审核触发(文本/图片) |
-| `@Translation` | translation | 字段翻译(字典/用户名/地区) |
-| `@DataPermission` | data-permission | 行级数据权限 |
-| `@TenantIgnore` | tenant | 跳过租户SQL过滤 |
-| `@RepeatSubmit` | idempotent | 防重复提交(5秒间隔) |
-| `@RateLimiter` | redis | Redis令牌桶限流(5种Key策略) |
-| `@ApiEncrypt` | crypto | API请求解密+响应加密(AES/RSA) |
-| `@ApiSignature` | auth | API签名校验(appId/timestamp/nonce/sign) |
-| `@HandlerType(type, source)` | strategy | 策略模式标记 → BusinessHandlerChooser |
-| `@Log` | log | 操作日志记录 |
-| `@ExceptionNoticeLog` | log | 异常通知 |
-| `@EnableFeign` | feign | 启用Feign客户端+版本负载均衡 |
-| `@InEnum` / `@PhoneValue` | validator | 自定义校验 |
-| `@JsonSerialize(using = NumberSerializer.class)` | common | Long序列化时自动处理JS精度 |
-| `@JsonSerialize(using = LongToStringSerializer.class)` | common | Long全转String序列化 |
+| `@Sensitive` / `@MobileDesensitize` / `@IdCardDesensitize` / `@BankCardDesensitize` / `@EmailDesensitize` / `@NameDesensitize` / `@PasswordDesensitize` / `@AddressDesensitize` / `@FixedPhoneDesensitize` / `@IpDesensitize` / `@LicensePlateDesensitize` | common | 字段脱敏(10种独立注解) |
+| `@Translation` | translation | 字段翻译 |
+| `@DataPermission` / `@TenantIgnore` | data-permission/tenant | 数据权限+租户隔离 |
+| `@RepeatSubmit` / `@RateLimiter` / `@ApiSignature` | idempotent/redis/auth | 防重/限流/API签名 |
+| `@ApiEncrypt` / `@Log` / `@ExceptionNoticeLog` | crypto/log | 加解密/日志/异常通知 |
+| `@HandlerType` / `@InEnum` / `@PhoneValue` | strategy/validator | 策略注入/校验 |
+| `@JsonSerialize(using=NumberSerializer)` / `@JsonSerialize(using=LongToStringSerializer)` | common | Long JS精度保护 |
+| `MPJLambdaWrapperX` / `LongListTypeHandler` / `IntegerListTypeHandler` / `LongSetTypeHandler` | mybatis | 连表查询+集合TypeHandler |
+| `WebSocketMessageListener<T>` / `IPUtils` | websocket/ip | 消息监听SPI/IP定位 |
 
-### 认证模式
-Sa-Token JWT(simple模式) + Redis持久化。登录：`LoginHelper.loginByDevice(LoginUser, DeviceTypeEnum)`。获取当前用户：`LoginHelper.getLoginUser()`。权限接口：`SaPermissionImpl`(StpInterface)。
+### 认证
+Sa-Token JWT(simple) + Redis。`LoginHelper.loginByDevice(…)` 登录，`LoginHelper.getLoginUser()` 获取用户。网关内部校验：`SaSameUtil.checkCurrentRequestToken()`。
 
-网关内部调用校验：`SaSameUtil.checkCurrentRequestToken()` — 确保请求经过网关。
+### Feign
+请求头自动传播（tenantId/Sa-Token/userId/灰度版本），API模块放 `xxx-api`，客户端实现 `IBaseFeignClient`，熔断用 `DefaultFallbackFactory`。
 
-### Feign调用规范
-- 请求头自动传播：tenantId、Sa-Token、userId、灰度版本 — 由 `FeignAutoConfig` 的 `RequestInterceptor` 处理
-- Feign API模块放在 `xxx-api` 子模块（如 `resource-api`），biz模块依赖api模块
-- Feign客户端实现 `IBaseFeignClient<T,V,Q>` 提供标准CRUD契约
-- 熔断降级：`DefaultFallbackFactory`
+## 新增微服务
 
-## 新增微服务步骤
+1. `settings.gradle` 添加 include，创建模块 + `build.gradle`（依赖 `matrix-core:matrix-web`）
+2. 主类标注 `@SpringBootApplication` + `@EnableDiscoveryClient` + `@EnableFeign`
+3. 创建 `bootstrap.yml`（参考 `matrix-resource/resource-biz`），`deploy.gradle` 的 `microservices` 添加模块
 
-1. `settings.gradle` 添加 include
-2. 创建模块 `build.gradle`，依赖 `matrix-core:matrix-web`（已包含 common/auto/validator/feign等）
-3. 主类标注 `@SpringBootApplication` + `@EnableDiscoveryClient` + `@EnableFeign`
-4. 创建 `bootstrap.yml`（参考 matrix-resource/resource-biz 的配置）
-5. `deploy.gradle` 的 `microservices` 列表添加模块（用于Docker构建）
+bootstrap.yml 模板：
+```yaml
+spring.application.name: service-name
+spring.profiles.active: ${PROFILE:}
+spring.config.import:
+  - optional:nacos:env.properties
+  - optional:nacos:application-common.yml
+  - optional:nacos:datasource.yml
+```
 
 ## Configuration
 
-- 本地配置：`config/dev/` 目录
-- Nacos配置：`config/nacos/`
-- 环境切换：环境变量 `PROFILE`（dev/prod，映射到Nacos namespace）
-- SQL脚本：`deploy/sql/`
+环境：`PROFILE` 环境变量 (dev/prod) → Nacos namespace。本地配置：`config/dev/`，Nacos：`config/nacos/`，SQL：`deploy/sql/`。
 
-bootstrap.yml 标准模式：
-```yaml
-spring:
-  application:
-    name: service-name
-  profiles:
-    active: ${PROFILE:}
-  config:
-    import:
-      - optional:nacos:env.properties
-      - optional:nacos:application-common.yml
-      - optional:nacos:datasource.yml
-```
+`matrix.*` 前缀：`captcha.validateUrl` | `access-log.enable` | `load-balance.gray` | `tenant.enable` | `mq.enabled` | `crypto.enabled/type/secretKey` | `rate-limiter.enabled` | `xss.enabled/excludeUrls` | `websocket.enabled/path/sender-type`
 
-matrix 框架配置前缀 `matrix.*`：
-- `matrix.security.captcha.validateUrl` — 验证码校验URL
-- `matrix.access-log.enable` — API访问日志
-- `matrix.load-balance.gray.enabled` / `defaultVersion` — 灰度负载均衡
-- `matrix.tenant.enable` — 多租户开关
-- `matrix.mq.enabled` — RocketMQ 开关
-- `matrix.crypto.enabled` / `type`(AES\|RSA) / `secretKey` — API加解密
-- `matrix.rate-limiter.enabled` — 限流注解开关（默认开启）
-- `matrix.xss.enabled` / `excludeUrls` — XSS 过滤开关与排除URL
-
-## Service Ports
+## Ports
 
 | 服务 | 端口 |
 |------|------|
 | Gateway | 9000 |
 | Admin | 9002 |
 | Resource | 9003 |
-| System | 9002 (未启用) |
-
-中间件端口见 `deploy/docker-compose.yml` 和 `deploy/README.md`。
 
 ## Docker
 
-- 中间件：`deploy/docker-compose.yml`
-- 应用服务：`deploy/docker-matrix.yml`
-- 镜像构建：`./gradlew jib`，环境通过 `PROFILE` 切换(dev/prod)
-- SkyWalking agent 自动注入（admin除外）
+中间件：`deploy/docker-compose.yml`，应用：`deploy/docker-matrix.yml`。`./gradlew jib` 构建，`PROFILE` 切换环境，SkyWalking agent 自动注入(admin除外)。

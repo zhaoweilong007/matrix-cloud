@@ -1,0 +1,12 @@
+dependencies {
+    api project(':matrix-core:matrix-common')
+
+    api 'org.springframework.boot:spring-boot-starter-websocket'
+
+    // Redis 广播（可选）
+    compileOnly project(':matrix-core:matrix-redis')
+    compileOnly 'org.redisson:redisson-spring-boot-starter'
+
+    // RocketMQ 广播（可选）
+    compileOnly project(':matrix-core:matrix-mq')
+}

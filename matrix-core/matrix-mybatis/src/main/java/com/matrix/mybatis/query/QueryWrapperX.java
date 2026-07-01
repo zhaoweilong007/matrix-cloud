@@ -1,9 +1,12 @@
 package com.matrix.mybatis.query;
 
+import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.ArrayUtils;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
+import com.matrix.mybatis.utils.DbTypeUtils;
 import java.util.Collection;
+import javax.sql.DataSource;
 import org.springframework.util.StringUtils;
 
 /**
@@ -137,12 +140,45 @@ public class QueryWrapperX<T> extends QueryWrapper<T> {
     }
 
     /**
-     * 设置只返回最后一条
+     * 设置返回记录数，根据数据库类型自动选择合适的 SQL 语法。
      *
+     * <ul>
+     *   <li>MySQL/PostgreSQL/达梦/人大金仓: LIMIT n</li>
+     *   <li>Oracle: ROWNUM &lt;= n</li>
+     *   <li>SQL Server: SELECT TOP n</li>
+     * </ul>
+     *
+     * @param n 返回记录数
      * @return this
      */
     public QueryWrapperX<T> limitN(int n) {
-        super.last("LIMIT " + n);
+        limitN(n, null);
+        return this;
+    }
+
+    /**
+     * 设置返回记录数，根据数据库类型自动选择合适的 SQL 语法。
+     *
+     * @param n          返回记录数
+     * @param dataSource 数据源（用于检测数据库类型），可为 null
+     * @return this
+     */
+    public QueryWrapperX<T> limitN(int n, DataSource dataSource) {
+        DbType dbType = (dataSource != null)
+                ? DbTypeUtils.getCachedDbType(dataSource)
+                : DbType.MYSQL;
+        switch (dbType) {
+            case ORACLE:
+            case ORACLE_12C:
+                super.le("ROWNUM", n);
+                break;
+            case SQL_SERVER:
+            case SQL_SERVER2005:
+                super.select("TOP " + n + " *");
+                break;
+            default:
+                super.last("LIMIT " + n);
+        }
         return this;
     }
 }

@@ -8,14 +8,7 @@ import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.BlockAttackInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
-import com.matrix.common.context.LoginUserContextHolder;
-import com.matrix.common.entity.BaseEntity;
-import com.matrix.common.model.login.LoginUser;
-import com.matrix.common.util.servlet.ServletUtils;
-import io.vavr.control.Option;
-import java.time.LocalDateTime;
-import java.util.Objects;
-import org.apache.ibatis.reflection.MetaObject;
+import com.matrix.mybatis.handler.DefaultDBFieldHandler;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -58,38 +51,6 @@ public class MybatisPlusConfig {
 
     @Bean
     public MetaObjectHandler defaultMetaObjectHandler() {
-        // 自动填充参数类
-        return new MetaObjectHandler() {
-            @Override
-            public void insertFill(MetaObject metaObject) {
-                if (Objects.nonNull(metaObject) && metaObject.getOriginalObject() instanceof BaseEntity baseEntity) {
-                    if (baseEntity.getCreatedBy() == null) {
-                        if (ServletUtils.isServlet()) {
-                            baseEntity.setCreatedBy(getUserId());
-                        }
-                    }
-                    if (baseEntity.getCreatedAt() == null) {
-                        baseEntity.setCreatedAt(LocalDateTime.now());
-                    }
-                    this.updateFill(metaObject);
-                }
-            }
-
-            @Override
-            public void updateFill(MetaObject metaObject) {
-                if (Objects.nonNull(metaObject) && metaObject.getOriginalObject() instanceof BaseEntity baseEntity) {
-                    if (ServletUtils.isServlet()) {
-                        baseEntity.setUpdatedBy(getUserId());
-                    }
-                    baseEntity.setUpdatedAt(LocalDateTime.now());
-                }
-            }
-        };
-    }
-
-    private Long getUserId() {
-        return Option.of(LoginUserContextHolder.getUser())
-                .map(LoginUser::getUserId)
-                .getOrElse(ServletUtils.getUserIdByRequestHead());
+        return new DefaultDBFieldHandler();
     }
 }
