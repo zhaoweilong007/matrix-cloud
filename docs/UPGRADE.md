@@ -281,3 +281,4 @@ SENTINEL_VERSION    = 1.8.5
 | 全量 starter 升级到最新 | 用户选择，确保兼容性 | 2026-06-29 |
 | Seata Server 升级到 JDK17 镜像 | NamingServer 2.6.0.jdk25 与 JDK8 镜像不兼容（NPE），升级到 `2.6.0.jdk17` 解决 | 2026-06-30 |
 | SkyWalking 使用 BanyanDB 替代 ES | WSL2 环境下 OAP 10.4.0 的 Netty epoll 与 ES 存在兼容性问题，BanyanDB 是 SkyWalking 原生存储，兼容性更好 | 2026-06-30 |
+| Gradle DSL 语法更新 | Gradle 10.0 将移除 Groovy 空格赋值语法，统一使用 `=` 赋值 | 2026-06-30 |
