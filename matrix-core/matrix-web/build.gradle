@@ -6,4 +6,7 @@ dependencies {
     api 'org.springframework.boot:spring-boot-starter-actuator'
     api 'com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-discovery'
     api 'org.springframework.cloud:spring-cloud-starter-openfeign'
+
+    // Jsoup XSS 清理
+    api 'org.jsoup:jsoup:1.17.2'
 }
