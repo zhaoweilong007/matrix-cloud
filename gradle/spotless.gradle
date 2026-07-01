@@ -8,5 +8,5 @@ spotless {
         trimTrailingWhitespace()
     }
     // 默认不强制检查，可通过 spotlessCheck 手动执行
-    enforceCheck false
+    enforceCheck = false
 }
