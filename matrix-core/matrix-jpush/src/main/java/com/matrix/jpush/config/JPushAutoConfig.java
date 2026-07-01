@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Bean;
 public class JPushAutoConfig {
 
     @Bean
-    @ConfigurationProperties(prefix = "jpush.config")
+    @ConfigurationProperties(prefix = "matrix.jpush")
     public Map<String, JPushProperties> jpushConfig() {
         return new LinkedHashMap<>();
     }

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Data
 @RefreshScope
-@ConfigurationProperties(prefix = "aliyun.oss")
+@ConfigurationProperties(prefix = "matrix.oss")
 @Component
 public class OssProperties {
     private String endpoint;

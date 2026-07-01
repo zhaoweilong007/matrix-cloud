@@ -246,7 +246,7 @@ wx:
       http-client-type: httpclient
 
 
-aliyun:
+matrix:
   oss:
     prefix:
 

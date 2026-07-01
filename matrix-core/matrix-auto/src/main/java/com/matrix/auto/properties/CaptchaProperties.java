@@ -13,7 +13,7 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
  */
 @Data
 @RefreshScope
-@ConfigurationProperties(prefix = "security.captcha")
+@ConfigurationProperties(prefix = "matrix.captcha")
 public class CaptchaProperties {
     /**
      * 验证码类型

@@ -13,7 +13,7 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
  * @since 2023/8/9
  **/
 @RefreshScope
-@ConfigurationProperties(prefix = "security.tenant")
+@ConfigurationProperties(prefix = "matrix.security.tenant")
 @Data
 public class TenantAuthProperties {
 

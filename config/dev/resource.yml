@@ -9,26 +9,25 @@ spring:
           driver-class-name: com.mysql.cj.jdbc.Driver
 
 
-sms:
-  smsValidateIgnore:
-  isPrint: false
-  config-type: yaml
-  blends:
-    alibaba:
-      supplier: alibaba
-      access-key-id:
-      access-key-secret:
-      signature:
+matrix:
+  sms:
+    smsValidateIgnore:
+    isPrint: false
+    config-type: yaml
+    blends:
+      alibaba:
+        supplier: alibaba
+        access-key-id:
+        access-key-secret:
+        signature:
 
 
-jpush:
-  config:
+  jpush:
     TEST:
       appKey:
       masterSecret:
       apnsProduction:
       privateKey:
-aliyun:
   oss:
     accessKeyId:
     accessKeySecret:

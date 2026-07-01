@@ -10,7 +10,7 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
  * @author ZhaoWeiLong
  * @since 2024/1/18
  **/
-@ConfigurationProperties(prefix = "sms")
+@ConfigurationProperties(prefix = "matrix.sms")
 @Data
 @RefreshScope
 public class SmsProperties {

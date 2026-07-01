@@ -11,7 +11,7 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
  */
 @Data
 @RefreshScope
-@ConfigurationProperties(prefix = "security.xss")
+@ConfigurationProperties(prefix = "matrix.xss")
 public class XssProperties {
     /**
      * Xss开关
