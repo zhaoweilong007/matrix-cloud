@@ -10,12 +10,12 @@ rootProject.name = 'matrix-cloud'
 
 // 排除非模块目录
 def excludedName(file) {
-    return file.name != "build"
-            && file.name != "src"
-            && file.name != "out"
-            && file.name != "bin"
-            && file.name != ".gradle"
-            && file.name != ".idea"
+    return !(file.name in [
+            "build", "src", "out", "bin",
+            ".gradle", ".idea", ".claude", ".github",
+            "config", "deploy", "deploy-dev", "deploy-prod",
+            "mysql_data", "logs", "doc"
+    ])
 }
 
 // 一层模块（直接子目录）
