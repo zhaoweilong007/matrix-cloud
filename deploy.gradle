@@ -43,10 +43,26 @@ configure(microservices) {
         allowInsecureRegistries = true
         container {
             environment = [SW_AGENT_NAME: "${project.name}".toString()]
+            // JDK 21 优化参数
+            def baseJvmFlags = [
+                '-Djava.security.egd=file:/dev/./urandom',
+                '-Dfile.encoding=utf-8',
+                // 启用虚拟线程（JDK 21 特性）
+                '-Djdk.virtualThreadScheduler.parallelism=10',
+                '-Djdk.virtualThreadScheduler.maxPoolSize=256',
+                // ZGC 低延迟垃圾回收器（JDK 21 推荐）
+                '-XX:+UseZGC',
+                '-XX:+ZGenerational',
+                // 内存管理优化
+                '-XX:+UseStringDeduplication',
+                '-XX:+OptimizeStringConcat',
+                // NIO 优化
+                '-Djava.nio.preferDirectBuffers=true'
+            ]
             if (project.name == 'matrix-admin') {
-                jvmFlags = ['-Djava.security.egd=file:/dev/./urandom', '-Dfile.encoding=utf-8']
+                jvmFlags = baseJvmFlags
             } else {
-                jvmFlags = ['-Djava.security.egd=file:/dev/./urandom', '-Dfile.encoding=utf-8', '-javaagent:/skywalking-agent/skywalking-agent.jar']
+                jvmFlags = baseJvmFlags + ['-javaagent:/skywalking-agent/skywalking-agent.jar']
             }
             creationTime = 'USE_CURRENT_TIMESTAMP'
             volumes = ['/skywalking/agent']
