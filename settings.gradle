@@ -19,27 +19,27 @@ def excludedName(file) {
 }
 
 // 一层模块（直接子目录）
-['matrix-bom', 'matrix-admin', 'matrix-gateway'].each {
-    include it
+for (name in ['matrix-bom', 'matrix-admin', 'matrix-gateway']) {
+    include name
 }
 
 // 两层模块：matrix-core
-file("${rootDir}/matrix-core").eachDir { dir ->
-    if (excludedName(dir)) {
+file("${rootDir}/matrix-core").listFiles()?.each { dir ->
+    if (dir.directory && excludedName(dir)) {
         include "matrix-core:${dir.name}"
     }
 }
 
 // 两层模块：matrix-resource
-file("${rootDir}/matrix-resource").eachDir { dir ->
-    if (excludedName(dir)) {
+file("${rootDir}/matrix-resource").listFiles()?.each { dir ->
+    if (dir.directory && excludedName(dir)) {
         include "matrix-resource:${dir.name}"
     }
 }
 
 // 两层模块：matrix-system（当前未完成，暂不启用）
-// file("${rootDir}/matrix-system").eachDir { dir ->
-//     if (excludedName(dir)) {
+// file("${rootDir}/matrix-system").listFiles()?.each { dir ->
+//     if (dir.directory && excludedName(dir)) {
 //         include "matrix-system:${dir.name}"
 //     }
 // }
