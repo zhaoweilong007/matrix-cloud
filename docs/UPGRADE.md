@@ -284,3 +284,4 @@ SENTINEL_VERSION    = 1.8.5
 | Gradle DSL 语法更新 | Gradle 10.0 将移除 Groovy 空格赋值语法，统一使用 `=` 赋值 | 2026-06-30 |
 | Spotless 代码格式化 | 统一代码风格，应用 palantir-java-format | 2026-06-30 |
 | JDK 21 JVM 参数优化 | 启用虚拟线程、ZGC、内存优化 | 2026-06-30 |
+| matrix-core 全模块优化 | P0/P1/P2 问题修复，性能优化 | 2026-06-30 |
