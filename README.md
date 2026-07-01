@@ -113,7 +113,7 @@ docker-compose up -d
 |----------------------|------------------|---------------------|
 | Spring Cloud Alibaba | 2025.1.0.0       | 微服务基础框架             |
 | Spring Cloud         | 2025.1.2         | 微服务生态              |
-| Spring Boot          | 4.0.7            | 应用开发框架              |
+| Spring Boot          | 4.1.0            | 应用开发框架              |
 
 ### 服务治理
 
@@ -168,7 +168,7 @@ docker-compose up -d
 | Hutool            | 5.8.46           | Java工具类库           |
 | Lombok            | 1.18.46          | 简化Java代码           |
 | MapStruct Plus    | 1.5.1            | 对象映射工具             |
-| EasyExcel         | 4.0.3            | Excel导入导出           |
+| fesod-sheet       | 2.0.2-incubating  | Excel导入导出（Apache孵化版）    |
 
 ### 构建体系
 
@@ -204,6 +204,11 @@ docker-compose up -d
 | XSS过滤          | ✅  | Jsoup XSS脚本自动清理      |
 | API签名校验       | ✅  | @ApiSignature 防篡改+防重放  |
 | JS精度保护        | ✅  | Long自动处理JS安全整数范围     |
+| Redis MQ         | ✅  | Redis Pub/Sub + Stream 轻量MQ  |
+| SSE长连接         | ✅  | SseEmitter 服务端推送       |
+| 业务链路追踪        | ✅  | @BizTrace SkyWalking业务Span |
+| 演示模式           | ✅  | DemoFilter 写操作拦截保护      |
+| 同主机优先LB       | ✅  | SameHostLoadBalancer 就近路由  |
 
 ## 🔧模块架构
 
@@ -315,8 +320,14 @@ docker-compose up -d
 | **matrix-log**     | `matrix-core:matrix-log` | 公共日志配置，记录操作日志和系统日志      |
 | **matrix-job**     | `matrix-core:matrix-job` | 集成XXL-Job，提供分布式任务调度功能     |
 | **matrix-oss**     | `matrix-core:matrix-oss` | 对象存储相关功能，支持多种云存储服务     |
-| **matrix-sms**     | `matrix-core:matrix-sms` | 短信功能，支持多种短信服务提供商       |
-| **matrix-jpush**   | `matrix-core:matrix-jpush` | 集成极光推送，提供推送功能           |
+| **matrix-sms**     | `matrix-core:matrix-sms` | 短信功能：SMS4J多供应商 + Redis缓存Dao + 异常处理 |
+| **matrix-jpush**   | `matrix-core:matrix-jpush` | 极光推送，多App配置支持           |
+| **matrix-websocket** | `matrix-core:matrix-websocket` | WebSocket(Redis/RocketMQ多节点广播) + SSE长连接 |
+| **matrix-ip**      | `matrix-core:matrix-ip` | IP定位(ip2region) + 行政区划查询    |
+| **matrix-doc**     | `matrix-core:matrix-doc` | SpringDoc OpenAPI文档 + Sa-Token认证集成 |
+| **matrix-mail**    | `matrix-core:matrix-mail` | Jakarta Mail邮件发送 + MailBuilder链式API |
+| **matrix-social**  | `matrix-core:matrix-social` | JustAuth第三方登录(Gitee/GitHub/微信/钉钉/MaxKey/Gitea) |
+| **matrix-loadbalancer** | `matrix-core:matrix-loadbalancer` | 同主机优先负载均衡(SameHostLoadBalancer) |
 | **matrix-tenant**  | `matrix-core:matrix-tenant` | 多租户组件，支持多租户数据隔离         |
 | **matrix-data-permission** | `matrix-core:matrix-data-permission` | 数据权限相关功能，基于注解的数据权限隔离   |
 
@@ -386,6 +397,10 @@ docker-compose up -d
 | 幂等性校验        | ✅  | 防止重复请求             |
 | 敏感数据脱敏       | ✅  | 敏感数据自动脱敏           |
 | 数据权限控制       | ✅  | 基于注解的数据权限隔离        |
+| WebSocket + SSE  | ✅  | 多节点广播 + 服务端推送      |
+| Redis MQ         | ✅  | Pub/Sub + Stream 轻量消息     |
+| 业务链路追踪      | ✅  | @BizTrace SkyWalking业务标记 |
+| 同主机优先LB     | ✅  | SameHostLoadBalancer     |
 | 分库分表          | ⏳  | 集成Sharding-JDBC实现分库分表    |
 | 工作流引擎         | ⏳  | 集成Flowable工作流引擎       |
 
@@ -488,10 +503,9 @@ matrix:
     ignore-urls:
       - /api/public/**
   # 安全配置（可选）
-  security:
-    captcha:
-      validateUrl:
-        - /auth/sys/login
+  captcha:
+    validate-url:
+      - /auth/sys/login
 ```
 
 ### 5. 构建与运行
@@ -516,25 +530,23 @@ java -jar matrix-yourmodule-yourmodule-biz-3.0.0.jar
 
 Matrix框架提供了丰富的配置选项，以下是主要配置项说明：
 
-### 1. 安全配置
+### 1. 验证码配置
 
 ```yaml
 matrix:
-  security:
-    # 验证码配置
-    captcha:
-      validateUrl:          # 需要校验验证码的URL列表
-        - /auth/sys/login
-      expiration: 300       # 验证码过期时间（秒）
-      width: 130            # 验证码图片宽度
-      height: 48            # 验证码图片高度
+  captcha:
+    type: math                 # 验证码类型：math/char
+    category: line             # 类别：line/circle
+    enabled: true              # 是否启用
+    validate-url:              # 需要校验的URL
+      - /auth/login
 ```
 
 ### 2. 访问日志配置
 
 ```yaml
 matrix:
-  access-log: true  # 是否记录访问日志
+  access-log: true             # 是否记录API访问日志
 ```
 
 ### 3. 灰度发布配置
@@ -543,58 +555,81 @@ matrix:
 matrix:
   load-balance:
     gray:
-      enabled: true                  # 是否启用灰度发布
-      defaultVersion: 1.0            # 默认兜底版本
-      chooser: com.matrix.feign.chooser.ProfileRuleChooser  # 灰度规则选择器
-      ips:                           # 支持灰度发布的IP列表
-        - 192.168.1.100
-        - 192.168.1.101
+      enabled: true
+      defaultVersion: 1.0
+      chooser: com.matrix.feign.chooser.ProfileRuleChooser
 ```
 
-### 4. 灰度发布配置
-
-### 5. 多租户配置
+### 4. 多租户配置
 
 ```yaml
 matrix:
   tenant:
-    enable: true                     # 是否启用多租户
-    ignoreTables:                    # 多租户忽略的表名
+    enable: true               # 是否启用多租户
+    ignoreTables:              # 忽略的表名
       - sys_config
-      - sys_dict
-    ignore-urls:                     # 多租户忽略的接口地址
+    ignore-urls:               # 忽略的接口
       - /api/public/**
-    column: tenant_id                # 多租户字段名
 ```
 
-### 6. 限流配置
+### 5. 限流配置
 
 ```yaml
 matrix:
-  sentinel:
-    enable: true                     # 是否启用Sentinel
   rate-limiter:
-    enabled: true                    # 是否启用@RateLimiter注解限流
+    enabled: true              # 是否启用 @RateLimiter
 ```
 
-### 7. API加解密配置
+### 6. API加解密配置
 
 ```yaml
 matrix:
   crypto:
-    enabled: true                    # 是否启用API加解密
-    type: AES                        # 加密类型：AES / RSA
-    secret-key: your-aes-key         # AES密钥（16/24/32字节）
+    enabled: true              # 是否启用
+    type: AES                  # 加密类型：AES/RSA/SM2/SM4
+    secret-key: your-key       # 密钥
 ```
 
-### 8. XSS 过滤配置
+### 7. XSS 过滤配置
 
 ```yaml
 matrix:
   xss:
-    enabled: true                    # 是否启用XSS过滤
-    exclude-urls:                    # 排除过滤的URL模式列表
+    enabled: true              # 是否启用
+    exclude-urls:              # 排除的URL
       - /api/public/**
+```
+
+### 8. WebSocket/SSE 配置
+
+```yaml
+matrix:
+  websocket:
+    enabled: true              # 是否启用WebSocket
+    path: /ws                  # 连接路径
+    sender-type: redis         # 发送模式：local/redis
+    sse:
+      enabled: true            # 是否启用SSE
+      path: /sse/subscribe     # SSE路径
+```
+
+### 9. 安全白名单配置
+
+```yaml
+matrix:
+  security:
+    ignore:
+      whites:                  # 放行白名单
+        - /auth/**
+    tenant:
+      auth-url:                # 租户认证地址
+```
+
+### 10. Demo 演示模式
+
+```yaml
+matrix:
+  demo: true                  # 启用演示模式（禁止写操作）
 ```
 
 ## 🚀部署指南
