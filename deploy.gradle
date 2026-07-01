@@ -1,25 +1,22 @@
 // 应用模块（产出 Docker 镜像）- 从根 build.gradle 中获取
 def microservices = rootProject.ext.appModules
 
-switch (PROFILE) {
-    case 'dev':
-        ext {
-            registryUrl = ''
-            registryNamespace = ''
-            registryUsername = ''
-            registryPassword = ''
-            baseImage = 'amazoncorretto:21'
-        }
-        break
-    case 'prod':
-        ext {
-            registryUrl = ''
-            registryNamespace = ''
-            registryUsername = ''
-            registryPassword = ''
-            baseImage = 'amazoncorretto:21'
-        }
-        break
+if (PROFILE == 'prod') {
+    ext {
+        registryUrl = ''
+        registryNamespace = ''
+        registryUsername = ''
+        registryPassword = ''
+        baseImage = 'amazoncorretto:21'
+    }
+} else {
+    ext {
+        registryUrl = ''
+        registryNamespace = ''
+        registryUsername = ''
+        registryPassword = ''
+        baseImage = 'amazoncorretto:21'
+    }
 }
 
 println "build services: ${microservices.name}"
@@ -27,9 +24,9 @@ println "build profile: $PROFILE"
 
 File agentFile = file './skywalking-agent'
 
-configure(microservices) {
-    apply plugin: 'com.google.cloud.tools.jib'
-    jib {
+for (project in microservices) {
+    project.plugins.apply('com.google.cloud.tools.jib')
+    project.jib {
         from {
             image = "${baseImage}"
         }

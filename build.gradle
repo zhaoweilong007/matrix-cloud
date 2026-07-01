@@ -10,22 +10,24 @@ plugins {
 }
 
 // 应用模块（产出可启动 jar 和 Docker 镜像）
-ext.appModules = [
+def appModules = [
         project(':matrix-admin'),
         project(':matrix-gateway'),
         project(':matrix-resource:resource-biz'),
 ]
-def appModules = ext.appModules
+ext.appModules = appModules
 
 // 所有 Java 模块（排除 BOM）
 def commons = subprojects - project(':matrix-bom')
 
 // Gradle 9.x: 提取版本目录引用，避免子项目隐式查找父项目属性
-ext.scaVersion = libs.versions.springCloudAlibaba.get()
-ext.scVersion = libs.versions.springCloud.get()
-ext.micaVersion = libs.versions.mica.get()
-ext.checkstyleVersion = libs.versions.checkstyle.get()
-ext.pmdVersion = libs.versions.pmd.get()
+ext {
+    scaVersion = libs.versions.springCloudAlibaba.get()
+    scVersion = libs.versions.springCloud.get()
+    micaVersion = libs.versions.mica.get()
+    checkstyleVersion = libs.versions.checkstyle.get()
+    pmdVersion = libs.versions.pmd.get()
+}
 
 wrapper {
     gradleVersion = GRADLE_VERSION
