@@ -74,6 +74,7 @@ yidun = "1.1.11"
 tencentcloud = "3.1.930"
 mockito = "5.2.0"
 podam = "8.0.0.RELEASE"
+junit = "5.10.2"
 
 # === 构建插件 ===
 jib = "3.5.2"
@@ -203,6 +204,8 @@ lombok-mapstruct-binding = { module = "org.projectlombok:lombok-mapstruct-bindin
 mockito-inline = { module = "org.mockito:mockito-inline", version.ref = "mockito" }
 podam = { module = "uk.co.jemos.podam:podam", version.ref = "podam" }
 spotbugs-annotations = { module = "com.github.spotbugs:spotbugs-annotations", version.ref = "spotbugs" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
 
 [bundles]
 mybatis = ["mybatis-plus", "mybatis-plus-join", "dynamic-datasource", "druid"]

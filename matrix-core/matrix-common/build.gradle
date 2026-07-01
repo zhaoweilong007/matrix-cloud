@@ -39,4 +39,7 @@ dependencies {
     compileOnly 'org.springframework:spring-expression'
     compileOnly 'org.aspectj:aspectjweaver'
 
+    // 测试依赖
+    testImplementation libs.junit.jupiter
+    testRuntimeOnly libs.junit.platform.launcher
 }
