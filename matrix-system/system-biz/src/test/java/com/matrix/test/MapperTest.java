@@ -1,7 +1,7 @@
 package com.matrix.test;
 
 import com.matrix.api.system.entity.po.SysResource;
-import com.matrix.service.SysResourceService;
+import com.matrix.system.service.SysResourceService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
