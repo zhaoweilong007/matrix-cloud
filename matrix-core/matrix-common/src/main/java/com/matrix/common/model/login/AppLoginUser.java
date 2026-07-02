@@ -6,8 +6,6 @@ import lombok.Data;
 /**
  * app登录信息
  *
- * @author ZhaoWeiLong
- * @since 2023/7/3
  **/
 @Data
 @Schema(description = "app登录信息")

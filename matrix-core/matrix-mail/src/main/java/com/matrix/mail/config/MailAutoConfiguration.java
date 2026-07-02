@@ -10,9 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.mail.javamail.JavaMailSender;
 
 /**
- * 邮件发送自动配置。
- *
- * @author matrix
+ * 邮件发送自动配置，初始化 MailBuilder Bean
  */
 @AutoConfiguration
 @EnableConfigurationProperties(MailProperties.class)
@@ -21,6 +19,13 @@ public class MailAutoConfiguration {
 
     private static final Logger log = LoggerFactory.getLogger(MailAutoConfiguration.class);
 
+    /**
+     * 创建邮件链式构建器 Bean
+     *
+     * @param mailSender JavaMail 发送器
+     * @param properties 邮件配置属性
+     * @return MailBuilder 实例
+     */
     @Bean
     public MailBuilder mailBuilder(JavaMailSender mailSender, MailProperties properties) {
         log.info("Mail module initialized: from={}, fromName={}",

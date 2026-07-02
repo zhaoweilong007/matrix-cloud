@@ -15,7 +15,6 @@ import java.lang.annotation.Target;
  * 示例：192.168.*.*
  * </p>
  *
- * @author matrix
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)

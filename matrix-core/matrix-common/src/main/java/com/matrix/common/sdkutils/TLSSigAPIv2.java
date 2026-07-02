@@ -11,8 +11,6 @@ import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
 /**
- * @author ZhaoWeiLong
- * @since 2023/7/19
  **/
 public class TLSSigAPIv2 {
     private final long sdkappid;

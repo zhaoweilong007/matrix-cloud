@@ -23,5 +23,8 @@ public enum CaptchaType {
      */
     CHAR(RandomGenerator.class);
 
+    /**
+     * 验证码生成器实现类
+     */
     private final Class<? extends CodeGenerator> clazz;
 }

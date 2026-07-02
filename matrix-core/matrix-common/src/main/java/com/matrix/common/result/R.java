@@ -34,7 +34,6 @@ import org.springframework.lang.Nullable;
  * 响应信息主体
  *
  * @param <T> 泛型标记
- * @author L.cm
  */
 @Getter
 @Setter

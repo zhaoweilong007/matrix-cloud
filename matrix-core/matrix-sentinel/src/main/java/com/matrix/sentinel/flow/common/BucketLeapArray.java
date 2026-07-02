@@ -1,7 +1,6 @@
 package com.matrix.sentinel.flow.common;
 
 /**
- * @author wujiuye
  * from https://github.com/wujiuye/qps-helper
  */
 public class BucketLeapArray extends LeapArray<MetricBucket> {

@@ -24,8 +24,6 @@ import org.springframework.util.StringUtils;
 /**
  * 消费者监听器注册
  *
- * @author ZhaoWeiLong
- * @since 2023/3/23
  **/
 @RequiredArgsConstructor
 @Slf4j

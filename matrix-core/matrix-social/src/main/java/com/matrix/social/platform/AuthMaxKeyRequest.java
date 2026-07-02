@@ -11,13 +11,13 @@ import me.zhyd.oauth.model.AuthUser;
 import me.zhyd.oauth.request.AuthDefaultRequest;
 
 /**
- * MaxKey SSO 认证请求实现。
- *
- * @author matrix
+ * MaxKey SSO 认证请求实现，支持通过配置自定义 MaxKey 服务器地址
  */
 public class AuthMaxKeyRequest extends AuthDefaultRequest {
 
-    /** MaxKey 服务器地址，从配置读取 */
+    /**
+     * MaxKey 服务器地址，从配置读取
+     */
     public static final String SERVER_URL = getServerUrl();
 
     public AuthMaxKeyRequest(AuthConfig config) {

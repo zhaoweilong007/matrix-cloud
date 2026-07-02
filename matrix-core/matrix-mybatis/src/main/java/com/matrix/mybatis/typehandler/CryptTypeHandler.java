@@ -12,7 +12,6 @@ import org.apache.ibatis.type.MappedTypes;
 /**
  * 自定义typehandler
  *
- * @author xh
  */
 @MappedTypes(CryptType.class)
 public class CryptTypeHandler extends BaseTypeHandler<String> {

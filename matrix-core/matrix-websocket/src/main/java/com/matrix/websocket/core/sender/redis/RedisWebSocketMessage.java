@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 /**
  * Redis 广播消息体。
  *
- * @author matrix
  */
 @Data
 @NoArgsConstructor

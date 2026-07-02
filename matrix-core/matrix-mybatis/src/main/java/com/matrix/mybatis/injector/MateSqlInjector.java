@@ -26,7 +26,6 @@ import java.util.List;
 /**
  * 自定义的 sql 注入
  *
- * @author L.cm
  */
 public class MateSqlInjector extends DefaultSqlInjector {
 

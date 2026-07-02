@@ -10,8 +10,6 @@ import one.util.streamex.StreamEx;
 /**
  * 描述：
  *
- * @author zwl
- * @since 2022/9/30 15:29
  **/
 @Slf4j
 public class ProfileUtils {

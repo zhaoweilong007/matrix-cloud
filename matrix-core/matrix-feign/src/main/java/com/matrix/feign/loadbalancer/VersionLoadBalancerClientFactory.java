@@ -9,8 +9,6 @@ import org.springframework.cloud.loadbalancer.core.ServiceInstanceListSupplier;
 import org.springframework.cloud.loadbalancer.support.LoadBalancerClientFactory;
 
 /**
- * @author ZhaoWeiLong
- * @since 2023/6/28
  **/
 public class VersionLoadBalancerClientFactory extends LoadBalancerClientFactory {
 

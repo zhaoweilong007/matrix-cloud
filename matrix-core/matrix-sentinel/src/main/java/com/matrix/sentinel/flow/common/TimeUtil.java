@@ -5,11 +5,13 @@ import java.util.concurrent.TimeUnit;
 /**
  * 时间计算工具
  *
- * @author wujiuye
  * from https://github.com/wujiuye/qps-helper
  */
 public final class TimeUtil {
 
+    /**
+     * 当前时间戳缓存（毫秒），由守护线程每秒更新
+     */
     private static volatile long currentTimeMillis;
 
     static {
@@ -32,6 +34,11 @@ public final class TimeUtil {
         daemon.start();
     }
 
+    /**
+     * 获取当前时间戳（毫秒）
+     *
+     * @return 当前时间戳
+     */
     public static long currentTimeMillis() {
         return currentTimeMillis;
     }

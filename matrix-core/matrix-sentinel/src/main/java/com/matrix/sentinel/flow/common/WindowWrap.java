@@ -4,7 +4,6 @@ package com.matrix.sentinel.flow.common;
  * bucket的包装器实体类
  *
  * @param <T> 存储的数据类型
- * @author wujiuye
  * from https://github.com/wujiuye/qps-helper
  */
 public class WindowWrap<T> {
@@ -23,6 +22,13 @@ public class WindowWrap<T> {
      */
     private T value;
 
+    /**
+     * 构造窗口包装器
+     *
+     * @param windowLengthInMs 窗口时间长度（毫秒）
+     * @param windowStart      窗口开始时间戳
+     * @param value            统计数据
+     */
     public WindowWrap(long windowLengthInMs, long windowStart, T value) {
         this.windowLengthInMs = windowLengthInMs;
         this.windowStart = windowStart;

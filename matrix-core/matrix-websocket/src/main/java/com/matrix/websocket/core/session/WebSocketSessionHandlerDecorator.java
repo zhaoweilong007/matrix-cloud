@@ -13,12 +13,14 @@ import org.springframework.web.socket.handler.WebSocketHandlerDecorator;
  * <p>建立连接时将 Session 加入 {@link WebSocketSessionManager}，
  * 关闭连接时自动移除。</p>
  *
- * @author matrix
  */
 public class WebSocketSessionHandlerDecorator extends WebSocketHandlerDecorator {
 
     private static final Logger log = LoggerFactory.getLogger(WebSocketSessionHandlerDecorator.class);
 
+    /**
+     * Session 管理器，用于管理 WebSocket 会话的生命周期
+     */
     private final WebSocketSessionManager sessionManager;
 
     public WebSocketSessionHandlerDecorator(WebSocketHandler delegate, WebSocketSessionManager sessionManager) {

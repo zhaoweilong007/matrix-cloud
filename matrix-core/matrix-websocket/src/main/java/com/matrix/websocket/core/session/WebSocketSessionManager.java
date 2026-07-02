@@ -6,7 +6,6 @@ import org.springframework.web.socket.WebSocketSession;
 /**
  * WebSocket Session 管理器接口。
  *
- * @author matrix
  */
 public interface WebSocketSessionManager {
 

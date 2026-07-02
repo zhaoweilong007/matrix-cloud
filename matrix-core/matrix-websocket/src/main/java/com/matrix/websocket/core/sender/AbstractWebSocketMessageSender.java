@@ -17,12 +17,14 @@ import org.springframework.web.socket.WebSocketSession;
  * 所有 MQ 版本的 Consumer 最终都回调到
  * {@link #doSend} 方法，实现跨节点消息投递。</p>
  *
- * @author matrix
  */
 public abstract class AbstractWebSocketMessageSender implements WebSocketMessageSender {
 
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
+    /**
+     * WebSocket Session 管理器，用于查找目标 Session
+     */
     protected final WebSocketSessionManager sessionManager;
 
     protected AbstractWebSocketMessageSender(WebSocketSessionManager sessionManager) {

@@ -9,8 +9,6 @@ import org.springframework.core.env.ConfigurableEnvironment;
 /**
  * 针对xxl-job的环境配置
  *
- * @author ZhaoWeiLong
- * @since 2023/7/17
  **/
 @AutoEnvPostProcessor
 public class JobEnvironment implements EnvironmentPostProcessor {

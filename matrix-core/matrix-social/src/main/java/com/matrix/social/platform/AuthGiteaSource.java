@@ -4,9 +4,7 @@ import me.zhyd.oauth.config.AuthSource;
 import me.zhyd.oauth.request.AuthDefaultRequest;
 
 /**
- * Gitea OAuth2 平台定义。
- *
- * @author matrix
+ * Gitea OAuth2 平台定义，提供授权、令牌、用户信息等端点 URL
  */
 public enum AuthGiteaSource implements AuthSource {
 

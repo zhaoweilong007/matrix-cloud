@@ -15,8 +15,6 @@ import org.springframework.core.env.Environment;
 /**
  * 多人协作负载均衡隔离
  *
- * @author ZhaoWeiLong
- * @since 2023/6/19
  **/
 @Slf4j
 public class ProfileRuleChooser implements IRuleChooser {

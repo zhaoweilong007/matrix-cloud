@@ -14,8 +14,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 /**
  * 对返回消息国际化转换
  *
- * @author ZhaoWeiLong
- * @since 2023/6/25
  **/
 @RestControllerAdvice
 public class I18nResponseBodyAdvice implements ResponseBodyAdvice<R<?>> {

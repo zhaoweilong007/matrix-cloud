@@ -22,7 +22,6 @@ import org.springframework.context.annotation.Bean;
  *
  * <p>启用后自动提供 Swagger UI（/swagger-ui.html）和 OpenAPI JSON（/v3/api-docs）。</p>
  *
- * @author matrix
  */
 @AutoConfiguration
 @ConditionalOnClass(name = "org.springdoc.core.models.GroupedOpenApi")
@@ -32,6 +31,12 @@ public class SpringDocAutoConfiguration {
 
     private static final Logger log = LoggerFactory.getLogger(SpringDocAutoConfiguration.class);
 
+    /**
+     * 创建 OpenAPI 信息对象，包含标题、描述、版本等基本信息
+     *
+     * @param properties API 文档配置属性
+     * @return OpenAPI 实例
+     */
     @Bean
     @ConditionalOnMissingBean
     public OpenAPI openAPI(SpringDocProperties properties) {
@@ -45,6 +50,12 @@ public class SpringDocAutoConfiguration {
                         .license(new License().name("Apache 2.0").url("https://www.apache.org/licenses/LICENSE-2.0")));
     }
 
+    /**
+     * 创建默认的分组 OpenAPI，按配置的路径匹配规则进行分组
+     *
+     * @param properties API 文档配置属性
+     * @return GroupedOpenApi 实例
+     */
     @Bean
     @ConditionalOnMissingBean
     public GroupedOpenApi defaultGroupedOpenApi(SpringDocProperties properties) {

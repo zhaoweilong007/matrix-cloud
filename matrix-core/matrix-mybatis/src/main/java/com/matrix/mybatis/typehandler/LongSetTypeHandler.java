@@ -20,7 +20,6 @@ import org.apache.ibatis.type.MappedTypes;
  * <p>将 Set&lt;Long&gt; 序列化为逗号分隔字符串存入 VARCHAR 字段，
  * 读取时自动解析还原并去重。</p>
  *
- * @author matrix
  */
 @MappedJdbcTypes(JdbcType.VARCHAR)
 @MappedTypes(Set.class)

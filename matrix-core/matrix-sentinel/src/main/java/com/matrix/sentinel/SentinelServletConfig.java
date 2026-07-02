@@ -8,8 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
 
 /**
- * @author ZhaoWeiLong
- * @since 2023/7/17
+ * Sentinel Servlet 环境配置，注册 IP 解析器
  **/
 @AutoConfiguration
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
@@ -17,6 +16,9 @@ import org.springframework.context.annotation.PropertySource;
 @Slf4j
 public class SentinelServletConfig {
 
+    /**
+     * 注册 IP 来源解析器
+     */
     @Bean
     public IpParse ipParse() {
         return new IpParse();

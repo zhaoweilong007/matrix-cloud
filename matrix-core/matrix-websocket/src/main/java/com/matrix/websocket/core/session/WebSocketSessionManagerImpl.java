@@ -19,7 +19,6 @@ import org.springframework.web.socket.WebSocketSession;
  *   <li>userSessions: userId → Session 列表（支持一个用户多端连接）</li>
  * </ul>
  *
- * @author matrix
  */
 public class WebSocketSessionManagerImpl implements WebSocketSessionManager {
 

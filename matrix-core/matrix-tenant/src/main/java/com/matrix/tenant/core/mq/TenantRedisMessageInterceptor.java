@@ -10,7 +10,6 @@ import com.matrix.mq.redis.message.AbstractRedisMessage;
  * <p>发送消息时自动将 tenantId 注入消息头，
  * 消费消息时自动从消息头恢复 tenantId 到上下文。</p>
  *
- * @author matrix
  */
 public class TenantRedisMessageInterceptor implements RedisMessageInterceptor {
 

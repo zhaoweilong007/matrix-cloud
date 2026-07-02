@@ -15,6 +15,7 @@ public interface UserConstants {
      */
     Integer MENU_NORMAL = 1;
 
+
     /**
      * 菜单类型（菜单）
      */
@@ -40,6 +41,9 @@ public interface UserConstants {
      */
     int USERNAME_MIN_LENGTH = 2;
 
+    /**
+     * 用户名最大长度
+     */
     int USERNAME_MAX_LENGTH = 20;
 
     /**
@@ -47,6 +51,9 @@ public interface UserConstants {
      */
     int PASSWORD_MIN_LENGTH = 5;
 
+    /**
+     * 密码最大长度
+     */
     int PASSWORD_MAX_LENGTH = 20;
 
     /**

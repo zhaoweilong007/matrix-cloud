@@ -32,16 +32,23 @@ import software.amazon.awssdk.services.s3.presigner.model.PresignedGetObjectRequ
  *
  * <p>基于 AWS SDK for Java v2，兼容阿里云 OSS / MinIO / 腾讯云 COS 等。</p>
  *
- * @author matrix
  */
 public class OssClientImpl implements OssClient {
 
     private static final Logger log = LoggerFactory.getLogger(OssClientImpl.class);
 
+    /** AWS S3 客户端 */
     private final S3Client s3Client;
+    /** 预签名 URL 生成器 */
     private final S3Presigner presigner;
+    /** OSS 配置属性 */
     private final OssProperties properties;
 
+    /**
+     * 构造 OSS 客户端实现。
+     *
+     * @param properties OSS 配置属性（端点、凭证、Bucket 等）
+     */
     public OssClientImpl(OssProperties properties) {
         this.properties = properties;
         this.s3Client = S3Client.builder()

@@ -3,8 +3,6 @@ package com.matrix.strategy.service;
 /**
  * 模板方法
  *
- * @author ZhaoWeiLong
- * @since 2023/7/24
  **/
 public abstract class AbstractBusinessHandler<R, T> implements BusinessHandler<R, T> {
 

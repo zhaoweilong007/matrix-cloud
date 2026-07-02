@@ -12,8 +12,6 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 /**
- * @author ZhaoWeiLong
- * @since 2023/7/18
  **/
 public class BigDecimalSerializer extends JsonSerializer<Object> implements ContextualSerializer {
 

@@ -48,8 +48,6 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
  * <p>
  * 详细{@link com.matrix.datapermission.enums.RoleDataScoop}
  *
- * @author ZhaoWeiLong
- * @since 2023/8/28
  **/
 @Slf4j
 public class RoleDataPermissionRule implements DataPermissionRule {
@@ -147,6 +145,15 @@ public class RoleDataPermissionRule implements DataPermissionRule {
         }
     }
 
+    /**
+     * 构建 SQL 表达式，根据角色数据权限组装过滤条件
+     *
+     * @param tableName      表名
+     * @param tableAliasName 表别名
+     * @param roles          角色列表
+     * @param loginUser      当前登录用户
+     * @return SQL 表达式字符串
+     */
     private String buildExpression(String tableName, String tableAliasName, List<RoleDTO> roles, LoginUser loginUser) {
         String joinStr = " OR ";
         StandardEvaluationContext context = new StandardEvaluationContext();

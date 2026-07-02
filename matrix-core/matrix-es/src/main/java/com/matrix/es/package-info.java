@@ -1,5 +1,4 @@
 /**
- * @author ZhaoWeiLong
- * @since 2023/6/5
- **/
+ * Easy-Es Elasticsearch ORM 自动配置及工具支持。
+ */
 package com.matrix.es;

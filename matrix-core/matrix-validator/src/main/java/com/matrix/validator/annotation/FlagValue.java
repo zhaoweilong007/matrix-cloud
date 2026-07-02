@@ -10,7 +10,6 @@ import java.lang.annotation.*;
 /**
  * 校验标识，只有Y和N两种状态的标识
  *
- * @author aaronuu
  */
 @Documented
 @Constraint(validatedBy = FlagValueValidator.class)

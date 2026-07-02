@@ -11,7 +11,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
  * <p>当 classpath 中存在 Easy-Es 时自动启用，
  * 提供 Elasticsearch ORM 操作的基础配置支持。</p>
  *
- * @author matrix
  */
 @AutoConfiguration
 @ConditionalOnClass(name = "org.dromara.easyes.annotation.Interceptor")

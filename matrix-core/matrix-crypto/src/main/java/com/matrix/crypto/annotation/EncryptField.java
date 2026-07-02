@@ -20,7 +20,6 @@ import java.lang.annotation.Target;
  * }
  * </pre>
  *
- * @author matrix
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

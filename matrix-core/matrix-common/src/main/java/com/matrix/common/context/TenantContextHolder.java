@@ -58,8 +58,12 @@ public class TenantContextHolder {
         IGNORE.set(ignore);
     }
 
+    /**
+     * 清除租户上下文
+     */
     public static void clear() {
         TENANT_ID.remove();
         IGNORE.remove();
     }
+
 }

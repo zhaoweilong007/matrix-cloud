@@ -8,7 +8,6 @@ import jakarta.validation.ConstraintValidatorContext;
 /**
  * 校验状态，判断是否为 StatusEnum 中的值
  *
- * @author aaronuu
  */
 public class StatusValueValidator implements ConstraintValidator<StatusValue, String> {
 

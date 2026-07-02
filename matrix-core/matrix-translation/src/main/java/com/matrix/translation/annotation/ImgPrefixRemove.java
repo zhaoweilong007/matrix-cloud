@@ -6,11 +6,8 @@ import com.matrix.translation.config.ImgPrefixRemoveDeSerializer;
 import java.lang.annotation.*;
 
 /**
- * 移除图片前缀序列化
- *
- * @author ZhaoWeiLong
- * @since 2023/8/16
- **/
+ * 移除图片前缀序列化注解，反序列化时自动去除 OSS 前缀
+ */
 @Inherited
 @JacksonAnnotationsInside
 @Retention(RetentionPolicy.RUNTIME)

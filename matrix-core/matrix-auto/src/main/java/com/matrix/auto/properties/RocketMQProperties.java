@@ -15,20 +15,40 @@ import org.springframework.util.CollectionUtils;
  * @author ZhaoWeiLong
  * @since 2023/3/22
  */
+
 @ConfigurationProperties(prefix = "matrix.mq")
 @Data
 public class RocketMQProperties implements InitializingBean {
 
+    /**
+     * 是否启用 RocketMQ
+     */
     private Boolean enabled;
 
+    /**
+     * ONS/RocketMQ 服务地址
+     */
     private String onsAddr;
 
+    /**
+     * RocketMQ 访问密钥
+     */
     private String accessKey;
 
+    /**
+     * RocketMQ 秘密密钥
+     */
     private String secretKey;
 
+
+    /**
+     * 生产者配置列表
+     */
     private List<Properties> producers;
 
+    /**
+     * 消费者配置列表
+     */
     private List<Properties> consumers;
 
     @Override
@@ -53,6 +73,7 @@ public class RocketMQProperties implements InitializingBean {
         }
     }
 
+
     private void checkProperties(Properties properties) {
         if (StringUtils.isEmpty(properties.getProperty("groupId"))) {
             throw new NullPointerException("groupId cannot be empty");
@@ -65,4 +86,6 @@ public class RocketMQProperties implements InitializingBean {
         properties.put(PropertyKeyConst.SecretKey, secretKey);
         properties.put(PropertyKeyConst.NAMESRV_ADDR, onsAddr);
     }
+
+
 }

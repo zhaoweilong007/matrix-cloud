@@ -7,12 +7,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 /**
- * @author ZhaoWeiLong
- * @since 2024/2/23
- **/
+ * API 访问日志 Feign 客户端，用于向 resource 服务发送访问日志
+ */
 @FeignClient(contextId = "ApiAccessLogApi", value = ServerNameConstants.RESOURCE, path = "/apiAccessLog")
 public interface ApiAccessLogApi {
 
-    @PostMapping("/createApiAccessLog")
-    void createApiAccessLog(@RequestBody ApiAccessLog apiAccessLog);
+  /**
+   * 发送 API 访问日志
+   *
+   * @param apiAccessLog 访问日志
+   */
+  @PostMapping("/createApiAccessLog")
+  void createApiAccessLog(@RequestBody ApiAccessLog apiAccessLog);
 }

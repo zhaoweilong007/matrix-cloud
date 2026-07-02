@@ -22,14 +22,19 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
  */
 public class RandomUtils {
 
+    /** 随机字符串默认长度 */
     private static final int RANDOM_STRING_LENGTH = 10;
 
+    /** tinyint 类型最大值 */
     private static final int TINYINT_MAX = 127;
 
+    /** 随机日期最大偏移天数 */
     private static final int RANDOM_DATE_MAX = 30;
 
+    /** 随机集合默认大小 */
     private static final int RANDOM_COLLECTION_LENGTH = 5;
 
+    /** Podam 工厂实例，用于生成随机 POJO */
     private static final PodamFactory PODAM_FACTORY = new PodamFactoryImpl();
 
     static {
@@ -65,30 +70,67 @@ public class RandomUtils {
                 });
     }
 
+    /**
+     * 生成随机字符串
+     *
+     * @return 随机字符串
+     */
     public static String randomString() {
         return RandomUtil.randomString(RANDOM_STRING_LENGTH);
     }
 
+    /**
+     * 生成随机 Long 类型 ID
+     *
+     * @return 随机 Long
+     */
     public static Long randomLongId() {
         return RandomUtil.randomLong(0, Long.MAX_VALUE);
     }
 
+    /**
+     * 生成随机 Integer
+     *
+     * @return 随机 Integer
+     */
     public static Integer randomInteger() {
         return RandomUtil.randomInt(0, Integer.MAX_VALUE);
     }
 
+    /**
+     * 生成随机 Date
+     *
+     * @return 随机 Date
+     */
     public static Date randomDate() {
         return RandomUtil.randomDay(0, RANDOM_DATE_MAX);
     }
 
+    /**
+     * 生成随机 LocalDateTime
+     *
+     * @return 随机 LocalDateTime
+     */
     public static LocalDateTime randomLocalDateTime() {
         return LocalDateTimeUtil.of(randomDate());
     }
 
+    /**
+     * 生成随机 Short
+     *
+     * @return 随机 Short
+     */
     public static Short randomShort() {
         return (short) RandomUtil.randomInt(0, Short.MAX_VALUE);
     }
 
+    /**
+     * 生成随机集合
+     *
+     * @param clazz 集合元素类型
+     * @param <T>   元素泛型类型
+     * @return 随机 Set 集合
+     */
     public static <T> Set<T> randomSet(Class<T> clazz) {
         return Stream.iterate(0, i -> i)
                 .limit(RandomUtil.randomInt(1, RANDOM_COLLECTION_LENGTH))
@@ -96,14 +138,32 @@ public class RandomUtils {
                 .collect(Collectors.toSet());
     }
 
+    /**
+     * 生成随机通用状态（启用/禁用）
+     *
+     * @return 状态值，0 或 1
+     */
     public static Integer randomCommonStatus() {
         return RandomUtil.randomEle(CommonStatusEnum.values()).getStatus();
     }
 
+    /**
+     * 生成随机邮箱地址
+     *
+     * @return 随机邮箱
+     */
     public static String randomEmail() {
         return randomString() + "@qq.com";
     }
 
+    /**
+     * 生成随机 POJO 对象
+     *
+     * @param clazz     POJO 类型
+     * @param consumers 自定义回调，用于进一步设置对象属性
+     * @param <T>       POJO 泛型类型
+     * @return 随机生成的 POJO 对象
+     */
     @SafeVarargs
     public static <T> T randomPojo(Class<T> clazz, Consumer<T>... consumers) {
         T pojo = PODAM_FACTORY.manufacturePojo(clazz);
@@ -114,6 +174,15 @@ public class RandomUtils {
         return pojo;
     }
 
+    /**
+     * 生成随机 POJO 对象（支持泛型类型参数）
+     *
+     * @param clazz     POJO 类型
+     * @param type      泛型类型参数
+     * @param consumers 自定义回调，用于进一步设置对象属性
+     * @param <T>       POJO 泛型类型
+     * @return 随机生成的 POJO 对象
+     */
     @SafeVarargs
     public static <T> T randomPojo(Class<T> clazz, Type type, Consumer<T>... consumers) {
         T pojo = PODAM_FACTORY.manufacturePojo(clazz, type);
@@ -124,6 +193,14 @@ public class RandomUtils {
         return pojo;
     }
 
+    /**
+     * 生成随机 POJO 对象列表
+     *
+     * @param clazz     POJO 类型
+     * @param consumers 自定义回调，用于进一步设置对象属性
+     * @param <T>       POJO 泛型类型
+     * @return 随机生成的 POJO 对象列表
+     */
     @SafeVarargs
     public static <T> List<T> randomPojoList(Class<T> clazz, Consumer<T>... consumers) {
         int size = RandomUtil.randomInt(1, RANDOM_COLLECTION_LENGTH);

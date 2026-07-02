@@ -12,8 +12,6 @@ import lombok.Data;
  * 字典数据表
  * </p>
  *
- * @author zhaoweilong
- * @since 2023-07-01
  */
 @Schema(description = "字典数据")
 @Data

@@ -18,7 +18,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  *       redirect-uri: http://example.com/callback/gitee
  * </pre>
  *
- * @author matrix
  */
 @Data
 @ConfigurationProperties(prefix = "matrix.social")

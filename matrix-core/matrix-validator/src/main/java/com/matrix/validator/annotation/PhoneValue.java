@@ -10,7 +10,6 @@ import java.lang.annotation.*;
 /**
  * 校验手机号码格式
  *
- * @author aaronuu
  */
 @Documented
 @Constraint(validatedBy = PhoneValueValidator.class)

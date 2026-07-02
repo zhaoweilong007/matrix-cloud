@@ -11,6 +11,9 @@ import java.lang.annotation.Annotation;
  */
 public class DataPermissionUtils {
 
+    /**
+     * 禁用的 DataPermission 实例，用于 {@link #executeIgnore(Runnable)} 中关闭数据权限
+     */
     private static final DataPermission DATA_PERMISSION_DISABLE = new DataPermission() {
         @Override
         public Class<? extends Annotation> annotationType() {

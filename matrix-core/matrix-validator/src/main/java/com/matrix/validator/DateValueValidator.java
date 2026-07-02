@@ -9,7 +9,6 @@ import jakarta.validation.ConstraintValidatorContext;
 /**
  * 日期校验格式，通过format的参数来校验格式
  *
- * @author aaronuu
  */
 public class DateValueValidator implements ConstraintValidator<DateValue, String> {
 

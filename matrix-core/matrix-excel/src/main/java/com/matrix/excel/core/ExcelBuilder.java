@@ -25,19 +25,29 @@ import java.util.List;
  *     .toResponse(response, "用户导出.xlsx");
  * </pre>
  *
- * @author matrix
  */
 public class ExcelBuilder<T> {
 
+    /** 导出数据列表 */
     private final List<T> data;
+    /** 表头模型类 */
     private Class<T> headModel;
+    /** Sheet 名称 */
     private String sheetName = "Sheet1";
+    /** 是否启用单元格合并 */
     private boolean mergeCells;
+    /** 打开密码 */
     private String password;
+    /** 工作表序号 */
     private Integer sheetNo;
+    /** 仅包含的列名 */
     private List<String> includeColumns;
+    /** 排除的列名 */
     private List<String> excludeColumns;
 
+    /**
+     * 私有构造器，使用 {@link #of(List)} 创建实例
+     */
     private ExcelBuilder(List<T> data) {
         this.data = data != null ? data : new ArrayList<>();
     }

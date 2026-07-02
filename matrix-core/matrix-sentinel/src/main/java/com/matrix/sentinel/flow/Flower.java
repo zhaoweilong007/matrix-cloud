@@ -7,7 +7,6 @@ import java.util.List;
 /**
  * 流量统计
  *
- * @author wujiuye
  * from https://github.com/wujiuye/qps-helper
  */
 public interface Flower {

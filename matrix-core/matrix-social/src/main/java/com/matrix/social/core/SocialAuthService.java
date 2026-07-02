@@ -13,10 +13,12 @@ import me.zhyd.oauth.request.AuthRequest;
  *
  * <p>提供 authorize（跳转授权页）和 login（处理回调）两个核心能力。</p>
  *
- * @author matrix
  */
 public class SocialAuthService {
 
+    /**
+     * 认证请求工厂
+     */
     private final SocialAuthFactory authFactory;
 
     public SocialAuthService(SocialAuthFactory authFactory) {

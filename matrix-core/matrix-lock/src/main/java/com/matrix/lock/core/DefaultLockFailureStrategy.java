@@ -13,8 +13,6 @@ import java.lang.reflect.Method;
  * {@link ServiceException}(503) 与友好提示信息，
  * 避免前端收到 500 内部错误。</p>
  *
- * @author ZhaoWeiLong
- * @since 2026/7/2
  */
 @Slf4j
 public class DefaultLockFailureStrategy implements LockFailureStrategy {

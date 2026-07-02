@@ -9,8 +9,6 @@ import lombok.Data;
 /**
  * 描述：<p></p>
  *
- * @author ZhaoWeiLong
- * @since 2023/3/3
  **/
 @Schema(name = "分页参数", description = "分页参数")
 @Data

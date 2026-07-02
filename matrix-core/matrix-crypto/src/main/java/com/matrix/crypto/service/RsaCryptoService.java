@@ -8,13 +8,21 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * RSA 加解密服务
  *
- * @author matrix
  */
 @Slf4j
 public class RsaCryptoService implements CryptoService {
 
+    /**
+     * RSA 加密器（Hutool 封装）
+     */
     private final RSA rsa;
 
+    /**
+     * 使用公钥和私钥构造 RSA 加解密服务
+     *
+     * @param publicKey  RSA 公钥
+     * @param privateKey RSA 私钥
+     */
     public RsaCryptoService(String publicKey, String privateKey) {
         this.rsa = new RSA(privateKey, publicKey);
     }

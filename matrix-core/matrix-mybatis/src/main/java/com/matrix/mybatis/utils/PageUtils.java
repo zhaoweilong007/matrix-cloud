@@ -19,8 +19,6 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * 描述：<p>分页查询工具类</p>
  *
- * @author ZhaoWeiLong
- * @since 2023/3/8
  **/
 public class PageUtils {
 

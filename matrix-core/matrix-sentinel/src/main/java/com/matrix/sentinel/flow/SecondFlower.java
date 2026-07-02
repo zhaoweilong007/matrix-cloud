@@ -5,7 +5,6 @@ import com.matrix.sentinel.flow.common.ArrayMetric;
 /**
  * 统计一秒钟的流量
  *
- * @author wujiuye
  * from https://github.com/wujiuye/qps-helper
  */
 public class SecondFlower extends BaseFlower {

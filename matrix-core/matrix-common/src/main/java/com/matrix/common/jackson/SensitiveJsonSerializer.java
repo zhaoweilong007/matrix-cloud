@@ -29,7 +29,6 @@ import org.springframework.beans.BeansException;
 /**
  * 数据脱敏json序列化工具
  *
- * @author Yjoioooo
  */
 @Slf4j
 public class SensitiveJsonSerializer extends JsonSerializer<String> implements ContextualSerializer {

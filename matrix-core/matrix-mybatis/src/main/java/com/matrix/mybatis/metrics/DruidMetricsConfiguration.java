@@ -11,16 +11,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Druid 连接池 Micrometer 指标自动配置。
+ *
+ * <p>当 classpath 存在 DruidDataSource 和 MeterRegistry 时，
+ * 自动将所有 Druid 数据源的运行指标注册到 Micrometer。</p>
+ */
 @Configuration
 @ConditionalOnClass({DruidDataSource.class, MeterRegistry.class})
 public class DruidMetricsConfiguration {
 
+    /** Micrometer 指标注册表 */
     private final MeterRegistry registry;
 
     public DruidMetricsConfiguration(MeterRegistry registry) {
         this.registry = registry;
     }
 
+    /**
+     * 将所有 DruidDataSource 绑定到 Micrometer 指标注册表。
+     *
+     * @param dataSources 所有已注册的数据源
+     */
     @Autowired
     public void bindMetricsRegistryToDruidDataSources(Collection<DataSource> dataSources) throws SQLException {
         List<DruidDataSource> druidDataSources = new ArrayList<>(dataSources.size());

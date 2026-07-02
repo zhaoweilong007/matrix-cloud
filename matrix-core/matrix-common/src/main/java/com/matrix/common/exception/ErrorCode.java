@@ -9,7 +9,6 @@ import net.dreamlu.mica.core.result.IResultCode;
  * 封装错误码和错误消息，支持参数占位符格式化
  * </p>
  *
- * @author matrix
  */
 public class ErrorCode implements IResultCode {
 

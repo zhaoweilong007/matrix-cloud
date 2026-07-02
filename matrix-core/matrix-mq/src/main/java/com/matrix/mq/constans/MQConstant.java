@@ -1,8 +1,7 @@
 package com.matrix.mq.constans;
 
 /**
- * @author ZhaoWeiLong
- * @since 2023/3/23
+ * MQ 常量定义
  **/
 public interface MQConstant {
 

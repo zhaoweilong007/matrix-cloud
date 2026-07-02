@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
  *
  * <p>注意：为确保下拉框解析正确，传值务必使用 {@link #createOptionValue(Object...)} 做为值的拼接。</p>
  *
- * @author matrix
  */
 @Data
 @AllArgsConstructor
@@ -52,12 +51,18 @@ public class DropDownOptions {
      * 分隔符
      */
     private static final String DELIMITER = "_";
+    /** 选项组成部分的正则（仅允许中英文、数字） */
     private static final String OPTION_PART_REGEX = "^[A-Za-z0-9\\u4e00-\\u9fa5]+$";
+    /** Excel 名称管理器名称的正则 */
     private static final String EXCEL_NAME_REGEX = "^[A-Za-z_\\u4e00-\\u9fa5][A-Za-z0-9_\\u4e00-\\u9fa5]*$";
+    /** 单元格引用格式的正则 */
     private static final String CELL_REFERENCE_REGEX = "^[A-Za-z]{1,3}[1-9][0-9]*$";
 
     /**
      * 创建只有一级的下拉选
+     *
+     * @param index   列索引
+     * @param options 下拉选项列表
      */
     public DropDownOptions(int index, List<String> options) {
         this.index = index;

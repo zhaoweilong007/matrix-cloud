@@ -9,7 +9,6 @@ import java.util.List;
 /**
  * 流量统计基类
  *
- * @author wujiuye
  * from https://github.com/wujiuye/qps-helper
  */
 public abstract class BaseFlower implements Flower {
@@ -19,6 +18,11 @@ public abstract class BaseFlower implements Flower {
      */
     private transient Metric metric;
 
+    /**
+     * 构造流量统计基类
+     *
+     * @param metric 度量器
+     */
     public BaseFlower(Metric metric) {
         this.metric = metric;
     }

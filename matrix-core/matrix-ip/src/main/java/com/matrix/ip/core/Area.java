@@ -7,7 +7,6 @@ import lombok.Data;
 /**
  * 行政区域节点，支持树形结构。
  *
- * @author matrix
  */
 @Data
 public class Area {

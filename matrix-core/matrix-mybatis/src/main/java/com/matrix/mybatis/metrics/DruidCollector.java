@@ -6,12 +6,20 @@ import io.micrometer.core.instrument.MeterRegistry;
 import java.util.List;
 import java.util.function.ToDoubleFunction;
 
+/**
+ * Druid 连接池指标收集器。
+ *
+ * <p>将 DruidDataSource 的各项运行指标注册到 Micrometer，
+ * 包括连接池状态、SQL 执行统计、事务统计和缓存命中率等。</p>
+ */
 class DruidCollector {
 
     private static final String LABEL_NAME = "pool";
 
+    /** Druid 数据源列表 */
     private final List<DruidDataSource> dataSources;
 
+    /** Micrometer 指标注册表 */
     private final MeterRegistry registry;
 
     DruidCollector(List<DruidDataSource> dataSources, MeterRegistry registry) {

@@ -30,8 +30,6 @@ import java.lang.annotation.*;
  * <p>
  * tag：具体分类下的标签，如order下create、pay等细分场景
  *
- * @author ZhaoWeiLong
- * @since 2023/3/22
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

@@ -7,13 +7,20 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * AES 加解密服务
  *
- * @author matrix
  */
 @Slf4j
 public class AesCryptoService implements CryptoService {
 
+    /**
+     * AES 加密器（Hutool 封装）
+     */
     private final AES aes;
 
+    /**
+     * 使用密钥构造 AES 加解密服务
+     *
+     * @param secretKey AES 密钥（16/24/32 字节）
+     */
     public AesCryptoService(String secretKey) {
         this.aes = new AES(secretKey.getBytes(StandardCharsets.UTF_8));
     }

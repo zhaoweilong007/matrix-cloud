@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
 /**
  * 脱敏策略
  *
- * @author Yjoioooo
  */
 @AllArgsConstructor
 public enum SensitiveStrategyEnum {

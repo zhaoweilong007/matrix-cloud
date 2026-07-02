@@ -11,7 +11,6 @@ import java.lang.annotation.Target;
  * 支持 5 种 Key 解析策略：全局、用户、IP、服务节点、SpEL 表达式
  * </p>
  *
- * @author matrix
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

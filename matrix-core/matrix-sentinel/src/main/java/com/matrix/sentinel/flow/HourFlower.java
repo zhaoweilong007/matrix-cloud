@@ -5,7 +5,6 @@ import com.matrix.sentinel.flow.common.ArrayMetric;
 /**
  * 统计一小时及每分钟的流量
  *
- * @author wujiuye
  * from https://github.com/wujiuye/qps-helper
  */
 public class HourFlower extends BaseFlower {

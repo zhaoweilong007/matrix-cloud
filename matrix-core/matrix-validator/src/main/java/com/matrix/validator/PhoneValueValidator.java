@@ -10,7 +10,6 @@ import jakarta.validation.ConstraintValidatorContext;
 /**
  * 校验手机号是否合法
  *
- * @author aaronuu
  */
 public class PhoneValueValidator implements ConstraintValidator<PhoneValue, String> {
 

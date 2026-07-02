@@ -26,7 +26,6 @@ import java.util.List;
  * <p>自动注册 Pub/Sub 监听器到 {@link RedisMessageListenerContainer}，
  * 以及 Stream 监听器到 {@link StreamMessageListenerContainer}。</p>
  *
- * @author matrix
  */
 @Slf4j
 @AutoConfiguration

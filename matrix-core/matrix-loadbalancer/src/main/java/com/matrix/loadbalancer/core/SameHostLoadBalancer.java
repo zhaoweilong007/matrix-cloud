@@ -24,13 +24,18 @@ import java.util.concurrent.ThreadLocalRandom;
  * <p>优先选择与调用方在同一台机器上的服务实例，减少网络跳数。
  * 若无同主机实例，则随机选择一个可用实例。</p>
  *
- * @author matrix
  */
 @Slf4j
 @AllArgsConstructor
 public class SameHostLoadBalancer implements ReactorServiceInstanceLoadBalancer {
 
+    /**
+     * 服务 ID
+     */
     private final String serviceId;
+    /**
+     * 服务实例列表供应商
+     */
     private final ObjectProvider<ServiceInstanceListSupplier> serviceInstanceListSupplierProvider;
 
     @Override
@@ -41,6 +46,13 @@ public class SameHostLoadBalancer implements ReactorServiceInstanceLoadBalancer 
                 .map(serviceInstances -> processInstanceResponse(supplier, serviceInstances));
     }
 
+    /**
+     * 处理服务实例响应，在返回前回调 SelectedInstanceCallback
+     *
+     * @param supplier          服务实例列表供应商
+     * @param serviceInstances 服务实例列表
+     * @return 选中的服务实例响应
+     */
     private Response<ServiceInstance> processInstanceResponse(ServiceInstanceListSupplier supplier,
                                                               List<ServiceInstance> serviceInstances) {
         Response<ServiceInstance> serviceInstanceResponse = getInstanceResponse(serviceInstances);
@@ -50,6 +62,12 @@ public class SameHostLoadBalancer implements ReactorServiceInstanceLoadBalancer 
         return serviceInstanceResponse;
     }
 
+    /**
+     * 从实例列表中选取一个服务实例，优先选择同主机实例，否则随机选择
+     *
+     * @param instances 服务实例列表
+     * @return 选中的服务实例响应
+     */
     private Response<ServiceInstance> getInstanceResponse(List<ServiceInstance> instances) {
         if (instances.isEmpty()) {
             if (log.isWarnEnabled()) {

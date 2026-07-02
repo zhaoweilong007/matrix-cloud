@@ -18,22 +18,34 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ExcelBigNumberConvert implements Converter<Long> {
 
+    /**
+     * 支持 Long 类型
+     */
     @Override
     public Class<Long> supportJavaTypeKey() {
         return Long.class;
     }
 
+    /**
+     * 对应 Excel 字符串类型
+     */
     @Override
     public CellDataTypeEnum supportExcelTypeKey() {
         return CellDataTypeEnum.STRING;
     }
 
+    /**
+     * 将 Excel 单元格数据转换为 Java Long 类型
+     */
     @Override
     public Long convertToJavaData(
             ReadCellData<?> cellData, ExcelContentProperty contentProperty, GlobalConfiguration globalConfiguration) {
         return Convert.toLong(cellData.getData());
     }
 
+    /**
+     * 将 Java Long 类型转换为 Excel 单元格数据，超过 15 位以字符串形式写入防止精度丢失
+     */
     @Override
     public WriteCellData<Object> convertToExcelData(
             Long object, ExcelContentProperty contentProperty, GlobalConfiguration globalConfiguration) {

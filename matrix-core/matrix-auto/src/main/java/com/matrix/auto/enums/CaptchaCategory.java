@@ -29,5 +29,8 @@ public enum CaptchaCategory {
      */
     SHEAR(ShearCaptcha.class);
 
+    /**
+     * 验证码实现类
+     */
     private final Class<? extends AbstractCaptcha> clazz;
 }

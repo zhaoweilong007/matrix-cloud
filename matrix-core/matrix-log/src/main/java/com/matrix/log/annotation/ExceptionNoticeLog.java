@@ -9,7 +9,6 @@ import java.lang.annotation.Target;
  * 针对一些异步方法无法捕获到异常的情况新增此注解
  * 只需要标记在异步方法的入口类上即可
  *
- * @author zwl
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE, ElementType.METHOD})

@@ -23,7 +23,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Endpoint(id = "feign")
 public class FeignClientEndpoint implements SmartInitializingSingleton {
+    /**
+     * Spring 应用上下文，用于获取所有 FeignClient Bean
+     */
     private final ApplicationContext context;
+    /**
+     * Feign 客户端信息列表
+     */
     private final List<FeignClientInfo> clientList;
 
     public FeignClientEndpoint(ApplicationContext context) {
@@ -81,6 +87,11 @@ public class FeignClientEndpoint implements SmartInitializingSingleton {
         return feignClientInfoList;
     }
 
+    /**
+     * 获取所有 Feign 客户端信息。
+     *
+     * @return Feign 客户端信息列表
+     */
     @ReadOperation
     public List<FeignClientInfo> invoke() {
         return clientList;
@@ -91,6 +102,9 @@ public class FeignClientEndpoint implements SmartInitializingSingleton {
         clientList.addAll(getClientList(context));
     }
 
+    /**
+     * Feign 客户端信息，包含服务名、URL、路径及接口方法列表。
+     */
     @Getter
     @Setter
     public static class FeignClientInfo {
@@ -102,6 +116,9 @@ public class FeignClientEndpoint implements SmartInitializingSingleton {
         private List<ClientInfo> clientList;
     }
 
+    /**
+     * Feign 接口方法信息，包含请求方法和路径映射。
+     */
     @Getter
     @AllArgsConstructor
     public static class ClientInfo {

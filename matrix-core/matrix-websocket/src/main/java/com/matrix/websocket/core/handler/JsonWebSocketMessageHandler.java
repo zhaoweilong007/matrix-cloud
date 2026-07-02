@@ -21,12 +21,14 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
  * <p>负责接收前端发来的消息，根据消息类型分发给对应的 {@link WebSocketMessageListener}。
  * 自动处理 "ping" 心跳消息。</p>
  *
- * @author matrix
  */
 public class JsonWebSocketMessageHandler extends TextWebSocketHandler {
 
     private static final Logger log = LoggerFactory.getLogger(JsonWebSocketMessageHandler.class);
 
+    /**
+     * 消息类型与监听器的映射关系
+     */
     private final Map<String, WebSocketMessageListener<?>> listeners = new HashMap<>();
 
     public JsonWebSocketMessageHandler(List<WebSocketMessageListener<?>> listenerList) {
@@ -59,6 +61,12 @@ public class JsonWebSocketMessageHandler extends TextWebSocketHandler {
         }
     }
 
+    /**
+     * 根据消息类型分发到对应的监听器处理，自动反序列化消息内容
+     *
+     * @param session   WebSocket 会话
+     * @param wsMessage JSON 消息
+     */
     @SuppressWarnings({"unchecked", "rawtypes"})
     private void dispatchMessage(WebSocketSession session, JsonWebSocketMessage wsMessage) throws Exception {
         WebSocketMessageListener listener = listeners.get(wsMessage.getType());
@@ -78,7 +86,10 @@ public class JsonWebSocketMessageHandler extends TextWebSocketHandler {
     }
 
     /**
-     * 从监听器的泛型参数中提取消息类型。
+     * 从监听器的泛型参数中提取消息内容类型，用于反序列化
+     *
+     * @param listener 消息监听器
+     * @return 消息内容类型，无法提取时返回 null
      */
     private Class<?> getMessageClass(WebSocketMessageListener<?> listener) {
         // 遍历接口以找到 WebSocketMessageListener

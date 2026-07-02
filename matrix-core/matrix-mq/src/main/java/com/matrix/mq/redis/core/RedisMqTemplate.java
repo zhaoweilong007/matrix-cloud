@@ -25,7 +25,6 @@ import java.util.List;
  * redisMqTemplate.send(new OrderStreamMessage().setOrderId(1L));
  * </pre>
  *
- * @author matrix
  */
 @AllArgsConstructor
 public class RedisMqTemplate {

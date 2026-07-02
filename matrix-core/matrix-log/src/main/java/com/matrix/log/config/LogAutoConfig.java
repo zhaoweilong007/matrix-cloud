@@ -13,8 +13,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 
 /**
- * @author ZhaoWeiLong
- * @since 2023/6/9
  **/
 @AutoConfiguration
 @EnableConfigurationProperties(ExceptionNoticeProperties.class)

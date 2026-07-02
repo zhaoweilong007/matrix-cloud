@@ -18,7 +18,6 @@ import java.lang.annotation.Target;
  * public OrderDTO createOrder(OrderCreateReq req) { ... }
  * }</pre>
  *
- * @author matrix
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

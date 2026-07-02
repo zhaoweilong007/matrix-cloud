@@ -15,17 +15,20 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 /**
- * 阿里云图片前缀
- *
- * @author ZhaoWeiLong
- * @since 2023/7/11
- **/
+ * 图片前缀翻译实现，为图片 URL 自动补全 OSS 前缀
+ */
 @RequiredArgsConstructor
 @TranslationType(type = TransConstant.IMG_PREFIX_URL)
 @Component
 public class ImgPrefixTranslationImpl implements TranslationInterface<Object> {
 
+    /**
+     * 多图片 URL 分隔符
+     */
     public static final String CO_DO = ";";
+    /**
+     * OSS 配置属性，用于获取图片前缀
+     */
     private final OssProperties ossProperties;
 
     @Override
@@ -74,6 +77,13 @@ public class ImgPrefixTranslationImpl implements TranslationInterface<Object> {
         return value;
     }
 
+    /**
+     * 为单个图片路径补全 OSS 前缀
+     *
+     * @param value 图片路径
+     * @param other 分隔符
+     * @return 补全前缀后的完整 URL
+     */
     private Object mapping(Object value, String other) {
         final String val = (String) value;
         // 添加支持字符串为多个路径的且以逗号分隔的情况

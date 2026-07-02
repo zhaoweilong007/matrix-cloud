@@ -9,8 +9,6 @@ import lombok.Data;
  * 系统访问记录
  * </p>
  *
- * @author zhaoweilong
- * @since 2023-07-01
  */
 @Data
 @TableName("sys_login_log")

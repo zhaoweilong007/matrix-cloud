@@ -8,7 +8,6 @@ import java.util.List;
  * <p>配合 {@code @ExcelDynamicOptions} 注解使用，
  * 实现类注册为 Spring Bean 后自动被 Excel 导出处理器发现。</p>
  *
- * @author matrix
  */
 public interface ExcelOptionsProvider {
 

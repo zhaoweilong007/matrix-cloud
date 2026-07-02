@@ -10,13 +10,21 @@ import org.redisson.api.RedissonClient;
  *
  * <p>解决集群部署时 State 不一致问题，默认缓存 3 分钟。</p>
  *
- * @author matrix
  */
 public class AuthRedisStateCache implements AuthStateCache {
 
+    /**
+     * State 缓存键前缀
+     */
     private static final String CACHE_PREFIX = "social:state:";
+    /**
+     * 默认缓存超时时间，单位秒
+     */
     private static final long TIMEOUT_SECONDS = 180;
 
+    /**
+     * Redisson 客户端
+     */
     private final RedissonClient redissonClient;
 
     public AuthRedisStateCache(RedissonClient redissonClient) {

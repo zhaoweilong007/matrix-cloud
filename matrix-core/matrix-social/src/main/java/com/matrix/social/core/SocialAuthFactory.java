@@ -16,13 +16,18 @@ import org.slf4j.LoggerFactory;
  *
  * <p>按平台标识（gitee/github/wechat_open 等）创建 {@link AuthRequest}。</p>
  *
- * @author matrix
  */
 public class SocialAuthFactory {
 
     private static final Logger log = LoggerFactory.getLogger(SocialAuthFactory.class);
 
+    /**
+     * 第三方登录配置
+     */
     private final SocialProperties properties;
+    /**
+     * 已初始化的 AuthRequest 缓存
+     */
     private final Map<String, AuthRequest> authRequestCache = new ConcurrentHashMap<>();
 
     public SocialAuthFactory(SocialProperties properties) {
@@ -50,7 +55,9 @@ public class SocialAuthFactory {
         return request;
     }
 
-    /** 已知平台 → Request 实现类的映射 */
+    /**
+     * 已知平台标识到 AuthRequest 实现类的映射
+     */
     private static final Map<String, Class<? extends AuthRequest>> PLATFORM_CLASSES = new LinkedHashMap<>();
 
     static {
@@ -70,6 +77,12 @@ public class SocialAuthFactory {
         register("csdn", "me.zhyd.oauth.request.AuthCsdnRequest");
     }
 
+    /**
+     * 注册平台标识和对应的 AuthRequest 实现类
+     *
+     * @param platform  平台标识
+     * @param className AuthRequest 实现类的全限定名
+     */
     @SuppressWarnings("unchecked")
     private static void register(String platform, String className) {
         try {
@@ -80,6 +93,12 @@ public class SocialAuthFactory {
         } catch (ClassNotFoundException ignored) { }
     }
 
+    /**
+     * 根据平台配置创建 AuthRequest 实例
+     *
+     * @param platform 平台标识
+     * @return AuthRequest 实例，配置不存在或创建失败时返回 null
+     */
     private AuthRequest createAuthRequest(String platform) {
         PlatformConfig config = properties.getPlatforms().get(platform);
         if (config == null) {

@@ -20,6 +20,12 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 
+/**
+ * 多租户定时任务切面
+ * <p>
+ * 对标记了 {@link TenantJob} 注解的 XXL-Job 任务进行切面处理，
+ * 自动按租户维度逐个执行任务逻辑
+ */
 @Aspect
 @RequiredArgsConstructor
 @Slf4j
@@ -36,6 +42,15 @@ public class TenantJobAspect {
                 .getAnnotation(annotationClass);
     }
 
+    /**
+     * 环绕通知，对 XXL-Job 任务进行租户切面处理
+     * <p>
+     * 若任务类标记了 {@link TenantJob} 注解，则按每个租户依次执行任务
+     *
+     * @param joinPoint 连接点
+     * @param xxlJob   XXL-Job 注解
+     * @return 任务执行结果
+     */
     @Around("@annotation(xxlJob)")
     public Object around(ProceedingJoinPoint joinPoint, XxlJob xxlJob) throws Throwable {
         // 如果非多租户 Job，则跳过

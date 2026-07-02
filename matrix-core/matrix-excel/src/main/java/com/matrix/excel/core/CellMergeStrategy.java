@@ -28,6 +28,13 @@ public class CellMergeStrategy extends AbstractMergeStrategy {
     private List<?> list;
     private boolean hasTitle;
 
+    /**
+     * 处理合并单元格地址列表
+     *
+     * @param list     数据列表
+     * @param hasTitle 是否包含标题行
+     * @return 需要合并的单元格范围列表
+     */
     @SneakyThrows
     private static List<CellRangeAddress> handle(List<?> list, boolean hasTitle) {
         List<CellRangeAddress> cellList = new ArrayList<>();
@@ -87,6 +94,9 @@ public class CellMergeStrategy extends AbstractMergeStrategy {
         return cellList;
     }
 
+    /**
+     * 执行合并操作，在第一行第一列单元格回调时批量添加合并区域
+     */
     @Override
     protected void merge(Sheet sheet, Cell cell, Head head, Integer relativeRowIndex) {
         List<CellRangeAddress> cellList = handle(list, hasTitle);
@@ -101,12 +111,17 @@ public class CellMergeStrategy extends AbstractMergeStrategy {
         }
     }
 
+    /**
+     * 重复单元格记录，保存当前列值与首次出现行号
+     */
     @Data
     @AllArgsConstructor
     static class RepeatCell {
 
+        /** 单元格值 */
         private Object value;
 
+        /** 当前值首次出现的行号 */
         private int current;
     }
 }

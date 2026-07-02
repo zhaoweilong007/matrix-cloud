@@ -9,12 +9,13 @@ import org.springframework.core.env.ConfigurableEnvironment;
 /**
  * 针对sentinel的环境配置
  *
- * @author ZhaoWeiLong
- * @since 2023/7/17
  **/
 @AutoEnvPostProcessor
 public class SentinelEnvironment implements EnvironmentPostProcessor {
 
+    /**
+     * 自动配置 Sentinel 的 transport 端口和客户端 IP
+     */
     @Override
     public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
         String serverPort = environment.getProperty("server.port");

@@ -27,22 +27,51 @@ import org.springframework.mail.javamail.MimeMessageHelper;
  *            .send();
  * </pre>
  *
- * @author matrix
  */
 public class MailBuilder {
 
     private static final Logger log = LoggerFactory.getLogger(MailBuilder.class);
 
+    /**
+     * Spring 邮件发送器
+     */
     private final JavaMailSender mailSender;
+    /**
+     * 邮件配置属性
+     */
     private final MailProperties properties;
 
+    /**
+     * 收件人地址数组
+     */
     private String[] to;
+    /**
+     * 邮件主题
+     */
     private String subject;
+    /**
+     * 纯文本内容
+     */
     private String text;
+    /**
+     * HTML 内容
+     */
     private String html;
+    /**
+     * 抄送地址数组
+     */
     private String[] cc;
+    /**
+     * 密送地址数组
+     */
     private String[] bcc;
+    /**
+     * 附件列表
+     */
     private final List<File> attachments = new ArrayList<>();
+    /**
+     * 是否为 HTML 格式
+     */
     private boolean isHtml;
 
     public MailBuilder(JavaMailSender mailSender, MailProperties properties) {
@@ -50,43 +79,91 @@ public class MailBuilder {
         this.properties = properties;
     }
 
+    /**
+     * 设置收件人
+     *
+     * @param to 收件人地址
+     * @return MailBuilder 实例
+     */
     public MailBuilder to(String... to) {
         this.to = to;
         return this;
     }
 
+    /**
+     * 设置邮件主题
+     *
+     * @param subject 邮件主题
+     * @return MailBuilder 实例
+     */
     public MailBuilder subject(String subject) {
         this.subject = subject;
         return this;
     }
 
+    /**
+     * 设置纯文本内容
+     *
+     * @param text 纯文本内容
+     * @return MailBuilder 实例
+     */
     public MailBuilder text(String text) {
         this.text = text;
         this.isHtml = false;
         return this;
     }
 
+    /**
+     * 设置 HTML 内容
+     *
+     * @param html HTML 内容
+     * @return MailBuilder 实例
+     */
     public MailBuilder html(String html) {
         this.html = html;
         this.isHtml = true;
         return this;
     }
 
+    /**
+     * 设置抄送地址
+     *
+     * @param cc 抄送地址
+     * @return MailBuilder 实例
+     */
     public MailBuilder cc(String... cc) {
         this.cc = cc;
         return this;
     }
 
+    /**
+     * 设置密送地址
+     *
+     * @param bcc 密送地址
+     * @return MailBuilder 实例
+     */
     public MailBuilder bcc(String... bcc) {
         this.bcc = bcc;
         return this;
     }
 
+    /**
+     * 添加附件
+     *
+     * @param file 附件文件
+     * @return MailBuilder 实例
+     */
     public MailBuilder attach(File file) {
         this.attachments.add(file);
         return this;
     }
 
+    /**
+     * 根据文件路径添加附件
+     *
+     * @param filePath 附件文件路径
+     * @return MailBuilder 实例
+     */
     public MailBuilder attach(String filePath) {
         this.attachments.add(new File(filePath));
         return this;
@@ -112,6 +189,9 @@ public class MailBuilder {
         }
     }
 
+    /**
+     * 发送纯文本邮件（使用 SimpleMailMessage）
+     */
     private void sendSimpleMessage() {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(buildFrom());
@@ -123,6 +203,9 @@ public class MailBuilder {
         log.info("邮件发送成功: to={}, subject={}", to, subject);
     }
 
+    /**
+     * 发送 MIME 格式邮件（支持 HTML、附件、抄送、密送）
+     */
     private void sendMimeMessage() throws MessagingException, UnsupportedEncodingException {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
@@ -148,6 +231,11 @@ public class MailBuilder {
         log.info("邮件发送成功: to={}, subject={}, attachments={}", to, subject, attachments.size());
     }
 
+    /**
+     * 构建发件人地址，优先使用配置的 from，否则使用 spring.mail.username
+     *
+     * @return 发件人地址
+     */
     private String buildFrom() {
         if (properties.getFrom() != null && !properties.getFrom().isBlank()) {
             return properties.getFrom();

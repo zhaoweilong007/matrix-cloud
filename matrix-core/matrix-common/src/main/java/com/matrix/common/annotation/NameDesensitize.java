@@ -15,7 +15,6 @@ import java.lang.annotation.Target;
  * 示例：张*、张**
  * </p>
  *
- * @author matrix
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)

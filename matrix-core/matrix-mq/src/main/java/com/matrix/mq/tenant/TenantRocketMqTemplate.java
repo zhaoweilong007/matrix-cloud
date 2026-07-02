@@ -16,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
  * 在发送消息前自动注入租户上下文，消费时自动恢复
  * </p>
  *
- * @author matrix
  */
 @Slf4j
 @RequiredArgsConstructor

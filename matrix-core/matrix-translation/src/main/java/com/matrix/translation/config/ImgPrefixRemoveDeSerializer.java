@@ -10,13 +10,13 @@ import com.matrix.common.util.spring.SpringUtils;
 import java.io.IOException;
 
 /**
- * 移除图片前缀
- *
- * @author ZhaoWeiLong
- * @since 2023/8/16
- **/
+ * 图片前缀移除反序列化器，反序列化时自动去除 OSS 图片前缀
+ */
 public class ImgPrefixRemoveDeSerializer extends JsonDeserializer<String> {
 
+    /**
+     * OSS 配置属性
+     */
     private final OssProperties ossProperties = SpringUtils.getBean(OssProperties.class);
 
     @Override

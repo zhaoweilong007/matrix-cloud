@@ -8,7 +8,6 @@ import lombok.Setter;
 /**
  * 五星服务通知模板
  *
- * @author LeonZhou
  */
 @Getter
 @AllArgsConstructor

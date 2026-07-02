@@ -6,8 +6,6 @@ import lombok.Data;
 /**
  * 描述：<p></p>
  *
- * @author ZhaoWeiLong
- * @since 2023/3/2
  **/
 @Data
 public class ExcelCheckException extends RuntimeException {

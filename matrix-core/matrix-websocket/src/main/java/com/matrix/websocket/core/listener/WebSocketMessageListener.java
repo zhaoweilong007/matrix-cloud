@@ -22,7 +22,6 @@ import org.springframework.web.socket.WebSocketSession;
  * </pre>
  *
  * @param <T> 消息内容类型
- * @author matrix
  */
 public interface WebSocketMessageListener<T> {
 

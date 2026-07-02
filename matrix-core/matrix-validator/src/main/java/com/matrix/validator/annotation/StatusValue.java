@@ -10,7 +10,6 @@ import java.lang.annotation.*;
 /**
  * 状态校验，校验参数的状态是否是 StatusEnum 中的值
  *
- * @author aaronuu
  */
 @Documented
 @Constraint(validatedBy = StatusValueValidator.class)

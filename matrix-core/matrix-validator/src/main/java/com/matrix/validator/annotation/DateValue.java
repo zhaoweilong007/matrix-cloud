@@ -16,7 +16,6 @@ import java.lang.annotation.*;
  * <p>
  * yyyy-MM-dd HH:mm:ss
  *
- * @author aaronuu
  */
 @Documented
 @Constraint(validatedBy = DateValueValidator.class)

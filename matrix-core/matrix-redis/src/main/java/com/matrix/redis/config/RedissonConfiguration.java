@@ -31,9 +31,11 @@ import org.springframework.data.redis.serializer.RedisSerializer;
 @EnableConfigurationProperties(RedissonProperties.class)
 public class RedissonConfiguration {
 
+    /** Redisson 配置属性 */
     @Autowired
     private RedissonProperties redissonProperties;
 
+    /** Jackson ObjectMapper 实例 */
     @Autowired
     private ObjectMapper objectMapper;
 

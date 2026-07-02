@@ -9,7 +9,6 @@ import jakarta.validation.ConstraintValidatorContext;
 /**
  * 校验标识，只有Y和N两种状态的标识
  *
- * @author aaronuu
  */
 public class FlagValueValidator implements ConstraintValidator<FlagValue, String> {
 

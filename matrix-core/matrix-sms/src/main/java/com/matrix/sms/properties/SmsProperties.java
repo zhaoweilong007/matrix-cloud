@@ -7,9 +7,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 
 /**
- * @author ZhaoWeiLong
- * @since 2024/1/18
- **/
+ * SMS 短信模块配置属性。
+ *
+ * <p>前缀 {@code matrix.sms}，支持动态刷新。</p>
+ */
 @ConfigurationProperties(prefix = "matrix.sms")
 @Data
 @RefreshScope

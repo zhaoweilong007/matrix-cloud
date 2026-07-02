@@ -16,7 +16,6 @@ import java.lang.reflect.Type;
  * Redis Stream 监听器抽象类，用于实现集群消费（Consumer Group 模式）。
  *
  * @param <T> 消息类型（必须指定泛型参数）
- * @author matrix
  */
 public abstract class AbstractRedisStreamMessageListener<T extends AbstractRedisStreamMessage>
         implements StreamListener<String, ObjectRecord<String, String>> {

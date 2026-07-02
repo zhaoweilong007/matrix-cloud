@@ -8,7 +8,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  *
  * <p>扩展 Spring Boot 标准 {@code spring.mail} 配置，增加发件人别名等。</p>
  *
- * @author matrix
  */
 @Data
 @ConfigurationProperties(prefix = "matrix.mail")

@@ -8,7 +8,6 @@ import com.matrix.websocket.core.session.WebSocketSessionManager;
  *
  * <p>仅支持单节点部署，Session 信息存储在本地内存中。</p>
  *
- * @author matrix
  */
 public class LocalWebSocketMessageSender extends AbstractWebSocketMessageSender {
 

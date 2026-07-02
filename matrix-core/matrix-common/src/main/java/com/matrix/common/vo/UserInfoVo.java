@@ -5,8 +5,6 @@ import lombok.Data;
 
 /**
  *
- * @author 赵伟龙
- * @since 2025/12/16
  *
  **/
 @Data

@@ -9,7 +9,6 @@ import lombok.Getter;
 /**
  * 性别的枚举
  *
- * @author aaronuu
  */
 @Getter
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)

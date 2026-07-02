@@ -19,7 +19,6 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
 /**
  * Spring EL 表达式的工具类
  *
- * @author mashu
  */
 public class SpringExpressionUtils {
 

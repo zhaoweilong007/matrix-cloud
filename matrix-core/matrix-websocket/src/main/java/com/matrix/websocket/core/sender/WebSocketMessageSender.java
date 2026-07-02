@@ -7,7 +7,6 @@ import com.matrix.common.util.json.JsonUtils;
  *
  * <p>支持三种发送粒度：指定用户、指定用户类型（广播）、指定 SessionId。</p>
  *
- * @author matrix
  */
 public interface WebSocketMessageSender {
 

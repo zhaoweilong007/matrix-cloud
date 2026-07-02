@@ -12,17 +12,22 @@ import org.springframework.stereotype.Component;
 /**
  * XSS 过滤自动配置
  *
- * @author matrix
  */
 @AutoConfiguration
 @ConditionalOnProperty(prefix = "matrix.xss", value = "enabled", havingValue = "true")
 public class XssAutoConfiguration {
 
+    /**
+     * 创建 XSS 配置属性
+     */
     @Bean
     public XssProperties xssProperties() {
         return new XssProperties();
     }
 
+    /**
+     * 注册 XSS 过滤器
+     */
     @Bean
     public FilterRegistrationBean<XssFilter> xssFilterRegistration(XssProperties properties) {
         FilterRegistrationBean<XssFilter> registration = new FilterRegistrationBean<>();

@@ -16,7 +16,6 @@ import java.lang.annotation.Target;
  * private Integer status;
  * </pre>
  *
- * @author matrix
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

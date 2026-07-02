@@ -6,7 +6,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 /**
  * XXL-JOB 配置属性。
  *
- * @author matrix
  */
 @Data
 @ConfigurationProperties(prefix = "xxl.job")
@@ -21,6 +20,9 @@ public class XxlJobProperties {
     /** 执行器配置 */
     private Executor executor = new Executor();
 
+    /**
+     * 执行器配置。
+     */
     @Data
     public static class Executor {
         /** 执行器 AppName */

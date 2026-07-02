@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 /**
  * JDBC 工具类，提供数据库连接检测和运行时数据库类型识别。
  *
- * @author matrix
  */
 public class DbTypeUtils {
 

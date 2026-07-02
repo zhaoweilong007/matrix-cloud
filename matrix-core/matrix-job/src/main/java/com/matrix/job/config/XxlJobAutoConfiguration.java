@@ -14,7 +14,6 @@ import org.springframework.context.annotation.Bean;
  *
  * <p>配合 {@code JobEnvironment} 自动计算执行器端口（server.port+200）和 IP。</p>
  *
- * @author matrix
  */
 @AutoConfiguration
 @EnableConfigurationProperties(XxlJobProperties.class)
@@ -23,6 +22,12 @@ public class XxlJobAutoConfiguration {
 
     private static final Logger log = LoggerFactory.getLogger(XxlJobAutoConfiguration.class);
 
+    /**
+     * 创建 XXL-JOB 执行器，并通过配置属性进行初始化。
+     *
+     * @param properties XXL-JOB 配置属性
+     * @return XXL-JOB Spring 执行器
+     */
     @Bean
     @ConditionalOnMissingBean
     public XxlJobSpringExecutor xxlJobSpringExecutor(XxlJobProperties properties) {

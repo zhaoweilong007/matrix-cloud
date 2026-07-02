@@ -13,8 +13,18 @@ import com.google.gson.JsonObject;
 import com.matrix.jpush.domain.PushObject;
 import java.util.Map;
 
+/**
+ * 极光推送通知构建工具类，提供构建 Notification 和 PushPayload 的静态方法
+ */
 public class JPushNotifications {
 
+    /**
+     * 构建通知对象
+     *
+     * @param alert         通知内容
+     * @param notifications 各平台通知
+     * @return 通知对象
+     */
     public static Notification buildNotification(Object alert, PlatformNotification... notifications) {
         Notification.Builder builder = Notification.newBuilder().setAlert(alert);
         for (PlatformNotification platformNotification : notifications) {
@@ -23,6 +33,14 @@ public class JPushNotifications {
         return builder.build();
     }
 
+    /**
+     * 构建推送给 Android 和 iOS 平台的推送负载
+     *
+     * @param production 是否生产环境
+     * @param audience   推送目标
+     * @param pushObject 推送内容
+     * @return 推送负载
+     */
     public static PushPayload buildPushPayloadForAndroidAndIos(
             boolean production, Audience audience, PushObject pushObject) {
         AndroidNotification.Builder androidBuilder = AndroidNotification.newBuilder();

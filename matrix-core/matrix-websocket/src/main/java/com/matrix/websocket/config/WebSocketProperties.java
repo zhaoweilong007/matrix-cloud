@@ -6,7 +6,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 /**
  * WebSocket 配置属性。
  *
- * @author matrix
  */
 @Data
 @ConfigurationProperties(prefix = "matrix.websocket")

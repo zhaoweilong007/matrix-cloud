@@ -16,13 +16,15 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 /**
  * API 响应加密拦截器
  *
- * @author matrix
  */
 @Slf4j
 @RestControllerAdvice
 @RequiredArgsConstructor
 public class ApiEncryptResponseAdvice implements ResponseBodyAdvice<Object> {
 
+    /**
+     * 加解密服务
+     */
     private final CryptoService cryptoService;
 
     @Override

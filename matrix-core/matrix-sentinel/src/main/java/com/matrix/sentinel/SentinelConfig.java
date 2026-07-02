@@ -12,8 +12,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean;
 
 /**
- * @author ZhaoWeiLong
- * @since 2023/9/24
+ * Sentinel 规则转换器配置，提供 JSON 到各类规则的转换器 Bean
  **/
 @AutoConfiguration
 public class SentinelConfig {
@@ -24,30 +23,45 @@ public class SentinelConfig {
         this.objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
+    /**
+     * 流控规则 JSON 转换器
+     */
     @Bean({"sentinel-json-flow-converter"})
     @ConditionalOnMissingBean(name = "sentinel-json-flow-converter")
     public CustomJsonConvert jsonFlowConverter() {
         return new CustomJsonConvert(this.objectMapper, FlowRule.class);
     }
 
+    /**
+     * 熔断降级规则 JSON 转换器
+     */
     @Bean({"sentinel-json-degrade-converter"})
     @ConditionalOnMissingBean(name = "sentinel-json-degrade-converter")
     public CustomJsonConvert jsonDegradeConverter() {
         return new CustomJsonConvert(this.objectMapper, DegradeRule.class);
     }
 
+    /**
+     * 系统规则 JSON 转换器
+     */
     @Bean({"sentinel-json-system-converter"})
     @ConditionalOnMissingBean(name = "sentinel-json-system-converter")
     public CustomJsonConvert jsonSystemConverter() {
         return new CustomJsonConvert(this.objectMapper, SystemRule.class);
     }
 
+    /**
+     * 授权规则 JSON 转换器
+     */
     @Bean({"sentinel-json-authority-converter"})
     @ConditionalOnMissingBean(name = "sentinel-json-authority-converter")
     public CustomJsonConvert jsonAuthorityConverter() {
         return new CustomJsonConvert(this.objectMapper, AuthorityRule.class);
     }
 
+    /**
+     * 热点参数流控规则 JSON 转换器
+     */
     @Bean({"sentinel-json-param-flow-converter"})
     @ConditionalOnMissingBean(name = "sentinel-json-param-flow-converter")
     public CustomJsonConvert jsonParamFlowConverter() {

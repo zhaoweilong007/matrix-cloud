@@ -5,6 +5,9 @@ import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 
+/**
+ * 异步任务线程池配置属性
+ */
 @Setter
 @Getter
 @ConfigurationProperties(prefix = "matrix.asyc-task")

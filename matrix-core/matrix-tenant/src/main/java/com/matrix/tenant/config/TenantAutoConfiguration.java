@@ -22,6 +22,11 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 
+/**
+ * 多租户自动配置类
+ * <p>
+ * 自动装配租户相关的 AOP、DB 拦截器、Web 过滤器、安全过滤器、Job 切面、Redis 缓存管理器等组件
+ */
 @AutoConfiguration
 @ConditionalOnProperty(prefix = "matrix.tenant", value = "enable", matchIfMissing = true)
 @EnableConfigurationProperties(TenantProperties.class)

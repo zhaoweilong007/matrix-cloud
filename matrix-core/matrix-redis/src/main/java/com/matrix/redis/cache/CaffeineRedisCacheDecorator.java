@@ -15,7 +15,6 @@ import org.springframework.lang.Nullable;
  * 写入流程：Redis.put() → Caffeine.put() 同步更新。
  * 失效流程：Redis.evict() → Caffeine.invalidate()。</p>
  *
- * @author matrix
  */
 public class CaffeineRedisCacheDecorator implements org.springframework.cache.Cache {
 

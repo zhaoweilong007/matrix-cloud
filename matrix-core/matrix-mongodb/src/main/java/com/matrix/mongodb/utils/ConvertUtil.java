@@ -14,7 +14,13 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class ConvertUtil {
 
+    /**
+     * getter 方法前缀
+     */
     public static final String GET = "get";
+    /**
+     * boolean 类型 getter 方法前缀
+     */
     public static final String IS = "is";
     /**
      * 缓存方法应用对应的属性名称

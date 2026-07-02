@@ -14,8 +14,6 @@ import org.aspectj.lang.annotation.Aspect;
  * <p>拦截标注 {@link FeatureToggle} 的方法，根据
  * {@link FeatureToggleProperties} 中的配置决定是否放行。</p>
  *
- * @author ZhaoWeiLong
- * @since 2026/7/2
  */
 @Aspect
 @Slf4j

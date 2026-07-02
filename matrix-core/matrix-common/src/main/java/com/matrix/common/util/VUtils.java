@@ -13,8 +13,6 @@ import net.dreamlu.mica.core.result.IResultCode;
 /**
  * 描述：<p></p>
  *
- * @author ZhaoWeiLong
- * @since 2023/3/13
  **/
 @UtilityClass
 public class VUtils {

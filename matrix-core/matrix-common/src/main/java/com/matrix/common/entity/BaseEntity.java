@@ -6,8 +6,9 @@ import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.time.LocalDateTime;
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 /**
  * 描述：<p>实体类基类 mybatis plus通用</p>
@@ -19,7 +20,13 @@ import lombok.Data;
 @Data
 public abstract class BaseEntity extends BaseIdEntity {
 
+    /**
+     * 创建人字段名
+     */
     public static final String CREATE_BY = "createdBy";
+    /**
+     * 修改人字段名
+     */
     public static final String UPDATE_BY = "updatedBy";
     /**
      * 创建人
@@ -55,38 +62,4 @@ public abstract class BaseEntity extends BaseIdEntity {
     @JsonIgnore
     private Boolean deleted;
 
-    /**
-     * 清理审计字段，防止前端传入被直接更新
-     * 用于接收前端参数后，清理不应由前端控制的字段
-     * <p>
-     * 使用场景：
-     * 1. 接收前端更新请求时，清理审计字段防止篡改
-     * 2. 批量导入数据时，清理审计字段由框架自动填充
-     * </p>
-     */
-    public void clean() {
-        this.createdBy = null;
-        this.createdAt = null;
-        this.updatedBy = null;
-        this.updatedAt = null;
-        this.deleted = null;
-    }
-
-    /**
-     * 清理创建审计字段（仅清理创建相关字段）
-     * 用于更新场景，保留更新相关字段
-     */
-    public void cleanCreateFields() {
-        this.createdBy = null;
-        this.createdAt = null;
-    }
-
-    /**
-     * 清理更新审计字段（仅清理更新相关字段）
-     * 用于创建场景，保留创建相关字段
-     */
-    public void cleanUpdateFields() {
-        this.updatedBy = null;
-        this.updatedAt = null;
-    }
 }

@@ -18,12 +18,19 @@ import java.util.Map;
  * <p>通过 SkyWalking 原生 API 创建本地 Span，并设置 {@code biz.type} 和
  * {@code biz.id} 标签，便于在 SkyWalking UI 中按业务维度搜索调用链。</p>
  *
- * @author matrix
  */
 @Aspect
 @Slf4j
 public class BizTraceAspect {
 
+    /**
+     * 环绕增强，在方法执行前后添加 SkyWalking 业务追踪 Span。
+     *
+     * @param joinPoint 连接点
+     * @param bizTrace  业务追踪注解
+     * @return 方法执行结果
+     * @throws Throwable 方法执行异常
+     */
     @Around(value = "@annotation(bizTrace)")
     @Trace(operationName = "BizTrace")
     public Object around(ProceedingJoinPoint joinPoint, BizTrace bizTrace) throws Throwable {

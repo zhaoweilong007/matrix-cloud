@@ -3,7 +3,6 @@ package com.matrix.web.config;
 import com.matrix.auto.properties.AsycTaskProperties;
 import com.matrix.common.thread.CustomThreadPoolTaskExecutor;
 import com.matrix.web.thread.ContextCopyingDecorator;
-import java.util.concurrent.ThreadPoolExecutor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -13,6 +12,8 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
+import java.util.concurrent.ThreadPoolExecutor;
+
 /**
  * 自定义异步任务配置
  */
@@ -21,10 +22,16 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 @AutoConfiguration
 public class DefaultAsycTaskConfig {
 
+    /**
+     * 异步任务线程池配置
+     */
     @Lazy
     @Autowired(required = false)
     private AsycTaskProperties asycTaskProperties;
 
+    /**
+     * 创建异步任务线程池
+     */
     @Bean
     public TaskExecutor taskExecutor() {
         ThreadPoolTaskExecutor executor = new CustomThreadPoolTaskExecutor();

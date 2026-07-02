@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
  * <p>核心能力：为不同数据库提供 FIND_IN_SET 等效 SQL 表达式，
  * 使业务代码无需关心底层数据库差异。</p>
  *
- * @author matrix
  */
 public enum DbTypeEnum {
 

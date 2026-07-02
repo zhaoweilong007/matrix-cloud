@@ -7,10 +7,12 @@ import org.springframework.web.socket.WebSocketSession;
 /**
  * WebSocket 工具类，用于在 Session Attributes 中存取 LoginUser。
  *
- * @author matrix
  */
 public class WebSocketFrameworkUtils {
 
+    /**
+     * Session 属性中存储 LoginUser 的键名
+     */
     private static final String LOGIN_USER_ATTRIBUTE = "LOGIN_USER";
 
     /**

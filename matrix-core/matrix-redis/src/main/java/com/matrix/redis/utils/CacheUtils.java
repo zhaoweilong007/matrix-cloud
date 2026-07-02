@@ -11,13 +11,13 @@ import org.springframework.cache.CacheManager;
 /**
  * 缓存操作工具类 {@link }
  *
- * @author Michelle.Chung
  * @date 2022/8/13
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @SuppressWarnings(value = {"unchecked"})
 public class CacheUtils {
 
+    /** Spring Cache 管理器实例 */
     private static final CacheManager CACHE_MANAGER = SpringUtil.getBean(CacheManager.class);
 
     /**

@@ -10,8 +10,6 @@ import lombok.Data;
  * 行政区域表
  * </p>
  *
- * @author zhaoweilong
- * @since 2023-07-01
  */
 @Data
 @TableName("sys_region_dict")

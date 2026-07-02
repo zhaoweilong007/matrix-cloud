@@ -20,32 +20,62 @@ import one.util.streamex.StreamEx;
 import org.apache.commons.lang3.ObjectUtils;
 
 /**
- * @author ZhaoWeiLong
- * @since 2023/8/25
- **/
+ * 数据权限规则抽象基类，提供表名和字段注册以及 SQL 表达式构建的通用逻辑
+ */
 public abstract class AbstractDataPermissionRule implements DataPermissionRule {
 
+    /**
+     * 空表达式，用于表示无需过滤
+     */
     static final Expression EXPRESSION_NULL = new NullValue();
+    /**
+     * 生效的表名集合
+     */
     public final Set<String> TABLE_NAMES = new HashSet<>();
+    /**
+     * 表名与字段名的映射关系
+     */
     public final Map<String, String> COLUMNS = new HashMap<>();
 
+    /**
+     * 注册实体类对应的表
+     *
+     * @param entityClass 实体类
+     */
     public void addTable(Class<? extends BaseEntity> entityClass) {
         String tableName = TableInfoHelper.getTableInfo(entityClass).getTableName();
         TABLE_NAMES.add(tableName);
         COLUMNS.put(tableName, getColumnName());
     }
 
+    /**
+     * 注册表名
+     *
+     * @param tableName 表名
+     */
     public void addTable(String tableName) {
         TABLE_NAMES.add(tableName);
         COLUMNS.put(tableName, getColumnName());
     }
 
+    /**
+     * 注册实体类对应的表和字段
+     *
+     * @param entityClass 实体类
+     * @param column      字段名
+     */
     public void addColumn(Class<? extends BaseEntity> entityClass, String column) {
         String tableName = TableInfoHelper.getTableInfo(entityClass).getTableName();
         TABLE_NAMES.add(tableName);
         COLUMNS.put(tableName, column);
     }
 
+    /**
+     * 注册表名和对应的字段
+     *
+     * @param tableName 表名
+     * @param column    字段名
+     */
     public void addColumn(String tableName, String column) {
         COLUMNS.put(tableName, column);
         TABLE_NAMES.add(tableName);

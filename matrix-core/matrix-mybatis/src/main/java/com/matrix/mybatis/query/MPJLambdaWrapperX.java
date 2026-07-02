@@ -15,7 +15,6 @@ import org.springframework.util.StringUtils;
  * 2. Join 方法增加 Consumer 回调扩展，支持链式追加额外条件。
  *
  * @param <T> 主表数据类型
- * @author matrix
  */
 public class MPJLambdaWrapperX<T> extends MPJLambdaWrapper<T> {
 

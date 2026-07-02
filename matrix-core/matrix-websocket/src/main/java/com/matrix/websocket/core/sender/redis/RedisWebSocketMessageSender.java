@@ -12,14 +12,22 @@ import org.redisson.api.RedissonClient;
  * <p>通过 Redisson RTopic 将消息广播给所有节点，
  * 各节点收到后根据 userId 在本地 Session 管理器中查找并投递。</p>
  *
- * @author matrix
  */
 public class RedisWebSocketMessageSender extends AbstractWebSocketMessageSender {
 
+    /**
+     * Redis Topic 名称，用于 WebSocket 消息广播
+     */
     public static final String TOPIC = "websocket:messages";
 
+    /**
+     * Redis Topic 实例
+     */
     private final RTopic redisTopic;
 
+    /**
+     * Redisson 客户端
+     */
     private final RedissonClient redissonClient;
 
     public RedisWebSocketMessageSender(WebSocketSessionManager sessionManager, RedissonClient redissonClient) {

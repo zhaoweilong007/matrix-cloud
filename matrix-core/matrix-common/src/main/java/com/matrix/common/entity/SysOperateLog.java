@@ -13,8 +13,6 @@ import lombok.Data;
  * 操作日志记录
  * </p>
  *
- * @author zhaoweilong
- * @since 2023-07-01
  */
 @Schema(description = "操作日志记录")
 @Data

@@ -13,7 +13,6 @@ import org.springframework.data.redis.serializer.RedisSerializer;
 /**
  * Cache 配置类，基于 Redis 实现
  *
- * @author zwl
  */
 @EnableCaching
 @AutoConfiguration

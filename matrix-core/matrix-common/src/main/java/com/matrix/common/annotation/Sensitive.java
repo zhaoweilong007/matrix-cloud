@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JacksonAnnotationsInside;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.matrix.common.enums.SensitiveStrategyEnum;
 import com.matrix.common.jackson.SensitiveJsonSerializer;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -17,5 +18,8 @@ import java.lang.annotation.Target;
 @JacksonAnnotationsInside
 @JsonSerialize(using = SensitiveJsonSerializer.class)
 public @interface Sensitive {
+    /**
+     * 脱敏策略
+     */
     SensitiveStrategyEnum strategy();
 }

@@ -38,7 +38,6 @@ import org.springframework.web.socket.server.support.HttpSessionHandshakeInterce
  *   <li>redis — 多节点，通过 Redis Pub/Sub 广播</li>
  * </ul>
  *
- * @author matrix
  */
 @AutoConfiguration
 @EnableWebSocket
@@ -48,8 +47,17 @@ public class WebSocketAutoConfiguration implements WebSocketConfigurer {
 
     private static final Logger log = LoggerFactory.getLogger(WebSocketAutoConfiguration.class);
 
+    /**
+     * WebSocket 配置属性
+     */
     private final WebSocketProperties webSocketProperties;
+    /**
+     * WebSocket Session 管理器
+     */
     private final WebSocketSessionManager sessionManager;
+    /**
+     * WebSocket 消息处理器
+     */
     private final WebSocketHandler webSocketHandler;
 
     public WebSocketAutoConfiguration(WebSocketProperties webSocketProperties,
@@ -60,6 +68,11 @@ public class WebSocketAutoConfiguration implements WebSocketConfigurer {
         this.webSocketHandler = webSocketHandler;
     }
 
+    /**
+     * 注册 WebSocket 处理器路径、拦截器和跨域配置
+     *
+     * @param registry WebSocket 处理器注册中心
+     */
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         registry.addHandler(webSocketHandler, webSocketProperties.getPath())
@@ -70,12 +83,24 @@ public class WebSocketAutoConfiguration implements WebSocketConfigurer {
 
     // ========== Bean 定义 ==========
 
+    /**
+     * 创建 WebSocket Session 管理器 Bean
+     *
+     * @return WebSocketSessionManager 实例
+     */
     @Bean
     @ConditionalOnMissingBean
     public WebSocketSessionManager webSocketSessionManager() {
         return new WebSocketSessionManagerImpl();
     }
 
+    /**
+     * 创建 WebSocket 消息处理器，注册所有消息监听器并包装 Session 生命周期装饰器
+     *
+     * @param listeners      消息监听器列表
+     * @param sessionManager Session 管理器
+     * @return WebSocketHandler 实例
+     */
     @Bean
     @ConditionalOnMissingBean
     public WebSocketHandler webSocketHandler(List<WebSocketMessageListener<?>> listeners,
@@ -85,6 +110,11 @@ public class WebSocketAutoConfiguration implements WebSocketConfigurer {
         return new WebSocketSessionHandlerDecorator(handler, sessionManager);
     }
 
+    /**
+     * 创建 WebSocket 握手拦截器，从 Sa-Token 上下文中提取登录用户并注入 Session 属性
+     *
+     * @return HandshakeInterceptor 实例
+     */
     @Bean
     public HandshakeInterceptor webSocketHandshakeInterceptor() {
         return new HandshakeInterceptor() {
@@ -129,6 +159,12 @@ public class WebSocketAutoConfiguration implements WebSocketConfigurer {
 
     // ========== Local Sender（默认） ==========
 
+    /**
+     * 创建本地 WebSocket 消息发送器（单节点模式，默认）
+     *
+     * @param sessionManager Session 管理器
+     * @return LocalWebSocketMessageSender 实例
+     */
     @Bean
     @ConditionalOnMissingBean(WebSocketMessageSender.class)
     @ConditionalOnProperty(prefix = "matrix.websocket", name = "sender-type", havingValue = "local", matchIfMissing = true)
@@ -139,6 +175,13 @@ public class WebSocketAutoConfiguration implements WebSocketConfigurer {
 
     // ========== Redis Sender（多节点） ==========
 
+    /**
+     * 创建 Redis 广播 WebSocket 消息发送器（多节点模式）
+     *
+     * @param sessionManager  Session 管理器
+     * @param redissonClient  Redisson 客户端
+     * @return RedisWebSocketMessageSender 实例
+     */
     @Bean
     @ConditionalOnBean(RedissonClient.class)
     @ConditionalOnProperty(prefix = "matrix.websocket", name = "sender-type", havingValue = "redis")
@@ -148,6 +191,13 @@ public class WebSocketAutoConfiguration implements WebSocketConfigurer {
         return new RedisWebSocketMessageSender(sessionManager, redissonClient);
     }
 
+    /**
+     * 创建 Redis WebSocket 消息消费者，订阅 Channel 接收其他节点的广播消息
+     *
+     * @param sessionManager  Session 管理器
+     * @param redissonClient  Redisson 客户端
+     * @return RedisWebSocketMessageConsumer 实例
+     */
     @Bean
     @ConditionalOnBean(RedissonClient.class)
     @ConditionalOnProperty(prefix = "matrix.websocket", name = "sender-type", havingValue = "redis")
@@ -158,6 +208,11 @@ public class WebSocketAutoConfiguration implements WebSocketConfigurer {
 
     // ========== SSE 支持 ==========
 
+    /**
+     * 创建 SSE 会话管理器
+     *
+     * @return SseEmitterSessionManager 实例
+     */
     @Bean
     @ConditionalOnProperty(prefix = "matrix.websocket.sse", name = "enabled", havingValue = "true")
     public SseEmitterSessionManager sseEmitterSessionManager() {

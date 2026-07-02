@@ -28,105 +28,108 @@ import org.jooq.lambda.Async;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 /**
- * @author ZhaoWeiLong
- * @since 2024/2/23
- **/
+ * API 访问日志过滤器，拦截请求记录访问日志并异步发送
+ */
 @Slf4j
 public class ApiAccessLogFilter extends OncePerRequestFilter {
 
-    private final String applicationName;
 
-    private final ApiAccessLogApi apiAccessLogApi;
-    private final String[] ignoreUrl = {"/actuator", "/apiAccessLog"};
+  /**
+   * 应用名称
+   */
+  private final String applicationName;
 
-    public ApiAccessLogFilter(String applicationName, ApiAccessLogApi apiAccessLogApi) {
-        this.applicationName = applicationName;
-        this.apiAccessLogApi = apiAccessLogApi;
+  /**
+   * 访问日志 Feign 客户端
+   */
+  private final ApiAccessLogApi apiAccessLogApi;
+  /**
+   * 忽略记录的 URL 前缀
+   */
+  private final String[] ignoreUrl = {"/actuator", "/apiAccessLog"};
+
+  /**
+   * 构造 API 访问日志过滤器
+   *
+   * @param applicationName 应用名称
+   * @param apiAccessLogApi 访问日志 Feign 客户端
+   */
+  public ApiAccessLogFilter(String applicationName, ApiAccessLogApi apiAccessLogApi) {
+    this.applicationName = applicationName;
+    this.apiAccessLogApi = apiAccessLogApi;
+  }
+
+  @Override
+  protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+      throws ServletException, IOException {
+    final String requestURI = request.getRequestURI();
+    if (StrUtil.startWithAny(requestURI, ignoreUrl)) {
+      filterChain.doFilter(request, response);
+      return;
     }
-
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException {
-        final String requestURI = request.getRequestURI();
-        if (StrUtil.startWithAny(requestURI, ignoreUrl)) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-        LocalDateTime beginTime = LocalDateTime.now();
-        Map<String, String> queryString = ServletUtils.getParamMap(request);
-        String requestBody = ServletUtils.isJsonRequest(request) ? ServletUtils.getBody(request) : null;
-        try {
-            filterChain.doFilter(request, response);
-            createApiAccessLog(request, beginTime, queryString, requestBody, null);
-        } catch (Exception ex) {
-            createApiAccessLog(request, beginTime, queryString, requestBody, ex);
-            throw ex;
-        }
+    LocalDateTime beginTime = LocalDateTime.now();
+    Map<String, String> queryString = ServletUtils.getParamMap(request);
+    String requestBody = ServletUtils.isJsonRequest(request) ? ServletUtils.getBody(request) : null;
+    try {
+      filterChain.doFilter(request, response);
+      createApiAccessLog(request, beginTime, queryString, requestBody, null);
+    } catch (Exception ex) {
+      createApiAccessLog(request, beginTime, queryString, requestBody, ex);
+      throw ex;
     }
+  }
 
-    private void createApiAccessLog(
-            HttpServletRequest request,
-            LocalDateTime beginTime,
-            Map<String, String> queryString,
-            String requestBody,
-            Exception ex) {
-        ApiAccessLog accessLog = new ApiAccessLog();
-        try {
-            this.buildApiAccessLogDTO(accessLog, request, beginTime, queryString, requestBody, ex);
-            Async.runAsync(() -> apiAccessLogApi.createApiAccessLog(accessLog));
-        } catch (Throwable th) {
-            log.error(
-                    "[createApiAccessLog][url({}) log({}) 发生异常]",
-                    request.getRequestURI(),
-                    JsonUtils.toJsonString(accessLog),
-                    th);
-        }
+  private void createApiAccessLog(HttpServletRequest request, LocalDateTime beginTime,
+      Map<String, String> queryString, String requestBody, Exception ex) {
+    ApiAccessLog accessLog = new ApiAccessLog();
+    try {
+      this.buildApiAccessLogDTO(accessLog, request, beginTime, queryString, requestBody, ex);
+      Async.runAsync(() -> apiAccessLogApi.createApiAccessLog(accessLog));
+    } catch (Throwable th) {
+      log.error("[createApiAccessLog][url({}) log({}) 发生异常]", request.getRequestURI(),
+          JsonUtils.toJsonString(accessLog), th);
     }
+  }
 
-    private void buildApiAccessLogDTO(
-            ApiAccessLog accessLog,
-            HttpServletRequest request,
-            LocalDateTime beginTime,
-            Map<String, String> queryString,
-            String requestBody,
-            Exception ex) {
-        // 处理用户信息
-        final LoginUser user = LoginUserContextHolder.getUser();
-        if (user != null) {
-            accessLog.setUserId(user.getUserId());
-        }
-        final PlatformUserTypeEnum userType = TerminalContextHolder.getUserType();
-        if (userType != null) {
-            accessLog.setUserType(userType.getValue());
-        }
-        // 设置访问结果
-        R<?> result = ServletUtils.getCommonResult(request);
-        if (result != null) {
-            accessLog.setResultCode(result.getCode());
-            accessLog.setResultMsg(result.getMessage());
-        } else if (ex != null) {
-            accessLog.setResultCode(SystemErrorTypeEnum.SYSTEM_ERROR.getCode());
-            accessLog.setResultMsg(ExceptionUtil.getRootCauseMessage(ex));
-        } else {
-            accessLog.setResultCode(0);
-            accessLog.setResultMsg("");
-        }
-        // 设置其它字段
-        accessLog.setTraceId(TracerUtils.getTraceId());
-        accessLog.setApplicationName(applicationName);
-        accessLog.setRequestUrl(request.getRequestURI());
-        Map<String, Object> requestParams = MapUtil.<String, Object>builder()
-                .put("query", queryString)
-                .put("body", requestBody)
-                .build();
-        accessLog.setRequestParams(JsonUtils.toJsonString(requestParams));
-        accessLog.setRequestMethod(request.getMethod());
-        accessLog.setUserAgent(ServletUtils.getUserAgent(request));
-        accessLog.setUserIp(ServletUtils.getClientIP(request));
-        // 持续时间
-        accessLog.setBeginTime(beginTime);
-        accessLog.setEndTime(LocalDateTime.now());
-        accessLog.setDuration(
-                (int) LocalDateTimeUtil.between(accessLog.getBeginTime(), accessLog.getEndTime(), ChronoUnit.MILLIS));
+  private void buildApiAccessLogDTO(ApiAccessLog accessLog, HttpServletRequest request, LocalDateTime beginTime,
+      Map<String, String> queryString, String requestBody, Exception ex) {
+    // 处理用户信息
+    final LoginUser user = LoginUserContextHolder.getUser();
+    if (user != null) {
+      accessLog.setUserId(user.getUserId());
     }
+    final PlatformUserTypeEnum userType = TerminalContextHolder.getUserType();
+    if (userType != null) {
+      accessLog.setUserType(userType.getValue());
+
+    }
+    // 设置访问结果
+    R<?> result = ServletUtils.getCommonResult(request);
+    if (result != null) {
+      accessLog.setResultCode(result.getCode());
+      accessLog.setResultMsg(result.getMessage());
+    } else if (ex != null) {
+      accessLog.setResultCode(SystemErrorTypeEnum.SYSTEM_ERROR.getCode());
+      accessLog.setResultMsg(ExceptionUtil.getRootCauseMessage(ex));
+    } else {
+      accessLog.setResultCode(0);
+      accessLog.setResultMsg("");
+    }
+    // 设置其它字段
+    accessLog.setTraceId(TracerUtils.getTraceId());
+    accessLog.setApplicationName(applicationName);
+    accessLog.setRequestUrl(request.getRequestURI());
+    Map<String, Object> requestParams = MapUtil.<String, Object>builder().put("query", queryString)
+        .put("body", requestBody).build();
+    accessLog.setRequestParams(JsonUtils.toJsonString(requestParams));
+    accessLog.setRequestMethod(request.getMethod());
+    accessLog.setUserAgent(ServletUtils.getUserAgent(request));
+    accessLog.setUserIp(ServletUtils.getClientIP(request));
+    // 持续时间
+    accessLog.setBeginTime(beginTime);
+    accessLog.setEndTime(LocalDateTime.now());
+    accessLog.setDuration(
+        (int) LocalDateTimeUtil.between(accessLog.getBeginTime(), accessLog.getEndTime(), ChronoUnit.MILLIS));
+  }
+
 }

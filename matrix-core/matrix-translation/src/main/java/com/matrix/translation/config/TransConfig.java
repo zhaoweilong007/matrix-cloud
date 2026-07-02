@@ -13,11 +13,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean;
 
 /**
- * easy-trans配置
- *
- * @author ZhaoWeiLong
- * @since 2023/8/30
- **/
+ * easy-trans 自动配置类，初始化远程翻译缓存和空数据源处理
+ */
 @AutoConfiguration
 @ConditionalOnBean(TransCacheManager.class)
 public class TransConfig {
@@ -25,6 +22,9 @@ public class TransConfig {
     @Autowired
     private TransCacheManager transCacheManager;
 
+    /**
+     * 初始化远程翻译缓存配置
+     */
     @PostConstruct
     public void init() {
         transCacheManager.setRpcTransCache(
@@ -35,6 +35,11 @@ public class TransConfig {
                         .build());
     }
 
+    /**
+     * 创建空数据源设置器，easy-trans 在多数据源场景下的默认实现
+     *
+     * @return DataSourceSetter 实例
+     */
     @Bean
     @ConditionalOnMissingBean
     public DataSourceSetter dataSourceSetter() {

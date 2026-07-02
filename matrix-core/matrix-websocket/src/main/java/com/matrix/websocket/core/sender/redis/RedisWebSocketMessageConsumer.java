@@ -15,12 +15,14 @@ import org.slf4j.LoggerFactory;
  * <p>订阅 Redis Channel 接收其他节点广播的消息，
  * 在本地 Session 中查找目标并投递。</p>
  *
- * @author matrix
  */
 public class RedisWebSocketMessageConsumer {
 
     private static final Logger log = LoggerFactory.getLogger(RedisWebSocketMessageConsumer.class);
 
+    /**
+     * 本地消息发送器，用于接收 Redis 广播后在当前节点投递消息
+     */
     private final AbstractWebSocketMessageSender localSender;
 
     public RedisWebSocketMessageConsumer(RedissonClient redissonClient, WebSocketSessionManager sessionManager) {
@@ -56,6 +58,11 @@ public class RedisWebSocketMessageConsumer {
         log.info("Redis WebSocket consumer subscribed to topic: {}", RedisWebSocketMessageSender.TOPIC);
     }
 
+    /**
+     * 处理收到的 Redis 广播消息，根据消息中的目标信息进行本地投递
+     *
+     * @param msg Redis 广播消息
+     */
     private void handleMessage(RedisWebSocketMessage msg) {
         if (msg.getSessionId() != null) {
             localSender.sendBySessionId(msg.getSessionId(), msg.getMessageType(), msg.getMessageContent());

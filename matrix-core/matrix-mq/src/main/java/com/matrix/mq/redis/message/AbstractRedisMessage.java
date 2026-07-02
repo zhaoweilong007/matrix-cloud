@@ -9,7 +9,6 @@ import java.util.Map;
  * Redis 消息抽象基类。
  * 包含消息头（headers），子类可通过 {@link #addHeader(String, String)} 传递元数据。
  *
- * @author matrix
  */
 @Data
 public abstract class AbstractRedisMessage {

@@ -7,8 +7,6 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 /**
  * 网关限流配置属性。
  *
- * @author ZhaoWeiLong
- * @since 2026/7/2
  */
 @Data
 @RefreshScope

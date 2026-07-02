@@ -7,10 +7,14 @@ import jakarta.servlet.http.HttpServletRequest;
 /**
  * 针对ip的解析器
  *
- * @author ZhaoWeiLong
- * @since 2023/9/24
  **/
 public class IpParse implements RequestOriginParser {
+    /**
+     * 解析请求来源 IP
+     *
+     * @param httpServletRequest HTTP 请求
+     * @return 客户端 IP 地址
+     */
     @Override
     public String parseOrigin(HttpServletRequest httpServletRequest) {
         return ServletUtils.getClientIP();

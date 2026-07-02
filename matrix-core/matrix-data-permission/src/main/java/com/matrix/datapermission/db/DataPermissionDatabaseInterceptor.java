@@ -41,8 +41,14 @@ import org.apache.ibatis.session.RowBounds;
 @RequiredArgsConstructor
 public class DataPermissionDatabaseInterceptor extends JsqlParserSupport implements InnerInterceptor {
 
+    /**
+     * 数据权限规则工厂
+     */
     private final DataPermissionRuleFactory ruleFactory;
 
+    /**
+     * MappedStatement 缓存，记录无需重写的 SQL
+     */
     @Getter
     private final MappedStatementCache mappedStatementCache = new MappedStatementCache();
 

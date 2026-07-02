@@ -16,8 +16,14 @@ import org.springframework.aop.support.annotation.AnnotationMatchingPointcut;
 @EqualsAndHashCode(callSuper = true)
 public class DataPermissionAnnotationAdvisor extends AbstractPointcutAdvisor {
 
+    /**
+     * 数据权限拦截器通知
+     */
     private final Advice advice;
 
+    /**
+     * 切入点，匹配类或方法上的 {@link DataPermission} 注解
+     */
     private final Pointcut pointcut;
 
     public DataPermissionAnnotationAdvisor() {
@@ -25,6 +31,11 @@ public class DataPermissionAnnotationAdvisor extends AbstractPointcutAdvisor {
         this.pointcut = this.buildPointcut();
     }
 
+    /**
+     * 构建切入点，同时匹配类级别和方法级别的 {@link DataPermission} 注解
+     *
+     * @return 组合切入点
+     */
     protected Pointcut buildPointcut() {
         Pointcut classPointcut = new AnnotationMatchingPointcut(DataPermission.class, true);
         Pointcut methodPointcut = new AnnotationMatchingPointcut(null, DataPermission.class, true);

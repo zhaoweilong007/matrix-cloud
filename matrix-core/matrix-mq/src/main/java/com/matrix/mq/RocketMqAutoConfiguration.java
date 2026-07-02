@@ -13,8 +13,6 @@ import org.springframework.context.annotation.Bean;
 /**
  * rocketMq自动配置
  *
- * @author ZhaoWeiLong
- * @since 2023/3/22
  */
 @EnableConfigurationProperties(RocketMQProperties.class)
 @ConditionalOnProperty(prefix = "matrix.mq", value = "enabled", havingValue = "true")

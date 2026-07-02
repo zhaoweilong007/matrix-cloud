@@ -17,7 +17,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
  * </pre>
  * </p>
  *
- * @author matrix
  */
 @ExtendWith(MockitoExtension.class)
 public abstract class BaseRedisUnitTest {

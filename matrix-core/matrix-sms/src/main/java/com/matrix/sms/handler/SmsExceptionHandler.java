@@ -10,12 +10,14 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 /**
  * SMS 异常处理器，统一拦截 {@link SmsBlendException} 并返回友好提示。
  *
- * @author matrix
  */
 @Slf4j
 @RestControllerAdvice
 public class SmsExceptionHandler {
 
+    /**
+     * 拦截短信发送异常，返回友好的错误提示。
+     */
     @ExceptionHandler(SmsBlendException.class)
     public R<Void> handleSmsBlendException(SmsBlendException e, HttpServletRequest request) {
         log.error("请求地址'{}'发生短信发送异常", request.getRequestURI(), e);

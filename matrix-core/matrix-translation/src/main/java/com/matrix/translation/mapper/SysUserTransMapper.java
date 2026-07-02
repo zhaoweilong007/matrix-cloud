@@ -10,12 +10,14 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 /**
- * @author ZhaoWeiLong
- * @since 2023/8/31
- **/
+ * 用户翻译 Mapper，用于 easy-trans 跨租户查询用户信息
+ */
 @Mapper
 public interface SysUserTransMapper extends BaseMapper<SysUserTrans> {
 
+    /**
+     * 查询用户列表，自动忽略租户隔离
+     */
     @Override
     default List<SysUserTrans> selectList(Wrapper<SysUserTrans> queryWrapper) {
         Boolean oldIgnore = TenantContextHolder.isIgnore();
@@ -32,6 +34,9 @@ public interface SysUserTransMapper extends BaseMapper<SysUserTrans> {
             """)
     List<SysUserTrans> selectList_(@Param("ew") Wrapper<SysUserTrans> queryWrapper);
 
+    /**
+     * 查询单个用户，自动忽略租户隔离
+     */
     @Override
     default SysUserTrans selectOne(Wrapper<SysUserTrans> queryWrapper) {
         Boolean oldIgnore = TenantContextHolder.isIgnore();

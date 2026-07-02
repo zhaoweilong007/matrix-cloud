@@ -15,7 +15,6 @@ import org.springframework.context.annotation.PropertySource;
 /**
  * Seata配置
  *
- * @author zwl
  */
 @AutoConfiguration
 @PropertySource(factory = YamlPropertySourceFactory.class, value = "classpath:seata.yml")
@@ -31,6 +30,7 @@ public class SeataConfiguration {
         return new SeataRestTemplateInterceptor();
     }
 
+    /** undo_log 表 DDL，Seata AT 模式记录事务 SQL 执行记录 */
     public static final String undoLogSql =
             """
             CREATE TABLE IF NOT EXISTS `undo_log`
@@ -48,6 +48,7 @@ public class SeataConfiguration {
               DEFAULT CHARSET = utf8mb4 COMMENT ='AT transaction mode undo table';
             """;
 
+    /** 数据源，用于自动创建 undo_log 表 */
     @Autowired
     public DataSource dataSource;
 

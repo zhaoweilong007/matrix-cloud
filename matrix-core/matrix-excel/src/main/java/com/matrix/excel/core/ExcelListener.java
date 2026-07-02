@@ -7,5 +7,8 @@ import org.apache.fesod.sheet.read.listener.ReadListener;
  */
 public interface ExcelListener<T> extends ReadListener<T> {
 
+    /**
+     * 获取导入结果
+     */
     ExcelResult<T> getExcelResult();
 }

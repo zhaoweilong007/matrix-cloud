@@ -6,7 +6,6 @@ import cn.hutool.core.util.StrUtil;
 /**
  * 自定义脱敏工具类
  *
- * @author LeonZhou
  */
 public class DesensitizationUtil {
 

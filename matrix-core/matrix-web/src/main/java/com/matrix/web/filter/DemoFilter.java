@@ -16,7 +16,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
  * <p>通过 {@code matrix.demo=true} 启用，默认 false。
  * 仅拦截 POST/PUT/DELETE 请求，GET 请求不受影响。</p>
  *
- * @author matrix
  */
 public class DemoFilter extends OncePerRequestFilter {
 

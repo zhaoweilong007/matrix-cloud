@@ -10,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
  * 在消息发送前注入租户ID，在消息消费前恢复租户上下文
  * </p>
  *
- * @author matrix
  */
 @Slf4j
 public class TenantMqUtils {

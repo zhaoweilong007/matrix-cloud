@@ -3,7 +3,6 @@ package com.matrix.sentinel.flow.common;
 /**
  * 度量的事件类型
  *
- * @author wujiuye
  * from https://github.com/wujiuye/qps-helper
  */
 public enum MetricEvent {

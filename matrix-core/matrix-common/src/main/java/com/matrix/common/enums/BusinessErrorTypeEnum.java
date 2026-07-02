@@ -7,8 +7,6 @@ import net.dreamlu.mica.core.result.IResultCode;
 /**
  * 描述：
  *
- * @author zwl
- * @since 2022/7/12 18:26
  **/
 @Getter
 @RequiredArgsConstructor

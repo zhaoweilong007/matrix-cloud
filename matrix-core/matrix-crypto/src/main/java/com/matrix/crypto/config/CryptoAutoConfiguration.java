@@ -20,7 +20,6 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 /**
  * API 加解密自动配置
  *
- * @author matrix
  */
 @AutoConfiguration
 @ConditionalOnProperty(prefix = "matrix.crypto", value = "enabled", havingValue = "true")
@@ -28,8 +27,14 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 @RequiredArgsConstructor
 public class CryptoAutoConfiguration {
 
+    /**
+     * 加解密配置属性
+     */
     private final CryptoProperties properties;
 
+    /**
+     * 根据配置类型创建对应的加解密服务实例
+     */
     @Bean
     @ConditionalOnMissingBean
     public CryptoService cryptoService() {
@@ -41,11 +46,17 @@ public class CryptoAutoConfiguration {
         };
     }
 
+    /**
+     * 注册 API 响应加密拦截器
+     */
     @Bean
     public ApiEncryptResponseAdvice apiEncryptResponseAdvice(CryptoService cryptoService) {
         return new ApiEncryptResponseAdvice(cryptoService);
     }
 
+    /**
+     * 注册 API 请求解密过滤器
+     */
     @Bean
     public FilterRegistrationBean<ApiEncryptRequestFilter> apiEncryptRequestFilter(
             CryptoService cryptoService, ObjectMapper objectMapper,

@@ -14,14 +14,14 @@ import me.zhyd.oauth.model.AuthUser;
 import me.zhyd.oauth.request.AuthDefaultRequest;
 
 /**
- * Gitea OAuth2 认证请求实现。
- *
- * @author matrix
+ * Gitea OAuth2 认证请求实现，支持通过配置自定义 Gitea 服务器地址
  */
 @Slf4j
 public class AuthGiteaRequest extends AuthDefaultRequest {
 
-    /** Gitea 服务器地址，从配置读取 */
+    /**
+     * Gitea 服务器地址，从配置读取
+     */
     public static final String SERVER_URL = getServerUrl();
 
     public AuthGiteaRequest(AuthConfig config) {

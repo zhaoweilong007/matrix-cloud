@@ -19,7 +19,6 @@ import org.springframework.data.redis.cache.RedisCacheWriter;
  * </pre>
  * </p>
  *
- * @author matrix
  */
 public class TimeoutRedisCacheManager extends RedisCacheManager {
 

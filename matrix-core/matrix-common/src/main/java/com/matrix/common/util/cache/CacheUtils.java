@@ -13,7 +13,6 @@ import java.util.concurrent.TimeUnit;
  * 支持异步刷新模式：缓存过期后后台线程自动刷新，不阻塞请求线程
  * </p>
  *
- * @author matrix
  */
 public class CacheUtils {
 

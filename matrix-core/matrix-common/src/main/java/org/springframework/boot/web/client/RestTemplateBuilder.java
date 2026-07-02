@@ -7,8 +7,6 @@ import org.springframework.web.client.RestTemplate;
  * RestTemplateBuilder 在 SB4 中已移除，此类提供最小 API 兼容 easy-trans 3.x。
  * 后续升级 easy-trans 后可删除。
  *
- * @author ZhaoWeiLong
- * @since 2026/6/29
  */
 public class RestTemplateBuilder {
 

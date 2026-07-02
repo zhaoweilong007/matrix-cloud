@@ -4,6 +4,7 @@ import com.matrix.common.constant.ConfigConstants;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+
 /**
  * 配置alertmanager告警地址
  */
@@ -11,6 +12,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = ConfigConstants.EXCEPTION_NOTICE)
 public class ExceptionNoticeProperties {
 
+    /**
+     * Alertmanager JSON 告警消息体模板
+     */
     public static final String MSG_TEMPLATE =
             """
                     [
@@ -26,5 +30,8 @@ public class ExceptionNoticeProperties {
                             }
                         }
                     ]""";
+    /**
+     * Alertmanager Webhook 地址
+     */
     private String alertUrl;
 }

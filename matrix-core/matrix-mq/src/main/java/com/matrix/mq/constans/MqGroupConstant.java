@@ -3,8 +3,6 @@ package com.matrix.mq.constans;
 /**
  * mq分组
  *
- * @author ZhaoWeiLong
- * @since 2023/7/22
  **/
 public interface MqGroupConstant {
 

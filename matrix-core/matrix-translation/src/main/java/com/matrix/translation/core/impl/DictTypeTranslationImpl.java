@@ -25,6 +25,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class DictTypeTranslationImpl implements TranslationInterface<Object> {
 
+    /**
+     * 字典查询服务
+     */
     private final IDictService dictService;
 
     @Override
@@ -58,6 +61,13 @@ public class DictTypeTranslationImpl implements TranslationInterface<Object> {
         return dictLabel;
     }
 
+    /**
+     * 将字典值映射为字典标签
+     *
+     * @param key   字典值
+     * @param other 字典类型
+     * @return 字典标签
+     */
     private String mapping(String key, String other) {
         if (key instanceof String && StringUtils.isNotBlank(other)) {
             if (Validator.isChinese(key.toString())) {

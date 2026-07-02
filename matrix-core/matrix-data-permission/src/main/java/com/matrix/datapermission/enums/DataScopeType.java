@@ -7,8 +7,6 @@ import lombok.RequiredArgsConstructor;
 /**
  * 数据权限
  *
- * @author ZhaoWeiLong
- * @since 2023/8/28
  **/
 @Getter
 @RequiredArgsConstructor
@@ -46,6 +44,12 @@ public enum DataScopeType {
      */
     private final String sqlTemplate;
 
+    /**
+     * 根据编码查找数据权限类型
+     *
+     * @param code 编码
+     * @return 数据权限类型，未找到返回 null
+     */
     public static DataScopeType findCode(String code) {
         if (StringUtils.isBlank(code)) {
             return null;

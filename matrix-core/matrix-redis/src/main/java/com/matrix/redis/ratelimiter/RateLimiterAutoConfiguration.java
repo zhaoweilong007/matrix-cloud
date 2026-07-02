@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Bean;
 /**
  * 限流自动配置
  *
- * @author matrix
  */
 @AutoConfiguration
 @ConditionalOnProperty(prefix = "matrix.rate-limiter", value = "enabled", havingValue = "true", matchIfMissing = true)

@@ -14,8 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * 消息默认处理器 按照groupId-topic-tag处理
  *
- * @author ZhaoWeiLong
- * @since 2023/3/23
  **/
 @Slf4j
 public class DefaultMessageListener implements MessageListener {

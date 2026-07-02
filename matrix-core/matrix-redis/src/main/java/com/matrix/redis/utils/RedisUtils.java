@@ -22,6 +22,7 @@ import org.redisson.api.*;
 @SuppressWarnings(value = {"unchecked", "rawtypes"})
 public class RedisUtils {
 
+    /** Redisson 客户端实例 */
     private static final RedissonClient CLIENT = SpringUtil.getBean(RedissonClient.class);
 
     /**
@@ -63,6 +64,12 @@ public class RedisUtils {
         consumer.accept(msg);
     }
 
+    /**
+     * 发布通道消息（无自定义处理）。
+     *
+     * @param channelKey 通道key
+     * @param msg        发送数据
+     */
     public static <T> void publish(String channelKey, T msg) {
         RTopic topic = CLIENT.getTopic(channelKey);
         topic.publish(msg);
@@ -96,7 +103,6 @@ public class RedisUtils {
      * @param key       缓存的键值
      * @param value     缓存的值
      * @param isSaveTtl 是否保留TTL有效期(例如: set之前ttl剩余90 set之后还是为90)
-     * @since Redis 6.X 以上使用 setAndKeepTTL 兼容 5.X 方案
      */
     public static <T> void setCacheObject(final String key, final T value, final boolean isSaveTtl) {
         RBucket<T> bucket = CLIENT.getBucket(key);
@@ -127,6 +133,14 @@ public class RedisUtils {
         batch.execute();
     }
 
+    /**
+     * 缓存基本的对象并设置过期时间（同步操作）。
+     *
+     * @param key      缓存的键值
+     * @param value    缓存的值
+     * @param duration 过期时间
+     * @return true
+     */
     public static <T> Boolean set(final String key, final T value, final Duration duration) {
         final RBucket<T> bucket = CLIENT.getBucket(key);
         bucket.set(value);

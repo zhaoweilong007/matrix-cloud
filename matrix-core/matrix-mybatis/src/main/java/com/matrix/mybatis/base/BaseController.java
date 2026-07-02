@@ -23,14 +23,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 /**
  * 基础通用controller
  *
- * @author ZhaoWeiLong
- * @since 2023/4/13
  **/
 @Slf4j
 @Validated
 public abstract class BaseController<S extends IRootService<T, V>, T extends BaseIdEntity, V, Q extends PageParam>
         implements IBaseFeignClient<T, V, Q> {
 
+    /** 业务 Service 实例 */
     @Resource
     public S service;
 
@@ -94,6 +93,12 @@ public abstract class BaseController<S extends IRootService<T, V>, T extends Bas
         return R.success(page);
     }
 
+    /**
+     * 构建分页查询包装器，子类可重写以添加自定义查询条件。
+     *
+     * @param query 分页查询参数
+     * @return 查询条件包装器
+     */
     public Wrapper<T> buildPageQueryWrapper(Q query) {
         return new QueryWrapper<>();
     }

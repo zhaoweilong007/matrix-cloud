@@ -17,15 +17,18 @@ import java.util.concurrent.ConcurrentHashMap;
  * <p>管理与客户端的 SSE 长连接，支持按用户+Token 维度定位连接，
  * 内置心跳检测和失效连接清理。</p>
  *
- * @author matrix
  */
 @Slf4j
 public class SseEmitterSessionManager {
 
-    /** userId → (token → SseEmitter) */
+    /**
+     * 用户 SSE 连接池：userId → (token → SseEmitter)
+     */
     private static final Map<Long, Map<String, SseEmitter>> USER_TOKEN_EMITTERS = new ConcurrentHashMap<>();
 
-    /** SSE 超时时间（毫秒），默认 0 表示无超时 */
+    /**
+     * SSE 超时时间（毫秒），默认 0 表示无超时
+     */
     private final long timeout;
 
     public SseEmitterSessionManager() {
@@ -196,7 +199,11 @@ public class SseEmitterSessionManager {
         toRemoveUsers.forEach(USER_TOKEN_EMITTERS::remove);
     }
 
-    /** 获取当前活跃连接数 */
+    /**
+     * 获取当前活跃连接数
+     *
+     * @return 活跃连接总数
+     */
     public int getActiveConnectionCount() {
         return USER_TOKEN_EMITTERS.values().stream()
                 .mapToInt(Map::size)

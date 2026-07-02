@@ -16,8 +16,6 @@ import java.lang.annotation.*;
  * public R<Void> checkout() { ... }
  * }</pre></p>
  *
- * @author ZhaoWeiLong
- * @since 2026/7/2
  */
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)

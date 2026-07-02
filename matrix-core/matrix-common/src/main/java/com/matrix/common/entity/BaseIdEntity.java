@@ -4,16 +4,19 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import org.dromara.core.trans.vo.TransPojo;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.io.Serializable;
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
- * @author ZhaoWeiLong
- * @since 2023/7/3
- **/
+ * ID 主键基类
+ */
 @Data
 public abstract class BaseIdEntity implements TransPojo, Serializable {
 
+    /**
+     * 数据库主键 ID 列名
+     */
     public static final String COL_ID = "id";
     /**
      * 雪花id

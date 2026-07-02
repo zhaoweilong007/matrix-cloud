@@ -13,7 +13,6 @@ import org.springframework.http.HttpHeaders;
  * <p>通过全局 OpenAPI 定制，给所有接口添加 SecurityScheme，
  * 用户在 Swagger UI 中输入 Sa-Token 即可测试需要认证的接口。</p>
  *
- * @author matrix
  */
 public class SaTokenSecurityScheme implements GlobalOpenApiCustomizer {
 

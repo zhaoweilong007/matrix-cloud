@@ -4,18 +4,14 @@ import cn.hutool.extra.spring.EnableSpringUtil;
 import com.matrix.common.constant.WebFilterOrderConstants;
 import com.matrix.web.client.ApiAccessLogApi;
 import com.matrix.web.exception.GlobalExceptionHandler;
-import com.matrix.web.feature.FeatureToggleAspect;
-import com.matrix.web.feature.FeatureToggleProperties;
 import com.matrix.web.filter.ApiAccessLogFilter;
 import com.matrix.web.filter.CacheRequestBodyFilter;
-import com.matrix.web.filter.DemoFilter;
 import com.matrix.web.handler.I18nLocaleResolver;
 import jakarta.servlet.Filter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.cors.CorsConfiguration;
@@ -25,20 +21,24 @@ import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
- * @author ZhaoWeiLong
- * @since 2023/6/8
- **/
+ * Web 自动配置，注册 CORS、日志、XSS、异常处理等核心过滤器
+ */
 @AutoConfiguration
 @EnableSpringUtil
-@EnableConfigurationProperties(FeatureToggleProperties.class)
 public class WebAutoConfig implements WebMvcConfigurer {
 
+    /**
+     * 默认敏感词服务
+     */
     @Bean
     @ConditionalOnMissingBean
     public DefaultSensitiveService defaultSensitiveService() {
         return new DefaultSensitiveService();
     }
 
+    /**
+     * CORS 跨域过滤器
+     */
     @Bean
     @ConditionalOnMissingBean
     public FilterRegistrationBean<CorsFilter> corsFilterBean() {
@@ -54,6 +54,7 @@ public class WebAutoConfig implements WebMvcConfigurer {
         return createFilterBean(new CorsFilter(source), WebFilterOrderConstants.CORS_FILTER);
     }
 
+
     /**
      * 创建 RequestBodyCacheFilter Bean，可重复读取请求内容
      */
@@ -62,10 +63,15 @@ public class WebAutoConfig implements WebMvcConfigurer {
         return createFilterBean(new CacheRequestBodyFilter(), WebFilterOrderConstants.REQUEST_BODY_CACHE_FILTER);
     }
 
+
+    /**
+     * 全局异常处理器
+     */
     @Bean
     public GlobalExceptionHandler globalExceptionHandler() {
         return new GlobalExceptionHandler();
     }
+
 
     /**
      * 创建 ApiAccessLogFilter Bean，记录 API 请求日志
@@ -73,19 +79,12 @@ public class WebAutoConfig implements WebMvcConfigurer {
     @Bean
     @ConditionalOnProperty(prefix = "matrix.access-log", value = "enable", matchIfMissing = true)
     public FilterRegistrationBean<ApiAccessLogFilter> apiAccessLogFilter(
-            @Value("${spring.application.name}") String applicationName, ApiAccessLogApi apiAccessLogApi) {
+        @Value("${spring.application.name}") String applicationName,
+        ApiAccessLogApi apiAccessLogApi) {
         ApiAccessLogFilter filter = new ApiAccessLogFilter(applicationName, apiAccessLogApi);
         return createFilterBean(filter, WebFilterOrderConstants.API_ACCESS_LOG_FILTER);
     }
 
-    /**
-     * 创建 DemoFilter Bean，演示模式下禁止写操作
-     */
-    @Bean
-    @ConditionalOnProperty(value = "matrix.demo", havingValue = "true")
-    public FilterRegistrationBean<DemoFilter> demoFilter() {
-        return createFilterBean(new DemoFilter(), WebFilterOrderConstants.DEMO_FILTER);
-    }
 
     private static <T extends Filter> FilterRegistrationBean<T> createFilterBean(T filter, Integer order) {
         FilterRegistrationBean<T> bean = new FilterRegistrationBean<>(filter);
@@ -93,14 +92,12 @@ public class WebAutoConfig implements WebMvcConfigurer {
         return bean;
     }
 
+
+    /**
+     * 区域解析器
+     */
     @Bean
-    @ConditionalOnMissingBean(LocaleResolver.class)
     public LocaleResolver localeResolver() {
         return new I18nLocaleResolver();
-    }
-
-    @Bean
-    public FeatureToggleAspect featureToggleAspect(FeatureToggleProperties featureToggleProperties) {
-        return new FeatureToggleAspect(featureToggleProperties);
     }
 }

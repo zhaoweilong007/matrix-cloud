@@ -15,11 +15,24 @@ public interface Constants {
      */
     String REPEAT_SUBMIT_KEY = "repeat_submit:";
 
+    /**
+     * 忽略租户标识
+     */
     String IGNORE_TENANT = "ignore_tenant";
 
+    /**
+     * Bearer 认证前缀
+     */
     String BEARER = "Bearer ";
 
+    /**
+     * 版本号
+     */
     String VERSION = "VERSION";
 
+    /**
+     * 默认版本号
+     */
     String DEFAULT_VERSION = "default";
+
 }

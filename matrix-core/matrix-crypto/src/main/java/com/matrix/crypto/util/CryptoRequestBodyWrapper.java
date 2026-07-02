@@ -10,10 +10,12 @@ import java.io.IOException;
 /**
  * 请求体包装器，用于替换请求体内容
  *
- * @author matrix
  */
 public class CryptoRequestBodyWrapper extends HttpServletRequestWrapper {
 
+    /**
+     * 解密后的请求体内容
+     */
     private byte[] body;
 
     public CryptoRequestBodyWrapper(HttpServletRequest request) {
@@ -21,6 +23,11 @@ public class CryptoRequestBodyWrapper extends HttpServletRequestWrapper {
         this.body = new byte[0];
     }
 
+    /**
+     * 设置替换后的请求体
+     *
+     * @param body 新的请求体字节数组
+     */
     public void setBody(byte[] body) {
         this.body = body;
     }
@@ -40,6 +47,9 @@ public class CryptoRequestBodyWrapper extends HttpServletRequestWrapper {
         return body.length;
     }
 
+    /**
+     * 缓存请求输入流，基于 ByteArrayInputStream 实现
+     */
     private static class CachedServletInputStream extends ServletInputStream {
 
         private final ByteArrayInputStream inputStream;

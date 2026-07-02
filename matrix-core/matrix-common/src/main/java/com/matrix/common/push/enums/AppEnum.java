@@ -6,8 +6,6 @@ import lombok.RequiredArgsConstructor;
 /**
  * 极光推送APP类型
  *
- * @author LeonZhou
- * @since 2023/12/25
  **/
 @Getter
 @RequiredArgsConstructor

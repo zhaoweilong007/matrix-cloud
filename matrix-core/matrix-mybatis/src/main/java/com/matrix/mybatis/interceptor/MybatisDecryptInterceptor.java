@@ -24,7 +24,6 @@ import org.springframework.context.ApplicationContextAware;
  *
  * <p>在 SELECT 结果集处理后，自动对标注了 {@code @EncryptField} 的实体字段进行解密。</p>
  *
- * @author matrix
  */
 @Intercepts({
         @Signature(type = ResultSetHandler.class, method = "handleResultSets", args = {Statement.class})

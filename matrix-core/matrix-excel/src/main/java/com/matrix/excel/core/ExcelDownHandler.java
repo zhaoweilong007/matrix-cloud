@@ -57,7 +57,6 @@ import java.util.TreeMap;
  *   <li>{@link ExcelDynamicOptions} — 动态下拉（通过 {@link ExcelOptionsProvider} SPI）</li>
  * </ul>
  *
- * @author matrix
  */
 @Slf4j
 public class ExcelDownHandler implements SheetWriteHandler {
@@ -89,6 +88,9 @@ public class ExcelDownHandler implements SheetWriteHandler {
         this.currentLinkedOptionsSheetIndex = 0;
     }
 
+    /**
+     * Sheet 创建完成后，为每一列添加下拉框校验
+     */
     @Override
     public void afterSheetCreate(WriteWorkbookHolder writeWorkbookHolder, WriteSheetHolder writeSheetHolder) {
         Sheet sheet = writeSheetHolder.getSheet();

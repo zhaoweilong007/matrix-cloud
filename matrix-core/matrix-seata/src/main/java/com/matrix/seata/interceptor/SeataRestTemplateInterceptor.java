@@ -15,7 +15,6 @@ import java.io.IOException;
  * <p>在调用远程服务时，将当前线程的 Seata 全局事务 XID 注入到请求头，
  * 确保分布式事务链路完整。</p>
  *
- * @author matrix
  */
 public class SeataRestTemplateInterceptor implements ClientHttpRequestInterceptor {
 

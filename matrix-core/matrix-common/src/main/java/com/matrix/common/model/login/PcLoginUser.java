@@ -7,8 +7,6 @@ import lombok.Data;
 /**
  * pc后台登录
  *
- * @author ZhaoWeiLong
- * @since 2023/7/3
  **/
 @Schema(description = "pc后台登录")
 @Data

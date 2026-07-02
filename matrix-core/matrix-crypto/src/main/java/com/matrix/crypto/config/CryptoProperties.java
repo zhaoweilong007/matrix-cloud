@@ -6,7 +6,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 /**
  * 加解密配置
  *
- * @author matrix
  */
 @Data
 @ConfigurationProperties(prefix = "matrix.crypto")

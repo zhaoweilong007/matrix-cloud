@@ -6,16 +6,32 @@ import java.util.concurrent.atomic.AtomicReferenceArray;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * @param <T>
- * @author wujiuye
+ * 滑动窗口数据结构，支持时间窗口的循环复用
+ *
+ * @param <T> 窗口值类型
  * from https://github.com/wujiuye/qps-helper
  */
 public abstract class LeapArray<T> {
 
+    /**
+     * 窗口数据数组，支持原子引用更新
+     */
     protected final AtomicReferenceArray<WindowWrap<T>> array;
+    /**
+     * 更新锁，用于重置窗口时的线程安全
+     */
     private final ReentrantLock updateLock = new ReentrantLock();
+    /**
+     * 单个窗口的时间长度（毫秒）
+     */
     protected int windowLengthInMs;
+    /**
+     * 样本总数
+     */
     protected int sampleCount;
+    /**
+     * 统计区间（毫秒）
+     */
     protected int intervalInMs;
 
     /**

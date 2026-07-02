@@ -11,7 +11,6 @@ import java.lang.annotation.Target;
  * 基于 appId + timestamp + nonce + sign 的防篡改 + 防重放机制
  * </p>
  *
- * @author matrix
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

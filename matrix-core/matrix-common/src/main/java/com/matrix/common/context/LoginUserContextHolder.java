@@ -7,6 +7,9 @@ import com.matrix.common.model.login.LoginUser;
  * 登录用户holder
  */
 public class LoginUserContextHolder {
+    /**
+     * 登录用户上下文
+     */
     private static final ThreadLocal<LoginUser> CONTEXT = new TransmittableThreadLocal<LoginUser>();
 
     public static LoginUser getUser() {
@@ -17,6 +20,9 @@ public class LoginUserContextHolder {
         CONTEXT.set(user);
     }
 
+    /**
+     * 清除上下文
+     */
     public static void clear() {
         CONTEXT.remove();
     }

@@ -11,7 +11,6 @@ import java.io.IOException;
  * 所有 Long 值都转为字符串，适用于 ID 字段等场景
  * </p>
  *
- * @author matrix
  */
 public class LongToStringSerializer extends JsonSerializer<Long> {
 

@@ -7,7 +7,6 @@ import org.springframework.util.StringUtils;
 /**
  * XSS 清理器（基于 Jsoup）
  *
- * @author matrix
  */
 public class XssCleaner {
 

@@ -20,12 +20,21 @@ import org.springframework.boot.autoconfigure.AutoConfiguration;
 @AutoConfiguration
 public class TranslationConfig {
 
+    /**
+     * 所有翻译接口实现列表
+     */
     @Autowired
     private List<TranslationInterface<?>> list;
 
+    /**
+     * Jackson ObjectMapper
+     */
     @Autowired
     private ObjectMapper objectMapper;
 
+    /**
+     * 初始化翻译实现映射，注册到 TranslationHandler 并设置序列化修改器
+     */
     @PostConstruct
     public void init() {
         Map<String, TranslationInterface<?>> map = new HashMap<>(list.size());

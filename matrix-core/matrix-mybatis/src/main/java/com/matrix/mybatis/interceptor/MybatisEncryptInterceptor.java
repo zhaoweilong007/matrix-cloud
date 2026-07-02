@@ -25,7 +25,6 @@ import org.springframework.context.ApplicationContextAware;
  *
  * <p>在 INSERT/UPDATE 执行前，自动对标注了 {@code @EncryptField} 的实体字段进行加密。</p>
  *
- * @author matrix
  */
 @Intercepts({
         @Signature(type = Executor.class, method = "update", args = {MappedStatement.class, Object.class})

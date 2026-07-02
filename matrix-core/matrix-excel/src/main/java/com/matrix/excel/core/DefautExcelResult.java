@@ -8,7 +8,6 @@ import lombok.Setter;
 /**
  * 默认excel返回对象
  *
- * @author Yjoioooo
  */
 public class DefautExcelResult<T> implements ExcelResult<T> {
 
@@ -24,26 +23,46 @@ public class DefautExcelResult<T> implements ExcelResult<T> {
     @Setter
     private List<String> errorList;
 
+    /**
+     * 创建空的导入结果
+     */
     public DefautExcelResult() {
         this.list = new ArrayList<>();
         this.errorList = new ArrayList<>();
     }
 
+    /**
+     * 创建指定数据和错误列表的导入结果
+     *
+     * @param list       导入数据列表
+     * @param errorList  错误信息列表
+     */
     public DefautExcelResult(List<T> list, List<String> errorList) {
         this.list = list;
         this.errorList = errorList;
     }
 
+    /**
+     * 根据已有导入结果创建副本
+     *
+     * @param excelResult 导入结果对象
+     */
     public DefautExcelResult(ExcelResult<T> excelResult) {
         this.list = excelResult.getList();
         this.errorList = excelResult.getErrorList();
     }
 
+    /**
+     * 获取导入数据列表
+     */
     @Override
     public List<T> getList() {
         return list;
     }
 
+    /**
+     * 获取错误信息列表
+     */
     @Override
     public List<String> getErrorList() {
         return errorList;

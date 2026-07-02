@@ -24,6 +24,12 @@ public interface IAreaNameService {
     @GetMapping("/sys/region/selectRegionNameByCode")
     R<String> selectRegionNameByCode(@RequestParam("areaCode") String areaCode);
 
+    /**
+     * 通过地区编码列表批量查询地区名称
+     *
+     * @param areaCodes 地区编码列表
+     * @return 区域字典列表
+     */
     @GetMapping("/sys/region/selectRegionNameByCodes")
     R<List<SysRegionDict>> selectRegionNameByCodes(@RequestBody List<String> areaCodes);
 }

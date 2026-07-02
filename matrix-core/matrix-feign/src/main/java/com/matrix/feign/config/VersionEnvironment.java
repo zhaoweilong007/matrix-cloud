@@ -11,8 +11,6 @@ import org.springframework.core.env.ConfigurableEnvironment;
 /**
  * 版本环境配置
  *
- * @author ZhaoWeiLong
- * @since 2023/9/5
  **/
 @AutoEnvPostProcessor
 public class VersionEnvironment implements EnvironmentPostProcessor {

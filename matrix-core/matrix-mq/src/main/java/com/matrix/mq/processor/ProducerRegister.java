@@ -21,8 +21,6 @@ import org.springframework.util.CollectionUtils;
 /**
  * 生产者注册配置
  *
- * @author ZhaoWeiLong
- * @since 2023/3/22
  **/
 @RequiredArgsConstructor
 @Slf4j

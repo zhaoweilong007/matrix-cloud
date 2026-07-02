@@ -10,8 +10,6 @@ import one.util.streamex.StreamEx;
 /**
  * 系统默认橘色
  *
- * @author ZhaoWeiLong
- * @since 2023/7/20
  **/
 @Getter
 @RequiredArgsConstructor

@@ -13,8 +13,6 @@ import org.springframework.core.annotation.Order;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 /**
- * @author ZhaoWeiLong
- * @since 2023/8/22
  **/
 @Order(WebFilterOrderConstants.USER_CONTEXT_FILTER)
 public class LoginUserContextFilter extends OncePerRequestFilter {

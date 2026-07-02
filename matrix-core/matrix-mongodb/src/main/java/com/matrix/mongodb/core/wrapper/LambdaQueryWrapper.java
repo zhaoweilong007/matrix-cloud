@@ -30,6 +30,11 @@ public class LambdaQueryWrapper<T>
     private Long skip;
     private Integer limit;
 
+    /**
+     * 获取条件包装对象
+     *
+     * @return 条件包装对象
+     */
     public ConditionWrapper getCondition() {
         return new ConditionWrapper(fields, conditions, sortConditions, skip, limit);
     }

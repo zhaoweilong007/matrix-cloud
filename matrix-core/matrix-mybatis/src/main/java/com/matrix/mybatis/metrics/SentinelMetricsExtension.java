@@ -27,7 +27,6 @@ import net.dreamlu.mica.auto.annotation.AutoService;
 /**
  * Sentinel Metrics Extension
  *
- * @author L.cm
  */
 @AutoService(MetricExtension.class)
 public class SentinelMetricsExtension implements MetricExtension {
@@ -48,38 +47,59 @@ public class SentinelMetricsExtension implements MetricExtension {
     public static final String DEFAULT_TAT_NAME = "resource";
     private static final AtomicLong CURRENT_THREAD_COUNT = new AtomicLong(0);
 
+    /**
+     * 记录通过的请求数。
+     */
     @Override
     public void addPass(String resource, int n, Object... args) {
         Metrics.counter(PASS_REQUESTS_TOTAL, DEFAULT_TAT_NAME, resource).increment(n);
     }
 
+    /**
+     * 记录被限流的请求数。
+     */
     @Override
     public void addBlock(String resource, int n, String origin, BlockException ex, Object... args) {
         Metrics.counter(BLOCK_REQUESTS_TOTAL, resource, ex.getClass().getSimpleName(), ex.getRuleLimitApp(), origin)
                 .increment(n);
     }
 
+    /**
+     * 记录成功处理的请求数。
+     */
     @Override
     public void addSuccess(String resource, int n, Object... args) {
         Metrics.counter(SUCCESS_REQUESTS_TOTAL, DEFAULT_TAT_NAME, resource).increment(n);
     }
 
+    /**
+     * 记录发生异常的业务请求数。
+     */
     @Override
     public void addException(String resource, int n, Throwable throwable) {
         Metrics.counter(EXCEPTION_REQUESTS_TOTAL, DEFAULT_TAT_NAME, resource).increment(n);
     }
 
+    /**
+     * 记录请求响应时间。
+     */
     @Override
     public void addRt(String resource, long rt, Object... args) {
         Metrics.timer(REQUESTS_LATENCY_SECONDS, DEFAULT_TAT_NAME, resource).record(rt, TimeUnit.MICROSECONDS);
     }
 
+    /**
+     * 增加当前活跃线程数。
+     */
     @Override
     public void increaseThreadNum(String resource, Object... args) {
         Tags tags = Tags.of(DEFAULT_TAT_NAME, resource);
         Metrics.gauge(CURRENT_THREADS, tags, CURRENT_THREAD_COUNT, AtomicLong::incrementAndGet);
     }
 
+    /**
+     * 减少当前活跃线程数。
+     */
     @Override
     public void decreaseThreadNum(String resource, Object... args) {
         Tags tags = Tags.of(DEFAULT_TAT_NAME, resource);

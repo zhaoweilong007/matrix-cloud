@@ -13,7 +13,6 @@ import java.lang.annotation.Target;
  *
  * <p>导出时表头字体自动标红，提示该列为必填项。</p>
  *
- * @author matrix
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

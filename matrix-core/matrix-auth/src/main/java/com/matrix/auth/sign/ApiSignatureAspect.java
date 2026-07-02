@@ -18,7 +18,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 /**
  * API 签名校验切面
  *
- * @author matrix
  */
 @Slf4j
 @Aspect

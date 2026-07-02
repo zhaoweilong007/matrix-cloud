@@ -5,7 +5,6 @@ import java.util.List;
 /**
  * 度量接口
  *
- * @author wujiuyu
  * from https://github.com/wujiuye/qps-helper
  */
 public interface Metric {

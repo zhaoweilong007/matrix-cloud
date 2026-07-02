@@ -5,7 +5,10 @@ import com.matrix.common.result.R;
 import net.dreamlu.mica.core.result.IResultCode;
 
 /**
- * @author zwl
+ * 业务服务异常类，继承 {@link BaseException}，用于在服务层抛出可识别的业务异常。
+ * <p>
+ * 支持通过 {@link IResultCode}、{@link com.matrix.common.result.R R<?>}、
+ * 状态码与消息等多种方式构造异常，最终由全局异常处理器统一捕获并返回标准响应。
  */
 public class ServiceException extends BaseException {
 

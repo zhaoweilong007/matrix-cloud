@@ -14,8 +14,6 @@ import org.springframework.context.annotation.Primary;
 /**
  * SMS 短信模块自动配置。
  *
- * @author ZhaoWeiLong
- * @since 2024/1/18
  **/
 @AutoConfiguration
 @EnableConfigurationProperties(SmsProperties.class)

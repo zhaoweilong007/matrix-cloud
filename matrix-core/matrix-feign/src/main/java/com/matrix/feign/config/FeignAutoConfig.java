@@ -17,8 +17,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 /**
- * @author ZhaoWeiLong
- * @since 2023/6/9
  **/
 @Configuration
 public class FeignAutoConfig {

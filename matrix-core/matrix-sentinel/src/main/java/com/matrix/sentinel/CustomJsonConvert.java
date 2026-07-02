@@ -26,18 +26,28 @@ import one.util.streamex.StreamEx;
 /**
  * 自定义转换器
  *
- * @author ZhaoWeiLong
- * @since 2023/9/24
  **/
 @Slf4j
 public class CustomJsonConvert<T extends Object> implements Converter<String, Collection<Object>> {
 
+    /**
+     * Jackson 对象映射器
+     */
     private final ObjectMapper objectMapper;
 
+    /**
+     * 规则类型
+     */
     private final Class<T> ruleClass;
 
+    /**
+     * 客户端IP
+     */
     private String clientIp;
 
+    /**
+     * 客户端端口
+     */
     private String port;
 
     public CustomJsonConvert(ObjectMapper objectMapper, Class<T> ruleClass) {
@@ -50,6 +60,12 @@ public class CustomJsonConvert<T extends Object> implements Converter<String, Co
         port = SpringUtils.getProperty("spring.cloud.sentinel.transport.port");
     }
 
+    /**
+     * 将 JSON 字符串转换为 Sentinel 规则集合，并根据客户端 IP 和端口过滤
+     *
+     * @param source JSON 字符串
+     * @return 规则集合
+     */
     @Override
     public Collection<Object> convert(String source) {
         Collection<Object> ruleCollection;

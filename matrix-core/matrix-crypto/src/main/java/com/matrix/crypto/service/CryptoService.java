@@ -3,7 +3,6 @@ package com.matrix.crypto.service;
 /**
  * 加解密服务接口
  *
- * @author matrix
  */
 public interface CryptoService {
 

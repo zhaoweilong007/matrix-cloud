@@ -23,8 +23,6 @@ import java.util.Map;
  *         export-v2: true
  * }</pre></p>
  *
- * @author ZhaoWeiLong
- * @since 2026/7/2
  */
 @Data
 @RefreshScope

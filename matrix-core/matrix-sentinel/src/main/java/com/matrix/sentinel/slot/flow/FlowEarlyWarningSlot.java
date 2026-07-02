@@ -19,7 +19,6 @@ import org.springframework.util.CollectionUtils;
 
 /*
  * 流控预警slot
- * @author chenhao
  */
 @Slf4j
 public class FlowEarlyWarningSlot extends AbstractLinkedProcessorSlot<DefaultNode> {
@@ -29,7 +28,13 @@ public class FlowEarlyWarningSlot extends AbstractLinkedProcessorSlot<DefaultNod
      */
     private static final double DEFAULT_WARNING_RATIO = 0.8;
 
+    /**
+     * 流控规则检查器
+     */
     private final FlowRuleChecker checker;
+    /**
+     * 预警阈值比例（0.0-1.0）
+     */
     private final double warningRatio;
 
     public FlowEarlyWarningSlot() {
@@ -45,7 +50,6 @@ public class FlowEarlyWarningSlot extends AbstractLinkedProcessorSlot<DefaultNod
      *
      * @param checker flow rule checker
      * @param warningRatio 预警阈值比例（0.0-1.0）
-     * @since 1.6.1
      */
     FlowEarlyWarningSlot(FlowRuleChecker checker, double warningRatio) {
         AssertUtil.notNull(checker, "flow checker should not be null");
@@ -84,6 +88,9 @@ public class FlowEarlyWarningSlot extends AbstractLinkedProcessorSlot<DefaultNod
         return originRule.get(0);
     }
 
+    /**
+     * entry 方法，在流控触发前发出预警日志
+     */
     @Override
     public void entry(
             Context context,
@@ -114,6 +121,9 @@ public class FlowEarlyWarningSlot extends AbstractLinkedProcessorSlot<DefaultNod
         fireEntry(context, resourceWrapper, node, count, prioritized, args);
     }
 
+    /**
+     * exit 方法，传递调用链
+     */
     @Override
     public void exit(Context context, ResourceWrapper resourceWrapper, int count, Object... args) {
         fireExit(context, resourceWrapper, count, args);

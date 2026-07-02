@@ -6,7 +6,6 @@ import lombok.Getter;
 /**
  * 行政区域类型枚举。
  *
- * @author matrix
  */
 @Getter
 @AllArgsConstructor

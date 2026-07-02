@@ -10,8 +10,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.Assert;
 
 /**
- * @author ZhaoWeiLong
- * @since 2024/1/3
+ * 极光推送初始化器，应用启动时校验配置并初始化 JPush 客户端
  **/
 @RequiredArgsConstructor
 @Slf4j

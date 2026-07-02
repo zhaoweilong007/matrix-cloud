@@ -7,14 +7,30 @@ package com.matrix.common.constant;
  */
 public interface WebFilterOrderConstants {
 
+    /**
+     * CORS 过滤器顺序
+     */
     int CORS_FILTER = Integer.MIN_VALUE;
 
+    /**
+     * Trace 过滤器顺序
+     */
     int TRACE_FILTER = CORS_FILTER + 1;
 
+    /**
+     * 请求体缓存过滤器顺序
+     */
     int REQUEST_BODY_CACHE_FILTER = Integer.MIN_VALUE + 500;
 
+    /**
+     * 验证码过滤器顺序
+     */
     int VALIDATE_CODE_FILTER = REQUEST_BODY_CACHE_FILTER + 1;
 
+
+    /**
+     * 用户上下文过滤器顺序
+     */
     int USER_CONTEXT_FILTER = -99;
 
     /**
@@ -32,8 +48,10 @@ public interface WebFilterOrderConstants {
      */
     int TENANT_SECURITY_FILTER = -96;
 
+    /**
+     * API 访问日志过滤器顺序
+     */
     int API_ACCESS_LOG_FILTER = -100;
 
-    /** 演示模式过滤器，需在认证之后执行 */
-    int DEMO_FILTER = -90;
+
 }

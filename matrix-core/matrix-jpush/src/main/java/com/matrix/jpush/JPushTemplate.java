@@ -29,8 +29,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * @author ZhaoWeiLong
- * @since 2024/1/3
+ * 极光推送操作模板，封装推送、别名管理、手机号解密等核心操作
  **/
 @Slf4j
 @RequiredArgsConstructor
@@ -39,23 +38,55 @@ public class JPushTemplate {
     private final JPushClient jPushClient;
     private final JPushProperties properties;
 
+    /**
+     * 根据配置创建 JPush 模板
+     *
+     * @param properties 极光推送配置
+     */
     public JPushTemplate(JPushProperties properties) {
         this.properties = properties;
         jPushClient = new JPushClient(properties.getMasterSecret(), properties.getAppKey());
     }
 
+    /**
+     * 向所有设备推送消息
+     *
+     * @param pushObject 推送内容
+     * @return 是否推送成功
+     */
     public boolean sendPush(PushObject pushObject) {
         return this.sendPush(Audience.all(), pushObject);
     }
 
+    /**
+     * 根据别名列表推送消息
+     *
+     * @param alias      别名列表
+     * @param pushObject 推送内容
+     * @return 是否推送成功
+     */
     public boolean sendPush(List<String> alias, PushObject pushObject) {
         return this.sendPush(Audience.alias(alias), pushObject);
     }
 
+    /**
+     * 根据标签列表推送消息
+     *
+     * @param tags       标签列表
+     * @param pushObject 推送内容
+     * @return 是否推送成功
+     */
     public boolean sendPushByTag(List<String> tags, PushObject pushObject) {
         return this.sendPush(Audience.tag(tags), pushObject);
     }
 
+    /**
+     * 向指定受众推送消息
+     *
+     * @param audience   推送目标
+     * @param pushObject 推送内容
+     * @return 是否推送成功
+     */
     public boolean sendPush(Audience audience, PushObject pushObject) {
         PushPayload payload = JPushNotifications.buildPushPayloadForAndroidAndIos(
                 properties.getApnsProduction(), audience, pushObject);
@@ -72,6 +103,11 @@ public class JPushTemplate {
         return false;
     }
 
+    /**
+     * 清除指定别名
+     *
+     * @param alias 别名
+     */
     public void clearAlias(String alias) {
         try {
             jPushClient.deleteAlias(alias, DeviceType.Android.value());
@@ -110,6 +146,12 @@ public class JPushTemplate {
         return decrypt(jgphone);
     }
 
+    /**
+     * RSA 解密手机号
+     *
+     * @param phone 加密的手机号
+     * @return 解密后的手机号
+     */
     public String decrypt(String phone) {
         try {
             PKCS8EncodedKeySpec keySpec =

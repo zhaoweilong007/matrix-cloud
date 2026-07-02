@@ -17,7 +17,6 @@ import java.lang.annotation.Target;
  * private Long deptId;
  * </pre>
  *
- * @author matrix
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

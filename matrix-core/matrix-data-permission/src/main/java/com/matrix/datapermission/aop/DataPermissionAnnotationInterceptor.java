@@ -23,6 +23,9 @@ public class DataPermissionAnnotationInterceptor implements MethodInterceptor {
     static final DataPermission DATA_PERMISSION_NULL =
             DataPermissionAnnotationInterceptor.class.getAnnotation(DataPermission.class);
 
+    /**
+     * 注解缓存，避免重复解析
+     */
     private final Map<MethodClassKey, DataPermission> dataPermissionCache = new ConcurrentHashMap<>();
 
     @Override
@@ -43,6 +46,12 @@ public class DataPermissionAnnotationInterceptor implements MethodInterceptor {
         }
     }
 
+    /**
+     * 查找方法或类上的 {@link DataPermission} 注解，优先从缓存读取
+     *
+     * @param methodInvocation 方法调用
+     * @return DataPermission 注解，不存在则返回 null
+     */
     private DataPermission findAnnotation(MethodInvocation methodInvocation) {
         // 1. 从缓存中获取
         Method method = methodInvocation.getMethod();

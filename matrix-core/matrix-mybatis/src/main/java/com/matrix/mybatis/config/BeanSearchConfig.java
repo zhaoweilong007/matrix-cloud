@@ -21,8 +21,6 @@ import org.springframework.context.annotation.Bean;
 /**
  * 兼容mybatis plus注解
  *
- * @author ZhaoWeiLong
- * @since 2023/5/12
  **/
 @AutoConfiguration
 @Slf4j

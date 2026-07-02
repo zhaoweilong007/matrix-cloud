@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Bean;
 /**
  * MQ 租户传播自动配置
  *
- * @author matrix
  */
 @AutoConfiguration
 @ConditionalOnProperty(prefix = "matrix.mq", value = "enabled", havingValue = "true")

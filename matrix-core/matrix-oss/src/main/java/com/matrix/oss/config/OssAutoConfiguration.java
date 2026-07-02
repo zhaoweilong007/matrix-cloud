@@ -13,7 +13,6 @@ import org.springframework.context.annotation.Bean;
 /**
  * OSS 对象存储自动配置。
  *
- * @author matrix
  */
 @AutoConfiguration
 @EnableConfigurationProperties(OssProperties.class)
@@ -22,6 +21,12 @@ public class OssAutoConfiguration {
 
     private static final Logger log = LoggerFactory.getLogger(OssAutoConfiguration.class);
 
+    /**
+     * 创建 OSS 客户端 Bean。
+     *
+     * @param properties OSS 配置属性
+     * @return OSS 客户端实例
+     */
     @Bean
     @ConditionalOnMissingBean
     public OssClient ossClient(OssProperties properties) {

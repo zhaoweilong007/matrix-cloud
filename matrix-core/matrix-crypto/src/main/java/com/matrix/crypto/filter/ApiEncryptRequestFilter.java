@@ -24,16 +24,30 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 /**
  * API 请求解密过滤器
  *
- * @author matrix
  */
 @Slf4j
 @Order(Ordered.HIGHEST_PRECEDENCE + 100)
 @RequiredArgsConstructor
 public class ApiEncryptRequestFilter extends OncePerRequestFilter {
 
+    /**
+     * 加解密服务
+     */
     private final CryptoService cryptoService;
+
+    /**
+     * 加解密配置属性
+     */
     private final CryptoProperties properties;
+
+    /**
+     * JSON 对象映射器
+     */
     private final ObjectMapper objectMapper;
+
+    /**
+     * 处理器映射器，用于获取 @ApiEncrypt 注解
+     */
     private final RequestMappingHandlerMapping handlerMapping;
 
     @Override
@@ -67,6 +81,9 @@ public class ApiEncryptRequestFilter extends OncePerRequestFilter {
         filterChain.doFilter(wrapper, response);
     }
 
+    /**
+     * 判断当前请求是否需要解密
+     */
     private boolean needDecrypt(HttpServletRequest request) {
         // 判断请求类型
         String contentType = request.getContentType();
@@ -94,6 +111,9 @@ public class ApiEncryptRequestFilter extends OncePerRequestFilter {
         }
     }
 
+    /**
+     * 获取请求对应的 HandlerMethod
+     */
     private HandlerMethod getHandlerMethod(HttpServletRequest request) {
         try {
             Object handler = handlerMapping.getHandler(request).getHandler();

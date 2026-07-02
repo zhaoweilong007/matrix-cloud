@@ -36,7 +36,6 @@ import java.util.Map;
  *   <li>{@code @ExcelRequired} — 表头字体标红（默认红色）</li>
  * </ul>
  *
- * @author matrix
  */
 public class DataWriteHandler implements SheetWriteHandler, CellWriteHandler {
 
@@ -56,6 +55,9 @@ public class DataWriteHandler implements SheetWriteHandler, CellWriteHandler {
         headColumnMap = getRequiredMap(clazz);
     }
 
+    /**
+     * 单元格写入完成后处理批注与必填样式
+     */
     @Override
     public void afterCellDispose(CellWriteHandlerContext context) {
         if (CollUtil.isEmpty(notationMap) && CollUtil.isEmpty(headColumnMap)) {

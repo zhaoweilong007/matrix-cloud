@@ -16,7 +16,6 @@ import lombok.NoArgsConstructor;
  * }
  * </pre>
  *
- * @author matrix
  */
 @Data
 @NoArgsConstructor

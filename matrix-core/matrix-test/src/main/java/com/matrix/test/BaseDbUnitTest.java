@@ -23,7 +23,6 @@ import org.springframework.test.context.ActiveProfiles;
  * </pre>
  * </p>
  *
- * @author matrix
  */
 @SpringBootTest
 @ActiveProfiles("test")

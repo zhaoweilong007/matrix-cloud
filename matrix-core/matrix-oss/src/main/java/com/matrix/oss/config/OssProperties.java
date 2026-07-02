@@ -9,7 +9,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  *
  * <p>S3 兼容协议，支持阿里云 OSS / MinIO / 腾讯云 COS 等。</p>
  *
- * @author matrix
  */
 @Data
 @ConfigurationProperties(prefix = "matrix.oss")

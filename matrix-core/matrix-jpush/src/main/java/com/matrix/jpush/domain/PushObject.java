@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 import lombok.Data;
 
+/**
+ * 极光推送消息对象，封装推送内容、附加参数等
+ */
 @Data
 public class PushObject {
 

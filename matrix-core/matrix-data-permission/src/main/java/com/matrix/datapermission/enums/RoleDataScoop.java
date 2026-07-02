@@ -9,8 +9,6 @@ import one.util.streamex.StreamEx;
 /**
  * 角色数据权限
  *
- * @author ZhaoWeiLong
- * @since 2023/8/28
  **/
 @Getter
 @RequiredArgsConstructor
@@ -43,6 +41,12 @@ public enum RoleDataScoop {
 
     private final DataScopeType dataScope;
 
+    /**
+     * 根据角色标识查找对应的数据权限配置
+     *
+     * @param roleKey 角色标识
+     * @return 角色数据权限配置，未找到返回 null
+     */
     public static RoleDataScoop ofRoleKey(String roleKey) {
         return StreamEx.of(values())
                 .findFirst(roleDataScoop -> Objects.equals(roleDataScoop.getRoleKey(), roleKey))

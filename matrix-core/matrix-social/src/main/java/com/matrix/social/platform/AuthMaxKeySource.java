@@ -4,9 +4,7 @@ import me.zhyd.oauth.config.AuthSource;
 import me.zhyd.oauth.request.AuthDefaultRequest;
 
 /**
- * MaxKey SSO 平台定义。
- *
- * @author matrix
+ * MaxKey SSO 平台定义，提供授权、令牌、用户信息等端点 URL
  */
 public enum AuthMaxKeySource implements AuthSource {
 

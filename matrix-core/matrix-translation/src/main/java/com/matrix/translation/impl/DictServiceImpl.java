@@ -23,6 +23,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class DictServiceImpl implements IDictService {
 
+    /**
+     * 远程字典 Feign 客户端
+     */
     @Autowired
     private IRemoteDictService remoteDictService;
 

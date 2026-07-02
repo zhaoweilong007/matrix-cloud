@@ -15,7 +15,6 @@ import java.lang.reflect.Type;
  * Redis Pub/Sub 监听器抽象类，用于实现广播消费。
  *
  * @param <T> 消息类型（必须指定泛型参数）
- * @author matrix
  */
 public abstract class AbstractRedisChannelMessageListener<T extends AbstractRedisChannelMessage>
         implements MessageListener {

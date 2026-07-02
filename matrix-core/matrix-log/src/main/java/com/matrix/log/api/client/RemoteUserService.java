@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
- * @author ZhaoWeiLong
- * @since 2023/8/1
  **/
 @FeignClient(contextId = "RemoteUserService", name = ServerNameConstants.SYSTEM, path = "/sys/user")
 public interface RemoteUserService {

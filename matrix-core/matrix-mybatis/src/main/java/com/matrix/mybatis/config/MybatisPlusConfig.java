@@ -21,8 +21,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 /**
  * 描述：<p>mybatis plus配置</p>
  *
- * @author ZhaoWeiLong
- * @since 2023/2/17
  **/
 @AutoConfiguration
 @EnableTransactionManagement(proxyTargetClass = true)
@@ -52,6 +50,9 @@ public class MybatisPlusConfig {
         return new DefaultIdentifierGenerator(NetUtil.getLocalhost());
     }
 
+    /**
+     * 创建自动填充处理器，自动填充创建人/时间、更新人/时间。
+     */
     @Bean
     public MetaObjectHandler defaultMetaObjectHandler() {
         return new DefaultDBFieldHandler();

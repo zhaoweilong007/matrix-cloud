@@ -16,7 +16,6 @@ import org.springframework.core.env.Environment;
  *
  * <p>通过 {@code matrix.loadbalancer.same-host.enabled=true} 启用（默认启用）。</p>
  *
- * @author matrix
  */
 @AutoConfiguration
 @ConditionalOnClass(ReactorLoadBalancer.class)
@@ -24,6 +23,13 @@ import org.springframework.core.env.Environment;
         matchIfMissing = true)
 public class SameHostLoadBalancerConfiguration {
 
+    /**
+     * 创建同主机优先负载均衡器 Bean
+     *
+     * @param environment              Spring 环境
+     * @param loadBalancerClientFactory 负载均衡客户端工厂
+     * @return SameHostLoadBalancer 实例
+     */
     @Bean
     public ReactorLoadBalancer<ServiceInstance> sameHostLoadBalancer(
             Environment environment, LoadBalancerClientFactory loadBalancerClientFactory) {

@@ -10,8 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * @author ZhaoWeiLong
- * @since 2023/7/24
+ * 消息处理器管理器，按 groupId-topic-tag 匹配并分发消息
  **/
 @Slf4j
 public class MessageHandlerManager {
@@ -37,10 +36,16 @@ public class MessageHandlerManager {
         });
     }
 
+    /**
+     * 获取处理器对应的消息类型
+     */
     public Class<?> getHandlerType(MessageHandler<?> handler) {
         return classMap.get(handler);
     }
 
+    /**
+     * 根据消费组、主题和标签获取对应的消息处理器
+     */
     public MessageHandler<?> getHandler(String consumerGroup, String topic, String tag) {
         if (handlerMap.isEmpty()) {
             return null;

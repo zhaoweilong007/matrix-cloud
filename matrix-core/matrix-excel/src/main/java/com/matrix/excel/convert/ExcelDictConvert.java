@@ -23,16 +23,25 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ExcelDictConvert implements Converter<Object> {
 
+    /**
+     * 支持任意 Java 类型
+     */
     @Override
     public Class<Object> supportJavaTypeKey() {
         return Object.class;
     }
 
+    /**
+     * 不限制 Excel 单元格类型，由转换逻辑自行判断
+     */
     @Override
     public CellDataTypeEnum supportExcelTypeKey() {
         return null;
     }
 
+    /**
+     * 将 Excel 单元格数据根据字典配置转换为 Java 数据（标签转值）
+     */
     @Override
     public Object convertToJavaData(
             ReadCellData<?> cellData, ExcelContentProperty contentProperty, GlobalConfiguration globalConfiguration) {
@@ -48,6 +57,9 @@ public class ExcelDictConvert implements Converter<Object> {
         return Convert.convert(contentProperty.getField().getType(), value);
     }
 
+    /**
+     * 将 Java 数据根据字典配置转换为 Excel 单元格数据（值转标签）
+     */
     @Override
     public WriteCellData<String> convertToExcelData(
             Object object, ExcelContentProperty contentProperty, GlobalConfiguration globalConfiguration) {

@@ -16,7 +16,6 @@ import org.apache.ibatis.reflection.MetaObject;
  * <p>自动填充 BaseEntity 的审计字段（创建人/时间、更新人/时间）。
  * 仅在 Servlet 请求上下文中自动获取当前登录用户。</p>
  *
- * @author matrix
  */
 public class DefaultDBFieldHandler implements MetaObjectHandler {
 

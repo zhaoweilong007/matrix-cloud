@@ -14,14 +14,21 @@ import org.springframework.util.StringUtils;
 /**
  * XSS 请求包装器
  *
- * @author matrix
  */
 public class XssRequestWrapper extends HttpServletRequestWrapper {
 
+    /**
+     * 构造 XSS 请求包装器
+     *
+     * @param request 原始请求
+     */
     public XssRequestWrapper(HttpServletRequest request) {
         super(request);
     }
 
+    /**
+     * 获取请求参数并清理 XSS
+     */
     @Override
     public String getParameter(String name) {
         String value = super.getParameter(name);
@@ -31,6 +38,9 @@ public class XssRequestWrapper extends HttpServletRequestWrapper {
         return value;
     }
 
+    /**
+     * 获取请求参数数组并清理 XSS
+     */
     @Override
     public String[] getParameterValues(String name) {
         String[] values = super.getParameterValues(name);
@@ -44,6 +54,9 @@ public class XssRequestWrapper extends HttpServletRequestWrapper {
         return cleaned;
     }
 
+    /**
+     * 获取请求参数 Map 并清理 XSS
+     */
     @Override
     public Map<String, String[]> getParameterMap() {
         Map<String, String[]> parameterMap = new LinkedHashMap<>();
@@ -59,6 +72,9 @@ public class XssRequestWrapper extends HttpServletRequestWrapper {
         return parameterMap;
     }
 
+    /**
+     * 获取请求头并清理 XSS
+     */
     @Override
     public String getHeader(String name) {
         String value = super.getHeader(name);

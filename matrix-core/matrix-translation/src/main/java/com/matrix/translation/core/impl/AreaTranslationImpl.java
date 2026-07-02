@@ -21,9 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 /**
- * 行政区域翻译实现
- *
- * @author LeonZhou
+ * 行政区域翻译实现，将地区编码翻译为地区名称
  */
 @RequiredArgsConstructor
 @TranslationType(type = TransConstant.AREA_CODE_TO_NAME)
@@ -31,8 +29,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class AreaTranslationImpl implements TranslationInterface<Object> {
 
+    /**
+     * 区域编码 Redis 缓存键前缀
+     */
     public static final String AREA_CODE_PREFIX = "matrix_region_code:%s#30d";
+    /**
+     * 多区域编码分隔符
+     */
     public static final String CO_DO = ";";
+    /**
+     * 行政区域 Feign 客户端
+     */
     private final IAreaNameService areaNameService;
 
     @Override
@@ -65,6 +72,13 @@ public class AreaTranslationImpl implements TranslationInterface<Object> {
         return areaName;
     }
 
+    /**
+     * 将单个区域编码映射为区域名称，优先从缓存获取，缓存未命中则调用远程服务
+     *
+     * @param key   区域编码
+     * @param other 分隔符（多个编码时使用）
+     * @return 区域名称
+     */
     public String mapping(String key, String other) {
         if (StrUtil.isBlank(key)) {
             return "";

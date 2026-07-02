@@ -9,7 +9,6 @@ import java.lang.annotation.Target;
 /**
  * 表头批注注解，导出时在表头单元格添加批注说明。
  *
- * @author matrix
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

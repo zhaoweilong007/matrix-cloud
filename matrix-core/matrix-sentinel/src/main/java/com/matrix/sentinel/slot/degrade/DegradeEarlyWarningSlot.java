@@ -16,7 +16,6 @@ import org.springframework.util.CollectionUtils;
 /**
  * 熔断预警slot
  *
- * @author chenhao
  */
 @Slf4j
 public class DegradeEarlyWarningSlot extends AbstractLinkedProcessorSlot<DefaultNode> {
@@ -58,6 +57,9 @@ public class DegradeEarlyWarningSlot extends AbstractLinkedProcessorSlot<Default
         return originRule.get(0);
     }
 
+    /**
+     * entry 方法，在熔断触发前发出预警日志
+     */
     @Override
     public void entry(
             Context context,
@@ -86,6 +88,9 @@ public class DegradeEarlyWarningSlot extends AbstractLinkedProcessorSlot<Default
         fireEntry(context, resourceWrapper, node, count, prioritized, args);
     }
 
+    /**
+     * exit 方法，传递调用链
+     */
     @Override
     public void exit(Context context, ResourceWrapper resourceWrapper, int count, Object... args) {
         fireExit(context, resourceWrapper, count, args);

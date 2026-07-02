@@ -23,24 +23,34 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * <p>导出时自动将枚举 code 转换为对应 text，导入时自动将 text 转换为 code。</p>
  *
- * @author matrix
  */
 @Slf4j
 public class ExcelEnumConvert implements Converter<Object> {
 
+    /** 枚举 code 到 text 的缓存（按字段） */
     private static final Map<Field, Map<Object, String>> ENUM_MAP_CACHE = new ConcurrentHashMap<>();
+    /** 枚举 text 到 code 的反向缓存（按字段） */
     private static final Map<Field, Map<String, Object>> ENUM_REVERSE_MAP_CACHE = new ConcurrentHashMap<>();
 
+    /**
+     * 支持任意 Java 类型
+     */
     @Override
     public Class<Object> supportJavaTypeKey() {
         return Object.class;
     }
 
+    /**
+     * 不限制 Excel 单元格类型，由转换逻辑自行判断
+     */
     @Override
     public CellDataTypeEnum supportExcelTypeKey() {
         return null;
     }
 
+    /**
+     * 将 Excel 单元格数据根据枚举配置转换为 Java 数据（文本转 code）
+     */
     @Override
     public Object convertToJavaData(ReadCellData<?> cellData, ExcelContentProperty contentProperty,
                                      GlobalConfiguration globalConfiguration) {
@@ -79,6 +89,9 @@ public class ExcelEnumConvert implements Converter<Object> {
         return Convert.convert(contentProperty.getField().getType(), codeValue);
     }
 
+    /**
+     * 将 Java 数据根据枚举配置转换为 Excel 单元格数据（code 转文本）
+     */
     @Override
     public WriteCellData<String> convertToExcelData(Object object, ExcelContentProperty contentProperty,
                                                      GlobalConfiguration globalConfiguration) {

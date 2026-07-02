@@ -3,21 +3,22 @@ package com.matrix.common.annotation;
 import com.fasterxml.jackson.annotation.JacksonAnnotationsInside;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.matrix.common.jackson.BigDecimalSerializer;
-import java.lang.annotation.*;
-import java.math.RoundingMode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.lang.annotation.*;
+import java.math.RoundingMode;
+
 /**
- * @author ZhaoWeiLong
- * @since 2023/7/18
- **/
+ * BigDecimal 格式化注解，用于指定 BigDecimal 序列化时的精度和舍入模式
+ */
 @Inherited
 @JacksonAnnotationsInside
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 @JsonSerialize(using = BigDecimalSerializer.class)
 public @interface BigDecimalFormat {
+
 
     /**
      * 处理格式
@@ -29,10 +30,12 @@ public @interface BigDecimalFormat {
      */
     int multiple() default 100;
 
+
     /**
      * 舍入模式 除以时指定
      */
     RoundingMode mode() default RoundingMode.HALF_UP;
+
 
     @Getter
     @RequiredArgsConstructor
@@ -52,5 +55,6 @@ public @interface BigDecimalFormat {
          * 除以
          */
         divide;
+
     }
 }

@@ -14,7 +14,6 @@ import java.util.List;
 /**
  * Redis MQ Producer 自动配置。
  *
- * @author matrix
  */
 @Slf4j
 @AutoConfiguration

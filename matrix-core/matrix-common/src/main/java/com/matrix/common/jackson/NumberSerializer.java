@@ -19,7 +19,6 @@ import java.io.IOException;
  * </pre>
  * </p>
  *
- * @author matrix
  */
 public class NumberSerializer extends JsonSerializer<Long> {
 

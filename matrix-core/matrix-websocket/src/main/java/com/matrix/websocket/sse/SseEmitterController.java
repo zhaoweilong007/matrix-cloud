@@ -16,13 +16,15 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
  * <p>提供 SSE 长连接建立和关闭端点。需在配置中启用：
  * {@code matrix.websocket.sse.enabled=true}</p>
  *
- * @author matrix
  */
 @RestController
 @RequiredArgsConstructor
 @ConditionalOnProperty(prefix = "matrix.websocket.sse", name = "enabled", havingValue = "true")
 public class SseEmitterController {
 
+    /**
+     * SSE 会话管理器
+     */
     private final SseEmitterSessionManager sessionManager;
 
     /**
@@ -56,7 +58,11 @@ public class SseEmitterController {
         return R.success();
     }
 
-    /** 尝试获取当前 Token（反射调用 Sa-Token，避免硬依赖） */
+    /**
+     * 尝试获取当前 Token（反射调用 Sa-Token，避免硬依赖）
+     *
+     * @return Token 值
+     */
     private String getTokenValue() {
         try {
             Class<?> stpUtilClass = Class.forName("cn.dev33.satoken.stp.StpUtil");

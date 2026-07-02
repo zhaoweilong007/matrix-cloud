@@ -14,7 +14,6 @@ import org.slf4j.LoggerFactory;
  * <p>使用方式：将 ip2region.xdb 文件放入 classpath 根目录，
  * 初始化时自动加载到内存。</p>
  *
- * @author matrix
  */
 public class IPUtils {
 

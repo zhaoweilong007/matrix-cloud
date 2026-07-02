@@ -12,13 +12,15 @@ import org.apache.ibatis.type.TypeHandler;
 /**
  * 为了兼容mybatis plus的注解
  *
- * @author ZhaoWeiLong
- * @since 2023/5/12
  **/
 public class JsonFieldConvert implements FieldConvertor.BFieldConvertor {
 
+    /** 缓存实体类字段对应的 JsonTypeHandler，避免重复创建 */
     private final HashBasedTable<Class, String, AbstractJsonTypeHandler> hashBasedTable = HashBasedTable.create();
 
+    /**
+     * 判断字段是否需要 JSON 转换：字段标注了 @TableField 且 typeHandler 为 AbstractJsonTypeHandler 子类。
+     */
     @Override
     public boolean supports(FieldMeta fieldMeta, Class<?> valueType) {
         if (String.class != valueType) {
@@ -30,6 +32,9 @@ public class JsonFieldConvert implements FieldConvertor.BFieldConvertor {
                 && AbstractJsonTypeHandler.class.isAssignableFrom(annotation.typeHandler()));
     }
 
+    /**
+     * 获取或创建字段对应的 TypeHandler 实例。
+     */
     private synchronized AbstractJsonTypeHandler getTypeHandler(FieldMeta fieldMeta) {
         AbstractJsonTypeHandler typeHandler = hashBasedTable.get(
                 fieldMeta.getBeanMeta().getBeanClass(), fieldMeta.getField().getName());
@@ -44,6 +49,9 @@ public class JsonFieldConvert implements FieldConvertor.BFieldConvertor {
         return typeHandler;
     }
 
+    /**
+     * 执行 JSON 字符串到 Java 对象的转换。
+     */
     @Override
     public Object convert(FieldMeta fieldMeta, Object value) {
         final AbstractJsonTypeHandler typeHandler = getTypeHandler(fieldMeta);

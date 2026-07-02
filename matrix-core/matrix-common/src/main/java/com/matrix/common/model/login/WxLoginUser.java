@@ -6,8 +6,6 @@ import lombok.Data;
 /**
  * 微信小程序登录
  *
- * @author ZhaoWeiLong
- * @since 2023/7/3
  **/
 @Data
 @Schema(description = "微信登录信息")

@@ -9,7 +9,6 @@ import software.amazon.awssdk.services.s3.model.S3Object;
 /**
  * OSS 对象存储客户端统一接口。
  *
- * @author matrix
  */
 public interface OssClient {
 

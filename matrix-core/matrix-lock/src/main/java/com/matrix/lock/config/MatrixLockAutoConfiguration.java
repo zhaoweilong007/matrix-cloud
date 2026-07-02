@@ -11,8 +11,6 @@ import org.springframework.context.annotation.Bean;
  * 使获取锁失败时抛出 {@link com.matrix.common.exception.ServiceException}
  * 而非默认的 {@link com.baomidou.lock.exception.LockFailureException}。</p>
  *
- * @author ZhaoWeiLong
- * @since 2026/7/2
  */
 @AutoConfiguration(before = com.baomidou.lock.spring.boot.autoconfigure.LockAutoConfiguration.class)
 public class MatrixLockAutoConfiguration {

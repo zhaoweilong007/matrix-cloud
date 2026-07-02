@@ -12,10 +12,7 @@ import org.springframework.context.annotation.Bean;
 
 /**
  * 数据权限的自动配置类
- *
- * @author ZhaoWeiLong
- * @since 2023/8/25
- **/
+ */
 @AutoConfiguration
 public class DataPermissionConfig {
 

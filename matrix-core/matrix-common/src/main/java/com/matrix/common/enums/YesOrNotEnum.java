@@ -5,7 +5,6 @@ import lombok.Getter;
 /**
  * 是或否的枚举，一般用在数据库字段，例如del_flag字段，char(1)，填写Y或N
  *
- * @author aaronuu
  */
 @Getter
 public enum YesOrNotEnum {

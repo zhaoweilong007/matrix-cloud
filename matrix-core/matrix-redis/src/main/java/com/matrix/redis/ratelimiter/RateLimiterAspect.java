@@ -20,7 +20,6 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
 /**
  * Redis 令牌桶限流切面
  *
- * @author matrix
  */
 @Slf4j
 @Aspect

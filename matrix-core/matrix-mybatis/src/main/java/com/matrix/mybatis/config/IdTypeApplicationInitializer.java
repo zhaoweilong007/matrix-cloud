@@ -25,8 +25,6 @@ import java.util.Map;
  * <p>通过 {@code META-INF/spring/org.springframework.context.ApplicationContextInitializer.imports} 注册，
  * 替代 Spring Boot 4.0 已弃用的 {@code EnvironmentPostProcessor}。</p>
  *
- * @author matrix
- * @since 2026/7/2
  */
 @Slf4j
 public class IdTypeApplicationInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {

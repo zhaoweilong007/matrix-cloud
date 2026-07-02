@@ -5,7 +5,10 @@ import lombok.Builder;
 import lombok.Data;
 
 /**
- * @author owen
+ * 异常事件对象，用于封装异常报警信息。
+ * <p>
+ * 当系统发生异常时，发布该事件可携带报警主题、应用名称、接口路径、
+ * 跟踪号、异常提示及堆栈信息，由监听器处理并发送通知。
  */
 @Data
 @Builder

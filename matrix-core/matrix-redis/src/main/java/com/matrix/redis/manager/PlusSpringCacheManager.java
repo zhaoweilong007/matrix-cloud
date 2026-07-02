@@ -38,16 +38,21 @@ import org.springframework.util.StringUtils;
  * 修改 RedissonSpringCacheManager 源码
  * 重写 cacheName 处理方法 支持多参数
  *
- * @author Nikita Koksharov
  */
 @SuppressWarnings("unchecked")
 public class PlusSpringCacheManager implements CacheManager {
 
+    /** 缓存名称 → 缓存配置的映射 */
     Map<String, CacheConfig> configMap = new ConcurrentHashMap<>();
+    /** 缓存名称 → Cache 实例的映射 */
     ConcurrentMap<String, Cache> instanceMap = new ConcurrentHashMap<>();
+    /** 是否动态创建缓存（非预定义的缓存名称是否允许自动创建） */
     private boolean dynamic = true;
+    /** 是否允许存储 null 值 */
     private boolean allowNullValues = true;
+    /** 是否开启事务感知（put/evict 在事务提交后执行） */
     private boolean transactionAware = true;
+    /** 是否启用 Caffeine L1 本地缓存 */
     private boolean caffeineL1Enabled = false;
 
     /**

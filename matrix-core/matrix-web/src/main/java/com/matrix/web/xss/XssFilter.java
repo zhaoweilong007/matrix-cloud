@@ -16,13 +16,20 @@ import org.springframework.web.filter.OncePerRequestFilter;
 /**
  * XSS 过滤 Filter
  *
- * @author matrix
  */
 @Order(Ordered.HIGHEST_PRECEDENCE + 50)
 public class XssFilter extends OncePerRequestFilter {
 
+    /**
+     * 排除的 URL 列表
+     */
     private final List<String> excludeUrls;
 
+    /**
+     * 构造 XSS 过滤器
+     *
+     * @param excludeUrls 排除的 URL 列表
+     */
     public XssFilter(List<String> excludeUrls) {
         this.excludeUrls = excludeUrls != null ? excludeUrls : Collections.emptyList();
     }

@@ -11,9 +11,11 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 
 /**
- * @author ZhaoWeiLong
- * @since 2023/6/9
- **/
+ * 链路追踪自动配置。
+ *
+ * <p>自动注册 TraceFilter 过滤器（响应中返回 traceId）和
+ * BizTraceAspect 切面（SkyWalking Span 业务标签标记）。</p>
+ */
 @AutoConfiguration
 @ConditionalOnProperty(prefix = "matrix.monitor", value = "traceEnable", matchIfMissing = true)
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)

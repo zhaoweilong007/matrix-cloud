@@ -13,6 +13,7 @@ package com.matrix.common.constant;
  */
 public interface CacheNames {
 
+
     /**
      * 系统配置
      */
@@ -67,8 +68,14 @@ public interface CacheNames {
      */
     String SYS_REGION_CODE = "sys_region_code";
 
+    /**
+     * 区域搜索缓存 key
+     */
     String SYS_REGION_SEARCH = "sys_region_search:";
 
+    /**
+     * 区域分组缓存 key
+     */
     String SYS_REGION_GROUP = "sys_region_group";
 
     /**
@@ -81,22 +88,48 @@ public interface CacheNames {
      */
     String OMS_SYSTEM_LABEL = "oms_system_label";
 
+
     /**
      * 老版用户id
      */
     String FANGDX_USER_ID = "fangdx_user_id:";
 
+
+    /**
+     * 房源分享缓存 key
+     */
     String matrix_HOUSE_SHARE = "matrix_house_share:%s";
 
+
+    /**
+     * 房源动态缓存 key
+     */
     String matrix_HOUSE_ACTION = "matrix_house_action";
 
+
+    /**
+     * 房源角色缓存 key
+     */
     String matrix_HOUSE_ROLE = "matrix_house_role";
 
+    /**
+     * 区域排名排序缓存 key
+     */
     String REGION_RANK_SORT = "region_rank_sort:%s";
 
+    /**
+     * 区域排名默认排序缓存 key
+     */
     String REGION_RANK_SORT_DEFAULT = "region_rank_sort_default";
 
+    /**
+     * 区域排名计数缓存 key
+     */
     String REGION_RANK_COUNT = "region_rank_count";
 
+    /**
+     * 社区基础信息缓存 key
+     */
     String COMMUNITY_BASE_INFO = "community_base_info:";
+
 }

@@ -5,8 +5,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
- * @author ZhaoWeiLong
- * @since 2023/8/1
  **/
 public class InvitationCodeGenerator {
     public static String generateUniqueCode(long userId) {

@@ -11,7 +11,11 @@ import com.matrix.common.enums.PlatformUserTypeEnum;
  **/
 public class TerminalContextHolder {
 
+    /**
+     * 用户平台类型上下文
+     */
     private static final ThreadLocal<PlatformUserTypeEnum> USERTYPE = new TransmittableThreadLocal<>();
+
 
     public static void setUsertype(PlatformUserTypeEnum usertype) {
         USERTYPE.set(usertype);
@@ -21,7 +25,12 @@ public class TerminalContextHolder {
         return USERTYPE.get();
     }
 
+    /**
+     * 清除上下文
+     */
     public static void clear() {
         USERTYPE.remove();
     }
+
+
 }

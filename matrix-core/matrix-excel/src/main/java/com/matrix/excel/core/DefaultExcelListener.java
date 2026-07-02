@@ -18,7 +18,6 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * Excel 导入监听
  *
- * @author Yjoioooo
  */
 @Slf4j
 @NoArgsConstructor
@@ -39,6 +38,11 @@ public class DefaultExcelListener<T> extends AnalysisEventListener<T> implements
      */
     private ExcelResult<T> excelResult;
 
+    /**
+     * 构造导入监听器
+     *
+     * @param isValidate 是否启用 Validator 检验
+     */
     public DefaultExcelListener(boolean isValidate) {
         this.excelResult = new DefautExcelResult<>();
         this.isValidate = isValidate;
@@ -79,12 +83,18 @@ public class DefaultExcelListener<T> extends AnalysisEventListener<T> implements
         throw new ExcelAnalysisException(errMsg);
     }
 
+    /**
+     * 解析表头数据
+     */
     @Override
     public void invokeHeadMap(Map<Integer, String> headMap, AnalysisContext context) {
         this.headMap = headMap;
         log.debug("解析到一条表头数据: {}", JsonUtils.toJsonString(headMap));
     }
 
+    /**
+     * 解析行数据，若开启校验则进行 Validator 验证
+     */
     @Override
     public void invoke(T data, AnalysisContext context) {
         if (isValidate) {
@@ -93,11 +103,17 @@ public class DefaultExcelListener<T> extends AnalysisEventListener<T> implements
         excelResult.getList().add(data);
     }
 
+    /**
+     * 所有数据解析完成后的回调
+     */
     @Override
     public void doAfterAllAnalysed(AnalysisContext context) {
         log.debug("所有数据解析完成！");
     }
 
+    /**
+     * 获取导入结果
+     */
     @Override
     public ExcelResult<T> getExcelResult() {
         return excelResult;

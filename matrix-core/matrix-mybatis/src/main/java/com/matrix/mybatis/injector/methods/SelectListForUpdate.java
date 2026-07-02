@@ -6,7 +6,10 @@ import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.SqlSource;
 
 /**
- * @author liuchunqing
+ * MyBatis-Plus 自定义注入方法，提供 {@code selectListForUpdate} 查询。
+ * <p>
+ * 生成的 SQL 在原有查询语句末尾追加 {@code FOR UPDATE}，
+ * 用于对查询结果集加行级锁，适用于悲观锁场景。
  */
 public class SelectListForUpdate extends AbstractMethod {
 

@@ -28,6 +28,9 @@ public class TranslationHandler extends JsonSerializer<Object> implements Contex
      */
     public static final Map<String, TranslationInterface<?>> TRANSLATION_MAPPER = new ConcurrentHashMap<>();
 
+    /**
+     * 当前字段上的 {@link Translation} 注解
+     */
     private Translation translation;
 
     @Override

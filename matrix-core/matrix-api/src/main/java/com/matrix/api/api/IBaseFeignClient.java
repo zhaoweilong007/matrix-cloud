@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.*;
 /**
  * 描述：<p>feign client基类</p>
  *
- * @author ZhaoWeiLong
- * @since 2023/4/14
  **/
 public interface IBaseFeignClient<T, V, Q> {
 

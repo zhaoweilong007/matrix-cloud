@@ -1,8 +1,7 @@
 package com.matrix.mq.constans;
 
 /**
- * @author ZhaoWeiLong
- * @since 2023/4/18
+ * Topic 常量定义
  **/
 public class TopicConstant {
 

@@ -25,8 +25,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 /**
  * 验证码校验
  *
- * @author ZhaoWeiLong
- * @since 2023/9/23
  **/
 @RequiredArgsConstructor
 public class ValidateCodeFilter extends OncePerRequestFilter {

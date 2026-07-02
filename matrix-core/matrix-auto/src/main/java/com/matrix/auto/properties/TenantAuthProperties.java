@@ -9,8 +9,6 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 /**
  * 租户认证配置
  *
- * @author ZhaoWeiLong
- * @since 2023/8/9
  **/
 @RefreshScope
 @ConfigurationProperties(prefix = "matrix.security.tenant")
