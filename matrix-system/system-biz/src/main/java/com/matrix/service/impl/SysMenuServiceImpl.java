@@ -69,7 +69,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 
     @Override
     public Boolean delete(Long id) {
-        return this.delete(id);
+        return this.removeById(id);
     }
 
     @Override

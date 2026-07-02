@@ -37,4 +37,9 @@ public class Tenant extends BaseEntity {
      */
     @TableField(value = "tenant_name")
     private String tenantName;
+
+    /**
+     * 关联套餐 ID
+     */
+    private Long packageId;
 }
