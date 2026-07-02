@@ -181,4 +181,4 @@ spring.config.import:
 
 ## Docker
 
-中间件：`deploy/docker-compose.yml`，应用：`deploy/docker-matrix.yml`。`./gradlew jib` 构建，`PROFILE` 切换环境，SkyWalking agent 自动注入(admin除外)。
+中间件：`deploy/docker-compose.yml`，应用：`deploy/docker-matrix.yml`。`./gradlew jib` 构建，`PROFILE` 切换环境，SkyWalking agent 自动注入。

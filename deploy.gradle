@@ -47,21 +47,17 @@ for (def proj : microservices) {
                 '-Dmanagement.endpoint.health.enabled=true',
                 '-Dmanagement.endpoints.web.exposure.include=health,info,metrics'
             ]
-            jvmFlags = (proj.name == 'matrix-admin')
-                ? baseJvmFlags
-                : baseJvmFlags + ['-javaagent:/skywalking-agent/skywalking-agent.jar']
+            jvmFlags = baseJvmFlags + ['-javaagent:/skywalking-agent/skywalking-agent.jar']
             creationTime = 'USE_CURRENT_TIMESTAMP'
             volumes = ['/skywalking/agent']
             ports = ['8080', '9090']
         }
 
-        if (proj.name != 'matrix-admin') {
-            extraDirectories {
-                paths {
-                    path {
-                        from = agentFile
-                        into = '/skywalking-agent'
-                    }
+        extraDirectories {
+            paths {
+                path {
+                    from = agentFile
+                    into = '/skywalking-agent'
                 }
             }
         }
