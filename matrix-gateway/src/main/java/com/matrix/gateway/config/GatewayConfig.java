@@ -38,6 +38,11 @@ public class GatewayConfig {
     }
 
     @Bean
+    public VersionPathRouteFilter versionPathRouteFilter() {
+        return new VersionPathRouteFilter();
+    }
+
+    @Bean
     public GlobalCacheRequestFilter globalCacheRequestFilter() {
         return new GlobalCacheRequestFilter();
     }

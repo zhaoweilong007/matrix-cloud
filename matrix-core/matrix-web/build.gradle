@@ -9,4 +9,6 @@ dependencies {
 
     // Jsoup XSS 清理
     api libs.jsoup
+    // AOP
+    compileOnly 'org.aspectj:aspectjweaver'
 }

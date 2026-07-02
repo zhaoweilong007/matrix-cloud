@@ -11,6 +11,7 @@ import org.springframework.core.Ordered;
 public interface FilterOrder {
 
     int GLOBAL_CORS_FILTER = Ordered.HIGHEST_PRECEDENCE;
+    int VERSION_PATH_ROUTE_FILTER = Ordered.HIGHEST_PRECEDENCE + 1;
     int GLOBAL_CACHE_REQUEST_FILTER = Ordered.HIGHEST_PRECEDENCE + 2;
     int GLOBAL_LOG_FILTER = Ordered.HIGHEST_PRECEDENCE + 3;
     int GLOBAL_I18N_FILTER = Ordered.HIGHEST_PRECEDENCE + 4;

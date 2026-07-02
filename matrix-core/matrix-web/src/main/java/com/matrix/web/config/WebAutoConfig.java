@@ -4,6 +4,8 @@ import cn.hutool.extra.spring.EnableSpringUtil;
 import com.matrix.common.constant.WebFilterOrderConstants;
 import com.matrix.web.client.ApiAccessLogApi;
 import com.matrix.web.exception.GlobalExceptionHandler;
+import com.matrix.web.feature.FeatureToggleAspect;
+import com.matrix.web.feature.FeatureToggleProperties;
 import com.matrix.web.filter.ApiAccessLogFilter;
 import com.matrix.web.filter.CacheRequestBodyFilter;
 import com.matrix.web.filter.DemoFilter;
@@ -13,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.cors.CorsConfiguration;
@@ -27,6 +30,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  **/
 @AutoConfiguration
 @EnableSpringUtil
+@EnableConfigurationProperties(FeatureToggleProperties.class)
 public class WebAutoConfig implements WebMvcConfigurer {
 
     @Bean
@@ -93,5 +97,10 @@ public class WebAutoConfig implements WebMvcConfigurer {
     @ConditionalOnMissingBean(LocaleResolver.class)
     public LocaleResolver localeResolver() {
         return new I18nLocaleResolver();
+    }
+
+    @Bean
+    public FeatureToggleAspect featureToggleAspect(FeatureToggleProperties featureToggleProperties) {
+        return new FeatureToggleAspect(featureToggleProperties);
     }
 }
