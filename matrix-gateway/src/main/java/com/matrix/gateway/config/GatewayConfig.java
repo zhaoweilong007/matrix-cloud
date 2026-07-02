@@ -2,12 +2,14 @@ package com.matrix.gateway.config;
 
 import com.matrix.auto.properties.GaryLoadBalanceProperties;
 import com.matrix.auto.properties.GatewayProperties;
+import com.matrix.auto.properties.RateLimiterProperties;
 import com.matrix.auto.properties.XssProperties;
 import com.matrix.common.constant.ConfigConstants;
 import com.matrix.feign.chooser.IRuleChooser;
 import com.matrix.gateway.filter.*;
 import com.matrix.gateway.handler.GatewayExceptionHandler;
 import lombok.extern.slf4j.Slf4j;
+import org.redisson.api.RedissonClient;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.gateway.config.GatewayLoadBalancerProperties;
@@ -26,7 +28,7 @@ import reactor.core.publisher.Mono;
  * @since 2023/6/25
  **/
 @Configuration
-@EnableConfigurationProperties({GatewayProperties.class, XssProperties.class})
+@EnableConfigurationProperties({GatewayProperties.class, XssProperties.class, RateLimiterProperties.class})
 @Slf4j
 public class GatewayConfig {
 
@@ -54,6 +56,13 @@ public class GatewayConfig {
     @ConditionalOnProperty(value = "security.xss.enabled", havingValue = "true")
     public XssFilter xssFilter(XssProperties xssProperties) {
         return new XssFilter(xssProperties);
+    }
+
+    @Bean
+    @ConditionalOnProperty(prefix = "matrix.rate-limiter", name = "enabled", havingValue = "true")
+    public RateLimiterGatewayFilter rateLimiterGatewayFilter(
+            RedissonClient redissonClient, RateLimiterProperties rateLimiterProperties) {
+        return new RateLimiterGatewayFilter(redissonClient, rateLimiterProperties);
     }
 
     @Bean

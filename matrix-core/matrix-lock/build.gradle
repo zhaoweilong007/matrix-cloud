@@ -1,7 +1,6 @@
 dependencies {
     api project(':matrix-core:matrix-redis')
-    api('com.baomidou:lock4j-redisson-spring-boot-starter') {
+    api(rootProject.libs.lock4j) {
         exclude group: "org.redisson", module: "redisson-spring-boot-starter"
     }
-
 }

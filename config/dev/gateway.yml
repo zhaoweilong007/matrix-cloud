@@ -97,3 +97,11 @@ feign:
         connect-timeout: 5000
         read-timeout: 5000
         logger-level: none
+
+# 网关分布式限流
+matrix:
+  rate-limiter:
+    enabled: true
+    replenishRate: 10
+    burstCapacity: 20
+    keyType: IP
