@@ -17,10 +17,7 @@ def appModules = [
 ]
 ext.appModules = appModules
 
-// 所有 Java 模块（排除 BOM）
-def commons = subprojects - project(':matrix-bom')
-
-// Gradle 9.x: 提取版本目录引用，避免子项目隐式查找父项目属性
+// Gradle 9.x: 提取版本目录引用
 ext {
     scaVersion = libs.versions.springCloudAlibaba.get()
     scVersion = libs.versions.springCloud.get()
@@ -56,12 +53,14 @@ allprojects {
 // ============================================================
 // 通用配置：所有非 BOM 模块共享
 // ============================================================
-configure(commons) {
-    apply plugin: 'idea'
-    apply plugin: 'java'
-    apply plugin: 'java-library'
-    apply plugin: 'org.sonarqube'
-    apply plugin: 'io.spring.dependency-management'
+subprojects {
+    if (project == project(':matrix-bom')) return
+
+    plugins.apply('idea')
+    plugins.apply('java')
+    plugins.apply('java-library')
+    plugins.apply('org.sonarqube')
+    plugins.apply('io.spring.dependency-management')
 
     // 静态分析工具
     apply from: "${rootProject.projectDir}/gradle/checkstyle.gradle"
@@ -96,23 +95,19 @@ configure(commons) {
     dependencies {
         implementation platform(project(':matrix-bom'))
 
-        // Lombok：所有模块通用
         compileOnly rootProject.libs.lombok
         annotationProcessor rootProject.libs.lombok
         annotationProcessor rootProject.libs.lombok.mapstruct.binding
         testCompileOnly rootProject.libs.lombok
         testAnnotationProcessor rootProject.libs.lombok
 
-        // MapStruct Plus：所有模块通用
         implementation rootProject.libs.mapstruct.plus.starter
         annotationProcessor rootProject.libs.mapstruct.plus.processor
         testAnnotationProcessor rootProject.libs.mapstruct.plus.processor
 
-        // mica-auto：自动配置注册器，所有模块统一应用
         compileOnly rootProject.libs.mica.auto
         annotationProcessor rootProject.libs.mica.auto
 
-        // SpotBugs 注解
         compileOnly rootProject.libs.spotbugs.annotations
     }
 
@@ -122,27 +117,20 @@ configure(commons) {
     }
 
     compileJava.dependsOn(processResources)
-}
 
-// ============================================================
-// 库模块配置：禁用 bootJar，启用普通 jar
-// ============================================================
-configure(commons - appModules) {
-    tasks.matching { it.name == 'bootJar' }.configureEach { enabled = false }
-    jar { enabled = true }
-}
-
-// ============================================================
-// 应用模块配置：启用 bootJar、Spring Boot 插件
-// ============================================================
-configure(appModules) {
-    apply plugin: 'org.springframework.boot'
-
-    springBoot {
-        buildInfo()
+    // 库模块禁用 bootJar
+    if (project !in appModules) {
+        tasks.matching { it.name == 'bootJar' }.configureEach { enabled = false }
+        jar { enabled = true }
     }
-    bootJar { enabled = true }
-    jar { enabled = false }
+
+    // 应用模块启用 bootJar + Spring Boot
+    if (project in appModules) {
+        plugins.apply('org.springframework.boot')
+        springBoot { buildInfo() }
+        bootJar { enabled = true }
+        jar { enabled = false }
+    }
 }
 
 // ============================================================
