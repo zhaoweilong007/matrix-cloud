@@ -26,10 +26,10 @@ matrix-cloud/
 ├── matrix-bom/               # BOM 依赖版本约束
 ├── matrix-core/              # 38个可插拔核心模块
 │   ├── matrix-common/        # R<T>响应、IResultCode/ErrorCode异常、BaseEntity(含clean防御)、脱敏(10种注解)、TTL上下文、JS精度序列化
-│   ├── matrix-web/           # Web Starter：全局异常、Jackson、i18n、XSS过滤(Jsoup)
+│   ├── matrix-web/           # Web Starter：全局异常、Jackson、i18n、XSS过滤(Jsoup)、@FeatureToggle功能开关
 │   ├── matrix-auth/          # Sa-Token+JWT：登录、权限、@ApiSignature、验证码、租户鉴权
 │   ├── matrix-feign/         # OpenFeign：租户/认证/灰度版本请求头传播、版本路由LB
-│   ├── matrix-mybatis/       # MyBatis-Plus：BaseMapperX/Vo/乐观锁/雪花ID/多数据源/连表查询/跨数据库兼容
+│   ├── matrix-mybatis/       # MyBatis-Plus：BaseMapperX/Vo/乐观锁/雪花ID/多数据源(@Master/@Slave)/连表查询/跨数据库兼容
 │   ├── matrix-redis/         # Redis+Redisson：Spring Cache、@RateLimiter、自定义TTL缓存
 │   ├── matrix-tenant/        # 多租户：SQL自动拼接tenant_id、缓存隔离、@TenantIgnore
 │   ├── matrix-crypto/        # @ApiEncrypt AES/RSA 请求解密+响应加密
@@ -42,7 +42,7 @@ matrix-cloud/
 │   ├── matrix-translation/   # @Translation 字段翻译(字典/用户名/地区/图片URL)
 │   ├── matrix-data-permission/ # @DataPermission 行级数据权限 JSQLParser SQL拦截
 │   ├── matrix-idempotent/    # @RepeatSubmit 防重复提交
-│   ├── matrix-lock/          # Lock4j分布式锁(Redisson)
+│   ├── matrix-lock/          # Lock4j分布式锁(Redisson)：@Lock4j + 自定义LockFailureStrategy
 │   ├── matrix-sensitive/     # 网易易盾内容审核
 │   ├── matrix-websocket/     # WebSocket(Redis/RocketMQ广播) + SSE长连接、消息监听器SPI
 │   ├── matrix-ip/            # IP定位(ip2region)+行政区划(四级树形area.csv)
@@ -63,7 +63,7 @@ matrix-cloud/
 │   ├── matrix-auto/          # mica-auto注解处理器
 │   └── matrix-config/        # Nacos配置中心聚合
 ├── matrix-admin/             # Spring Boot Admin (9002)
-├── matrix-gateway/           # API网关(9000)：认证/灰度/XSS/黑名单/限流
+├── matrix-gateway/           # API网关(9000)：认证/灰度/版本路由/XSS/黑名单/限流
 ├── matrix-resource/          # 资源服务(9003)：api→biz分层
 └── matrix-system/            # 系统服务(未启用)
 ```
@@ -97,7 +97,9 @@ userClient.save(user).checkError(SystemErrorTypeEnum.OPERATE_FAIL); // 检查错
 | `@Sensitive` / `@MobileDesensitize` / `@IdCardDesensitize` / `@BankCardDesensitize` / `@EmailDesensitize` / `@NameDesensitize` / `@PasswordDesensitize` / `@AddressDesensitize` / `@FixedPhoneDesensitize` / `@IpDesensitize` / `@LicensePlateDesensitize` | common | 字段脱敏(10种独立注解) |
 | `@Translation` | translation | 字段翻译 |
 | `@DataPermission` / `@TenantIgnore` | data-permission/tenant | 数据权限+租户隔离 |
-| `@RepeatSubmit` / `@RateLimiter` / `@ApiSignature` | idempotent/redis/auth | 防重/限流/API签名 |
+| `@RepeatSubmit` / `@RateLimiter` / `@ApiSignature` / `@Lock4j` | idempotent/redis/auth/lock | 防重/限流/API签名/分布式锁 |
+| `@FeatureToggle` | web | 功能开关(Nacos动态配置) |
+| `@Master` / `@Slave` | mybatis | 动态数据源主从切换 |
 | `@ApiEncrypt` / `@EncryptField` / `@Log` / `@ExceptionNoticeLog` | crypto/log | API加解密/MyBatis字段加解密/日志/异常通知 |
 | `CryptoService`(AES/RSA/SM4/SM2) / `MailBuilder` / `SocialAuthService` | crypto/mail/social | 多算法加解密/链式邮件/第三方OAuth |
 | `@HandlerType` / `@InEnum` / `@PhoneValue` | strategy/validator | 策略注入/校验 |
@@ -113,7 +115,8 @@ userClient.save(user).checkError(SystemErrorTypeEnum.OPERATE_FAIL); // 检查错
 | `SameHostLoadBalancer` | loadbalancer | 同主机IP优先服务实例选择 |
 | `SeataRestTemplateInterceptor` | seata | RestTemplate XID自动传播 |
 | `TenantRedisMessageInterceptor` | tenant | Redis MQ租户上下文自动传播 |
-| `IdTypeEnvironmentPostProcessor` | mybatis | 数据库类型自动检测→主键策略 |
+| `RateLimiterGatewayFilter` / `VersionPathRouteFilter` | gateway | 网关分布式限流(Redisson令牌桶) / URL版本路由(/v1/xxx) |
+| `IdTypeApplicationInitializer` | mybatis | 数据库类型自动检测→主键策略 |
 | `DemoFilter` | web | 演示模式写操作拦截 |
 
 ### 认证
@@ -152,6 +155,7 @@ spring.config.import:
 | `matrix.captcha` | 验证码(type/category/enabled/validateUrl) |
 | `matrix.crypto` | API加解密(enabled/type/secretKey/publicKey/privateKey) |
 | `matrix.demo` | 演示模式(enabled=true启用DemoFilter) |
+| `matrix.feature.toggle` | 功能开关(features Map: 功能名→true/false) |
 | `matrix.doc` | SpringDoc文档(title/description/version) |
 | `matrix.jpush` | 极光推送(appKey/masterSecret) |
 | `matrix.load-balance.gray` | 灰度负载均衡(enabled/defaultVersion/chooser) |
@@ -161,7 +165,7 @@ spring.config.import:
 | `matrix.mq` | RocketMQ(enabled/onsAddr) |
 | `matrix.mq.redis` | Redis MQ(enabled) |
 | `matrix.oss` | 对象存储(endpoint/accessKey/secretKey/bucket) |
-| `matrix.rate-limiter` | 限流(enabled) |
+| `matrix.rate-limiter` | 限流(enabled/replenishRate/burstCapacity/keyType，网关+注解双模式) |
 | `matrix.security.ignore` | 安全白名单(whites) |
 | `matrix.security.tenant` | 租户认证(authUrl) |
 | `matrix.sms` | 短信(smsValidateIgnore + SMS4J blends配置) |

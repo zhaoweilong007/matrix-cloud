@@ -25,7 +25,7 @@ Matrix-Cloud是一个基于Spring Cloud Alibaba的企业级微服务脚手架，
 #### 开发环境
 
 - **JDK**: 21
-- **Gradle**: 8.14.3
+- **Gradle**: 9.6.1
 - **IDE**: IntelliJ IDEA 或 Eclipse
 
 #### 中间件版本
@@ -47,7 +47,7 @@ Matrix-Cloud是一个基于Spring Cloud Alibaba的企业级微服务脚手架，
 ### 1. 环境准备
 
 - 安装 JDK 21 并配置环境变量
-- 安装 Gradle 8.14.3 并配置环境变量
+- 安装 Gradle 9.6.1 并配置环境变量
 - 克隆项目代码
 
 ### 2. 启动中间件
@@ -159,7 +159,7 @@ docker-compose up -d
 | 工具名称               | 版本               | 用途说明                |
 |------------------|------------------|---------------------|
 | XXL-Job           | 3.4.2            | 分布式任务调度             |
-| Jib               | 3.5.2            | Docker镜像构建工具        |
+| Jib               | 3.5.3            | Docker镜像构建工具        |
 
 ### 工具库
 
@@ -195,7 +195,8 @@ docker-compose up -d
 | 日志收集分析      | ✅  | 集成ELK进行日志收集和分析      |
 | 应用监控         | ✅  | 使用Prometheus和Grafana进行应用监控 |
 | 分布式任务调度     | ✅  | 集成XXL-Job实现分布式任务调度   |
-| 熔断限流         | ✅  | Sentinel网关限流 + @RateLimiter注解级Redis限流 |
+| 熔断限流         | ✅  | Sentinel网关限流 + @RateLimiter注解级Redis限流 + Redisson令牌桶Gateway全局限流 |
+| 分布式锁          | ✅  | @Lock4j Lock4j分布式锁(Redisson) |
 | 幂等性校验        | ✅  | @RepeatSubmit防重复提交     |
 | 敏感数据脱敏       | ✅  | 10种脱敏注解，自动数据脱敏       |
 | 数据权限控制       | ✅  | 基于注解的行级数据权限隔离      |
@@ -209,6 +210,8 @@ docker-compose up -d
 | 业务链路追踪        | ✅  | @BizTrace SkyWalking业务Span |
 | 演示模式           | ✅  | DemoFilter 写操作拦截保护      |
 | 同主机优先LB       | ✅  | SameHostLoadBalancer 就近路由  |
+| API版本路由        | ✅  | VersionPathRouteFilter URL路径 /v1/xxx 版本路由 |
+| 功能开关           | ✅  | @FeatureToggle Nacos动态配置功能开关 |
 
 ## 🔧模块架构
 
@@ -311,7 +314,7 @@ docker-compose up -d
 | **matrix-seata**   | `matrix-core:matrix-seata` | 集成Seata，提供分布式事务支持        |
 | **matrix-sentinel** | `matrix-core:matrix-sentinel` | 集成Sentinel，提供限流、熔断、降级等能力 |
 | **matrix-mq**      | `matrix-core:matrix-mq` | 集成RocketMQ，提供消息队列功能        |
-| **matrix-lock**    | `matrix-core:matrix-lock` | 分布式锁相关功能，支持多种锁实现       |
+| **matrix-lock**    | `matrix-core:matrix-lock` | 分布式锁相关功能，基于Lock4j+Redisson，@Lock4j声明式锁 |
 
 ### 业务功能组件
 
@@ -393,14 +396,18 @@ docker-compose up -d
 | 日志收集分析      | ✅  | 集成ELK进行日志收集和分析      |
 | 应用监控         | ✅  | 使用Prometheus和Grafana进行应用监控 |
 | 分布式任务调度     | ✅  | 集成XXL-Job实现分布式任务调度   |
-| 熔断限流         | ✅  | 集成Sentinel实现熔断限流       |
+| 熔断限流         | ✅  | 集成Sentinel + @RateLimiter + Gateway全局限流 |
+| 分布式锁          | ✅  | Lock4j @Lock4j 声明式分布式锁 |
 | 幂等性校验        | ✅  | 防止重复请求             |
 | 敏感数据脱敏       | ✅  | 敏感数据自动脱敏           |
 | 数据权限控制       | ✅  | 基于注解的数据权限隔离        |
+| 动态数据源         | ✅  | @Master/@Slave注解主从数据源切换 |
 | WebSocket + SSE  | ✅  | 多节点广播 + 服务端推送      |
 | Redis MQ         | ✅  | Pub/Sub + Stream 轻量消息     |
 | 业务链路追踪      | ✅  | @BizTrace SkyWalking业务标记 |
 | 同主机优先LB     | ✅  | SameHostLoadBalancer     |
+| API版本路由      | ✅  | /v1/xxx URL路径版本路由   |
+| 功能开关         | ✅  | @FeatureToggle 动态配置  |
 | 分库分表          | ⏳  | 集成Sharding-JDBC实现分库分表    |
 | 工作流引擎         | ⏳  | 集成Flowable工作流引擎       |
 
@@ -577,10 +584,24 @@ matrix:
 ```yaml
 matrix:
   rate-limiter:
-    enabled: true              # 是否启用 @RateLimiter
+    enabled: true              # 是否启用网关全局 + @RateLimiter 注解限流
+    replenishRate: 10          # 令牌桶填充速率（每秒）
+    burstCapacity: 20          # 令牌桶容量（突发上限）
+    keyType: IP                # 限流Key：IP/USER
 ```
 
-### 6. API加解密配置
+### 6. 功能开关配置
+
+```yaml
+matrix:
+  feature:
+    toggle:
+      features:
+        new-checkout: false    # 关闭新结算功能
+        export-v2: true        # 开启导出v2
+```
+
+### 8. API加解密配置
 
 ```yaml
 matrix:
@@ -590,7 +611,7 @@ matrix:
     secret-key: your-key       # 密钥
 ```
 
-### 7. XSS 过滤配置
+### 9. XSS 过滤配置
 
 ```yaml
 matrix:
@@ -600,7 +621,7 @@ matrix:
       - /api/public/**
 ```
 
-### 8. WebSocket/SSE 配置
+### 10. WebSocket/SSE 配置
 
 ```yaml
 matrix:
@@ -613,7 +634,7 @@ matrix:
       path: /sse/subscribe     # SSE路径
 ```
 
-### 9. 安全白名单配置
+### 11. 安全白名单配置
 
 ```yaml
 matrix:
@@ -625,7 +646,7 @@ matrix:
       auth-url:                # 租户认证地址
 ```
 
-### 10. Demo 演示模式
+### 12. Demo 演示模式
 
 ```yaml
 matrix:
