@@ -2,7 +2,6 @@ package com.matrix.system;
 
 import com.matrix.feign.annotation.EnableFeign;
 import lombok.extern.slf4j.Slf4j;
-import org.dromara.trans.config.TransServiceConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -14,7 +13,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  */
 @EnableDiscoveryClient
 @EnableFeign
-@SpringBootApplication(exclude = {TransServiceConfig.class})
+@SpringBootApplication
 @Slf4j
 public class SystemApp {
 
