@@ -100,7 +100,8 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
         if (sysMenu == null) {
             return false;
         }
-        return sysMenu.setHidden(hidden).updateById();
+        sysMenu.setHidden(hidden);
+        return this.updateById(sysMenu);
     }
 
     @Override

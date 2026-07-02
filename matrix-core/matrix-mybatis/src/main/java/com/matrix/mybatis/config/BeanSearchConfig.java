@@ -104,8 +104,8 @@ public class BeanSearchConfig {
                 List<Object> params, // SQL 执行参数
                 long timeCost // 执行耗时（单位：ms）
                 ) -> {
-            // TODO: 监听处理
-            log.warn("慢sql监听 beanClass=>{} timeCost=>{} sql=>{}", beanClass.getName(), timeCost, slowSql);
+            log.warn("慢SQL监听 beanClass=>{} timeCost=>{}ms sql=>{} params=>{}",
+                    beanClass.getName(), timeCost, slowSql, params);
         };
     }
 }

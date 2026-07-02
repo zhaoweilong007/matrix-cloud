@@ -1,19 +1,21 @@
 package com.matrix;
 
-import com.matrix.annotation.EnableMatrix;
+import com.matrix.feign.annotation.EnableFeign;
+import org.dromara.trans.config.TransServiceConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 /**
- * 描述：
+ * 系统服务启动类。
  *
- * @author zwl
- * @since ${DATE} ${TIME}
- **/
-@SpringBootApplication
+ * <p>提供用户、角色、菜单、资源、租户等系统管理功能。</p>
+ */
 @EnableDiscoveryClient
 @EnableFeign
+@SpringBootApplication(exclude = {TransServiceConfig.class})
 public class SystemApp {
+
     public static void main(String[] args) {
         SpringApplication.run(SystemApp.class, args);
     }

@@ -3,9 +3,9 @@ package com.matrix.controller.admin;
 import com.baomidou.mybatisplus.extension.plugins.pagination.PageDTO;
 import com.matrix.api.system.entity.dto.SysMenuDto;
 import com.matrix.api.system.entity.po.SysMenu;
-import com.matrix.entity.vo.Result;
+import com.matrix.common.result.R;
 import com.matrix.service.SysMenuService;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -23,7 +23,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/menu")
-@Api(tags = "菜单服务")
+@Tag(name = "菜单服务")
 public class MenuController {
     private final SysMenuService sysMenuService;
 
@@ -34,8 +34,8 @@ public class MenuController {
      * @return
      */
     @PostMapping
-    public Result<Boolean> create(@Validated @RequestBody SysMenuDto sysMenuDto) {
-        return Result.success(sysMenuService.create(sysMenuDto));
+    public R<Boolean> create(@Validated @RequestBody SysMenuDto sysMenuDto) {
+        return R.success(sysMenuService.create(sysMenuDto));
     }
 
     /**
@@ -45,14 +45,14 @@ public class MenuController {
      * @return
      */
     @PutMapping
-    public Result<Boolean> update(@Validated @RequestBody SysMenuDto sysMenuDto) {
-        return Result.success(sysMenuService.update(sysMenuDto));
+    public R<Boolean> update(@Validated @RequestBody SysMenuDto sysMenuDto) {
+        return R.success(sysMenuService.update(sysMenuDto));
     }
 
 
     @GetMapping("{id}")
-    public Result<SysMenu> getById(@PathVariable("id") Long id) {
-        return Result.success(sysMenuService.getItem(id));
+    public R<SysMenu> getById(@PathVariable("id") Long id) {
+        return R.success(sysMenuService.getItem(id));
     }
 
     /**
@@ -63,16 +63,16 @@ public class MenuController {
      * @return
      */
     @GetMapping("list/{parentId}")
-    public Result<PageDTO<SysMenu>> getList(@PathVariable("parentId") Long parentId, PageDTO<SysMenu> pageDTO) {
-        return Result.success(sysMenuService.list(parentId, pageDTO));
+    public R<PageDTO<SysMenu>> getList(@PathVariable("parentId") Long parentId, PageDTO<SysMenu> pageDTO) {
+        return R.success(sysMenuService.list(parentId, pageDTO));
     }
 
     /**
      * 获取菜单树
      */
     @GetMapping("treeList")
-    public Result<List<SysMenu>> getTreeList() {
-        return Result.success(sysMenuService.treeList());
+    public R<List<SysMenu>> getTreeList() {
+        return R.success(sysMenuService.treeList());
     }
 
     /**
@@ -82,8 +82,8 @@ public class MenuController {
      * @param status 状态 1、0
      */
     @PutMapping("status/{id}/{status}")
-    public Result<Boolean> updateStatus(@PathVariable("id") Long id, @PathVariable("status") Integer status) {
-        return Result.success(sysMenuService.updateHidden(id, status));
+    public R<Boolean> updateStatus(@PathVariable("id") Long id, @PathVariable("status") Integer status) {
+        return R.success(sysMenuService.updateHidden(id, status));
     }
 
 
@@ -93,8 +93,8 @@ public class MenuController {
      * @param id 用户id
      */
     @GetMapping("getMenuByAdminId/{id}")
-    public Result<List<SysMenu>> getMenuByAdminId(@PathVariable("id") Long id) {
-        return Result.success(sysMenuService.getMenuByAdminId(id));
+    public R<List<SysMenu>> getMenuByAdminId(@PathVariable("id") Long id) {
+        return R.success(sysMenuService.getMenuByAdminId(id));
     }
 
     /**
@@ -103,8 +103,8 @@ public class MenuController {
      * @param id 角色id
      */
     @GetMapping("getMenuByRoleId/{id}")
-    public Result<List<SysMenu>> getMenuByRoleId(@PathVariable("id") Long id) {
-        return Result.success(sysMenuService.getMenuByRoleId(id));
+    public R<List<SysMenu>> getMenuByRoleId(@PathVariable("id") Long id) {
+        return R.success(sysMenuService.getMenuByRoleId(id));
     }
 
 
@@ -112,8 +112,8 @@ public class MenuController {
      * 为角色分配菜单
      */
     @GetMapping("assignMenu")
-    public Result<Boolean> assignMenu(@RequestParam Long roleId, @RequestParam List<Long> menuIds) {
-        return Result.success(sysMenuService.assignMenu(roleId, menuIds));
+    public R<Boolean> assignMenu(@RequestParam Long roleId, @RequestParam List<Long> menuIds) {
+        return R.success(sysMenuService.assignMenu(roleId, menuIds));
     }
 
 

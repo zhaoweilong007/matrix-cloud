@@ -1,7 +1,8 @@
 package com.matrix.service.impl;
 
-import com.matrix.service.SensitiveService;
-import com.matrix.utils.LoginHelper;
+import com.matrix.common.model.login.LoginUser;
+import com.matrix.common.service.ISensitiveService;
+import com.matrix.auth.utils.LoginHelper;
 import org.springframework.stereotype.Service;
 
 /**
@@ -10,14 +11,15 @@ import org.springframework.stereotype.Service;
  * 需自行根据业务重写实现
  */
 @Service
-public class SysSensitiveServiceImpl implements SensitiveService {
+public class SysSensitiveServiceImpl implements ISensitiveService {
 
     /**
      * 是否脱敏
      */
     @Override
     public boolean isSensitive() {
-        return !LoginHelper.isAdmin();
+        LoginUser loginUser = LoginHelper.getLoginUser();
+        return loginUser == null || !"admin".equals(loginUser.getUsername());
     }
 
 }

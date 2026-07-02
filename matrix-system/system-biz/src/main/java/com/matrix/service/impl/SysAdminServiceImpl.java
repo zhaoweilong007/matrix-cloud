@@ -13,14 +13,14 @@ import com.matrix.api.system.entity.po.SysAdmin;
 import com.matrix.api.system.entity.po.SysResource;
 import com.matrix.api.system.entity.po.SysRole;
 import com.matrix.api.system.entity.vo.SysAdminUserInfo;
-import com.matrix.entity.enums.DeviceType;
-import com.matrix.entity.vo.LoginUser;
-import com.matrix.exception.BusinessErrorType;
-import com.matrix.exception.ServiceException;
+import com.matrix.common.enums.DeviceTypeEnum;
+import com.matrix.common.model.login.LoginUser;
+import com.matrix.common.enums.BusinessErrorTypeEnum;
+import com.matrix.common.exception.ServiceException;
 import com.matrix.mapper.SysAdminMapper;
 import com.matrix.service.*;
 import com.matrix.auth.core.PasswordLockoutService;
-import com.matrix.utils.LoginHelper;
+import com.matrix.auth.utils.LoginHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -53,7 +53,7 @@ public class SysAdminServiceImpl extends ServiceImpl<SysAdminMapper, SysAdmin> i
     @Override
     public String register(SysAdminRegisterDto sysAdminRegisterDto) {
         boolean exists = baseMapper.exists(Wrappers.<SysAdmin>lambdaQuery().eq(SysAdmin::getUsername, sysAdminRegisterDto.getUsername()));
-        Assert.isTrue(!exists, () -> new ServiceException(BusinessErrorType.USER_EXISTS));
+        Assert.isTrue(!exists, () -> new ServiceException(BusinessErrorTypeEnum.USER_EXIST));
         SysAdmin sysAdmin = new SysAdmin();
         sysAdmin.setUsername(sysAdminRegisterDto.getUsername());
         sysAdmin.setPassword(SaSecureUtil.md5(sysAdminRegisterDto.getPassword()));
@@ -65,7 +65,7 @@ public class SysAdminServiceImpl extends ServiceImpl<SysAdminMapper, SysAdmin> i
     @Override
     public SaTokenInfo login(SysAdminLoginDto sysAdminLoginDto) {
         SysAdmin sysAdmin = baseMapper.selectOne(Wrappers.<SysAdmin>lambdaQuery().eq(SysAdmin::getUsername, sysAdminLoginDto.getUsername()));
-        Assert.notNull(sysAdmin, () -> new ServiceException(BusinessErrorType.USER_NOT_EXISTS));
+        Assert.notNull(sysAdmin, () -> new ServiceException(BusinessErrorTypeEnum.USER_NOT_EXIST));
 
         // 检查账户锁定
         passwordLockoutService.checkLocked(sysAdminLoginDto.getUsername());
@@ -73,25 +73,25 @@ public class SysAdminServiceImpl extends ServiceImpl<SysAdminMapper, SysAdmin> i
         // 验证密码
         if (!sysAdmin.getPassword().equals(SaSecureUtil.md5(sysAdminLoginDto.getPassword()))) {
             passwordLockoutService.recordPasswordError(sysAdminLoginDto.getUsername());
-            throw new ServiceException(BusinessErrorType.PASSWORD_MISTAKE);
+            throw new ServiceException(BusinessErrorTypeEnum.AUTHENTICATION_FAILED);
         }
 
         // 密码正确，清除错误计数
         passwordLockoutService.clearErrorCount(sysAdminLoginDto.getUsername());
 
         LoginUser loginUser = buildLoginUser(sysAdmin);
-        LoginHelper.loginByDevice(loginUser, DeviceType.PC);
+        LoginHelper.loginByDevice(loginUser, DeviceTypeEnum.PC);
         sysAdmin.setLoginTime(new Date());
         updateById(sysAdmin);
         return StpUtil.getTokenInfo();
     }
 
     private LoginUser buildLoginUser(SysAdmin sysAdmin) {
-        return LoginUser.builder().userId(sysAdmin.getId()).username(sysAdmin.getUsername())
-                .tenantId(sysAdmin.getTenantId()).userType(sysAdmin.getUserType())
-                .permissions(sysResourceService.getResourceByAdminId(sysAdmin.getId()).stream().map(SysResource::getUrl).collect(Collectors.toList()))
-                .roles(sysRoleService.getRoleByAdminId(sysAdmin.getId()).stream().map(SysRole::getName).collect(Collectors.toList()))
-                .build();
+        LoginUser loginUser = new LoginUser();
+        loginUser.setUserId(sysAdmin.getId());
+        loginUser.setUsername(sysAdmin.getUsername());
+        loginUser.setTenantId(sysAdmin.getTenantId());
+        return loginUser;
     }
 
     @Override
@@ -102,7 +102,7 @@ public class SysAdminServiceImpl extends ServiceImpl<SysAdminMapper, SysAdmin> i
     @Override
     public SysAdminUserInfo userInfo(Long id) {
         SysAdmin sysAdmin = baseMapper.selectById(id);
-        Assert.notNull(sysAdmin, () -> new ServiceException(BusinessErrorType.USER_NOT_EXISTS));
+        Assert.notNull(sysAdmin, () -> new ServiceException(BusinessErrorTypeEnum.USER_NOT_EXIST));
         SysAdminUserInfo sysAdminUserInfo = new SysAdminUserInfo();
         sysAdminUserInfo.setSysAdmin(sysAdmin);
         sysAdminUserInfo.setMenus(sysMenuService.getMenuByAdminId(id));
@@ -113,7 +113,7 @@ public class SysAdminServiceImpl extends ServiceImpl<SysAdminMapper, SysAdmin> i
     @Override
     public Boolean updateHidden(Long id, Integer status) {
         SysAdmin sysAdmin = getById(id);
-        Assert.notNull(sysAdmin, () -> new ServiceException(BusinessErrorType.USER_NOT_EXISTS));
+        Assert.notNull(sysAdmin, () -> new ServiceException(BusinessErrorTypeEnum.USER_NOT_EXIST));
         sysAdmin.setStatus(status);
         return updateById(sysAdmin);
     }
@@ -127,9 +127,9 @@ public class SysAdminServiceImpl extends ServiceImpl<SysAdminMapper, SysAdmin> i
     public Boolean updatePassword(UpdateAdminPasswordDto updatePasswordParam) {
         //更改密码
         SysAdmin sysAdmin = getById(updatePasswordParam.getId());
-        Assert.notNull(sysAdmin, () -> new ServiceException(BusinessErrorType.USER_NOT_EXISTS));
+        Assert.notNull(sysAdmin, () -> new ServiceException(BusinessErrorTypeEnum.USER_NOT_EXIST));
         if (!Objects.equals(SaSecureUtil.md5(updatePasswordParam.getOldPassword()), sysAdmin.getPassword())) {
-            throw new ServiceException(BusinessErrorType.PASSWORD_MISTAKE);
+            throw new ServiceException(BusinessErrorTypeEnum.AUTHENTICATION_FAILED);
         }
         sysAdmin.setPassword(SaSecureUtil.md5(updatePasswordParam.getNewPassword()));
         return updateById(sysAdmin);

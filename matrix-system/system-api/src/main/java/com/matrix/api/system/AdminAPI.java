@@ -3,9 +3,9 @@ package com.matrix.api.system;
 import cn.dev33.satoken.util.SaResult;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.matrix.api.system.entity.po.SysAdmin;
-import com.matrix.entity.vo.Result;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import com.matrix.common.result.R;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.cloud.openfeign.SpringQueryMap;
 import org.springframework.web.bind.annotation.*;
@@ -18,31 +18,31 @@ import org.springframework.web.bind.annotation.*;
  **/
 
 @FeignClient(value = "system-server", path = AdminAPI.PREFIX)
-@Api(tags = "用户服务")
+@Tag(name = "用户服务")
 public interface AdminAPI {
 
     String PREFIX = "/admin";
 
     @GetMapping("/list")
-    @ApiOperation("分页查询")
-    Result<Page<SysAdmin>> list(@SpringQueryMap Page<SysAdmin> page, @SpringQueryMap SysAdmin sysAdmin);
+    @Operation(summary = "分页查询")
+    R<Page<SysAdmin>> list(@SpringQueryMap Page<SysAdmin> page, @SpringQueryMap SysAdmin sysAdmin);
 
     @DeleteMapping("/{id}")
-    @ApiOperation("根据id删除")
-    Result<Boolean> delete(@PathVariable("id") Long id);
+    @Operation(summary = "根据id删除")
+    R<Boolean> delete(@PathVariable("id") Long id);
 
     @PutMapping
-    @ApiOperation("更新")
-    Result<Boolean> update(@RequestBody SysAdmin sysAdmin);
+    @Operation(summary = "更新")
+    R<Boolean> update(@RequestBody SysAdmin sysAdmin);
 
     @GetMapping("/userInfo")
-    @ApiOperation("获取用户信息")
+    @Operation(summary = "获取用户信息")
     SaResult getUserInfo();
 
     /**
      * 更新显示状态
      */
     @PutMapping("/status/{id}/{status}")
-    @ApiOperation("更新用户状态")
-    Result<Boolean> updateStatus(@PathVariable("id") Long id, @PathVariable("status") Integer status);
+    @Operation(summary = "更新用户状态")
+    R<Boolean> updateStatus(@PathVariable("id") Long id, @PathVariable("status") Integer status);
 }

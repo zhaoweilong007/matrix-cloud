@@ -3,65 +3,64 @@ package com.matrix.controller.admin;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.matrix.api.system.entity.po.SysResourceCategory;
-import com.matrix.entity.vo.Result;
+import com.matrix.common.result.R;
 import com.matrix.service.SysResourceCategoryService;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import reactor.core.publisher.Mono;
 
 import java.util.List;
 
 /**
- * 描述：
+ * 资源分类管理控制器。
  *
- * @author zwl
- * @since 2022/7/14 16:28
- **/
+ * <p>提供资源分类的增删改查功能。</p>
+ */
 @RestController
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/resource/category")
-@Api(tags = "菜单分类服务")
+@Tag(name = "菜单分类服务")
 public class ResourceCategoryController {
 
     private final SysResourceCategoryService sysResourceCategoryService;
 
-
     @PostMapping
-    public Mono<Result<Boolean>> create(@Validated @RequestBody SysResourceCategory sysResourceCategory) {
-        return Mono.just(Result.success(sysResourceCategoryService.save(sysResourceCategory)));
+    @Operation(summary = "新增资源分类")
+    public R<Boolean> create(@Validated @RequestBody SysResourceCategory sysResourceCategory) {
+        return R.success(sysResourceCategoryService.save(sysResourceCategory));
     }
 
     @PutMapping
-    public Mono<Result<Boolean>> update(@Validated @RequestBody SysResourceCategory sysResourceCategory) {
-        return Mono.just(Result.success(sysResourceCategoryService.updateById(sysResourceCategory)));
+    @Operation(summary = "修改资源分类")
+    public R<Boolean> update(@Validated @RequestBody SysResourceCategory sysResourceCategory) {
+        return R.success(sysResourceCategoryService.updateById(sysResourceCategory));
     }
-
 
     @DeleteMapping("{id}")
-    public Mono<Result<Boolean>> delete(@PathVariable("id") Long id) {
-        return Mono.just(Result.success(sysResourceCategoryService.removeById(id)));
+    @Operation(summary = "删除资源分类")
+    public R<Boolean> delete(@PathVariable("id") Long id) {
+        return R.success(sysResourceCategoryService.removeById(id));
     }
-
 
     @GetMapping("{id}")
-    public Mono<Result<SysResourceCategory>> getById(@PathVariable("id") Long id) {
-        return Mono.just(Result.success(sysResourceCategoryService.getById(id)));
+    @Operation(summary = "查询资源分类详情")
+    public R<SysResourceCategory> getById(@PathVariable("id") Long id) {
+        return R.success(sysResourceCategoryService.getById(id));
     }
-
 
     @GetMapping("/list")
-    public Mono<Result<Page<SysResourceCategory>>> getList(Page<SysResourceCategory> page, SysResourceCategory sysResourceCategory) {
-        return Mono.just(Result.success(sysResourceCategoryService.page(page, new QueryWrapper<>(sysResourceCategory))));
+    @Operation(summary = "分页查询资源分类")
+    public R<Page<SysResourceCategory>> getList(Page<SysResourceCategory> page, SysResourceCategory sysResourceCategory) {
+        return R.success(sysResourceCategoryService.page(page, new QueryWrapper<>(sysResourceCategory)));
     }
-
 
     @GetMapping("/listAll")
-    public Mono<Result<List<SysResourceCategory>>> getListAll() {
-        return Mono.just(Result.success(sysResourceCategoryService.list()));
+    @Operation(summary = "查询所有资源分类")
+    public R<List<SysResourceCategory>> getListAll() {
+        return R.success(sysResourceCategoryService.list());
     }
-
 }

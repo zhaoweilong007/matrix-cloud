@@ -1,7 +1,7 @@
 package com.matrix.api.system.entity.po;
 
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.matrix.entity.po.TenantPo;
+import com.matrix.common.entity.TenantEntity;
 import lombok.Data;
 
 /**
@@ -11,7 +11,7 @@ import lombok.Data;
  * @since 2022-07-11 16:53:52
  */
 @Data
-public class SysRoleResourceRelation extends TenantPo<SysRoleResourceRelation> {
+public class SysRoleResourceRelation extends TenantEntity {
 
     @TableId
     private Long id;

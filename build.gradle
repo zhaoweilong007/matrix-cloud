@@ -14,6 +14,7 @@ def appModules = [
         project(':matrix-admin'),
         project(':matrix-gateway'),
         project(':matrix-resource:resource-biz'),
+        project(':matrix-system:system-biz'),
 ]
 ext.appModules = appModules
 

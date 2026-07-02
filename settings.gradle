@@ -37,9 +37,9 @@ file("${rootDir}/matrix-resource").listFiles()?.each { dir ->
     }
 }
 
-// 两层模块：matrix-system（当前未完成，暂不启用）
-// file("${rootDir}/matrix-system").listFiles()?.each { dir ->
-//     if (dir.directory && excludedName(dir)) {
-//         include "matrix-system:${dir.name}"
-//     }
-// }
+// 两层模块：matrix-system
+file("${rootDir}/matrix-system").listFiles()?.each { dir ->
+    if (dir.directory && excludedName(dir)) {
+        include "matrix-system:${dir.name}"
+    }
+}

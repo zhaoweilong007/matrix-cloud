@@ -38,6 +38,11 @@ public class GatewayConfig {
     }
 
     @Bean
+    public SecurityHeadersFilter securityHeadersFilter() {
+        return new SecurityHeadersFilter();
+    }
+
+    @Bean
     public VersionPathRouteFilter versionPathRouteFilter() {
         return new VersionPathRouteFilter();
     }

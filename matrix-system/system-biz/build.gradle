@@ -1,9 +1,19 @@
 dependencies {
-    implementation(project(":matrix-core:matrix-common"))
-    implementation(project(":matrix-core:matrix-web"))
-    implementation(project(":matrix-system:system-api"))
-}
+    api project(':matrix-system:system-api')
+    implementation project(':matrix-core:matrix-common')
+    implementation project(':matrix-core:matrix-web')
+    implementation project(':matrix-core:matrix-redis')
+    implementation project(':matrix-core:matrix-auth')
+    implementation project(':matrix-core:matrix-mybatis')
+    implementation project(':matrix-core:matrix-doc')
+    implementation project(':matrix-core:matrix-config')
+    implementation project(':matrix-core:matrix-log')
+    implementation project(':matrix-core:matrix-prometheus')
+    implementation project(':matrix-core:matrix-validator')
+    implementation project(':matrix-core:matrix-sentinel')
+    implementation project(':matrix-core:matrix-seata')
+    implementation project(':matrix-core:matrix-mq')
+    implementation project(':matrix-core:matrix-test')
 
-test {
-    enabled(false)
+    runtimeOnly 'com.mysql:mysql-connector-j'
 }

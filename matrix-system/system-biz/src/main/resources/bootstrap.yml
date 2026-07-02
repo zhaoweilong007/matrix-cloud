@@ -1,23 +1,10 @@
-server:
-  port: 9004
-
-
 spring:
   application:
     name: matrix-system
   profiles:
-    active: ${PROFILE:dev}
+    active: ${PROFILE:}
   config:
     import:
       - optional:nacos:env.properties
       - optional:nacos:application-common.yml
       - optional:nacos:datasource.yml
-logging:
-  # 配置logstash tcp地址
-  stash:
-    address: ${LOGSTASH_ADDRESS:localhost:5000}
-  level:
-    com.matrix.mapper: debug
-    com.matrix.api.**: debug
-  file:
-    path: ${APP_LOG_PATH:/tmp/matrix-logs}

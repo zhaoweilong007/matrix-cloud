@@ -1,6 +1,7 @@
 dependencies {
     api project(':matrix-core:matrix-auto')
     api project(':matrix-core:matrix-redis')
+    api project(':matrix-core:matrix-social')
     api 'cn.dev33:sa-token-core'
     api 'cn.dev33:sa-token-jwt'
     api 'cn.dev33:sa-token-spring-boot4-starter'

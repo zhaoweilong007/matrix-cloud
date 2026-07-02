@@ -6,89 +6,88 @@ import cn.hutool.captcha.LineCaptcha;
 import cn.hutool.core.lang.UUID;
 import com.matrix.api.system.entity.dto.SysAdminLoginDto;
 import com.matrix.api.system.entity.dto.SysAdminRegisterDto;
-import com.matrix.component.RedisOps;
-import com.matrix.entity.vo.CacheKey;
-import com.matrix.entity.vo.Result;
-import com.matrix.exception.SystemErrorType;
+import com.matrix.common.constant.CacheConstants;
+import com.matrix.common.enums.SystemErrorTypeEnum;
+import com.matrix.common.result.R;
+import com.matrix.redis.utils.RedisUtils;
 import com.matrix.service.LoginService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Objects;
+import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 /**
- * 描述：登录控制器
+ * 登录控制器。
  *
- * @author zwl
- * @since 2022/7/8 14:47
- **/
+ * <p>提供验证码获取、注册、登录、退出功能。</p>
+ */
 @RestController
-@Slf4j
 @RequestMapping("/auth")
 @Validated
 @RequiredArgsConstructor
-@Api(tags = "登录服务")
+@Tag(name = "登录服务")
 public class LoginController {
 
     private final LoginService loginService;
-    private final RedisOps redisOps;
 
-
+    /**
+     * 获取图片验证码。
+     *
+     * @return 验证码 uuid 和 Base64 图片
+     */
     @GetMapping("/captcha")
-    @ApiOperation("获取验证码")
-    public Result<Object> captcha() {
+    @Operation(summary = "获取验证码")
+    public R<Object> captcha() {
         LineCaptcha captcha = CaptchaUtil.createLineCaptcha(130, 48);
         String code = captcha.getCode();
         String uuid = UUID.fastUUID().toString(true);
-        redisOps.set(CacheKey.of(uuid, Duration.ofMinutes(1)), code, true);
-        return Result.success().setData(new HashMap<String, Object>() {{
+        RedisUtils.setCacheObject(CacheConstants.CAPTCHA_CODE_KEY + uuid, code, Duration.ofMinutes(1));
+        return R.success().setData(new HashMap<String, Object>() {{
             put("uuid", uuid);
             put("img", captcha.getImageBase64());
         }});
     }
 
     /**
-     * 注册
+     * 用户注册。
      *
-     * @return Result
+     * @param sysAdminRegisterDto 注册信息
+     * @return 注册成功的用户名
      */
     @PostMapping("/register")
-    @ApiOperation("用户注册")
-    public Result<String> register(@Validated @RequestBody SysAdminRegisterDto sysAdminRegisterDto) {
+    @Operation(summary = "用户注册")
+    public R<String> register(@Validated @RequestBody SysAdminRegisterDto sysAdminRegisterDto) {
         String username = loginService.register(sysAdminRegisterDto);
-        return Result.success(username);
+        return R.success(username);
     }
 
     /**
-     * 登录
+     * 账号密码登录。
      *
-     * @return Result
+     * @param sysAdminLoginDto 登录信息
+     * @return 登录 Token
      */
     @PostMapping("/login")
-    @ApiOperation("账号密码登录")
-    public Result<Object> login(@Validated @RequestBody SysAdminLoginDto sysAdminLoginDto) {
-        String redisCode = redisOps.get(sysAdminLoginDto.getUuid());
+    @Operation(summary = "账号密码登录")
+    public R<Object> login(@Validated @RequestBody SysAdminLoginDto sysAdminLoginDto) {
+        String redisCode = RedisUtils.getCacheObject(CacheConstants.CAPTCHA_CODE_KEY + sysAdminLoginDto.getUuid());
         if (!Objects.equals(redisCode, sysAdminLoginDto.getCode())) {
-            return Result.fail(SystemErrorType.VERIFICATION_CODE_ERROR);
+            return R.fail(SystemErrorTypeEnum.VERIFICATION_CODE_ERROR);
         }
-        return Result.success(loginService.login(sysAdminLoginDto));
+        return R.success(loginService.login(sysAdminLoginDto));
     }
 
     /**
-     * 退出登录
+     * 退出登录。
      */
     @GetMapping("/logout")
-    @ApiOperation("退出登录")
-    public Result logout() {
+    @Operation(summary = "退出登录")
+    public R<Void> logout() {
         StpUtil.logout();
-        return Result.success();
+        return R.success();
     }
-
-
 }

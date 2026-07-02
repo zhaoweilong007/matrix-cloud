@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.time.Duration;
 import java.util.Map;
 import java.util.TreeMap;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -16,14 +17,19 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 /**
- * API 签名校验切面
+ * API 签名校验切面。
  *
+ * <p>对标注 {@link ApiSignature} 的方法进行参数签名校验：
+ * 时间戳防重放 + Nonce 去重 + MD5 签名比对。</p>
  */
 @Slf4j
 @Aspect
+@RequiredArgsConstructor
 public class ApiSignatureAspect {
 
     private static final String NONCE_CACHE_PREFIX = "api_signature:nonce:";
+
+    private final ApiSignatureProperties apiSignatureProperties;
 
     @Before("@annotation(apiSignature)")
     public void verify(ApiSignature apiSignature) {
@@ -83,8 +89,11 @@ public class ApiSignatureAspect {
     }
 
     private String getAppSecret(String appId) {
-        // TODO: 从数据库或配置中心获取 appId 对应的密钥
-        return "default-secret-" + appId;
+        String secret = apiSignatureProperties.getSecrets().get(appId);
+        if (secret == null || secret.isBlank()) {
+            throw new ServiceException(SystemErrorTypeEnum.PARAM_ERROR, "未找到 appId 对应的密钥: " + appId);
+        }
+        return secret;
     }
 
     private HttpServletRequest getRequest() {

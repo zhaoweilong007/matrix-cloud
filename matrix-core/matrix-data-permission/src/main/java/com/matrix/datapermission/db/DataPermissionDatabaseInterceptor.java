@@ -22,7 +22,11 @@ import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.operators.conditional.AndExpression;
 import net.sf.jsqlparser.schema.Table;
 import net.sf.jsqlparser.statement.delete.Delete;
+import net.sf.jsqlparser.statement.select.FromItem;
+import net.sf.jsqlparser.statement.select.Join;
+import net.sf.jsqlparser.statement.select.PlainSelect;
 import net.sf.jsqlparser.statement.select.Select;
+import net.sf.jsqlparser.statement.select.SetOperationList;
 import net.sf.jsqlparser.statement.update.Update;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.executor.statement.StatementHandler;
@@ -109,7 +113,15 @@ public class DataPermissionDatabaseInterceptor extends JsqlParserSupport impleme
 
     @Override
     protected void processSelect(Select select, int index, String sql, Object obj) {
-        // TODO: 实现 SELECT 语句的数据权限改写
+        if (select instanceof PlainSelect plainSelect) {
+            appendDataPermissionWhere(plainSelect);
+        } else if (select instanceof SetOperationList setOperationList) {
+            for (Select subSelect : setOperationList.getSelects()) {
+                if (subSelect instanceof PlainSelect subPlainSelect) {
+                    appendDataPermissionWhere(subPlainSelect);
+                }
+            }
+        }
     }
 
     /**
@@ -117,7 +129,14 @@ public class DataPermissionDatabaseInterceptor extends JsqlParserSupport impleme
      */
     @Override
     protected void processUpdate(Update update, int index, String sql, Object obj) {
-        // TODO: 实现 UPDATE 语句的数据权限改写
+        Expression dataPermission = buildDataPermissionExpression(update.getTable());
+        if (dataPermission != null) {
+            if (update.getWhere() != null) {
+                update.setWhere(new AndExpression(update.getWhere(), dataPermission));
+            } else {
+                update.setWhere(dataPermission);
+            }
+        }
     }
 
     /**
@@ -125,7 +144,52 @@ public class DataPermissionDatabaseInterceptor extends JsqlParserSupport impleme
      */
     @Override
     protected void processDelete(Delete delete, int index, String sql, Object obj) {
-        // TODO: 实现 DELETE 语句的数据权限改写
+        Expression dataPermission = buildDataPermissionExpression(delete.getTable());
+        if (dataPermission != null) {
+            if (delete.getWhere() != null) {
+                delete.setWhere(new AndExpression(delete.getWhere(), dataPermission));
+            } else {
+                delete.setWhere(dataPermission);
+            }
+        }
+    }
+
+    /**
+     * 收集 FROM 和 JOIN 中的所有表，为匹配的表追加数据权限过滤条件到 WHERE
+     *
+     * @param plainSelect 简单 SELECT 语句
+     */
+    private void appendDataPermissionWhere(PlainSelect plainSelect) {
+        // 收集匹配的表，构建数据权限表达式
+        Expression dataPermission = null;
+        FromItem fromItem = plainSelect.getFromItem();
+        if (fromItem instanceof Table table) {
+            Expression expr = buildDataPermissionExpression(table);
+            if (expr != null) {
+                dataPermission = expr;
+            }
+        }
+        // 处理 JOIN 表
+        List<Join> joins = plainSelect.getJoins();
+        if (joins != null) {
+            for (Join join : joins) {
+                if (join.getFromItem() instanceof Table joinTable) {
+                    Expression expr = buildDataPermissionExpression(joinTable);
+                    if (expr != null) {
+                        dataPermission = dataPermission == null
+                                ? expr : new AndExpression(dataPermission, expr);
+                    }
+                }
+            }
+        }
+        // 追加到 WHERE 条件
+        if (dataPermission != null) {
+            if (plainSelect.getWhere() != null) {
+                plainSelect.setWhere(new AndExpression(plainSelect.getWhere(), dataPermission));
+            } else {
+                plainSelect.setWhere(dataPermission);
+            }
+        }
     }
 
     /**

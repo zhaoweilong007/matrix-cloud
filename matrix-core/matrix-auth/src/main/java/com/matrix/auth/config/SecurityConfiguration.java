@@ -8,6 +8,8 @@ import cn.dev33.satoken.same.SaSameUtil;
 import com.matrix.auth.filter.LoginUserContextFilter;
 import com.matrix.auth.filter.ValidateCodeFilter;
 import com.matrix.auth.handler.AuthExceptionHandler;
+import com.matrix.auth.sign.ApiSignatureAspect;
+import com.matrix.auth.sign.ApiSignatureProperties;
 import com.matrix.auto.properties.CaptchaProperties;
 import com.matrix.auto.properties.UserPasswordProperties;
 import com.matrix.common.constant.WebFilterOrderConstants;
@@ -31,7 +33,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @AutoConfiguration
 @Slf4j
-@EnableConfigurationProperties({CaptchaProperties.class, UserPasswordProperties.class})
+@EnableConfigurationProperties({CaptchaProperties.class, UserPasswordProperties.class, ApiSignatureProperties.class})
 public class SecurityConfiguration implements WebMvcConfigurer {
 
     private static <T extends Filter> FilterRegistrationBean<T> createFilterBean(T filter, Integer order) {
@@ -89,5 +91,10 @@ public class SecurityConfiguration implements WebMvcConfigurer {
     @Bean
     public AuthExceptionHandler authExceptionHandler() {
         return new AuthExceptionHandler();
+    }
+
+    @Bean
+    public ApiSignatureAspect apiSignatureAspect(ApiSignatureProperties apiSignatureProperties) {
+        return new ApiSignatureAspect(apiSignatureProperties);
     }
 }

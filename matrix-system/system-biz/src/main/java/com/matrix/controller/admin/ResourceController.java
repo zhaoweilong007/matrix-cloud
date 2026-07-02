@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.matrix.api.system.ResourceAPI;
 import com.matrix.api.system.entity.dto.SysResourceDto;
 import com.matrix.api.system.entity.po.SysResource;
-import com.matrix.entity.vo.Result;
+import com.matrix.common.result.R;
 import com.matrix.service.SysResourceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,30 +29,30 @@ public class ResourceController implements ResourceAPI {
     private final SysResourceService sysResourceService;
 
     @PostMapping
-    public Result<Boolean> create(@Validated @RequestBody SysResourceDto sysResourceDto) {
-        return Result.success(sysResourceService.create(sysResourceDto));
+    public R<Boolean> create(@Validated @RequestBody SysResourceDto sysResourceDto) {
+        return R.success(sysResourceService.create(sysResourceDto));
     }
 
     @PutMapping
-    public Result<Boolean> update(@Validated @RequestBody SysResourceDto sysResourceDto) {
-        return Result.success(sysResourceService.update(sysResourceDto));
+    public R<Boolean> update(@Validated @RequestBody SysResourceDto sysResourceDto) {
+        return R.success(sysResourceService.update(sysResourceDto));
     }
 
 
     @DeleteMapping("{id}")
-    public Result<Boolean> delete(@PathVariable("id") Long id) {
-        return Result.success(sysResourceService.removeById(id));
+    public R<Boolean> delete(@PathVariable("id") Long id) {
+        return R.success(sysResourceService.removeById(id));
     }
 
 
     @GetMapping("{id}")
-    public Result<SysResource> getById(@PathVariable("id") Long id) {
-        return Result.success(sysResourceService.getById(id));
+    public R<SysResource> getById(@PathVariable("id") Long id) {
+        return R.success(sysResourceService.getById(id));
     }
 
     @Override
-    public Result<Page<SysResource>> list(Page<SysResource> page, SysResource sysResource) {
-        return Result.success(sysResourceService.page(page, new QueryWrapper<>(sysResource)));
+    public R<Page<SysResource>> list(Page<SysResource> page, SysResource sysResource) {
+        return R.success(sysResourceService.page(page, new QueryWrapper<>(sysResource)));
     }
 
 
@@ -63,9 +63,9 @@ public class ResourceController implements ResourceAPI {
      */
     @GetMapping("/admin/{id}")
     @Override
-    public Result<List<SysResource>> getResourceByAdminId(@PathVariable("id") Long id) {
+    public R<List<SysResource>> getResourceByAdminId(@PathVariable("id") Long id) {
         log.debug("根据用户id查询资源列表,id={}", id);
-        return Result.success(sysResourceService.getResourceByAdminId(id));
+        return R.success(sysResourceService.getResourceByAdminId(id));
     }
 
     /**
@@ -75,8 +75,8 @@ public class ResourceController implements ResourceAPI {
      */
     @GetMapping("/role/{id}")
     @Override
-    public Result<List<SysResource>> getResourceByRoleId(@PathVariable("id") Long id) {
-        return Result.success(sysResourceService.getResourceByRoleId(id));
+    public R<List<SysResource>> getResourceByRoleId(@PathVariable("id") Long id) {
+        return R.success(sysResourceService.getResourceByRoleId(id));
     }
 
 
@@ -84,14 +84,14 @@ public class ResourceController implements ResourceAPI {
      * 分配资源
      */
     @Override
-    public Result<Boolean> assignResource(@RequestParam Long roleId, @RequestParam List<Long> resourceIds) {
-        return Result.success(sysResourceService.assignResource(roleId, resourceIds));
+    public R<Boolean> assignResource(@RequestParam Long roleId, @RequestParam List<Long> resourceIds) {
+        return R.success(sysResourceService.assignResource(roleId, resourceIds));
     }
 
 
     @Override
-    public Result<List<SysResource>> listAll() {
-        return Result.success(sysResourceService.list());
+    public R<List<SysResource>> listAll() {
+        return R.success(sysResourceService.list());
     }
 
 

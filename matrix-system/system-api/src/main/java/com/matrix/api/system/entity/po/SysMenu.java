@@ -2,7 +2,7 @@ package com.matrix.api.system.entity.po;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.matrix.entity.po.TenantPo;
+import com.matrix.common.entity.TenantEntity;
 import lombok.Data;
 
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
  * @since 2022-07-11 16:53:50
  */
 @Data
-public class SysMenu extends TenantPo<SysMenu> {
+public class SysMenu extends TenantEntity {
     @TableId
     private Long id;
 

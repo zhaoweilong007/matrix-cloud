@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.util.CollectionUtils;
 
 /*
@@ -36,6 +37,10 @@ public class FlowEarlyWarningSlot extends AbstractLinkedProcessorSlot<DefaultNod
      * 预警阈值比例（0.0-1.0）
      */
     private final double warningRatio;
+    /**
+     * 应用事件发布器，用于发布预警事件
+     */
+    private ApplicationEventPublisher eventPublisher;
 
     public FlowEarlyWarningSlot() {
         this(new FlowRuleChecker(), DEFAULT_WARNING_RATIO);
@@ -55,6 +60,15 @@ public class FlowEarlyWarningSlot extends AbstractLinkedProcessorSlot<DefaultNod
         AssertUtil.notNull(checker, "flow checker should not be null");
         this.checker = checker;
         this.warningRatio = warningRatio > 0 && warningRatio <= 1 ? warningRatio : DEFAULT_WARNING_RATIO;
+    }
+
+    /**
+     * 设置事件发布器（由自动配置注入）。
+     *
+     * @param eventPublisher 应用事件发布器
+     */
+    public void setEventPublisher(ApplicationEventPublisher eventPublisher) {
+        this.eventPublisher = eventPublisher;
     }
 
     private List<FlowRule> getRuleProvider(String resource) {
@@ -113,7 +127,11 @@ public class FlowEarlyWarningSlot extends AbstractLinkedProcessorSlot<DefaultNod
                             resource,
                             rule.getCount(),
                             originRuleCount);
-                    // TODO 报警功能自行实现
+                    // 发布流控预警事件，由下游监听器处理告警（邮件/短信/Webhook等）
+                    if (eventPublisher != null && originRule != null) {
+                        eventPublisher.publishEvent(
+                                new FlowWarningEvent(this, resource, rule.getCount(), originRule.getCount()));
+                    }
                     break;
                 }
             }
