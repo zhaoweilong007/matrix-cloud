@@ -5,8 +5,8 @@ import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.matrix.mybatis.utils.DbTypeUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.env.EnvironmentPostProcessor;
+import org.springframework.context.ApplicationContextInitializer;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MapPropertySource;
 
@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 数据库类型自动检测处理器。
+ * 数据库类型自动检测初始化器。
  *
  * <p>当 mybatis-plus 的 id-type 未显式配置时，根据数据源 URL 自动判定：</p>
  * <ul>
@@ -22,18 +22,22 @@ import java.util.Map;
  *   <li>MySQL / SQL Server / DM 达梦 → AUTO（自增 ID）</li>
  * </ul>
  *
- * <p>通过 spring.factories 或 spring-boot-maven-plugin 注册。</p>
+ * <p>通过 {@code META-INF/spring/org.springframework.context.ApplicationContextInitializer.imports} 注册，
+ * 替代 Spring Boot 4.0 已弃用的 {@code EnvironmentPostProcessor}。</p>
  *
  * @author matrix
+ * @since 2026/7/2
  */
 @Slf4j
-public class IdTypeEnvironmentPostProcessor implements EnvironmentPostProcessor {
+public class IdTypeApplicationInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
     private static final String ID_TYPE_KEY = "mybatis-plus.global-config.db-config.id-type";
     private static final String DATASOURCE_DYNAMIC_KEY = "spring.datasource.dynamic";
 
     @Override
-    public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
+    public void initialize(ConfigurableApplicationContext applicationContext) {
+        ConfigurableEnvironment environment = applicationContext.getEnvironment();
+
         // 如果已显式配置 id-type，则不覆盖
         IdType idType = getIdType(environment);
         if (idType != null && idType != IdType.NONE) {
