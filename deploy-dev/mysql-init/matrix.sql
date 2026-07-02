@@ -357,6 +357,7 @@ CREATE TABLE `sys_tenant`
     `create_by`   varchar(20)  DEFAULT NULL,
     `update_by`   varchar(20)  DEFAULT NULL,
     `deleted`     int          DEFAULT NULL,
+    `package_id`  bigint       DEFAULT NULL COMMENT '关联套餐ID',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
@@ -373,6 +374,273 @@ LOCK TABLES `sys_tenant` WRITE;
 /*!40000 ALTER TABLE `sys_tenant`
     ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `sys_dept`
+--
+
+DROP TABLE IF EXISTS `sys_dept`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sys_dept`
+(
+    `id`          bigint NOT NULL AUTO_INCREMENT,
+    `parent_id`   bigint       DEFAULT '0' COMMENT '父部门ID，0表示根部门',
+    `name`        varchar(100) DEFAULT NULL COMMENT '部门名称',
+    `leader`      varchar(50)  DEFAULT NULL COMMENT '负责人',
+    `phone`       varchar(20)  DEFAULT NULL COMMENT '联系电话',
+    `email`       varchar(100) DEFAULT NULL COMMENT '邮箱',
+    `sort`        int          DEFAULT '0' COMMENT '排序',
+    `status`      int          DEFAULT '1' COMMENT '状态：0-禁用 1-启用',
+    `create_time` datetime     DEFAULT NULL,
+    `update_time` datetime     DEFAULT NULL,
+    `create_by`   varchar(50)  DEFAULT NULL,
+    `update_by`   varchar(50)  DEFAULT NULL,
+    `deleted`     int          DEFAULT '0',
+    `tenant_id`   int          DEFAULT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 1
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `sys_post`
+--
+
+DROP TABLE IF EXISTS `sys_post`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sys_post`
+(
+    `id`          bigint NOT NULL AUTO_INCREMENT,
+    `code`        varchar(50)  DEFAULT NULL COMMENT '岗位编码（唯一）',
+    `name`        varchar(100) DEFAULT NULL COMMENT '岗位名称',
+    `sort`        int          DEFAULT '0' COMMENT '排序',
+    `status`      int          DEFAULT '1' COMMENT '状态：0-禁用 1-启用',
+    `remark`      varchar(500) DEFAULT NULL COMMENT '备注',
+    `create_time` datetime     DEFAULT NULL,
+    `update_time` datetime     DEFAULT NULL,
+    `create_by`   varchar(50)  DEFAULT NULL,
+    `update_by`   varchar(50)  DEFAULT NULL,
+    `deleted`     int          DEFAULT '0',
+    `tenant_id`   int          DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uk_code` (`code`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 1
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `sys_dict_type`
+--
+
+DROP TABLE IF EXISTS `sys_dict_type`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sys_dict_type`
+(
+    `id`          bigint NOT NULL AUTO_INCREMENT,
+    `name`        varchar(100) DEFAULT NULL COMMENT '字典名称',
+    `type`        varchar(100) DEFAULT NULL COMMENT '字典类型编码（唯一）',
+    `status`      int          DEFAULT '1' COMMENT '状态：0-禁用 1-启用',
+    `remark`      varchar(500) DEFAULT NULL COMMENT '备注',
+    `create_time` datetime     DEFAULT NULL,
+    `update_time` datetime     DEFAULT NULL,
+    `create_by`   varchar(50)  DEFAULT NULL,
+    `update_by`   varchar(50)  DEFAULT NULL,
+    `deleted`     int          DEFAULT '0',
+    `tenant_id`   int          DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uk_type` (`type`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 1
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `sys_dict_data`
+--
+
+DROP TABLE IF EXISTS `sys_dict_data`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sys_dict_data`
+(
+    `id`          bigint NOT NULL AUTO_INCREMENT,
+    `dict_type`   varchar(100) DEFAULT NULL COMMENT '字典类型编码',
+    `label`       varchar(100) DEFAULT NULL COMMENT '字典标签',
+    `value`       varchar(100) DEFAULT NULL COMMENT '字典值',
+    `sort`        int          DEFAULT '0' COMMENT '排序',
+    `status`      int          DEFAULT '1' COMMENT '状态：0-禁用 1-启用',
+    `color_type`  varchar(20)  DEFAULT NULL COMMENT '颜色类型',
+    `css_class`   varchar(50)  DEFAULT NULL COMMENT 'CSS类名',
+    `remark`      varchar(500) DEFAULT NULL COMMENT '备注',
+    `create_time` datetime     DEFAULT NULL,
+    `update_time` datetime     DEFAULT NULL,
+    `create_by`   varchar(50)  DEFAULT NULL,
+    `update_by`   varchar(50)  DEFAULT NULL,
+    `deleted`     int          DEFAULT '0',
+    `tenant_id`   int          DEFAULT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 1
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `sys_config`
+--
+
+DROP TABLE IF EXISTS `sys_config`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sys_config`
+(
+    `id`          bigint NOT NULL AUTO_INCREMENT,
+    `name`        varchar(100) DEFAULT NULL COMMENT '参数名称',
+    `config_key`  varchar(100) DEFAULT NULL COMMENT '参数键名（唯一）',
+    `value`       varchar(500) DEFAULT NULL COMMENT '参数值',
+    `type`        int          DEFAULT '0' COMMENT '是否系统内置：1-是 0-否',
+    `visible`     int          DEFAULT '1' COMMENT '是否可见：1-是 0-否',
+    `remark`      varchar(500) DEFAULT NULL COMMENT '备注',
+    `create_time` datetime     DEFAULT NULL,
+    `update_time` datetime     DEFAULT NULL,
+    `create_by`   varchar(50)  DEFAULT NULL,
+    `update_by`   varchar(50)  DEFAULT NULL,
+    `deleted`     int          DEFAULT '0',
+    `tenant_id`   int          DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uk_config_key` (`config_key`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 1
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `sys_notice`
+--
+
+DROP TABLE IF EXISTS `sys_notice`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sys_notice`
+(
+    `id`          bigint NOT NULL AUTO_INCREMENT,
+    `title`       varchar(200) DEFAULT NULL COMMENT '通知标题',
+    `content`     text         DEFAULT NULL COMMENT '通知内容',
+    `type`        int          DEFAULT '1' COMMENT '通知类型：1-系统通知 2-业务通知',
+    `status`      int          DEFAULT '0' COMMENT '状态：0-草稿 1-已发布',
+    `remark`      varchar(500) DEFAULT NULL COMMENT '备注',
+    `create_time` datetime     DEFAULT NULL,
+    `update_time` datetime     DEFAULT NULL,
+    `create_by`   varchar(50)  DEFAULT NULL,
+    `update_by`   varchar(50)  DEFAULT NULL,
+    `deleted`     int          DEFAULT '0',
+    `tenant_id`   int          DEFAULT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 1
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `sys_login_log`
+--
+
+DROP TABLE IF EXISTS `sys_login_log`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sys_login_log`
+(
+    `id`          bigint NOT NULL AUTO_INCREMENT,
+    `username`    varchar(50)  DEFAULT NULL COMMENT '用户名',
+    `ip`          varchar(50)  DEFAULT NULL COMMENT '登录IP',
+    `user_agent`  varchar(500) DEFAULT NULL COMMENT '浏览器UserAgent',
+    `status`      int          DEFAULT '1' COMMENT '登录状态：0-失败 1-成功',
+    `result`      varchar(200) DEFAULT NULL COMMENT '登录结果描述',
+    `login_time`  datetime     DEFAULT NULL COMMENT '登录时间',
+    `create_time` datetime     DEFAULT NULL,
+    `update_time` datetime     DEFAULT NULL,
+    `create_by`   varchar(50)  DEFAULT NULL,
+    `update_by`   varchar(50)  DEFAULT NULL,
+    `deleted`     int          DEFAULT '0',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 1
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `sys_operate_log`
+--
+
+DROP TABLE IF EXISTS `sys_operate_log`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sys_operate_log`
+(
+    `id`             bigint NOT NULL AUTO_INCREMENT,
+    `username`       varchar(50)  DEFAULT NULL COMMENT '操作人用户名',
+    `module`         varchar(50)  DEFAULT NULL COMMENT '模块名',
+    `name`           varchar(100) DEFAULT NULL COMMENT '操作名称',
+    `type`           int          DEFAULT NULL COMMENT '操作类型',
+    `request_method` varchar(20)  DEFAULT NULL COMMENT '请求方法',
+    `request_url`    varchar(500) DEFAULT NULL COMMENT '请求URL',
+    `request_params` text         DEFAULT NULL COMMENT '请求参数',
+    `request_result` text         DEFAULT NULL COMMENT '请求结果',
+    `cost_time`      bigint       DEFAULT NULL COMMENT '耗时（毫秒）',
+    `ip`             varchar(50)  DEFAULT NULL COMMENT '操作IP',
+    `user_agent`     varchar(500) DEFAULT NULL COMMENT '浏览器UserAgent',
+    `status`         int          DEFAULT '1' COMMENT '状态：0-失败 1-成功',
+    `error_msg`      text         DEFAULT NULL COMMENT '错误信息',
+    `operate_time`   datetime     DEFAULT NULL COMMENT '操作时间',
+    `create_time`    datetime     DEFAULT NULL,
+    `update_time`    datetime     DEFAULT NULL,
+    `create_by`      varchar(50)  DEFAULT NULL,
+    `update_by`      varchar(50)  DEFAULT NULL,
+    `deleted`        int          DEFAULT '0',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 1
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `sys_tenant_package`
+--
+
+DROP TABLE IF EXISTS `sys_tenant_package`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sys_tenant_package`
+(
+    `id`          bigint NOT NULL AUTO_INCREMENT,
+    `name`        varchar(100) DEFAULT NULL COMMENT '套餐名称',
+    `status`      int          DEFAULT '1' COMMENT '状态：0-禁用 1-启用',
+    `menu_ids`    text         DEFAULT NULL COMMENT '关联菜单ID集合（JSON数组）',
+    `remark`      varchar(500) DEFAULT NULL COMMENT '备注',
+    `create_time` datetime     DEFAULT NULL,
+    `update_time` datetime     DEFAULT NULL,
+    `create_by`   varchar(50)  DEFAULT NULL,
+    `update_by`   varchar(50)  DEFAULT NULL,
+    `deleted`     int          DEFAULT '0',
+    `tenant_id`   int          DEFAULT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 1
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `undo_log`
