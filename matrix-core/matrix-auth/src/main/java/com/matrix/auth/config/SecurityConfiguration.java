@@ -9,6 +9,7 @@ import com.matrix.auth.filter.LoginUserContextFilter;
 import com.matrix.auth.filter.ValidateCodeFilter;
 import com.matrix.auth.handler.AuthExceptionHandler;
 import com.matrix.auto.properties.CaptchaProperties;
+import com.matrix.auto.properties.UserPasswordProperties;
 import com.matrix.common.constant.WebFilterOrderConstants;
 import com.matrix.common.enums.SystemErrorTypeEnum;
 import com.matrix.common.result.R;
@@ -30,7 +31,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @AutoConfiguration
 @Slf4j
-@EnableConfigurationProperties(CaptchaProperties.class)
+@EnableConfigurationProperties({CaptchaProperties.class, UserPasswordProperties.class})
 public class SecurityConfiguration implements WebMvcConfigurer {
 
     private static <T extends Filter> FilterRegistrationBean<T> createFilterBean(T filter, Integer order) {

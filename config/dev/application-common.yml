@@ -1,3 +1,9 @@
+# 密码策略
+user:
+  password:
+    max-retry-count: 5
+    lock-time: 10
+
 server:
   shutdown: graceful
 

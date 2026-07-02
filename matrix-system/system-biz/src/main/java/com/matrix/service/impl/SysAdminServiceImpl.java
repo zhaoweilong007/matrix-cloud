@@ -19,6 +19,7 @@ import com.matrix.exception.BusinessErrorType;
 import com.matrix.exception.ServiceException;
 import com.matrix.mapper.SysAdminMapper;
 import com.matrix.service.*;
+import com.matrix.auth.core.PasswordLockoutService;
 import com.matrix.utils.LoginHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -41,6 +42,7 @@ public class SysAdminServiceImpl extends ServiceImpl<SysAdminMapper, SysAdmin> i
     private final SysMenuService sysMenuService;
     private final SysRoleService sysRoleService;
     private final SysResourceService sysResourceService;
+    private final PasswordLockoutService passwordLockoutService;
 
 
     @Override
@@ -64,7 +66,19 @@ public class SysAdminServiceImpl extends ServiceImpl<SysAdminMapper, SysAdmin> i
     public SaTokenInfo login(SysAdminLoginDto sysAdminLoginDto) {
         SysAdmin sysAdmin = baseMapper.selectOne(Wrappers.<SysAdmin>lambdaQuery().eq(SysAdmin::getUsername, sysAdminLoginDto.getUsername()));
         Assert.notNull(sysAdmin, () -> new ServiceException(BusinessErrorType.USER_NOT_EXISTS));
-        Assert.notEquals(sysAdmin.getPassword(), SaSecureUtil.md5(sysAdminLoginDto.getPassword()), () -> new ServiceException(BusinessErrorType.PASSWORD_MISTAKE));
+
+        // 检查账户锁定
+        passwordLockoutService.checkLocked(sysAdminLoginDto.getUsername());
+
+        // 验证密码
+        if (!sysAdmin.getPassword().equals(SaSecureUtil.md5(sysAdminLoginDto.getPassword()))) {
+            passwordLockoutService.recordPasswordError(sysAdminLoginDto.getUsername());
+            throw new ServiceException(BusinessErrorType.PASSWORD_MISTAKE);
+        }
+
+        // 密码正确，清除错误计数
+        passwordLockoutService.clearErrorCount(sysAdminLoginDto.getUsername());
+
         LoginUser loginUser = buildLoginUser(sysAdmin);
         LoginHelper.loginByDevice(loginUser, DeviceType.PC);
         sysAdmin.setLoginTime(new Date());

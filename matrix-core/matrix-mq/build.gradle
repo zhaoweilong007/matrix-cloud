@@ -1,6 +1,7 @@
 dependencies {
     api project(':matrix-core:matrix-common')
     api project(':matrix-core:matrix-auto')
+    api project(':matrix-core:matrix-redis')
     api 'com.aliyun.openservices:ons-client'
     compileOnly 'org.springframework.data:spring-data-redis'
 }

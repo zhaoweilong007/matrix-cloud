@@ -2,8 +2,11 @@ package com.matrix.mq.redis.config;
 
 import com.matrix.mq.redis.channel.AbstractRedisChannelMessageListener;
 import com.matrix.mq.redis.core.RedisMqTemplate;
+import com.matrix.mq.redis.core.job.RedisPendingMessageResendJob;
+import com.matrix.mq.redis.core.job.RedisStreamMessageCleanupJob;
 import com.matrix.mq.redis.stream.AbstractRedisStreamMessageListener;
 import lombok.extern.slf4j.Slf4j;
+import org.redisson.api.RedissonClient;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -17,6 +20,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.stream.StreamMessageListenerContainer;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.util.List;
 
@@ -29,6 +33,7 @@ import java.util.List;
  */
 @Slf4j
 @AutoConfiguration
+@EnableScheduling
 @ConditionalOnClass(StringRedisTemplate.class)
 @ConditionalOnProperty(prefix = "matrix.mq.redis", name = "enabled", havingValue = "true")
 public class RedisMqConsumerAutoConfiguration {
@@ -96,5 +101,29 @@ public class RedisMqConsumerAutoConfiguration {
         return String.format("%s@%d",
                 java.lang.management.ManagementFactory.getRuntimeMXBean().getName(),
                 Thread.currentThread().getId());
+    }
+
+    /**
+     * Redis Stream 待处理消息重发 Job。
+     */
+    @Bean
+    @ConditionalOnBean(AbstractRedisStreamMessageListener.class)
+    public RedisPendingMessageResendJob redisPendingMessageResendJob(
+            RedisMqTemplate redisMqTemplate,
+            RedissonClient redissonClient,
+            List<AbstractRedisStreamMessageListener<?>> listeners) {
+        return new RedisPendingMessageResendJob(redisMqTemplate, redissonClient, listeners);
+    }
+
+    /**
+     * Redis Stream 消息清理 Job。
+     */
+    @Bean
+    @ConditionalOnBean(AbstractRedisStreamMessageListener.class)
+    public RedisStreamMessageCleanupJob redisStreamMessageCleanupJob(
+            RedisMqTemplate redisMqTemplate,
+            RedissonClient redissonClient,
+            List<AbstractRedisStreamMessageListener<?>> listeners) {
+        return new RedisStreamMessageCleanupJob(redisMqTemplate, redissonClient, listeners);
     }
 }

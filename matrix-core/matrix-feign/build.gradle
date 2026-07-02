@@ -3,6 +3,7 @@ dependencies {
     api project(':matrix-core:matrix-validator')
     api 'org.springframework.cloud:spring-cloud-starter-openfeign'
     api 'com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-discovery'
+    api 'com.alibaba.cloud:spring-cloud-starter-alibaba-sentinel'
     api 'org.springframework.cloud:spring-cloud-starter-loadbalancer'
     api 'cn.dev33:sa-token-core'
 }

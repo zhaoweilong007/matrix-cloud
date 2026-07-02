@@ -41,6 +41,7 @@ public enum BusinessErrorTypeEnum implements IResultCode {
     ILLEGAL_INPUT(2046, "不可全为空格或纯数字，不可连续11位数字"),
     ALREADY_SUBMIT_AUDIT(2049, "您已提交审核，请耐心等待系统审核"),
     PASSWORD_ERROR(2058, "旧密码错误"),
+    PASSWORD_ERROR_MAX(2059, "密码错误次数过多，账户已被锁定，请稍后重试"),
     HOUSE_ALREADY_DEAL(2061, "该房源已售，不可再次转成交"),
     MERCHANT_PHONE_EXIST(2070, "手机号已注册，不可重复注册"),
     AUDIT_EXIST(2062, "已存在数据，不可重复提交"),

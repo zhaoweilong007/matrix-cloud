@@ -6,6 +6,7 @@ import com.matrix.mq.redis.core.RedisMqTemplate;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.connection.stream.ObjectRecord;
 import org.springframework.data.redis.stream.StreamListener;
@@ -17,6 +18,7 @@ import java.lang.reflect.Type;
  *
  * @param <T> 消息类型（必须指定泛型参数）
  */
+@Slf4j
 public abstract class AbstractRedisStreamMessageListener<T extends AbstractRedisStreamMessage>
         implements StreamListener<String, ObjectRecord<String, String>> {
 
@@ -42,9 +44,14 @@ public abstract class AbstractRedisStreamMessageListener<T extends AbstractRedis
     @Override
     public void onMessage(ObjectRecord<String, String> message) {
         T messageObj = JsonUtils.parseObject(message.getValue(), messageType);
-        this.onMessage(messageObj);
-        // ack 消息消费完成
-        redisMqTemplate.getRedisTemplate().opsForStream().acknowledge(group, message);
+        try {
+            this.onMessage(messageObj);
+            redisMqTemplate.getRedisTemplate().opsForStream().acknowledge(group, message);
+        } catch (Exception e) {
+            log.error("Redis Stream 消息消费失败 streamKey=[{}] messageId=[{}]",
+                    streamKey, message.getId(), e);
+            // 不 ack，消息进入 PEL，由 RedisPendingMessageResendJob 重新投递
+        }
     }
 
     /**
