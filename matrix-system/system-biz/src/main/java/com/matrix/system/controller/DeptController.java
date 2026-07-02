@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -46,7 +47,7 @@ public class DeptController {
 
     @PostMapping
     @Operation(summary = "新增部门")
-    public R<Boolean> create(@RequestBody DeptDto dto) {
+    public R<Boolean> create(@Validated @RequestBody DeptDto dto) {
         SysDept dept = new SysDept();
         dept.setParentId(dto.getParentId());
         dept.setName(dto.getName());
@@ -60,7 +61,7 @@ public class DeptController {
 
     @PutMapping
     @Operation(summary = "修改部门")
-    public R<Boolean> update(@RequestBody DeptDto dto) {
+    public R<Boolean> update(@Validated @RequestBody DeptDto dto) {
         SysDept dept = new SysDept();
         dept.setId(dto.getId());
         dept.setParentId(dto.getParentId());

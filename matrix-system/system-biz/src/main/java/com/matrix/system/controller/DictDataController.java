@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -44,7 +45,7 @@ public class DictDataController {
 
     @PostMapping
     @Operation(summary = "新增字典数据")
-    public R<Boolean> create(@RequestBody DictDataDto dto) {
+    public R<Boolean> create(@Validated @RequestBody DictDataDto dto) {
         SysDictData entity = new SysDictData(); entity.setDictType(dto.getDictType());
         entity.setLabel(dto.getLabel()); entity.setValue(dto.getValue());
         entity.setSort(dto.getSort()); entity.setStatus(dto.getStatus());
@@ -55,7 +56,7 @@ public class DictDataController {
 
     @PutMapping
     @Operation(summary = "修改字典数据")
-    public R<Boolean> update(@RequestBody DictDataDto dto) {
+    public R<Boolean> update(@Validated @RequestBody DictDataDto dto) {
         SysDictData entity = new SysDictData(); entity.setId(dto.getId());
         entity.setDictType(dto.getDictType()); entity.setLabel(dto.getLabel());
         entity.setValue(dto.getValue()); entity.setSort(dto.getSort());

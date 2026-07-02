@@ -2,14 +2,21 @@ package com.matrix.system.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
+import cn.hutool.core.lang.Assert;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.matrix.api.system.client.AdminAPI;
+import com.matrix.api.system.entity.dto.SysAdminDto;
 import com.matrix.api.system.entity.po.SysAdmin;
+import com.matrix.common.enums.BusinessErrorTypeEnum;
+import com.matrix.common.exception.ServiceException;
 import com.matrix.common.result.R;
 import com.matrix.system.service.SysAdminService;
+import io.swagger.v3.oas.annotations.Operation;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -20,10 +27,11 @@ import org.springframework.web.bind.annotation.*;
  **/
 @RestController
 @Slf4j
+@RequiredArgsConstructor
 @RequestMapping(AdminAPI.PREFIX)
 public class AdminController implements AdminAPI {
-    @Autowired
-    private SysAdminService sysAdminService;
+
+    private final SysAdminService sysAdminService;
 
     /**
      * 分页查询
@@ -41,6 +49,27 @@ public class AdminController implements AdminAPI {
         return R.success(sysAdminService.removeById(id));
     }
 
+
+    @PostMapping
+    @Operation(summary = "新增用户")
+    public R<Boolean> create(@Validated @RequestBody SysAdminDto dto) {
+        boolean exists = sysAdminService.getOne(Wrappers.<SysAdmin>lambdaQuery()
+                .eq(SysAdmin::getUsername, dto.getUsername())) != null;
+        Assert.isTrue(!exists, () -> new ServiceException(BusinessErrorTypeEnum.USER_EXIST));
+        SysAdmin admin = new SysAdmin();
+        admin.setUsername(dto.getUsername());
+        admin.setEmail(dto.getEmail());
+        admin.setNickName(dto.getNickName());
+        admin.setNote(dto.getNote());
+        admin.setDeptId(dto.getDeptId());
+        admin.setMobile(dto.getMobile());
+        admin.setSex(dto.getSex());
+        admin.setAvatar(dto.getAvatar());
+        admin.setRemark(dto.getRemark());
+        admin.setStatus(dto.getStatus());
+        admin.setUserType(dto.getUserType());
+        return R.success(sysAdminService.save(admin));
+    }
 
     @PutMapping
     @Override

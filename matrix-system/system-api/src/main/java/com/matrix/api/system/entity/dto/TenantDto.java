@@ -1,6 +1,7 @@
 package com.matrix.api.system.entity.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 /**
@@ -10,6 +11,7 @@ import lombok.Data;
 @Schema(description = "租户DTO")
 public class TenantDto {
 
+    @NotBlank(message = "租户名称不能为空")
     @Schema(description = "租户名称", requiredMode = Schema.RequiredMode.REQUIRED)
     private String tenantName;
 

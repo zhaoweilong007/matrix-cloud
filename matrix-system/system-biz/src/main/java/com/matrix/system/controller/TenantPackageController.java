@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -39,7 +40,7 @@ public class TenantPackageController {
 
     @PostMapping
     @Operation(summary = "新增套餐")
-    public R<Boolean> create(@RequestBody TenantPackageDto dto) {
+    public R<Boolean> create(@Validated @RequestBody TenantPackageDto dto) {
         SysTenantPackage entity = new SysTenantPackage();
         entity.setName(dto.getName()); entity.setStatus(dto.getStatus());
         entity.setMenuIds(dto.getMenuIds()); entity.setRemark(dto.getRemark());
@@ -48,7 +49,7 @@ public class TenantPackageController {
 
     @PutMapping
     @Operation(summary = "修改套餐")
-    public R<Boolean> update(@RequestBody TenantPackageDto dto) {
+    public R<Boolean> update(@Validated @RequestBody TenantPackageDto dto) {
         SysTenantPackage entity = new SysTenantPackage(); entity.setId(dto.getId());
         entity.setName(dto.getName()); entity.setStatus(dto.getStatus());
         entity.setMenuIds(dto.getMenuIds()); entity.setRemark(dto.getRemark());

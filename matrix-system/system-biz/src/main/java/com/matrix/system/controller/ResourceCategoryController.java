@@ -2,6 +2,7 @@ package com.matrix.system.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.matrix.api.system.entity.dto.SysResourceCategoryDto;
 import com.matrix.api.system.entity.po.SysResourceCategory;
 import com.matrix.common.result.R;
 import com.matrix.system.service.SysResourceCategoryService;
@@ -30,14 +31,21 @@ public class ResourceCategoryController {
 
     @PostMapping
     @Operation(summary = "新增资源分类")
-    public R<Boolean> create(@Validated @RequestBody SysResourceCategory sysResourceCategory) {
-        return R.success(sysResourceCategoryService.save(sysResourceCategory));
+    public R<Boolean> create(@Validated @RequestBody SysResourceCategoryDto dto) {
+        SysResourceCategory entity = new SysResourceCategory();
+        entity.setName(dto.getName());
+        entity.setSort(dto.getSort());
+        return R.success(sysResourceCategoryService.save(entity));
     }
 
     @PutMapping
     @Operation(summary = "修改资源分类")
-    public R<Boolean> update(@Validated @RequestBody SysResourceCategory sysResourceCategory) {
-        return R.success(sysResourceCategoryService.updateById(sysResourceCategory));
+    public R<Boolean> update(@Validated @RequestBody SysResourceCategoryDto dto) {
+        SysResourceCategory entity = new SysResourceCategory();
+        entity.setId(dto.getId());
+        entity.setName(dto.getName());
+        entity.setSort(dto.getSort());
+        return R.success(sysResourceCategoryService.updateById(entity));
     }
 
     @DeleteMapping("{id}")

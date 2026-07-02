@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -39,7 +40,7 @@ public class PostController {
 
     @PostMapping
     @Operation(summary = "新增岗位")
-    public R<Boolean> create(@RequestBody PostDto dto) {
+    public R<Boolean> create(@Validated @RequestBody PostDto dto) {
         SysPost entity = new SysPost(); entity.setCode(dto.getCode()); entity.setName(dto.getName());
         entity.setSort(dto.getSort()); entity.setStatus(dto.getStatus()); entity.setRemark(dto.getRemark());
         return R.success(postService.save(entity));
@@ -47,7 +48,7 @@ public class PostController {
 
     @PutMapping
     @Operation(summary = "修改岗位")
-    public R<Boolean> update(@RequestBody PostDto dto) {
+    public R<Boolean> update(@Validated @RequestBody PostDto dto) {
         SysPost entity = new SysPost(); entity.setId(dto.getId()); entity.setCode(dto.getCode());
         entity.setName(dto.getName()); entity.setSort(dto.getSort()); entity.setStatus(dto.getStatus());
         entity.setRemark(dto.getRemark());

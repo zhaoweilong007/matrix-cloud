@@ -9,6 +9,7 @@ import com.matrix.system.service.TenantService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,7 +36,7 @@ public class TenantController {
      */
     @PostMapping
     @Operation(summary = "新增租户")
-    public R<Boolean> add(@RequestBody TenantDto tenantDto) {
+    public R<Boolean> add(@Validated @RequestBody TenantDto tenantDto) {
         Tenant tenant = ConvertMapper.INSTALL.convert(tenantDto);
         return R.success(tenantService.save(tenant));
     }
@@ -48,7 +49,7 @@ public class TenantController {
      */
     @PutMapping("/{id}")
     @Operation(summary = "修改租户")
-    public R<Boolean> update(@PathVariable("id") Long id, @RequestBody TenantDto tenantDto) {
+    public R<Boolean> update(@PathVariable("id") Long id, @Validated @RequestBody TenantDto tenantDto) {
         Tenant tenant = ConvertMapper.INSTALL.convert(tenantDto);
         tenant.setId(id);
         return R.success(tenantService.updateById(tenant));

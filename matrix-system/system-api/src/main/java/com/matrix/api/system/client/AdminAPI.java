@@ -2,6 +2,7 @@ package com.matrix.api.system.client;
 
 import cn.dev33.satoken.util.SaResult;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.matrix.api.system.entity.dto.SysAdminDto;
 import com.matrix.api.system.entity.po.SysAdmin;
 import com.matrix.common.result.R;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -26,6 +27,10 @@ public interface AdminAPI {
     @GetMapping("/list")
     @Operation(summary = "分页查询")
     R<Page<SysAdmin>> list(@SpringQueryMap Page<SysAdmin> page, @SpringQueryMap SysAdmin sysAdmin);
+
+    @PostMapping
+    @Operation(summary = "新增用户")
+    R<Boolean> create(@RequestBody SysAdminDto dto);
 
     @DeleteMapping("/{id}")
     @Operation(summary = "根据id删除")

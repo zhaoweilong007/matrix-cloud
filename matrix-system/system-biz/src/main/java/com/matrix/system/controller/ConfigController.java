@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.time.Duration;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -48,7 +49,7 @@ public class ConfigController {
 
     @PostMapping
     @Operation(summary = "新增配置")
-    public R<Boolean> create(@RequestBody ConfigDto dto) {
+    public R<Boolean> create(@Validated @RequestBody ConfigDto dto) {
         SysConfig entity = new SysConfig(); entity.setName(dto.getName());
         entity.setConfigKey(dto.getConfigKey()); entity.setValue(dto.getValue());
         entity.setType(dto.getType()); entity.setVisible(dto.getVisible()); entity.setRemark(dto.getRemark());
@@ -57,7 +58,7 @@ public class ConfigController {
 
     @PutMapping
     @Operation(summary = "修改配置")
-    public R<Boolean> update(@RequestBody ConfigDto dto) {
+    public R<Boolean> update(@Validated @RequestBody ConfigDto dto) {
         SysConfig entity = new SysConfig(); entity.setId(dto.getId()); entity.setName(dto.getName());
         entity.setConfigKey(dto.getConfigKey()); entity.setValue(dto.getValue());
         entity.setType(dto.getType()); entity.setVisible(dto.getVisible()); entity.setRemark(dto.getRemark());

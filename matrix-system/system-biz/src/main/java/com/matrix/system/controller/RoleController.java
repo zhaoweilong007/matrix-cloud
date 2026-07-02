@@ -7,6 +7,7 @@ import com.matrix.api.system.entity.dto.SysRoleDto;
 import com.matrix.api.system.entity.po.SysRole;
 import com.matrix.common.result.R;
 import com.matrix.system.service.SysRoleService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -41,6 +42,12 @@ public class RoleController implements RoleAPI {
     @DeleteMapping("{id}")
     public R<Boolean> delete(@PathVariable("id") Long id) {
         return R.success(roleService.removeById(id));
+    }
+
+    @GetMapping("{id}")
+    @Operation(summary = "角色详情")
+    public R<SysRole> getById(@PathVariable("id") Long id) {
+        return R.success(roleService.getById(id));
     }
 
 

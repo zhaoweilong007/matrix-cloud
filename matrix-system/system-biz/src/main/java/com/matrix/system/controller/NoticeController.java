@@ -9,6 +9,7 @@ import com.matrix.system.service.SysNoticeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -31,7 +32,7 @@ public class NoticeController {
 
     @PostMapping
     @Operation(summary = "新增通知")
-    public R<Boolean> create(@RequestBody NoticeDto dto) {
+    public R<Boolean> create(@Validated @RequestBody NoticeDto dto) {
         SysNotice entity = new SysNotice(); entity.setTitle(dto.getTitle());
         entity.setContent(dto.getContent()); entity.setType(dto.getType());
         entity.setStatus(dto.getStatus()); entity.setRemark(dto.getRemark());
@@ -40,7 +41,7 @@ public class NoticeController {
 
     @PutMapping
     @Operation(summary = "修改通知")
-    public R<Boolean> update(@RequestBody NoticeDto dto) {
+    public R<Boolean> update(@Validated @RequestBody NoticeDto dto) {
         SysNotice entity = new SysNotice(); entity.setId(dto.getId());
         entity.setTitle(dto.getTitle()); entity.setContent(dto.getContent());
         entity.setType(dto.getType()); entity.setStatus(dto.getStatus());

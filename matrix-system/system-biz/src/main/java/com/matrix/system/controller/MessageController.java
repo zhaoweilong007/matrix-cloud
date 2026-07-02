@@ -2,6 +2,7 @@ package com.matrix.system.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.matrix.api.system.entity.dto.SysMessageDto;
 import com.matrix.api.system.entity.po.SysMessage;
 import com.matrix.common.result.R;
 import com.matrix.system.service.SysMessageService;
@@ -9,6 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -24,6 +26,26 @@ public class MessageController {
     public R<Page<SysMessage>> page(Page<SysMessage> page) {
         return R.success(messageService.page(page,
                 new LambdaQueryWrapper<SysMessage>().orderByDesc(SysMessage::getCreatedAt)));
+    }
+
+    @GetMapping("/{id}")
+    @Operation(summary = "消息详情")
+    public R<SysMessage> getById(@PathVariable Long id) {
+        return R.success(messageService.getById(id));
+    }
+
+    @PostMapping
+    @Operation(summary = "新增消息")
+    public R<Boolean> create(@Validated @RequestBody SysMessageDto dto) {
+        SysMessage entity = new SysMessage();
+        entity.setUserId(dto.getUserId());
+        entity.setTitle(dto.getTitle());
+        entity.setContent(dto.getContent());
+        entity.setMessageType(dto.getMessageType());
+        entity.setStatus(dto.getStatus());
+        entity.setJumpUrl(dto.getJumpUrl());
+        entity.setRemark(dto.getRemark());
+        return R.success(messageService.save(entity));
     }
 
     @GetMapping("/unread-count")

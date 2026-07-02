@@ -5,6 +5,7 @@ import com.matrix.api.system.entity.dto.SysMenuDto;
 import com.matrix.api.system.entity.po.SysMenu;
 import com.matrix.common.result.R;
 import com.matrix.system.service.SysMenuService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -116,5 +117,15 @@ public class MenuController {
         return R.success(sysMenuService.assignMenu(roleId, menuIds));
     }
 
+    /**
+     * 删除菜单
+     *
+     * @param id 菜单ID
+     */
+    @DeleteMapping("{id}")
+    @Operation(summary = "删除菜单")
+    public R<Boolean> delete(@PathVariable("id") Long id) {
+        return R.success(sysMenuService.delete(id));
+    }
 
 }

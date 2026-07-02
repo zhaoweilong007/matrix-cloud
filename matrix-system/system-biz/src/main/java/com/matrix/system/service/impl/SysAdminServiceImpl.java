@@ -4,7 +4,10 @@ import cn.dev33.satoken.secure.SaSecureUtil;
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.lang.Assert;
+import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.matrix.api.system.entity.dto.SysAdminLoginDto;
 import com.matrix.api.system.entity.dto.SysAdminRegisterDto;
@@ -93,7 +96,12 @@ public class SysAdminServiceImpl extends ServiceImpl<SysAdminMapper, SysAdmin> i
 
     @Override
     public String refreshToken(String oldToken) {
-        return null;
+        Object loginId = StpUtil.getLoginIdByToken(oldToken);
+        if (loginId == null) {
+            throw new ServiceException(BusinessErrorTypeEnum.AUTHENTICATION_FAILED);
+        }
+        StpUtil.login(loginId);
+        return StpUtil.getTokenValue();
     }
 
     @Override
@@ -117,7 +125,11 @@ public class SysAdminServiceImpl extends ServiceImpl<SysAdminMapper, SysAdmin> i
 
     @Override
     public List<SysAdmin> list(String keyword, Integer pageSize, Integer pageNum) {
-        return null;
+        Page<SysAdmin> page = new Page<>(pageNum, pageSize);
+        LambdaQueryWrapper<SysAdmin> wrapper = Wrappers.<SysAdmin>lambdaQuery()
+                .like(StrUtil.isNotBlank(keyword), SysAdmin::getUsername, keyword);
+        wrapper.or(StrUtil.isNotBlank(keyword), w -> w.like(SysAdmin::getEmail, keyword));
+        return baseMapper.selectPage(page, wrapper).getRecords();
     }
 
     @Override

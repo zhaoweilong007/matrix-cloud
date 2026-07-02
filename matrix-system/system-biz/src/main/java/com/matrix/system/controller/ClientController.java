@@ -8,6 +8,7 @@ import com.matrix.system.service.SysClientService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -28,7 +29,7 @@ public class ClientController {
 
     @PostMapping
     @Operation(summary = "新增客户端")
-    public R<Boolean> create(@RequestBody SysClientDto dto) {
+    public R<Boolean> create(@Validated @RequestBody SysClientDto dto) {
         SysClient e = new SysClient(); e.setClientId(dto.getClientId()); e.setClientKey(dto.getClientKey());
         e.setClientSecret(dto.getClientSecret()); e.setGrantTypes(dto.getGrantTypes());
         e.setDeviceType(dto.getDeviceType()); e.setActiveTimeout(dto.getActiveTimeout());
@@ -38,7 +39,7 @@ public class ClientController {
 
     @PutMapping
     @Operation(summary = "修改客户端")
-    public R<Boolean> update(@RequestBody SysClientDto dto) {
+    public R<Boolean> update(@Validated @RequestBody SysClientDto dto) {
         SysClient e = new SysClient(); e.setId(dto.getId()); e.setClientId(dto.getClientId());
         e.setClientKey(dto.getClientKey()); e.setClientSecret(dto.getClientSecret());
         e.setGrantTypes(dto.getGrantTypes()); e.setDeviceType(dto.getDeviceType());
