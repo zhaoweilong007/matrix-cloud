@@ -1,87 +1,67 @@
 // 应用模块（产出 Docker 镜像）- 从根 build.gradle 中获取
 def microservices = rootProject.ext.appModules
 
-if (PROFILE == 'prod') {
-    ext {
-        registryUrl = ''
-        registryNamespace = ''
-        registryUsername = ''
-        registryPassword = ''
-        baseImage = 'amazoncorretto:21'
-    }
-} else {
-    ext {
-        registryUrl = ''
-        registryNamespace = ''
-        registryUsername = ''
-        registryPassword = ''
-        baseImage = 'amazoncorretto:21'
-    }
-}
+// Jib 配置参数
+def registryUrl = ''
+def registryNamespace = ''
+def registryUsername = ''
+def registryPassword = ''
+def baseImage = 'amazoncorretto:21'
 
-println "build services: ${microservices.name}"
-println "build profile: $PROFILE"
+println "build services: ${microservices*.name}"
+println "build profile: ${PROFILE}"
 
-File agentFile = file './skywalking-agent'
+File agentFile = file('./skywalking-agent')
 
-for (project in microservices) {
-    project.plugins.apply('com.google.cloud.tools.jib')
-    project.jib {
+for (def proj : microservices) {
+    proj.plugins.apply('com.google.cloud.tools.jib')
+    proj.jib {
         from {
-            image = "${baseImage}"
+            image = baseImage
         }
         to {
-            image = "${registryUrl}/${registryNamespace}/${project.name}:${project.version}"
+            image = "${registryUrl}${registryNamespace}${proj.name}:${proj.version}"
             auth {
-                username = "${registryUsername}"
-                password = "${registryPassword}"
+                username = registryUsername
+                password = registryPassword
             }
-            tags = ["latest", "${project.version}"]
+            tags = ['latest', "${proj.version}"]
         }
         allowInsecureRegistries = true
         container {
             environment = [
-                SW_AGENT_NAME: "${project.name}".toString(),
+                SW_AGENT_NAME: proj.name.toString(),
                 JAVA_TOOL_OPTIONS: ''
             ]
             // JDK 21 优化参数
             def baseJvmFlags = [
                 '-Djava.security.egd=file:/dev/./urandom',
                 '-Dfile.encoding=utf-8',
-                // 启用虚拟线程（JDK 21 特性）
                 '-Djdk.virtualThreadScheduler.parallelism=10',
                 '-Djdk.virtualThreadScheduler.maxPoolSize=256',
-                // ZGC 低延迟垃圾回收器（JDK 21 推荐）
                 '-XX:+UseZGC',
                 '-XX:+ZGenerational',
-                // 内存管理优化
                 '-XX:+UseStringDeduplication',
                 '-XX:+OptimizeStringConcat',
-                // NIO 优化
                 '-Djava.nio.preferDirectBuffers=true',
-                // 健康检查端点
                 '-Dmanagement.endpoint.health.enabled=true',
                 '-Dmanagement.endpoints.web.exposure.include=health,info,metrics'
             ]
-            if (project.name == 'matrix-admin') {
-                jvmFlags = baseJvmFlags
-            } else {
-                jvmFlags = baseJvmFlags + ['-javaagent:/skywalking-agent/skywalking-agent.jar']
-            }
+            jvmFlags = (proj.name == 'matrix-admin')
+                ? baseJvmFlags
+                : baseJvmFlags + ['-javaagent:/skywalking-agent/skywalking-agent.jar']
             creationTime = 'USE_CURRENT_TIMESTAMP'
             volumes = ['/skywalking/agent']
             ports = ['8080', '9090']
         }
 
-        // matrix-admin 不挂 SkyWalking agent
-        if (project.name == 'matrix-admin') {
-            return
-        }
-        extraDirectories {
-            paths {
-                path {
-                    from = agentFile
-                    into = '/skywalking-agent'
+        if (proj.name != 'matrix-admin') {
+            extraDirectories {
+                paths {
+                    path {
+                        from = agentFile
+                        into = '/skywalking-agent'
+                    }
                 }
             }
         }
