@@ -90,7 +90,7 @@ jedis-mock = "1.1.15"
 anji-captcha = "1.4.0"
 
 # === 构建插件 ===
-jib = "3.5.2"
+jib = "3.5.3"
 sonarqube = "4.2.1.3168"
 spotbugs = "4.9.3"              # SpotBugs 引擎/annotations 版本
 spotbugsGradle = "6.5.4"       # spotbugs-gradle-plugin 版本
