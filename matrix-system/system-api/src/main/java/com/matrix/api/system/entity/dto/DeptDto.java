@@ -9,9 +9,12 @@ import lombok.Data;
 public class DeptDto {
     private Long id;
     private Long parentId;
-    @Schema(description = "部门名称")
+    @Schema(description = "部门名称", requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
     private String leader;
+    private Long leaderUserId;
+    private String ancestors;
+    private String deptCategory;
     private String phone;
     private String email;
     private Integer sort;

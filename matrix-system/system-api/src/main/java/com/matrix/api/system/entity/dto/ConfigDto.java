@@ -9,10 +9,11 @@ import lombok.Data;
 public class ConfigDto {
     private Long id;
     private String name;
-    @Schema(description = "参数键名")
+    @Schema(description = "参数键名", requiredMode = Schema.RequiredMode.REQUIRED)
     private String configKey;
     private String value;
     private Integer type;
     private Integer visible;
+    private String category;
     private String remark;
 }

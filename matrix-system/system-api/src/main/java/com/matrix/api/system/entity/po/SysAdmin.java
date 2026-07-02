@@ -7,6 +7,7 @@ import com.matrix.common.annotation.Sensitive;
 import com.matrix.common.enums.SensitiveStrategyEnum;
 import com.matrix.common.entity.TenantEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.util.Date;
@@ -19,6 +20,7 @@ import java.util.Date;
  */
 @Data
 @Schema(description = "系统用户")
+@TableName("sys_admin")
 public class SysAdmin extends TenantEntity {
 
     @TableId

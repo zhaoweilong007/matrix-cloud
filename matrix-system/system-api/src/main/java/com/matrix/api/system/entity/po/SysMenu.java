@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.matrix.common.entity.TenantEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
+import com.baomidou.mybatisplus.annotation.TableName;
 import java.util.List;
 import lombok.Data;
 
@@ -14,6 +15,7 @@ import lombok.Data;
  */
 @Data
 @Schema(description = "菜单")
+@TableName("sys_menu")
 public class SysMenu extends TenantEntity {
 
     @TableId

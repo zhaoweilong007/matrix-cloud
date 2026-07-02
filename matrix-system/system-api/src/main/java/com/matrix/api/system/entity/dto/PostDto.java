@@ -8,9 +8,12 @@ import lombok.Data;
 @Schema(description = "岗位DTO")
 public class PostDto {
     private Long id;
+    @Schema(description = "岗位编码", requiredMode = Schema.RequiredMode.REQUIRED)
     private String code;
-    @Schema(description = "岗位名称")
+    @Schema(description = "岗位名称", requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
+    private Long deptId;
+    private String postCategory;
     private Integer sort;
     private Integer status;
     private String remark;

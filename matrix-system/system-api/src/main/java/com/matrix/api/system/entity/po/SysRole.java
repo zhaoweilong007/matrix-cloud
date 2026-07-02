@@ -3,6 +3,7 @@ package com.matrix.api.system.entity.po;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.matrix.common.entity.TenantEntity;
 import lombok.Data;
+import com.baomidou.mybatisplus.annotation.TableName;
 
 /**
  * (SysRole)表实体类
@@ -11,6 +12,7 @@ import lombok.Data;
  * @since 2022-07-11 16:53:51
  */
 @Data
+@TableName("sys_role")
 public class SysRole extends TenantEntity {
     @TableId
     private Long id;
