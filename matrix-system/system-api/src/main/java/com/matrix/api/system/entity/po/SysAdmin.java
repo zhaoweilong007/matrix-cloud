@@ -41,6 +41,24 @@ public class SysAdmin extends TenantEntity {
 
     private String note;
 
+    /** 关联部门 ID */
+    private Long deptId;
+
+    /** 手机号 */
+    private String mobile;
+
+    /** 性别：0-未知 1-男 2-女 */
+    private Integer sex;
+
+    /** 头像 URL */
+    private String avatar;
+
+    /** 备注 */
+    private String remark;
+
+    /** 最后登录 IP */
+    private String loginIp;
+
     private Date loginTime;
 
     private Integer status;

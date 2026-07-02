@@ -36,6 +36,9 @@ public class SysDictData extends TenantEntity {
     /** CSS 类名 */
     private String cssClass;
 
+    /** 是否默认值：1-是 0-否 */
+    private Integer isDefault;
+
     /** 备注 */
     private String remark;
 }

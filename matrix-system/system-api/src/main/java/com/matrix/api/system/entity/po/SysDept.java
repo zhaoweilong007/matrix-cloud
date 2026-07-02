@@ -28,6 +28,15 @@ public class SysDept extends TenantEntity {
     /** 负责人 */
     private String leader;
 
+    /** 负责人用户 ID（关联 sys_admin.id） */
+    private Long leaderUserId;
+
+    /** 祖级列表（如 "0,100,101"），高效子树查询 */
+    private String ancestors;
+
+    /** 部门类别编码 */
+    private String deptCategory;
+
     /** 联系电话 */
     private String phone;
 

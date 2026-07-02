@@ -42,4 +42,25 @@ public class Tenant extends BaseEntity {
      * 关联套餐 ID
      */
     private Long packageId;
+
+    /**
+     * 联系人姓名
+     */
+    private String contactName;
+
+    /**
+     * 联系电话
+     */
+    private String contactMobile;
+
+    /**
+     * 到期时间
+     */
+    @TableField(value = "expire_time")
+    private java.time.LocalDateTime expireTime;
+
+    /**
+     * 最大账号数
+     */
+    private Integer accountCount;
 }

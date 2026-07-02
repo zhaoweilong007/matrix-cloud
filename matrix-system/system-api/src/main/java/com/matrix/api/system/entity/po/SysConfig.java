@@ -32,6 +32,9 @@ public class SysConfig extends TenantEntity {
     /** 是否可见：1-是 0-否 */
     private Integer visible;
 
+    /** 配置分类 */
+    private String category;
+
     /** 备注 */
     private String remark;
 }

@@ -643,6 +643,140 @@ CREATE TABLE `sys_tenant_package`
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+--
+-- Alter existing tables with new columns
+--
+ALTER TABLE `sys_admin` ADD COLUMN `dept_id` bigint DEFAULT NULL COMMENT '关联部门ID' AFTER `user_type`;
+ALTER TABLE `sys_admin` ADD COLUMN `mobile` varchar(20) DEFAULT NULL COMMENT '手机号' AFTER `dept_id`;
+ALTER TABLE `sys_admin` ADD COLUMN `sex` int DEFAULT '0' COMMENT '性别：0-未知 1-男 2-女' AFTER `mobile`;
+ALTER TABLE `sys_admin` ADD COLUMN `avatar` varchar(500) DEFAULT NULL COMMENT '头像URL' AFTER `sex`;
+ALTER TABLE `sys_admin` ADD COLUMN `remark` varchar(500) DEFAULT NULL COMMENT '备注' AFTER `avatar`;
+ALTER TABLE `sys_admin` ADD COLUMN `login_ip` varchar(50) DEFAULT NULL COMMENT '最后登录IP' AFTER `remark`;
+
+ALTER TABLE `sys_role` ADD COLUMN `code` varchar(100) DEFAULT NULL COMMENT '角色编码（唯一）' AFTER `name`;
+ALTER TABLE `sys_role` ADD COLUMN `type` int DEFAULT '2' COMMENT '角色类型：1-内置 2-自定义' AFTER `code`;
+ALTER TABLE `sys_role` ADD COLUMN `data_scope` int DEFAULT '1' COMMENT '数据范围：1-全部 2-自定义 3-本部门 4-本部门及以下 5-仅本人' AFTER `type`;
+ALTER TABLE `sys_role` ADD COLUMN `remark` varchar(500) DEFAULT NULL COMMENT '备注' AFTER `data_scope`;
+
+ALTER TABLE `sys_menu` ADD COLUMN `permission` varchar(100) DEFAULT NULL COMMENT '权限标识' AFTER `hidden`;
+ALTER TABLE `sys_menu` ADD COLUMN `type` int DEFAULT '2' COMMENT '菜单类型：1-目录 2-菜单 3-按钮' AFTER `permission`;
+ALTER TABLE `sys_menu` ADD COLUMN `path` varchar(200) DEFAULT NULL COMMENT '前端路由路径' AFTER `type`;
+ALTER TABLE `sys_menu` ADD COLUMN `component` varchar(200) DEFAULT NULL COMMENT '前端组件路径' AFTER `path`;
+ALTER TABLE `sys_menu` ADD COLUMN `component_name` varchar(100) DEFAULT NULL COMMENT 'keep-alive组件名' AFTER `component`;
+ALTER TABLE `sys_menu` ADD COLUMN `visible` int DEFAULT '1' COMMENT '是否可见：1-显示 0-隐藏' AFTER `component_name`;
+ALTER TABLE `sys_menu` ADD COLUMN `keep_alive` int DEFAULT '0' COMMENT '是否缓存：1-是 0-否' AFTER `visible`;
+ALTER TABLE `sys_menu` ADD COLUMN `always_show` int DEFAULT '0' COMMENT '总是显示：1-是 0-否' AFTER `keep_alive`;
+ALTER TABLE `sys_menu` ADD COLUMN `status` int DEFAULT '1' COMMENT '状态：1-启用 0-禁用' AFTER `always_show`;
+
+ALTER TABLE `sys_dept` ADD COLUMN `leader_user_id` bigint DEFAULT NULL COMMENT '负责人用户ID' AFTER `leader`;
+ALTER TABLE `sys_dept` ADD COLUMN `ancestors` varchar(500) DEFAULT '' COMMENT '祖级列表' AFTER `leader_user_id`;
+ALTER TABLE `sys_dept` ADD COLUMN `dept_category` varchar(50) DEFAULT NULL COMMENT '部门类别编码' AFTER `ancestors`;
+
+ALTER TABLE `sys_post` ADD COLUMN `dept_id` bigint DEFAULT NULL COMMENT '归属部门ID' AFTER `name`;
+ALTER TABLE `sys_post` ADD COLUMN `post_category` varchar(50) DEFAULT NULL COMMENT '岗位类别编码' AFTER `dept_id`;
+
+ALTER TABLE `sys_tenant` ADD COLUMN `contact_name` varchar(50) DEFAULT NULL COMMENT '联系人姓名' AFTER `package_id`;
+ALTER TABLE `sys_tenant` ADD COLUMN `contact_mobile` varchar(20) DEFAULT NULL COMMENT '联系电话' AFTER `contact_name`;
+ALTER TABLE `sys_tenant` ADD COLUMN `expire_time` datetime DEFAULT NULL COMMENT '到期时间' AFTER `contact_mobile`;
+ALTER TABLE `sys_tenant` ADD COLUMN `account_count` int DEFAULT NULL COMMENT '最大账号数' AFTER `expire_time`;
+
+ALTER TABLE `sys_dict_data` ADD COLUMN `is_default` int DEFAULT '0' COMMENT '是否默认值：1-是 0-否' AFTER `css_class`;
+
+ALTER TABLE `sys_config` ADD COLUMN `category` varchar(50) DEFAULT NULL COMMENT '配置分类' AFTER `visible`;
+
+ALTER TABLE `sys_operate_log` ADD COLUMN `user_id` bigint DEFAULT NULL COMMENT '操作人用户ID' AFTER `username`;
+ALTER TABLE `sys_operate_log` ADD COLUMN `dept_id` bigint DEFAULT NULL COMMENT '部门ID' AFTER `user_id`;
+ALTER TABLE `sys_operate_log` ADD COLUMN `browser` varchar(50) DEFAULT NULL COMMENT '浏览器名称' AFTER `user_agent`;
+ALTER TABLE `sys_operate_log` ADD COLUMN `os` varchar(50) DEFAULT NULL COMMENT '操作系统' AFTER `browser`;
+ALTER TABLE `sys_operate_log` ADD COLUMN `client_key` varchar(20) DEFAULT NULL COMMENT '客户端标识' AFTER `os`;
+
+--
+-- Table structure for table `sys_role_dept`
+--
+DROP TABLE IF EXISTS `sys_role_dept`;
+CREATE TABLE `sys_role_dept` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `role_id` bigint DEFAULT NULL COMMENT '角色ID',
+  `dept_id` bigint DEFAULT NULL COMMENT '部门ID',
+  `create_time` datetime DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
+  `create_by` varchar(50) DEFAULT NULL,
+  `update_by` varchar(50) DEFAULT NULL,
+  `deleted` int DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Table structure for table `sys_social`
+--
+DROP TABLE IF EXISTS `sys_social`;
+CREATE TABLE `sys_social` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `user_id` bigint DEFAULT NULL COMMENT '用户ID',
+  `auth_id` varchar(100) DEFAULT NULL COMMENT '平台用户唯一标识',
+  `source` varchar(50) DEFAULT NULL COMMENT '平台来源（gitee/github/wechat等）',
+  `open_id` varchar(100) DEFAULT NULL COMMENT '平台OpenId',
+  `access_token` varchar(500) DEFAULT NULL COMMENT '访问令牌',
+  `expire_in` int DEFAULT NULL COMMENT '令牌过期时间（秒）',
+  `refresh_token` varchar(500) DEFAULT NULL COMMENT '刷新令牌',
+  `nick_name` varchar(100) DEFAULT NULL COMMENT '平台昵称',
+  `email` varchar(100) DEFAULT NULL COMMENT '平台邮箱',
+  `avatar` varchar(500) DEFAULT NULL COMMENT '平台头像URL',
+  `union_id` varchar(100) DEFAULT NULL COMMENT '平台UnionId',
+  `scope` varchar(200) DEFAULT NULL COMMENT '授权范围',
+  `create_time` datetime DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
+  `create_by` varchar(50) DEFAULT NULL,
+  `update_by` varchar(50) DEFAULT NULL,
+  `deleted` int DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Table structure for table `sys_client`
+--
+DROP TABLE IF EXISTS `sys_client`;
+CREATE TABLE `sys_client` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `client_id` varchar(100) DEFAULT NULL COMMENT '客户端ID',
+  `client_key` varchar(100) DEFAULT NULL COMMENT '客户端Key',
+  `client_secret` varchar(200) DEFAULT NULL COMMENT '客户端密钥',
+  `grant_types` varchar(200) DEFAULT NULL COMMENT '授权类型（逗号分隔）',
+  `device_type` varchar(20) DEFAULT NULL COMMENT '设备类型',
+  `active_timeout` bigint DEFAULT NULL COMMENT '活跃超时（秒）',
+  `timeout` bigint DEFAULT NULL COMMENT 'Token超时（秒）',
+  `status` int DEFAULT '1' COMMENT '状态：1-启用 0-禁用',
+  `remark` varchar(500) DEFAULT NULL COMMENT '备注',
+  `create_time` datetime DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
+  `create_by` varchar(50) DEFAULT NULL,
+  `update_by` varchar(50) DEFAULT NULL,
+  `deleted` int DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Table structure for table `sys_message`
+--
+DROP TABLE IF EXISTS `sys_message`;
+CREATE TABLE `sys_message` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `user_id` bigint DEFAULT NULL COMMENT '用户ID',
+  `title` varchar(200) DEFAULT NULL COMMENT '消息标题',
+  `content` text DEFAULT NULL COMMENT '消息内容',
+  `message_type` int DEFAULT '1' COMMENT '消息类型：1-系统 2-通知',
+  `status` int DEFAULT '0' COMMENT '状态：0-未读 1-已读',
+  `read_time` datetime DEFAULT NULL COMMENT '阅读时间',
+  `jump_url` varchar(500) DEFAULT NULL COMMENT '跳转URL',
+  `remark` varchar(500) DEFAULT NULL COMMENT '备注',
+  `create_time` datetime DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
+  `create_by` varchar(50) DEFAULT NULL,
+  `update_by` varchar(50) DEFAULT NULL,
+  `deleted` int DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 -- Table structure for table `undo_log`
 --
 

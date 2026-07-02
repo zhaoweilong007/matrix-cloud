@@ -21,6 +21,12 @@ public class SysOperateLog extends BaseEntity {
     /** 操作人用户名 */
     private String username;
 
+    /** 操作人用户 ID */
+    private Long userId;
+
+    /** 部门 ID */
+    private Long deptId;
+
     /** 模块名 */
     private String module;
 
@@ -50,6 +56,15 @@ public class SysOperateLog extends BaseEntity {
 
     /** 浏览器 UserAgent */
     private String userAgent;
+
+    /** 浏览器名称 */
+    private String browser;
+
+    /** 操作系统 */
+    private String os;
+
+    /** 客户端标识 */
+    private String clientKey;
 
     /** 状态：0-失败 1-成功 */
     private Integer status;

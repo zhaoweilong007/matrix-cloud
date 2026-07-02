@@ -21,6 +21,12 @@ public class SysPost extends TenantEntity {
     /** 岗位名称 */
     private String name;
 
+    /** 归属部门 ID */
+    private Long deptId;
+
+    /** 岗位类别编码 */
+    private String postCategory;
+
     /** 排序 */
     private Integer sort;
 
