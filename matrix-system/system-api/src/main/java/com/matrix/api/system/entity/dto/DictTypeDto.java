@@ -1,6 +1,7 @@
 package com.matrix.api.system.entity.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 /** 字典类型创建/修改 DTO */
@@ -8,8 +9,10 @@ import lombok.Data;
 @Schema(description = "字典类型DTO")
 public class DictTypeDto {
     private Long id;
+    @NotBlank(message = "字典名称不能为空")
     private String name;
     @Schema(description = "字典类型编码")
+    @NotBlank(message = "字典类型编码不能为空")
     private String type;
     private Integer status;
     private String remark;
