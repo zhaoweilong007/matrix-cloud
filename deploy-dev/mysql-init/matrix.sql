@@ -21,7 +21,7 @@ USE `matrix`;
 DROP TABLE IF EXISTS `sys_admin`;
 CREATE TABLE `sys_admin`
 (
-    `id`          BIGINT       NOT NULL AUTO_INCREMENT COMMENT '用户ID',
+    `id`          BIGINT       NOT NULL COMMENT '用户ID',
     `username`    VARCHAR(64)  DEFAULT NULL COMMENT '用户名',
     `password`    VARCHAR(64)  DEFAULT NULL COMMENT '密码',
     `icon`        VARCHAR(500) DEFAULT NULL COMMENT '头像',
@@ -45,7 +45,6 @@ CREATE TABLE `sys_admin`
     `tenant_id`   INT          DEFAULT NULL COMMENT '租户ID',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 2
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci
   COMMENT = '系统用户';
@@ -60,7 +59,7 @@ VALUES (1, 'admin', '21232f297a57a5a743894a0e4a801fc3', NULL, 'admin@qq.com', NU
 DROP TABLE IF EXISTS `sys_role`;
 CREATE TABLE `sys_role`
 (
-    `id`          BIGINT       NOT NULL AUTO_INCREMENT COMMENT '角色ID',
+    `id`          BIGINT       NOT NULL COMMENT '角色ID',
     `name`        VARCHAR(100) DEFAULT NULL COMMENT '角色名称',
     `code`        VARCHAR(100) DEFAULT NULL COMMENT '角色编码（唯一）',
     `type`        INT          DEFAULT 2 COMMENT '角色类型: 1-内置 2-自定义',
@@ -78,7 +77,6 @@ CREATE TABLE `sys_role`
     `tenant_id`   INT          DEFAULT NULL COMMENT '租户ID',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 3
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci
   COMMENT = '角色';
@@ -93,13 +91,12 @@ VALUES (1, '系统管理员', 'super_admin', 1, 1, '系统管理员', 1, 0, 1, N
 DROP TABLE IF EXISTS `sys_admin_role_relation`;
 CREATE TABLE `sys_admin_role_relation`
 (
-    `id`        BIGINT NOT NULL AUTO_INCREMENT COMMENT '主键',
+    `id`        BIGINT NOT NULL COMMENT '主键',
     `admin_id`  BIGINT DEFAULT NULL COMMENT '用户ID',
     `role_id`   BIGINT DEFAULT NULL COMMENT '角色ID',
     `tenant_id` INT    DEFAULT NULL COMMENT '租户ID',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 3
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci
   COMMENT = '用户-角色关联';
@@ -114,7 +111,7 @@ VALUES (1, 1, 1, NULL),
 DROP TABLE IF EXISTS `sys_menu`;
 CREATE TABLE `sys_menu`
 (
-    `id`             BIGINT       NOT NULL AUTO_INCREMENT COMMENT '菜单ID',
+    `id`             BIGINT       NOT NULL COMMENT '菜单ID',
     `parent_id`      BIGINT       DEFAULT NULL COMMENT '父菜单ID，0=根',
     `title`          VARCHAR(100) DEFAULT NULL COMMENT '菜单标题',
     `level`          INT          DEFAULT NULL COMMENT '菜单层级',
@@ -139,7 +136,6 @@ CREATE TABLE `sys_menu`
     `tenant_id`      INT          DEFAULT NULL COMMENT '租户ID',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 5
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci
   COMMENT = '菜单';
@@ -160,13 +156,12 @@ VALUES (1, 0, '菜单一', 0, 0, '菜单一', 'qwer', 0, NULL, 1, '/menu1', 'men
 DROP TABLE IF EXISTS `sys_role_menu_relation`;
 CREATE TABLE `sys_role_menu_relation`
 (
-    `id`        BIGINT NOT NULL AUTO_INCREMENT COMMENT '主键',
+    `id`        BIGINT NOT NULL COMMENT '主键',
     `role_id`   BIGINT DEFAULT NULL COMMENT '角色ID',
     `menu_id`   BIGINT DEFAULT NULL COMMENT '菜单ID',
     `tenant_id` INT    DEFAULT NULL COMMENT '租户ID',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 43
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci
   COMMENT = '角色-菜单关联';
@@ -181,7 +176,7 @@ VALUES (41, 2, 2, NULL),
 DROP TABLE IF EXISTS `sys_resource`;
 CREATE TABLE `sys_resource`
 (
-    `id`          BIGINT       NOT NULL AUTO_INCREMENT COMMENT '主键',
+    `id`          BIGINT       NOT NULL COMMENT '主键',
     `name`        VARCHAR(200) DEFAULT NULL COMMENT '资源名称',
     `url`         VARCHAR(200) DEFAULT NULL COMMENT 'URL 匹配模式',
     `description` VARCHAR(500) DEFAULT NULL COMMENT '描述',
@@ -194,7 +189,6 @@ CREATE TABLE `sys_resource`
     `tenant_id`   INT          DEFAULT NULL COMMENT '租户ID',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 5
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci
   COMMENT = 'API 资源';
@@ -211,7 +205,7 @@ VALUES (1, '用户管理', '/system-server/admin/**', '用户管理', 1, NULL, N
 DROP TABLE IF EXISTS `sys_resource_category`;
 CREATE TABLE `sys_resource_category`
 (
-    `id`          BIGINT       NOT NULL AUTO_INCREMENT COMMENT '主键',
+    `id`          BIGINT       NOT NULL COMMENT '主键',
     `name`        VARCHAR(200) DEFAULT NULL COMMENT '分类名称',
     `sort`        INT          DEFAULT NULL COMMENT '排序',
     `create_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -222,7 +216,6 @@ CREATE TABLE `sys_resource_category`
     `tenant_id`   INT          DEFAULT NULL COMMENT '租户ID',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 2
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci
   COMMENT = '资源分类';
@@ -236,13 +229,12 @@ VALUES (1, '权限管理', 1, NULL, NULL, NULL, NULL, 0, NULL);
 DROP TABLE IF EXISTS `sys_role_resource_relation`;
 CREATE TABLE `sys_role_resource_relation`
 (
-    `id`          BIGINT NOT NULL AUTO_INCREMENT COMMENT '主键',
+    `id`          BIGINT NOT NULL COMMENT '主键',
     `role_id`     BIGINT DEFAULT NULL COMMENT '角色ID',
     `resource_id` BIGINT DEFAULT NULL COMMENT '资源ID',
     `tenant_id`   INT    DEFAULT NULL COMMENT '租户ID',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 5
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci
   COMMENT = '角色-资源关联';
@@ -263,7 +255,7 @@ VALUES (1, 1, 1, NULL),
 DROP TABLE IF EXISTS `sys_tenant_package`;
 CREATE TABLE `sys_tenant_package`
 (
-    `id`          BIGINT       NOT NULL AUTO_INCREMENT COMMENT '主键',
+    `id`          BIGINT       NOT NULL COMMENT '主键',
     `name`        VARCHAR(100) DEFAULT NULL COMMENT '套餐名称',
     `status`      INT          DEFAULT 1 COMMENT '状态: 1-启用 0-禁用',
     `menu_ids`    TEXT         DEFAULT NULL COMMENT '关联菜单ID集合（JSON数组）',
@@ -286,7 +278,7 @@ CREATE TABLE `sys_tenant_package`
 DROP TABLE IF EXISTS `sys_tenant`;
 CREATE TABLE `sys_tenant`
 (
-    `id`             BIGINT       NOT NULL AUTO_INCREMENT COMMENT '租户ID',
+    `id`             BIGINT       NOT NULL COMMENT '租户ID',
     `status`         INT          DEFAULT 0 COMMENT '状态: 0-禁用 1-启用',
     `tenant_name`    VARCHAR(200) DEFAULT NULL COMMENT '租户名称',
     `package_id`     BIGINT       DEFAULT NULL COMMENT '关联套餐ID',
@@ -315,7 +307,7 @@ CREATE TABLE `sys_tenant`
 DROP TABLE IF EXISTS `sys_dept`;
 CREATE TABLE `sys_dept`
 (
-    `id`             BIGINT       NOT NULL AUTO_INCREMENT COMMENT '部门ID',
+    `id`             BIGINT       NOT NULL COMMENT '部门ID',
     `parent_id`      BIGINT       DEFAULT 0 COMMENT '父部门ID，0=根',
     `name`           VARCHAR(100) DEFAULT NULL COMMENT '部门名称',
     `leader`         VARCHAR(50)  DEFAULT NULL COMMENT '负责人',
@@ -344,7 +336,7 @@ CREATE TABLE `sys_dept`
 DROP TABLE IF EXISTS `sys_post`;
 CREATE TABLE `sys_post`
 (
-    `id`            BIGINT       NOT NULL AUTO_INCREMENT COMMENT '岗位ID',
+    `id`            BIGINT       NOT NULL COMMENT '岗位ID',
     `code`          VARCHAR(50)  DEFAULT NULL COMMENT '岗位编码',
     `name`          VARCHAR(100) DEFAULT NULL COMMENT '岗位名称',
     `dept_id`       BIGINT       DEFAULT NULL COMMENT '归属部门ID',
@@ -371,7 +363,7 @@ CREATE TABLE `sys_post`
 DROP TABLE IF EXISTS `sys_role_dept`;
 CREATE TABLE `sys_role_dept`
 (
-    `id`          BIGINT      NOT NULL AUTO_INCREMENT COMMENT '主键',
+    `id`          BIGINT      NOT NULL COMMENT '主键',
     `role_id`     BIGINT      DEFAULT NULL COMMENT '角色ID',
     `dept_id`     BIGINT      DEFAULT NULL COMMENT '部门ID',
     `create_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -395,7 +387,7 @@ CREATE TABLE `sys_role_dept`
 DROP TABLE IF EXISTS `sys_dict_type`;
 CREATE TABLE `sys_dict_type`
 (
-    `id`          BIGINT       NOT NULL AUTO_INCREMENT COMMENT '主键',
+    `id`          BIGINT       NOT NULL COMMENT '主键',
     `name`        VARCHAR(100) DEFAULT NULL COMMENT '字典名称',
     `type`        VARCHAR(100) DEFAULT NULL COMMENT '字典类型编码',
     `status`      INT          DEFAULT 1 COMMENT '状态: 0-禁用 1-启用',
@@ -419,7 +411,7 @@ CREATE TABLE `sys_dict_type`
 DROP TABLE IF EXISTS `sys_dict_data`;
 CREATE TABLE `sys_dict_data`
 (
-    `id`          BIGINT       NOT NULL AUTO_INCREMENT COMMENT '主键',
+    `id`          BIGINT       NOT NULL COMMENT '主键',
     `dict_type`   VARCHAR(100) DEFAULT NULL COMMENT '字典类型编码',
     `label`       VARCHAR(100) DEFAULT NULL COMMENT '字典标签',
     `value`       VARCHAR(100) DEFAULT NULL COMMENT '字典值',
@@ -447,7 +439,7 @@ CREATE TABLE `sys_dict_data`
 DROP TABLE IF EXISTS `sys_config`;
 CREATE TABLE `sys_config`
 (
-    `id`          BIGINT       NOT NULL AUTO_INCREMENT COMMENT '主键',
+    `id`          BIGINT       NOT NULL COMMENT '主键',
     `name`        VARCHAR(100) DEFAULT NULL COMMENT '参数名称',
     `config_key`  VARCHAR(100) DEFAULT NULL COMMENT '参数键名',
     `value`       VARCHAR(500) DEFAULT NULL COMMENT '参数值',
@@ -478,7 +470,7 @@ CREATE TABLE `sys_config`
 DROP TABLE IF EXISTS `sys_notice`;
 CREATE TABLE `sys_notice`
 (
-    `id`          BIGINT       NOT NULL AUTO_INCREMENT COMMENT '主键',
+    `id`          BIGINT       NOT NULL COMMENT '主键',
     `title`       VARCHAR(200) DEFAULT NULL COMMENT '通知标题',
     `content`     TEXT         DEFAULT NULL COMMENT '通知内容',
     `type`        INT          DEFAULT 1 COMMENT '通知类型: 1-系统通知 2-业务通知',
@@ -502,7 +494,7 @@ CREATE TABLE `sys_notice`
 DROP TABLE IF EXISTS `sys_message`;
 CREATE TABLE `sys_message`
 (
-    `id`           BIGINT       NOT NULL AUTO_INCREMENT COMMENT '主键',
+    `id`           BIGINT       NOT NULL COMMENT '主键',
     `user_id`      BIGINT       DEFAULT NULL COMMENT '接收用户ID',
     `title`        VARCHAR(200) DEFAULT NULL COMMENT '消息标题',
     `content`      TEXT         DEFAULT NULL COMMENT '消息内容',
@@ -532,7 +524,7 @@ CREATE TABLE `sys_message`
 DROP TABLE IF EXISTS `sys_login_log`;
 CREATE TABLE `sys_login_log`
 (
-    `id`          BIGINT       NOT NULL AUTO_INCREMENT COMMENT '主键',
+    `id`          BIGINT       NOT NULL COMMENT '主键',
     `username`    VARCHAR(50)  DEFAULT NULL COMMENT '用户名',
     `ip`          VARCHAR(50)  DEFAULT NULL COMMENT '登录IP',
     `user_agent`  VARCHAR(500) DEFAULT NULL COMMENT '浏览器 UserAgent',
@@ -556,7 +548,7 @@ CREATE TABLE `sys_login_log`
 DROP TABLE IF EXISTS `sys_operate_log`;
 CREATE TABLE `sys_operate_log`
 (
-    `id`             BIGINT       NOT NULL AUTO_INCREMENT COMMENT '主键',
+    `id`             BIGINT       NOT NULL COMMENT '主键',
     `username`       VARCHAR(50)  DEFAULT NULL COMMENT '操作人用户名',
     `user_id`        BIGINT       DEFAULT NULL COMMENT '操作人用户ID',
     `dept_id`        BIGINT       DEFAULT NULL COMMENT '部门ID',
@@ -597,7 +589,7 @@ CREATE TABLE `sys_operate_log`
 DROP TABLE IF EXISTS `sys_client`;
 CREATE TABLE `sys_client`
 (
-    `id`             BIGINT       NOT NULL AUTO_INCREMENT COMMENT '主键',
+    `id`             BIGINT       NOT NULL COMMENT '主键',
     `client_id`      VARCHAR(100) DEFAULT NULL COMMENT '客户端ID',
     `client_key`     VARCHAR(100) DEFAULT NULL COMMENT '客户端Key',
     `client_secret`  VARCHAR(200) DEFAULT NULL COMMENT '客户端密钥',
@@ -624,7 +616,7 @@ CREATE TABLE `sys_client`
 DROP TABLE IF EXISTS `sys_social`;
 CREATE TABLE `sys_social`
 (
-    `id`            BIGINT       NOT NULL AUTO_INCREMENT COMMENT '主键',
+    `id`            BIGINT       NOT NULL COMMENT '主键',
     `user_id`       BIGINT       DEFAULT NULL COMMENT '用户ID',
     `auth_id`       VARCHAR(100) DEFAULT NULL COMMENT '平台用户唯一标识',
     `source`        VARCHAR(50)  DEFAULT NULL COMMENT '平台来源（gitee/github/wechat 等）',
