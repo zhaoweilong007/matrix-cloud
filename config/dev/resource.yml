@@ -12,7 +12,7 @@ spring:
 
 # ===================== Matrix 模块配置 =====================
 matrix:
-  # 多租户
+  # 多租户 (matrix.tenant)
   tenant:
     enable: true
     ignore-urls:
@@ -21,7 +21,7 @@ matrix:
       - sys_contact_log
       - sys_region_dict
 
-  # 短信
+  # 短信 (matrix.sms)
   sms:
     sms-validate-ignore:
     is-print: false
@@ -33,7 +33,7 @@ matrix:
         access-key-secret:
         signature:
 
-  # 极光推送
+  # 极光推送 (matrix.jpush)
   jpush:
     TEST:
       app-key:
@@ -41,41 +41,38 @@ matrix:
       apns-production: false
       private-key:
 
-  # 对象存储（S3 兼容）
+  # 对象存储 S3 兼容 (matrix.oss → com.matrix.oss.config.OssProperties)
   oss:
-    enabled: true
-    access-key-id:
-    access-key-secret:
+    enabled: false
     endpoint:
-    bucket-name:
-    prefix:
-    max-upload-size: 100MB
+    region: cn-hangzhou
+    access-key:
+    secret-key:
+    bucket:
+    domain:
+    max-upload-size: 104857600
     presigned-expiration: 3600
 
-  # 邮件
+  # 邮件 (matrix.mail)
   mail:
     enabled: true
-    host: ${MAIL_HOST:smtp.example.com}
-    port: ${MAIL_PORT:465}
-    username: ${MAIL_USERNAME:}
-    password: ${MAIL_PASSWORD:}
-    from: ${MAIL_FROM:noreply@example.com}
+    from:
     from-name: "Matrix Cloud"
 
-  # 社交登录
+  # 社交登录 (matrix.social)
   social:
     enabled: false
-    type:
-      GITEE:
+    platforms:
+      gitee:
         client-id:
         client-secret:
         redirect-uri:
-      GITHUB:
+      github:
         client-id:
         client-secret:
         redirect-uri:
 
-  # 消息队列
+  # RocketMQ (matrix.mq)
   mq:
     enabled: false
     ons-addr:
@@ -84,21 +81,19 @@ matrix:
     producers:
     consumers:
 
-  # WebSocket
+  # WebSocket (matrix.websocket)
   websocket:
     enabled: false
     path: /ws
     sender-type: local
-    allowed-origins:
-      - "*"
+    allowed-origins: "*"
 
-  # SSE
+  # SSE 长连接 (matrix.websocket.sse)
   websocket:
     sse:
       enabled: false
-      path: /sse
 
-  # 监控
+  # 监控 (matrix.monitor)
   monitor:
-    trace-enable: true
-    metrics-enable: true
+    traceEnable: true
+    metricsEnable: true

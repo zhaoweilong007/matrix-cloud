@@ -232,46 +232,45 @@ easy-trans:
 
 # ===================== Matrix 通用配置 =====================
 matrix:
-  # 访问日志
+  # 访问日志 (prefix=matrix.access-log, 属性 enable 而非 enabled)
   access-log:
-    enabled: false
+    enable: false
 
-  # 灰度负载均衡
+  # 灰度负载均衡 (prefix=matrix.load-balance.gray)
   load-balance:
     gray:
       enabled: true
-      default-version: "1.0"
+      defaultVersion: "1.0"
       chooser: com.matrix.feign.chooser.ProfileRuleChooser
 
-  # API 加解密
+  # 演示模式 (DemoFilter 检查 matrix.demo=true)
+  demo: false
+
+  # API 加解密 (matrix.crypto)
   crypto:
     enabled: false
     type: AES
     secret-key:
 
-  # 监控
+  # 监控 (matrix.monitor) - 非 @ConfigurationProperties，通过 @ConditionalOnProperty 读取
   monitor:
-    trace-enable: true
-    metrics-enable: true
+    traceEnable: true
+    metricsEnable: true
 
-  # RocketMQ
+  # RocketMQ (matrix.mq)
   mq:
     enabled: false
     ons-addr: ${MQ_ONSADDR:}
 
-  # Redis MQ
+  # Redis MQ (matrix.mq.redis，通过 @ConditionalOnProperty 读取)
   mq:
     redis:
       enabled: false
 
-  # 同主机优先负载均衡
+  # 同主机优先负载均衡 (matrix.loadbalancer.same-host)
   loadbalancer:
     same-host:
       enabled: true
-
-  # 数据权限
-  data-permission:
-    enabled: true
 
 # 网易易盾内容审核
 yidun:

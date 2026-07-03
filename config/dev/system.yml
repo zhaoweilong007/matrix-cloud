@@ -1,6 +1,6 @@
 # ===================== matrix-system 服务配置 =====================
 
-# 多租户配置
+# 多租户配置 (matrix.tenant)
 matrix:
   tenant:
     enable: true
@@ -23,25 +23,19 @@ matrix:
       - sys_role_dept
       - sys_tenant
 
-  # 数据权限配置
-  data-permission:
-    enabled: true
-    # 需要数据权限过滤的表
-    tables:
-      - sys_admin
-      - sys_dept
-      - sys_notice
-      - sys_operate_log
-
-  # 安全配置 - 白名单
+  # 安全白名单 (matrix.security.ignore)
   security:
     ignore:
       whites:
         - /auth/**
-        - /system/captcha/**
         - /actuator/**
 
-  # 验证码配置
+  # 租户认证 (matrix.security.tenant)
+  security:
+    tenant:
+      auth-url:
+
+  # 验证码配置 (matrix.captcha)
   captcha:
     enabled: true
     type: MATH
@@ -49,23 +43,21 @@ matrix:
     number-length: 1
     char-length: 4
 
-  # XSS 过滤
+  # XSS 过滤 (matrix.xss)
   xss:
     enabled: false
-    exclude-urls:
-      - /system/notice/**
+    excludeUrls:
 
-  # 演示模式（生产环境关闭）
-  demo:
-    enabled: false
+  # 演示模式 (matrix.demo，DemoFilter 读取)
+  demo: false
 
-  # API 加解密
+  # API 加解密 (matrix.crypto)
   crypto:
     enabled: false
     type: AES
     secret-key:
 
-  # 功能开关
+  # 功能开关 (matrix.feature.toggle)
   feature:
     toggle:
       features:
@@ -74,70 +66,77 @@ matrix:
         websocket: false
         sse: false
 
-  # 文档配置
+  # API 文档 (matrix.doc)
   doc:
     enabled: true
     title: "Matrix Cloud System API"
     description: "系统管理服务接口文档"
     version: "1.0.0"
 
-  # 访问日志
+  # 访问日志 (matrix.access-log, 属性 enable)
   access-log:
-    enabled: true
+    enable: true
     ignore-urls:
       - /actuator/**
 
-  # 异步任务线程池
-  async-task:
+  # 异步任务线程池 (matrix.asyc-task, 注意代码中的拼写)
+  asyc-task:
     core-pool-size: 5
     max-pool-size: 10
     queue-capacity: 200
-    keep-alive-seconds: 60
     thread-name-prefix: system-async-
 
-  # 灰度负载均衡
+  # 灰度负载均衡 (matrix.load-balance.gray)
   load-balance:
     gray:
       enabled: true
-      default-version: "1.0"
+      defaultVersion: "1.0"
       chooser: com.matrix.feign.chooser.ProfileRuleChooser
 
-  # 监控
+  # 监控 (matrix.monitor - @ConditionalOnProperty)
   monitor:
-    trace-enable: true
-    metrics-enable: true
+    traceEnable: true
+    metricsEnable: true
 
-  # 同主机优先负载均衡
+  # 同主机优先负载均衡 (matrix.loadbalancer.same-host)
   loadbalancer:
     same-host:
       enabled: true
 
-# Redis MQ（系统内部消息）
+  # RocketMQ (matrix.mq)
+  mq:
+    enabled: false
+
+  # Redis MQ (matrix.mq.redis - @ConditionalOnProperty)
   mq:
     redis:
       enabled: true
 
-# RocketMQ（外部消息）
-  mq:
+  # WebSocket (matrix.websocket)
+  websocket:
     enabled: false
+    path: /ws
+    sender-type: local
+    allowed-origins: "*"
 
-# 缓存 TTL 配置（通过 TimeoutRedisCacheManager 名称后缀生效）
-cache:
-  menu-cache-ttl: 30m
-  resource-cache-ttl: 30m
-  dict-data-cache-ttl: 1h
-  dict-type-cache-ttl: 2h
+  # SSE 长连接 (matrix.websocket.sse - @ConditionalOnProperty)
+  websocket:
+    sse:
+      enabled: false
+      path: /sse
+
+  # API 签名 (matrix.api-signature)
+  api-signature:
+    secrets:
+      default: default-secret-key
+
+  # 黑名单 (matrix.black-list)
+  black-list:
+    enable: false
+    ip-list:
 
 # 密码策略
 user:
   password:
     max-retry-count: 5
     lock-time: 10
-
-# Spring 配置
-spring:
-  cloud:
-    sentinel:
-      eager: true
-      transport:
-        dashboard: ${SENTINEL_DASHBOARD:}

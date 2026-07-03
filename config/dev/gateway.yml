@@ -1,27 +1,5 @@
 # ===================== matrix-gateway 网关配置 =====================
 
-# 安全配置
-security:
-  # 验证码
-  captcha:
-    enabled: true
-    type: MATH
-    category: CIRCLE
-    number-length: 1
-    char-length: 4
-  # XSS 防护
-  xss:
-    enabled: false
-    exclude-urls:
-      - /system/notice/**
-  # 安全白名单
-  ignore:
-    whites:
-      - /actuator/health
-      - /code
-      - /csrf
-      - /auth/**
-
 spring:
   cloud:
     sentinel:
@@ -69,7 +47,6 @@ spring:
           lower-case-service-id: true
           url-expression: "'grayLb://'+serviceId"
 
-      # ========== 路由配置 ==========
       routes:
         # ---- system 服务 ----
         - id: system-auth
@@ -248,7 +225,7 @@ spring:
           filters:
             - StripPrefix=0
 
-# Feign 客户端配置（仅 Gateway 内部调用）
+# Feign 客户端配置
 feign:
   sentinel:
     enabled: true
@@ -259,25 +236,55 @@ feign:
         read-timeout: 5000
         logger-level: none
 
-# 网关分布式限流
+# ===================== Matrix 网关配置 =====================
 matrix:
+  # 安全白名单 (matrix.security.ignore → IgnoreWhiteProperties)
+  security:
+    ignore:
+      whites:
+        - /actuator/health
+        - /code
+        - /csrf
+        - /auth/**
+
+  # 验证码 (matrix.captcha → CaptchaProperties)
+  captcha:
+    enabled: true
+    type: MATH
+    category: CIRCLE
+    number-length: 1
+    char-length: 4
+
+  # 网关分布式限流 (matrix.rate-limiter → RateLimiterProperties)
   rate-limiter:
     enabled: true
     replenish-rate: 10
     burst-capacity: 20
     key-type: IP
 
-  # 黑名单配置
+  # 黑名单 (matrix.black-list → BlackListProperties, 字段 ipList)
   black-list:
-    enabled: false
-    ips:
+    enable: false
+    ip-list:
 
-  # 网关加解密
-  crypto:
+  # XSS (matrix.xss → XssProperties)
+  xss:
     enabled: false
+    excludeUrls:
 
-  # API 签名
-  api-signature:
+  # 灰度负载均衡
+  load-balance:
+    gray:
+      enabled: true
+      defaultVersion: "1.0"
+      chooser: com.matrix.feign.chooser.ProfileRuleChooser
+
+  # 文档
+  doc:
+    enabled: true
+    title: "Matrix Cloud Gateway API"
+
+# 网关 XSS Filter 使用 security.xss.enabled (GatewayConfig 中 @ConditionalOnProperty)
+security:
+  xss:
     enabled: false
-    secrets:
-      default: default-secret-key
