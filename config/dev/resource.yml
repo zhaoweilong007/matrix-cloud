@@ -90,6 +90,12 @@ matrix:
     sse:
       enabled: false
 
+  # OCR 识别 (matrix.ocr → OcrProperties)
+  ocr:
+    enabled: false
+    secret-id:
+    secret-key:
+
   # 监控 (matrix.monitor)
   monitor:
     traceEnable: true

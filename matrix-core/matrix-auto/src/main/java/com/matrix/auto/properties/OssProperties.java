@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  */
 @Data
 @RefreshScope
-@ConfigurationProperties(prefix = "aliyun.oss")
+@ConfigurationProperties(prefix = "matrix.oss.translation")
 @Component
 public class OssProperties {
 

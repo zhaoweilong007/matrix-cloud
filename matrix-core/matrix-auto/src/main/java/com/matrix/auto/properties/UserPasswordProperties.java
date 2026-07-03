@@ -10,7 +10,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * 账户将被临时锁定一段时间。</p>
  */
 @Data
-@ConfigurationProperties(prefix = "user.password")
+@ConfigurationProperties(prefix = "matrix.user.password")
 public class UserPasswordProperties {
 
     /**
