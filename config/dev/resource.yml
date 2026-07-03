@@ -72,7 +72,7 @@ matrix:
         client-secret:
         redirect-uri:
 
-  # RocketMQ (matrix.mq)
+  # RocketMQ + 消息队列 (matrix.mq)
   mq:
     enabled: false
     ons-addr:
@@ -81,15 +81,12 @@ matrix:
     producers:
     consumers:
 
-  # WebSocket (matrix.websocket)
+  # WebSocket + SSE (matrix.websocket / matrix.websocket.sse)
   websocket:
     enabled: false
     path: /ws
     sender-type: local
     allowed-origins: "*"
-
-  # SSE 长连接 (matrix.websocket.sse)
-  websocket:
     sse:
       enabled: false
 

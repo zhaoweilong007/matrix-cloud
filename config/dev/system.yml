@@ -23,15 +23,12 @@ matrix:
       - sys_role_dept
       - sys_tenant
 
-  # 安全白名单 (matrix.security.ignore)
+  # 安全配置 (matrix.security.ignore / matrix.security.tenant)
   security:
     ignore:
       whites:
         - /auth/**
         - /actuator/**
-
-  # 租户认证 (matrix.security.tenant)
-  security:
     tenant:
       auth-url:
 
@@ -103,24 +100,18 @@ matrix:
     same-host:
       enabled: true
 
-  # RocketMQ (matrix.mq)
+  # 消息队列 (matrix.mq / matrix.mq.redis)
   mq:
     enabled: false
-
-  # Redis MQ (matrix.mq.redis - @ConditionalOnProperty)
-  mq:
     redis:
       enabled: true
 
-  # WebSocket (matrix.websocket)
+  # WebSocket + SSE (matrix.websocket / matrix.websocket.sse)
   websocket:
     enabled: false
     path: /ws
     sender-type: local
     allowed-origins: "*"
-
-  # SSE 长连接 (matrix.websocket.sse - @ConditionalOnProperty)
-  websocket:
     sse:
       enabled: false
       path: /sse

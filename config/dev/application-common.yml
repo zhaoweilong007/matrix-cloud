@@ -257,13 +257,10 @@ matrix:
     traceEnable: true
     metricsEnable: true
 
-  # RocketMQ (matrix.mq)
+  # 消息队列 (matrix.mq / matrix.mq.redis)
   mq:
     enabled: false
     ons-addr: ${MQ_ONSADDR:}
-
-  # Redis MQ (matrix.mq.redis，通过 @ConditionalOnProperty 读取)
-  mq:
     redis:
       enabled: false
 
