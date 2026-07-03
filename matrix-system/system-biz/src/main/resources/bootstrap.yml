@@ -1,8 +1,19 @@
+server:
+  port: 9004
+
 spring:
   application:
     name: matrix-system
   profiles:
-    active: ${PROFILE:}
+    active: ${PROFILE:dev}
+  cloud:
+    nacos:
+      config:
+        username: nacos
+        password: nacos
+      discovery:
+        username: nacos
+        password: nacos
   config:
     import:
       - optional:nacos:env.properties

@@ -2,6 +2,22 @@ server:
   port: 9002
 
 spring:
+  application:
+    name: matrix-admin
+  profiles:
+    active: ${PROFILE:dev}
+  cloud:
+    nacos:
+      config:
+        username: nacos
+        password: nacos
+      discovery:
+        username: nacos
+        password: nacos
+  config:
+    import:
+      - optional:nacos:env.properties
+      - optional:nacos:application-common.yml
   boot:
     admin:
       discovery:
@@ -11,9 +27,5 @@ spring:
     user:
       name: ${ADMIN_USERNAME:admin}
       password: ${ADMIN_PASSWORD:admin}
-  application:
-    name: matrix-admin
-  profiles:
-    active: ${PROFILE:dev}
   codec:
     max-in-memory-size: 2097152

@@ -96,7 +96,3 @@ matrix:
     secret-id:
     secret-key:
 
-  # 监控 (matrix.monitor)
-  monitor:
-    traceEnable: true
-    metricsEnable: true

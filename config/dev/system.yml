@@ -1,7 +1,8 @@
 # ===================== matrix-system 服务配置 =====================
+# 仅包含 matrix-system 特有的配置或覆盖 application-common.yml 默认值的配置
 
-# 多租户配置 (matrix.tenant)
 matrix:
+  # 多租户 (matrix.tenant) - 覆盖公共 ignore-tables
   tenant:
     enable: true
     ignore-urls:
@@ -23,7 +24,7 @@ matrix:
       - sys_role_dept
       - sys_tenant
 
-  # 安全配置 (matrix.security.ignore / matrix.security.tenant)
+  # 安全白名单 (matrix.security.ignore)
   security:
     ignore:
       whites:
@@ -32,27 +33,9 @@ matrix:
     tenant:
       auth-url:
 
-  # 验证码配置 (matrix.captcha)
+  # 验证码 (matrix.captcha) - system 模块启用
   captcha:
     enabled: true
-    type: MATH
-    category: CIRCLE
-    number-length: 1
-    char-length: 4
-
-  # XSS 过滤 (matrix.xss)
-  xss:
-    enabled: false
-    excludeUrls:
-
-  # 演示模式 (matrix.demo，DemoFilter 读取)
-  demo: false
-
-  # API 加解密 (matrix.crypto)
-  crypto:
-    enabled: false
-    type: AES
-    secret-key:
 
   # 功能开关 (matrix.feature.toggle)
   feature:
@@ -70,37 +53,20 @@ matrix:
     description: "系统管理服务接口文档"
     version: "1.0.0"
 
-  # 访问日志 (matrix.access-log, 属性 enable)
+  # 访问日志 (matrix.access-log) - system 模块开启
   access-log:
     enable: true
     ignore-urls:
       - /actuator/**
 
-  # 异步任务线程池 (matrix.asyc-task, 注意代码中的拼写)
+  # 异步任务线程池 (matrix.asyc-task)
   asyc-task:
     core-pool-size: 5
     max-pool-size: 10
     queue-capacity: 200
     thread-name-prefix: system-async-
 
-  # 灰度负载均衡 (matrix.load-balance.gray)
-  load-balance:
-    gray:
-      enabled: true
-      defaultVersion: "1.0"
-      chooser: com.matrix.feign.chooser.ProfileRuleChooser
-
-  # 监控 (matrix.monitor - @ConditionalOnProperty)
-  monitor:
-    traceEnable: true
-    metricsEnable: true
-
-  # 同主机优先负载均衡 (matrix.loadbalancer.same-host)
-  loadbalancer:
-    same-host:
-      enabled: true
-
-  # 消息队列 (matrix.mq / matrix.mq.redis)
+  # 消息队列 (matrix.mq) - system 模块开启 Redis MQ
   mq:
     enabled: false
     redis:
@@ -116,7 +82,7 @@ matrix:
       enabled: false
       path: /sse
 
-  # API 签名 (matrix.api-signature)
+  # API 签名 (matrix.api-signature) - system 模块特有
   api-signature:
     secrets:
       default: default-secret-key
@@ -126,7 +92,7 @@ matrix:
     enable: false
     ip-list:
 
-  # 密码策略 (matrix.user.password → UserPasswordProperties)
+  # 密码策略 (matrix.user.password)
   user:
     password:
       max-retry-count: 5

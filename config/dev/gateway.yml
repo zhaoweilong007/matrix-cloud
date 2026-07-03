@@ -272,14 +272,7 @@ matrix:
     enabled: false
     excludeUrls:
 
-  # 灰度负载均衡
-  load-balance:
-    gray:
-      enabled: true
-      defaultVersion: "1.0"
-      chooser: com.matrix.feign.chooser.ProfileRuleChooser
-
-  # 文档
+  # 文档 (matrix.doc)
   doc:
     enabled: true
     title: "Matrix Cloud Gateway API"

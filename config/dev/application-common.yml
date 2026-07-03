@@ -269,6 +269,17 @@ matrix:
       max-retry-count: 5
       lock-time: 10
 
+  # 异常通知 (matrix.exception.notice → ExceptionNoticeProperties)
+  exception:
+    notice:
+      alert-url:
+
+  # 图片翻译 OSS 前缀 (matrix.oss.translation → OssProperties)
+  oss:
+    translation:
+      endpoint:
+      prefix:
+
 # 网易易盾内容审核
 yidun:
   secret-id:
