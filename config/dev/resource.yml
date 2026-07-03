@@ -1,3 +1,5 @@
+# ===================== matrix-resource 资源配置 =====================
+
 spring:
   datasource:
     dynamic:
@@ -8,11 +10,21 @@ spring:
           password: ${DATASOURCE_PASSWORD:matrix}
           driver-class-name: com.mysql.cj.jdbc.Driver
 
-
+# ===================== Matrix 模块配置 =====================
 matrix:
+  # 多租户
+  tenant:
+    enable: true
+    ignore-urls:
+      - /resource/ip/**
+    ignore-tables:
+      - sys_contact_log
+      - sys_region_dict
+
+  # 短信
   sms:
-    smsValidateIgnore:
-    isPrint: false
+    sms-validate-ignore:
+    is-print: false
     config-type: yaml
     blends:
       alibaba:
@@ -21,30 +33,72 @@ matrix:
         access-key-secret:
         signature:
 
-
+  # 极光推送
   jpush:
     TEST:
-      appKey:
-      masterSecret:
-      apnsProduction:
-      privateKey:
+      app-key:
+      master-secret:
+      apns-production: false
+      private-key:
+
+  # 对象存储（S3 兼容）
   oss:
-    accessKeyId:
-    accessKeySecret:
+    enabled: true
+    access-key-id:
+    access-key-secret:
     endpoint:
-    bucketName:
+    bucket-name:
     prefix:
-matrix:
-  tenant:
-    enable: true
-  ignoreTables:
-    - sys_contact_log
-  ignore-urls:
-    - /resource/ip/**
+    max-upload-size: 100MB
+    presigned-expiration: 3600
+
+  # 邮件
+  mail:
+    enabled: true
+    host: ${MAIL_HOST:smtp.example.com}
+    port: ${MAIL_PORT:465}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    from: ${MAIL_FROM:noreply@example.com}
+    from-name: "Matrix Cloud"
+
+  # 社交登录
+  social:
+    enabled: false
+    type:
+      GITEE:
+        client-id:
+        client-secret:
+        redirect-uri:
+      GITHUB:
+        client-id:
+        client-secret:
+        redirect-uri:
+
+  # 消息队列
   mq:
     enabled: false
-    onsAddr:
-    accessKey:
-    secretKey:
+    ons-addr:
+    access-key:
+    secret-key:
     producers:
     consumers:
+
+  # WebSocket
+  websocket:
+    enabled: false
+    path: /ws
+    sender-type: local
+    allowed-origins:
+      - "*"
+
+  # SSE
+  websocket:
+    sse:
+      enabled: false
+      path: /sse
+
+  # 监控
+  monitor:
+    trace-enable: true
+    metrics-enable: true

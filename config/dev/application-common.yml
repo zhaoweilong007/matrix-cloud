@@ -1,3 +1,5 @@
+# ===================== 通用配置（所有服务共享） =====================
+
 # 密码策略
 user:
   password:
@@ -13,17 +15,12 @@ spring:
   main:
     allow-bean-definition-overriding: true
     allow-circular-references: true
-  autoconfigure:
-    exclude:
-      # easy-trans 3.0.6 不兼容 SB4（RestTemplateBuilder 已移除），排除其自动配置
-      - com.fhs.trans.config.TransServiceConfig
 
   servlet:
     multipart:
-      # 整个请求大小限制
       max-request-size: 20MB
-      # 上传单个文件大小限制
       max-file-size: 100MB
+
   cloud:
     nacos:
       discovery:
@@ -33,7 +30,6 @@ spring:
     sentinel:
       eager: true
       transport:
-        # 添加sentinel的控制台地址
         dashboard: ${SENTINEL_DASHBOARD:}
       scg:
         fallback:
@@ -41,40 +37,35 @@ spring:
           mode: response
           response-status: 429
           response-body: '{"code":429,"success":false,"message":"请求太频繁，请稍后重试"}'
+
   mvc:
     format:
       date-time: yyyy-MM-dd HH:mm:ss
     throw-exception-if-no-handler-found: true
     static-path-pattern: /statics/**
+
   messages:
     basename: i18n/messages
     encoding: utf-8
     fallback-to-system-locale: true
+
   jackson:
     time-zone: GMT+8
     date-format: yyyy-MM-dd HH:mm:ss
     serialization:
-      # 格式化输出
       INDENT_OUTPUT: false
-      # 忽略无法转换的对象
       fail_on_empty_beans: false
     deserialization:
-      # 允许对象忽略json中不存在的属性
       fail_on_unknown_properties: false
+
   data:
-    mongodb:
-      uri: mongodb://${MONGODB_USERNAME:}:${MONGODB_PASSWORD:}@${MONGODB_URL:}/fangdx?maxPoolSize=${spring.data.mongodb.max-pool-size}&minPoolSize=${spring.data.mongodb.min-pool-size}&maxIdleTimeMS=${spring.data.mongodb.max-idle-time}&connectTimeoutMS=${spring.data.mongodb.connect-timeout}&socketTimeoutMS=${spring.data.mongodb.socket-timeout}
-      max-pool-size: 10
-      min-pool-size: 0
-      max-idle-time: 60000
-      connect-timeout: 5000
-      socket-timeout: 5000
     redis:
       host: 127.0.0.1
       port: 6379
       password: matrix
       database: 0
 
+# MyBatis-Plus 配置
 mybatis-plus:
   encryptor:
     password: ${ENCRYPTOR:}
@@ -98,21 +89,17 @@ mybatis-plus:
   type-aliases-package: com.matrix.**.entity,com.matrix.**.vo
 
 mybatis-plus-join:
-  banner: false # 关闭控制台的 Banner 打印
+  banner: false
 
----
+# Redisson 分布式锁/缓存配置
 redisson:
-  # 线程池数量
   threads: 4
-  # Netty线程池数量
   nettyThreads: 8
-  # 单机配置
   singleServerConfig:
     enable: true
     address: ${REDIS_MASTER_ADDR:}
     password: ${REDIS_PASSWORD:}
     database: ${REDIS_DATABASE:}
-  # 主从配置
   masterSlaveServersConfig:
     enable: true
     database: ${REDIS_DATABASE:}
@@ -120,28 +107,18 @@ redisson:
     masterAddress: ${REDIS_MASTER_ADDR:}
     slaveAddresses:
       - ${REDIS_SLAVE_ADDR:}
-    # 客户端名称
     clientName: ${spring.application.name}
-    # master最小空闲连接数
     masterConnectionMinimumIdleSize: 4
-    # master连接池大小
     masterConnectionPoolSize: 8
-    # slave最小空闲连接数
     slaveConnectionMinimumIdleSize: 4
-    # slave连接池大小
     slaveConnectionPoolSize: 8
-    # 连接空闲超时，单位：毫秒
     idleConnectionTimeout: 10000
-    # 命令等待超时，单位：毫秒
     timeout: 8000
-    # 发布和订阅连接池大小
     subscriptionConnectionPoolSize: 4
-    # 读取模式
     readMode: "SLAVE"
-    # 订阅模式
     subscriptionMode: "MASTER"
 
-#feign配置
+# OpenFeign 配置
 feign:
   sentinel:
     enabled: true
@@ -159,37 +136,23 @@ feign:
   metrics:
     enabled: true
 
-#token认证配置
+# Sa-Token 认证配置
 sa-token:
-  # jwt秘钥
   jwt-secret-key: qpufihmnjkzghgrfmnkvmzjyquiepvnhftsgq
-  # token名称 (同时也是cookie名称)
   token-name: Authorization
-  # token有效期 一个月 单位: 秒
   timeout: 2592000
-  # token临时有效期 (指定时间无操作就过期) 单位: 秒
   active-timeout: -1
-  # 开启内网服务调用鉴权
   check-same-token: true
-  # Same-Token的有效期 (单位: 秒)
   same-token-timeout: -1
-  # 是否允许同一账号并发登录 (为true时允许一起登录, 为false时新登录挤掉旧登录)
   is-concurrent: true
-  # 是否尝试从header里读取token
   is-read-header: true
-  # 是否尝试从cookie里读取token
   is-read-cookie: false
-  #是否从body读取请求头
   is-read-body: false
-  # token前缀
   token-prefix: "Bearer"
-  # 是否输出操作日志
   is-log: false
-  # basic认证用户名密码
   basic: ${spring.cloud.nacos.discovery.metadata.user.name}:${spring.cloud.nacos.discovery.metadata.user.password}
 
-
-# 端点配置
+# Actuator 端点配置
 management:
   endpoints:
     web:
@@ -199,7 +162,7 @@ management:
     health:
       show-details: always
 
-#分布式定时任务
+# XXL-Job 分布式定时任务
 xxl:
   job:
     enabled: true
@@ -211,7 +174,7 @@ xxl:
       log-retention-days: 30
       log-path: ${APP_LOG_PATH:/tmp/matrix-logs}/${spring.application.name}/xxlJob
 
-#分布式事务配置
+# Seata 分布式事务
 seata:
   tx-service-group: ${spring.application.name}-group
   config:
@@ -224,7 +187,6 @@ seata:
       password: nacos
       data-id: seataServer.properties
   registry:
-    # Seata 2.6.0 起 server 改用自研 namingserver 注册(Nacos 3.x 移除 v1 naming API，旧 nacos-client 无法注册)
     type: seata
     seata:
       server-addr: ${seata.namingserver-addr:seata-naming-server:8081}
@@ -233,15 +195,12 @@ seata:
       username: seata
       password: seata
 
-
-
-# 分布式锁 lock4j 全局配置
+# Lock4j 分布式锁
 lock4j:
-  # 获取分布式锁超时时间，默认为 3000 毫秒
   acquire-timeout: 3000
-  # 分布式锁的超时时间，默认为 30 秒
   expire: 30000
 
+# 微信小程序
 wx:
   miniapp:
     appid:
@@ -251,22 +210,7 @@ wx:
       key-prefix: wa
       http-client-type: httpclient
 
-
-matrix:
-  oss:
-    prefix:
-
-#易盾检测配置
-yidun:
-  secretId:
-  secretKey:
-  businessId:
-  imgBusinessId:
-  textCallBack:
-  imgCallBack:
-
-
-#beanSearch配置
+# BeanSearcher 配置
 bean-searcher:
   params:
     pagination:
@@ -276,42 +220,73 @@ bean-searcher:
       size: pageSize
       start: 1
 
-
+# Easy-Trans 翻译配置
 easy-trans:
-  #启用redis缓存 如果不用redis请设置为false
   is-enable-redis: true
-  #启用全局翻译(拦截所有responseBody进行自动翻译)，如果对于性能要求很高可关闭此配置
   is-enable-global: true
-  #启用平铺模式
   is-enable-tile: true
-  #字典缓存放到redis 微服务模式请开启
   dict-use-redis: true
-  # ruoyi相关的请开启
   is-enable-map-result: true
-  # 启用多数据源
   multiple-data-sources: true
   mp-new: true
 
-
-
+# ===================== Matrix 通用配置 =====================
 matrix:
-  access-log: false
+  # 访问日志
+  access-log:
+    enabled: false
+
+  # 灰度负载均衡
   load-balance:
     gray:
       enabled: true
-      defaultVersion: 1.0
+      default-version: "1.0"
       chooser: com.matrix.feign.chooser.ProfileRuleChooser
-      ips:
+
+  # API 加解密
+  crypto:
+    enabled: false
+    type: AES
+    secret-key:
+
+  # 监控
   monitor:
-    traceEnable: true
-    metricsEnable: true
+    trace-enable: true
+    metrics-enable: true
+
+  # RocketMQ
   mq:
     enabled: false
-    onsAddr: ${MQ_ONSADDR:}
+    ons-addr: ${MQ_ONSADDR:}
 
+  # Redis MQ
+  mq:
+    redis:
+      enabled: false
+
+  # 同主机优先负载均衡
+  loadbalancer:
+    same-host:
+      enabled: true
+
+  # 数据权限
+  data-permission:
+    enabled: true
+
+# 网易易盾内容审核
+yidun:
+  secret-id:
+  secret-key:
+  business-id:
+  img-business-id:
+  text-call-back:
+  img-call-back:
+
+# 日志级别
 logging:
   level:
     com.alibaba.cloud.seata: error
     org.springframework.cloud.openfeign: warn
     com.alibaba.nacos: warn
     org.springframework: warn
+    com.matrix.datapermission: debug

@@ -1,10 +1,13 @@
+# ===================== matrix-system 服务配置 =====================
+
+# 多租户配置
 matrix:
   tenant:
     enable: true
     ignore-urls:
       - /auth/**
       - /easyTrans/proxy/**
-    ignoreTables:
+    ignore-tables:
       - sys_menu
       - sys_role_menu
       - sys_user_role
@@ -12,11 +15,129 @@ matrix:
       - sys_dict_data
       - sys_dict_type
       - sys_region_dict
+      - sys_login_log
+      - sys_operate_log
+      - sys_client
+      - sys_social
+      - sys_message
+      - sys_role_dept
+      - sys_tenant
 
+  # 数据权限配置
+  data-permission:
+    enabled: true
+    # 需要数据权限过滤的表
+    tables:
+      - sys_admin
+      - sys_dept
+      - sys_notice
+      - sys_operate_log
+
+  # 安全配置 - 白名单
+  security:
+    ignore:
+      whites:
+        - /auth/**
+        - /system/captcha/**
+        - /actuator/**
+
+  # 验证码配置
+  captcha:
+    enabled: true
+    type: MATH
+    category: CIRCLE
+    number-length: 1
+    char-length: 4
+
+  # XSS 过滤
+  xss:
+    enabled: false
+    exclude-urls:
+      - /system/notice/**
+
+  # 演示模式（生产环境关闭）
+  demo:
+    enabled: false
+
+  # API 加解密
+  crypto:
+    enabled: false
+    type: AES
+    secret-key:
+
+  # 功能开关
+  feature:
+    toggle:
+      features:
+        social-login: false
+        oauth2: false
+        websocket: false
+        sse: false
+
+  # 文档配置
+  doc:
+    enabled: true
+    title: "Matrix Cloud System API"
+    description: "系统管理服务接口文档"
+    version: "1.0.0"
+
+  # 访问日志
+  access-log:
+    enabled: true
+    ignore-urls:
+      - /actuator/**
+
+  # 异步任务线程池
+  async-task:
+    core-pool-size: 5
+    max-pool-size: 10
+    queue-capacity: 200
+    keep-alive-seconds: 60
+    thread-name-prefix: system-async-
+
+  # 灰度负载均衡
   load-balance:
     gray:
       enabled: true
+      default-version: "1.0"
       chooser: com.matrix.feign.chooser.ProfileRuleChooser
+
+  # 监控
   monitor:
-    traceEnable: true
-    metricsEnable: true
+    trace-enable: true
+    metrics-enable: true
+
+  # 同主机优先负载均衡
+  loadbalancer:
+    same-host:
+      enabled: true
+
+# Redis MQ（系统内部消息）
+  mq:
+    redis:
+      enabled: true
+
+# RocketMQ（外部消息）
+  mq:
+    enabled: false
+
+# 缓存 TTL 配置（通过 TimeoutRedisCacheManager 名称后缀生效）
+cache:
+  menu-cache-ttl: 30m
+  resource-cache-ttl: 30m
+  dict-data-cache-ttl: 1h
+  dict-type-cache-ttl: 2h
+
+# 密码策略
+user:
+  password:
+    max-retry-count: 5
+    lock-time: 10
+
+# Spring 配置
+spring:
+  cloud:
+    sentinel:
+      eager: true
+      transport:
+        dashboard: ${SENTINEL_DASHBOARD:}

@@ -1,34 +1,32 @@
+# ===================== matrix-gateway 网关配置 =====================
+
 # 安全配置
 security:
   # 验证码
   captcha:
-    # 是否开启验证码
     enabled: true
-    # 验证码类型 math 数组计算 char 字符验证
     type: MATH
-    # line 线段干扰 circle 圆圈干扰 shear 扭曲干扰
     category: CIRCLE
-    # 数字验证码位数
-    numberLength: 1
-    # 字符验证码长度
-    charLength: 4
-  # 防止XSS攻击
+    number-length: 1
+    char-length: 4
+  # XSS 防护
   xss:
     enabled: false
-  # 不校验白名单
+    exclude-urls:
+      - /system/notice/**
+  # 安全白名单
   ignore:
     whites:
       - /actuator/health
       - /code
       - /csrf
-      - /system/auth/**
-
+      - /auth/**
 
 spring:
   cloud:
     sentinel:
       datasource:
-        gw_flow:
+        gw-flow:
           nacos:
             server-addr: ${NACOS_SERVER_ADDRESS:nacos:8848}
             namespace: ${spring.profiles.active}
@@ -48,8 +46,10 @@ spring:
             group-id: SENTINEL_GROUP
             data-type: json
             rule-type: gw_api_group
+
     gateway:
-      allowOrigins:
+      # CORS 允许的域名
+      allow-origins:
         - http://localhost:8891
         - http://127.0.0.1:3000
         - http://localhost:3000
@@ -61,33 +61,194 @@ spring:
         connect-timeout: 5000
         response-timeout: 60s
 
-      requestLog: true
+      request-log: true
+
       discovery:
         locator:
           enabled: false
-          lowerCaseServiceId: true
+          lower-case-service-id: true
           url-expression: "'grayLb://'+serviceId"
+
+      # ========== 路由配置 ==========
       routes:
-        - id: system
+        # ---- system 服务 ----
+        - id: system-auth
           uri: grayLb://matrix-system
           predicates:
-            - Path=/system/**
+            - Path=/auth/**
           filters:
-            # - name: RequestRateLimiter
-            #   args:
-            #     key-resolver: "#{@remoteAddrKeyResolver}"
-            #     redis-rate-limiter.burstCapacity: 20 # 令牌桶的容量，允许在一秒钟内完成的最大请求数
-            #     redis-rate-limiter.replenishRate: 20 # 允许用户每秒处理多少个请求
-            - StripPrefix=1
-        - id: resource
-          uri: grayLb://matrix-resource
+            - StripPrefix=0
+
+        - id: system-admin
+          uri: grayLb://matrix-system
+          predicates:
+            - Path=/admin/**
+          filters:
+            - StripPrefix=0
+
+        - id: system-role
+          uri: grayLb://matrix-system
+          predicates:
+            - Path=/role/**
+          filters:
+            - StripPrefix=0
+
+        - id: system-menu
+          uri: grayLb://matrix-system
+          predicates:
+            - Path=/menu/**
+          filters:
+            - StripPrefix=0
+
+        - id: system-resource
+          uri: grayLb://matrix-system
           predicates:
             - Path=/resource/**
           filters:
+            - StripPrefix=0
+
+        - id: system-tenant
+          uri: grayLb://matrix-system
+          predicates:
+            - Path=/tenant/**
+          filters:
+            - StripPrefix=0
+
+        - id: system-dept
+          uri: grayLb://matrix-system
+          predicates:
+            - Path=/system/dept/**
+          filters:
             - StripPrefix=1
 
+        - id: system-post
+          uri: grayLb://matrix-system
+          predicates:
+            - Path=/system/post/**
+          filters:
+            - StripPrefix=1
 
+        - id: system-dict-type
+          uri: grayLb://matrix-system
+          predicates:
+            - Path=/system/dict-type/**
+          filters:
+            - StripPrefix=1
 
+        - id: system-dict-data
+          uri: grayLb://matrix-system
+          predicates:
+            - Path=/system/dict-data/**
+          filters:
+            - StripPrefix=1
+
+        - id: system-config
+          uri: grayLb://matrix-system
+          predicates:
+            - Path=/system/config/**
+          filters:
+            - StripPrefix=1
+
+        - id: system-notice
+          uri: grayLb://matrix-system
+          predicates:
+            - Path=/system/notice/**
+          filters:
+            - StripPrefix=1
+
+        - id: system-login-log
+          uri: grayLb://matrix-system
+          predicates:
+            - Path=/system/login-log/**
+          filters:
+            - StripPrefix=1
+
+        - id: system-operate-log
+          uri: grayLb://matrix-system
+          predicates:
+            - Path=/system/operate-log/**
+          filters:
+            - StripPrefix=1
+
+        - id: system-client
+          uri: grayLb://matrix-system
+          predicates:
+            - Path=/system/client/**
+          filters:
+            - StripPrefix=1
+
+        - id: system-social-user
+          uri: grayLb://matrix-system
+          predicates:
+            - Path=/system/social-user/**
+          filters:
+            - StripPrefix=1
+
+        - id: system-message
+          uri: grayLb://matrix-system
+          predicates:
+            - Path=/system/message/**
+          filters:
+            - StripPrefix=1
+
+        - id: system-tenant-package
+          uri: grayLb://matrix-system
+          predicates:
+            - Path=/system/tenant-package/**
+          filters:
+            - StripPrefix=1
+
+        - id: system-sys
+          uri: grayLb://matrix-system
+          predicates:
+            - Path=/sys/**
+          filters:
+            - StripPrefix=0
+
+        # ---- resource 服务 ----
+        - id: resource-oss
+          uri: grayLb://matrix-resource
+          predicates:
+            - Path=/oss/**
+          filters:
+            - StripPrefix=0
+
+        - id: resource-sms
+          uri: grayLb://matrix-resource
+          predicates:
+            - Path=/sms/**
+          filters:
+            - StripPrefix=0
+
+        - id: resource-email
+          uri: grayLb://matrix-resource
+          predicates:
+            - Path=/email/**
+          filters:
+            - StripPrefix=0
+
+        - id: resource-ip
+          uri: grayLb://matrix-resource
+          predicates:
+            - Path=/ip/**
+          filters:
+            - StripPrefix=0
+
+        - id: resource-jpush
+          uri: grayLb://matrix-resource
+          predicates:
+            - Path=/jpush/**
+          filters:
+            - StripPrefix=0
+
+        - id: resource-ocr
+          uri: grayLb://matrix-resource
+          predicates:
+            - Path=/ocr/**
+          filters:
+            - StripPrefix=0
+
+# Feign 客户端配置（仅 Gateway 内部调用）
 feign:
   sentinel:
     enabled: true
@@ -102,6 +263,21 @@ feign:
 matrix:
   rate-limiter:
     enabled: true
-    replenishRate: 10
-    burstCapacity: 20
-    keyType: IP
+    replenish-rate: 10
+    burst-capacity: 20
+    key-type: IP
+
+  # 黑名单配置
+  black-list:
+    enabled: false
+    ips:
+
+  # 网关加解密
+  crypto:
+    enabled: false
+
+  # API 签名
+  api-signature:
+    enabled: false
+    secrets:
+      default: default-secret-key
