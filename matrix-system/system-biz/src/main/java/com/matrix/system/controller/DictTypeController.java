@@ -8,6 +8,8 @@ import com.matrix.api.system.entity.po.SysDictType;
 import com.matrix.common.enums.BusinessErrorTypeEnum;
 import com.matrix.common.exception.ServiceException;
 import com.matrix.common.result.R;
+import com.matrix.log.annotation.Log;
+import com.matrix.log.enums.BusinessType;
 import com.matrix.system.service.SysDictDataService;
 import com.matrix.system.service.SysDictTypeService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -40,6 +42,7 @@ public class DictTypeController {
     @Operation(summary = "字典类型详情")
     public R<SysDictType> getById(@PathVariable Long id) { return R.success(dictTypeService.getById(id)); }
 
+    @Log(title = "字典类型管理", businessType = BusinessType.INSERT)
     @PostMapping
     @Operation(summary = "新增字典类型")
     public R<Boolean> create(@Validated @RequestBody DictTypeDto dto) {
@@ -49,6 +52,7 @@ public class DictTypeController {
         return R.success(dictTypeService.save(entity));
     }
 
+    @Log(title = "字典类型管理", businessType = BusinessType.UPDATE)
     @PutMapping
     @Operation(summary = "修改字典类型")
     public R<Boolean> update(@Validated @RequestBody DictTypeDto dto) {
@@ -58,6 +62,7 @@ public class DictTypeController {
         return R.success(dictTypeService.updateById(entity));
     }
 
+    @Log(title = "字典类型管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/{id}")
     @Operation(summary = "删除字典类型")
     public R<Boolean> delete(@PathVariable Long id) {

@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.matrix.api.system.entity.dto.NoticeDto;
 import com.matrix.api.system.entity.po.SysNotice;
 import com.matrix.common.result.R;
+import com.matrix.log.annotation.Log;
+import com.matrix.log.enums.BusinessType;
 import com.matrix.system.service.SysNoticeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -30,6 +32,7 @@ public class NoticeController {
     @Operation(summary = "通知详情")
     public R<SysNotice> getById(@PathVariable Long id) { return R.success(noticeService.getById(id)); }
 
+    @Log(title = "通知管理", businessType = BusinessType.INSERT)
     @PostMapping
     @Operation(summary = "新增通知")
     public R<Boolean> create(@Validated @RequestBody NoticeDto dto) {
@@ -39,6 +42,7 @@ public class NoticeController {
         return R.success(noticeService.save(entity));
     }
 
+    @Log(title = "通知管理", businessType = BusinessType.UPDATE)
     @PutMapping
     @Operation(summary = "修改通知")
     public R<Boolean> update(@Validated @RequestBody NoticeDto dto) {
@@ -49,6 +53,7 @@ public class NoticeController {
         return R.success(noticeService.updateById(entity));
     }
 
+    @Log(title = "通知管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/{id}")
     @Operation(summary = "删除通知")
     public R<Boolean> delete(@PathVariable Long id) { return R.success(noticeService.removeById(id)); }

@@ -4,6 +4,8 @@ import com.matrix.api.system.entity.dto.DeptDto;
 import com.matrix.api.system.entity.po.SysDept;
 import com.matrix.api.system.entity.vo.DeptTreeVo;
 import com.matrix.common.result.R;
+import com.matrix.log.annotation.Log;
+import com.matrix.log.enums.BusinessType;
 import com.matrix.system.service.SysDeptService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -45,6 +47,7 @@ public class DeptController {
         return R.success(deptService.getById(id));
     }
 
+    @Log(title = "部门管理", businessType = BusinessType.INSERT)
     @PostMapping
     @Operation(summary = "新增部门")
     public R<Boolean> create(@Validated @RequestBody DeptDto dto) {
@@ -59,6 +62,7 @@ public class DeptController {
         return R.success(deptService.save(dept));
     }
 
+    @Log(title = "部门管理", businessType = BusinessType.UPDATE)
     @PutMapping
     @Operation(summary = "修改部门")
     public R<Boolean> update(@Validated @RequestBody DeptDto dto) {
@@ -74,6 +78,7 @@ public class DeptController {
         return R.success(deptService.updateById(dept));
     }
 
+    @Log(title = "部门管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/{id}")
     @Operation(summary = "删除部门")
     public R<Boolean> delete(@PathVariable Long id) {

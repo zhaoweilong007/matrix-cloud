@@ -6,6 +6,8 @@ import com.matrix.api.system.client.RoleAPI;
 import com.matrix.api.system.entity.dto.SysRoleDto;
 import com.matrix.api.system.entity.po.SysRole;
 import com.matrix.common.result.R;
+import com.matrix.log.annotation.Log;
+import com.matrix.log.enums.BusinessType;
 import com.matrix.system.service.SysRoleService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -29,16 +31,19 @@ public class RoleController implements RoleAPI {
 
     private final SysRoleService roleService;
 
+    @Log(title = "角色管理", businessType = BusinessType.INSERT)
     @PostMapping
     public R<Boolean> add(@Validated @RequestBody SysRoleDto sysRoleDto) {
         return R.success(roleService.add(sysRoleDto));
     }
 
+    @Log(title = "角色管理", businessType = BusinessType.UPDATE)
     @PutMapping
     public R<Boolean> update(@Validated @RequestBody SysRoleDto sysRoleDto) {
         return R.success(roleService.update(sysRoleDto));
     }
 
+    @Log(title = "角色管理", businessType = BusinessType.DELETE)
     @DeleteMapping("{id}")
     public R<Boolean> delete(@PathVariable("id") Long id) {
         return R.success(roleService.removeById(id));

@@ -47,6 +47,7 @@ public class SysAdmin extends TenantEntity {
     private Long deptId;
 
     /** 手机号 */
+    @Sensitive(strategy = SensitiveStrategyEnum.PHONE)
     private String mobile;
 
     /** 性别：0-未知 1-男 2-女 */

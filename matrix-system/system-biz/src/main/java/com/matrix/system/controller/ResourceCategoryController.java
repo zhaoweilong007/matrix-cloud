@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.matrix.api.system.entity.dto.SysResourceCategoryDto;
 import com.matrix.api.system.entity.po.SysResourceCategory;
 import com.matrix.common.result.R;
+import com.matrix.log.annotation.Log;
+import com.matrix.log.enums.BusinessType;
 import com.matrix.system.service.SysResourceCategoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -29,6 +31,7 @@ public class ResourceCategoryController {
 
     private final SysResourceCategoryService sysResourceCategoryService;
 
+    @Log(title = "资源分类管理", businessType = BusinessType.INSERT)
     @PostMapping
     @Operation(summary = "新增资源分类")
     public R<Boolean> create(@Validated @RequestBody SysResourceCategoryDto dto) {
@@ -38,6 +41,7 @@ public class ResourceCategoryController {
         return R.success(sysResourceCategoryService.save(entity));
     }
 
+    @Log(title = "资源分类管理", businessType = BusinessType.UPDATE)
     @PutMapping
     @Operation(summary = "修改资源分类")
     public R<Boolean> update(@Validated @RequestBody SysResourceCategoryDto dto) {
@@ -48,6 +52,7 @@ public class ResourceCategoryController {
         return R.success(sysResourceCategoryService.updateById(entity));
     }
 
+    @Log(title = "资源分类管理", businessType = BusinessType.DELETE)
     @DeleteMapping("{id}")
     @Operation(summary = "删除资源分类")
     public R<Boolean> delete(@PathVariable("id") Long id) {

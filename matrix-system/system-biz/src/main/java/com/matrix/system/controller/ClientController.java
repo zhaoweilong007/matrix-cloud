@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.matrix.api.system.entity.dto.SysClientDto;
 import com.matrix.api.system.entity.po.SysClient;
 import com.matrix.common.result.R;
+import com.matrix.log.annotation.Log;
+import com.matrix.log.enums.BusinessType;
 import com.matrix.system.service.SysClientService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -27,6 +29,7 @@ public class ClientController {
     @Operation(summary = "客户端详情")
     public R<SysClient> getById(@PathVariable Long id) { return R.success(clientService.getById(id)); }
 
+    @Log(title = "客户端管理", businessType = BusinessType.INSERT)
     @PostMapping
     @Operation(summary = "新增客户端")
     public R<Boolean> create(@Validated @RequestBody SysClientDto dto) {
@@ -37,6 +40,7 @@ public class ClientController {
         return R.success(clientService.save(e));
     }
 
+    @Log(title = "客户端管理", businessType = BusinessType.UPDATE)
     @PutMapping
     @Operation(summary = "修改客户端")
     public R<Boolean> update(@Validated @RequestBody SysClientDto dto) {
@@ -48,6 +52,7 @@ public class ClientController {
         return R.success(clientService.updateById(e));
     }
 
+    @Log(title = "客户端管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/{id}")
     @Operation(summary = "删除客户端")
     public R<Boolean> delete(@PathVariable Long id) { return R.success(clientService.removeById(id)); }

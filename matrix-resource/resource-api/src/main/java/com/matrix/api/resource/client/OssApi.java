@@ -5,10 +5,13 @@ import com.matrix.common.result.R;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * OSS 对象存储服务 Feign 客户端。
@@ -23,14 +26,16 @@ public interface OssApi {
     /**
      * 上传文件并返回访问 URL。
      *
+     * @param file        文件
      * @param objectName  对象名（存储路径）
      * @param contentType 文件内容类型
      * @return 文件访问 URL
      */
     @Operation(summary = "文件上传", description = "上传文件到对象存储并返回 URL")
-    @PostMapping("/upload")
-    R<String> upload(@RequestParam("objectName") String objectName,
-                     @RequestParam("contentType") String contentType);
+    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    R<String> upload(@RequestPart("file") MultipartFile file,
+                     @RequestParam("objectName") String objectName,
+                     @RequestParam(value = "contentType", defaultValue = "application/octet-stream") String contentType);
 
     /**
      * 删除文件。

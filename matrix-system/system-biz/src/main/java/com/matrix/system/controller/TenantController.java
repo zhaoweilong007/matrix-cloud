@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.matrix.api.system.entity.dto.TenantDto;
 import com.matrix.api.system.entity.po.Tenant;
 import com.matrix.common.result.R;
+import com.matrix.log.annotation.Log;
+import com.matrix.log.enums.BusinessType;
 import com.matrix.system.convert.ConvertMapper;
 import com.matrix.system.service.TenantService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,6 +36,7 @@ public class TenantController {
      * @param tenantDto 租户信息
      * @return 是否成功
      */
+    @Log(title = "租户管理", businessType = BusinessType.INSERT)
     @PostMapping
     @Operation(summary = "新增租户")
     public R<Boolean> add(@Validated @RequestBody TenantDto tenantDto) {
@@ -47,6 +50,7 @@ public class TenantController {
      * @param tenantDto 租户信息
      * @return 是否成功
      */
+    @Log(title = "租户管理", businessType = BusinessType.UPDATE)
     @PutMapping("/{id}")
     @Operation(summary = "修改租户")
     public R<Boolean> update(@PathVariable("id") Long id, @Validated @RequestBody TenantDto tenantDto) {
@@ -61,6 +65,7 @@ public class TenantController {
      * @param id 租户 ID
      * @return 是否成功
      */
+    @Log(title = "租户管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/{id}")
     @Operation(summary = "删除租户")
     public R<Boolean> delete(@PathVariable("id") Long id) {

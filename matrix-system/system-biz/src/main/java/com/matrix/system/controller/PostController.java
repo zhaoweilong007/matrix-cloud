@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.matrix.api.system.entity.dto.PostDto;
 import com.matrix.api.system.entity.po.SysPost;
 import com.matrix.common.result.R;
+import com.matrix.log.annotation.Log;
+import com.matrix.log.enums.BusinessType;
 import com.matrix.system.service.SysPostService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -38,6 +40,7 @@ public class PostController {
     @Operation(summary = "岗位详情")
     public R<SysPost> getById(@PathVariable Long id) { return R.success(postService.getById(id)); }
 
+    @Log(title = "岗位管理", businessType = BusinessType.INSERT)
     @PostMapping
     @Operation(summary = "新增岗位")
     public R<Boolean> create(@Validated @RequestBody PostDto dto) {
@@ -46,6 +49,7 @@ public class PostController {
         return R.success(postService.save(entity));
     }
 
+    @Log(title = "岗位管理", businessType = BusinessType.UPDATE)
     @PutMapping
     @Operation(summary = "修改岗位")
     public R<Boolean> update(@Validated @RequestBody PostDto dto) {
@@ -55,6 +59,7 @@ public class PostController {
         return R.success(postService.updateById(entity));
     }
 
+    @Log(title = "岗位管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/{id}")
     @Operation(summary = "删除岗位")
     public R<Boolean> delete(@PathVariable Long id) { return R.success(postService.removeById(id)); }

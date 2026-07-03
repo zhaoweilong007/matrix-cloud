@@ -12,6 +12,8 @@ import com.matrix.api.system.entity.po.SysAdmin;
 import com.matrix.common.enums.BusinessErrorTypeEnum;
 import com.matrix.common.exception.ServiceException;
 import com.matrix.common.result.R;
+import com.matrix.log.annotation.Log;
+import com.matrix.log.enums.BusinessType;
 import com.matrix.system.service.SysAdminService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -43,6 +45,7 @@ public class AdminController implements AdminAPI {
     }
 
 
+    @Log(title = "用户管理", businessType = BusinessType.DELETE)
     @DeleteMapping("{id}")
     @Override
     public R<Boolean> delete(@PathVariable("id") Long id) {
@@ -50,6 +53,7 @@ public class AdminController implements AdminAPI {
     }
 
 
+    @Log(title = "用户管理", businessType = BusinessType.INSERT)
     @PostMapping
     @Operation(summary = "新增用户")
     public R<Boolean> create(@Validated @RequestBody SysAdminDto dto) {
@@ -71,6 +75,7 @@ public class AdminController implements AdminAPI {
         return R.success(sysAdminService.save(admin));
     }
 
+    @Log(title = "用户管理", businessType = BusinessType.UPDATE)
     @PutMapping
     @Override
     public R<Boolean> update(@RequestBody SysAdmin sysAdmin) {

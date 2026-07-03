@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.matrix.api.system.entity.dto.ConfigDto;
 import com.matrix.api.system.entity.po.SysConfig;
 import com.matrix.common.result.R;
+import com.matrix.log.annotation.Log;
+import com.matrix.log.enums.BusinessType;
 import com.matrix.redis.utils.RedisUtils;
 import com.matrix.system.service.SysConfigService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -39,6 +41,7 @@ public class ConfigController {
         return R.success(configService.getValueByKey(key));
     }
 
+    @Log(title = "配置管理", businessType = BusinessType.INSERT)
     @PostMapping
     @Operation(summary = "新增配置")
     public R<Boolean> create(@Validated @RequestBody ConfigDto dto) {
@@ -48,6 +51,7 @@ public class ConfigController {
         return R.success(configService.save(entity));
     }
 
+    @Log(title = "配置管理", businessType = BusinessType.UPDATE)
     @PutMapping
     @Operation(summary = "修改配置")
     public R<Boolean> update(@Validated @RequestBody ConfigDto dto) {
@@ -59,6 +63,7 @@ public class ConfigController {
         return R.success(ok);
     }
 
+    @Log(title = "配置管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/{id}")
     @Operation(summary = "删除配置")
     public R<Boolean> delete(@PathVariable Long id) {

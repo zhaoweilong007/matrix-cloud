@@ -20,11 +20,14 @@ import com.matrix.common.enums.BusinessErrorTypeEnum;
 import com.matrix.common.exception.ServiceException;
 import com.matrix.common.util.spring.SpringUtils;
 import com.matrix.log.event.LogininforEvent;
+import com.matrix.prometheus.annotation.BizTrace;
 import com.matrix.system.mapper.SysAdminMapper;
 import com.matrix.auth.core.PasswordLockoutService;
 import com.matrix.auth.utils.LoginHelper;
 import com.matrix.system.service.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import cn.hutool.crypto.digest.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -53,18 +56,20 @@ public class SysAdminServiceImpl extends ServiceImpl<SysAdminMapper, SysAdmin> i
     }
 
     @Override
+    @BizTrace(id = "#sysAdminRegisterDto.username", type = "USER_REGISTER")
     public String register(SysAdminRegisterDto sysAdminRegisterDto) {
         boolean exists = baseMapper.exists(Wrappers.<SysAdmin>lambdaQuery().eq(SysAdmin::getUsername, sysAdminRegisterDto.getUsername()));
         Assert.isTrue(!exists, () -> new ServiceException(BusinessErrorTypeEnum.USER_EXIST));
         SysAdmin sysAdmin = new SysAdmin();
         sysAdmin.setUsername(sysAdminRegisterDto.getUsername());
-        sysAdmin.setPassword(SaSecureUtil.md5(sysAdminRegisterDto.getPassword()));
+        sysAdmin.setPassword(BCrypt.hashpw(sysAdminRegisterDto.getPassword()));
         sysAdmin.setEmail(sysAdminRegisterDto.getEmail());
         baseMapper.insert(sysAdmin);
         return sysAdmin.getUsername();
     }
 
     @Override
+    @BizTrace(id = "#sysAdminLoginDto.username", type = "USER_LOGIN")
     public SaTokenInfo login(SysAdminLoginDto sysAdminLoginDto) {
         SysAdmin sysAdmin = baseMapper.selectOne(Wrappers.<SysAdmin>lambdaQuery().eq(SysAdmin::getUsername, sysAdminLoginDto.getUsername()));
         if (sysAdmin == null) {
@@ -80,8 +85,8 @@ public class SysAdminServiceImpl extends ServiceImpl<SysAdminMapper, SysAdmin> i
             throw e;
         }
 
-        // 验证密码
-        if (!sysAdmin.getPassword().equals(SaSecureUtil.md5(sysAdminLoginDto.getPassword()))) {
+        // 验证密码：优先 BCrypt，兼容旧 MD5 密码并自动升级
+        if (!verifyAndUpgradePassword(sysAdmin, sysAdminLoginDto.getPassword())) {
             passwordLockoutService.recordPasswordError(sysAdminLoginDto.getUsername());
             publishLoginEvent(sysAdminLoginDto.getUsername(), "1", "密码错误");
             throw new ServiceException(BusinessErrorTypeEnum.AUTHENTICATION_FAILED);
@@ -97,6 +102,29 @@ public class SysAdminServiceImpl extends ServiceImpl<SysAdminMapper, SysAdmin> i
 
         publishLoginEvent(sysAdminLoginDto.getUsername(), "0", "登录成功");
         return StpUtil.getTokenInfo();
+    }
+
+    /**
+     * 验证密码，兼容 MD5 旧密码并自动升级为 BCrypt。
+     *
+     * @param sysAdmin   用户实体
+     * @param rawPassword 明文密码
+     * @return 密码是否正确
+     */
+    private boolean verifyAndUpgradePassword(SysAdmin sysAdmin, String rawPassword) {
+        String stored = sysAdmin.getPassword();
+        // BCrypt 密文以 $2a$ 开头
+        if (stored.startsWith("$2a$")) {
+            return BCrypt.checkpw(rawPassword, stored);
+        }
+        // 兼容旧 MD5 密码
+        if (stored.equals(SaSecureUtil.md5(rawPassword))) {
+            // 自动升级为 BCrypt
+            sysAdmin.setPassword(BCrypt.hashpw(rawPassword));
+            updateById(sysAdmin);
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -163,13 +191,20 @@ public class SysAdminServiceImpl extends ServiceImpl<SysAdminMapper, SysAdmin> i
 
     @Override
     public Boolean updatePassword(UpdateAdminPasswordDto updatePasswordParam) {
-        //更改密码
         SysAdmin sysAdmin = getById(updatePasswordParam.getId());
         Assert.notNull(sysAdmin, () -> new ServiceException(BusinessErrorTypeEnum.USER_NOT_EXIST));
-        if (!Objects.equals(SaSecureUtil.md5(updatePasswordParam.getOldPassword()), sysAdmin.getPassword())) {
+        // 验证旧密码：优先 BCrypt，兼容 MD5
+        String stored = sysAdmin.getPassword();
+        boolean verified;
+        if (stored.startsWith("$2a$")) {
+            verified = BCrypt.checkpw(updatePasswordParam.getOldPassword(), stored);
+        } else {
+            verified = Objects.equals(SaSecureUtil.md5(updatePasswordParam.getOldPassword()), stored);
+        }
+        if (!verified) {
             throw new ServiceException(BusinessErrorTypeEnum.AUTHENTICATION_FAILED);
         }
-        sysAdmin.setPassword(SaSecureUtil.md5(updatePasswordParam.getNewPassword()));
+        sysAdmin.setPassword(BCrypt.hashpw(updatePasswordParam.getNewPassword()));
         return updateById(sysAdmin);
     }
 

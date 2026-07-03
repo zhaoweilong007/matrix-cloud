@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.matrix.api.system.entity.dto.TenantPackageDto;
 import com.matrix.api.system.entity.po.SysTenantPackage;
 import com.matrix.common.result.R;
+import com.matrix.log.annotation.Log;
+import com.matrix.log.enums.BusinessType;
 import com.matrix.system.service.SysTenantPackageService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -38,6 +40,7 @@ public class TenantPackageController {
     @Operation(summary = "套餐详情")
     public R<SysTenantPackage> getById(@PathVariable Long id) { return R.success(tenantPackageService.getById(id)); }
 
+    @Log(title = "租户套餐管理", businessType = BusinessType.INSERT)
     @PostMapping
     @Operation(summary = "新增套餐")
     public R<Boolean> create(@Validated @RequestBody TenantPackageDto dto) {
@@ -47,6 +50,7 @@ public class TenantPackageController {
         return R.success(tenantPackageService.save(entity));
     }
 
+    @Log(title = "租户套餐管理", businessType = BusinessType.UPDATE)
     @PutMapping
     @Operation(summary = "修改套餐")
     public R<Boolean> update(@Validated @RequestBody TenantPackageDto dto) {
@@ -56,6 +60,7 @@ public class TenantPackageController {
         return R.success(tenantPackageService.updateById(entity));
     }
 
+    @Log(title = "租户套餐管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/{id}")
     @Operation(summary = "删除套餐")
     public R<Boolean> delete(@PathVariable Long id) { return R.success(tenantPackageService.removeById(id)); }

@@ -2,14 +2,16 @@ package com.matrix.resource.controller;
 
 import com.matrix.api.resource.client.OssApi;
 import com.matrix.common.result.R;
+import com.matrix.log.annotation.Log;
+import com.matrix.log.enums.BusinessType;
 import com.matrix.oss.core.OssClient;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
+import java.io.IOException;
 import java.time.Duration;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 对象存储服务控制器。
@@ -25,14 +27,18 @@ public class OssApiController implements OssApi {
     private final OssClient ossClient;
 
     @Override
-    public R<String> upload(String objectName, String contentType) {
-        // 从请求上下文获取文件流；简化实现使用空流，实际需配合 MultipartFile
-        byte[] empty = new byte[0];
-        String url = ossClient.upload(objectName, new ByteArrayInputStream(empty), contentType);
-        return R.success(url);
+    @Log(title = "对象存储", businessType = BusinessType.INSERT)
+    public R<String> upload(MultipartFile file, String objectName, String contentType) {
+        try {
+            String url = ossClient.upload(objectName, file.getInputStream(), contentType);
+            return R.success(url);
+        } catch (IOException e) {
+            return R.fail("文件上传失败: " + e.getMessage());
+        }
     }
 
     @Override
+    @Log(title = "对象存储", businessType = BusinessType.DELETE)
     public R<Boolean> delete(String objectName) {
         ossClient.delete(objectName);
         return R.success(true);

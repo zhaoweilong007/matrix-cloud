@@ -2,7 +2,9 @@ package com.matrix.api.system.entity.po;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.matrix.common.annotation.Sensitive;
 import com.matrix.common.entity.TenantEntity;
+import com.matrix.common.enums.SensitiveStrategyEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 import lombok.Data;
@@ -38,9 +40,11 @@ public class SysDept extends TenantEntity {
     private String deptCategory;
 
     /** 联系电话 */
+    @Sensitive(strategy = SensitiveStrategyEnum.PHONE)
     private String phone;
 
     /** 邮箱 */
+    @Sensitive(strategy = SensitiveStrategyEnum.EMAIL)
     private String email;
 
     /** 排序 */

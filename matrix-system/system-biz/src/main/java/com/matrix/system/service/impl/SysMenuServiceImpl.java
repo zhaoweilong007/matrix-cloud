@@ -12,6 +12,7 @@ import com.matrix.system.service.SysMenuService;
 import com.matrix.system.service.SysRoleMenuRelationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
+import com.matrix.prometheus.annotation.BizTrace;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -109,6 +110,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 
     @Override
     @CachePut(value = "menuCache", key = "#roleId")
+    @BizTrace(id = "#roleId", type = "MENU_ASSIGN")
     public Boolean assignMenu(Long roleId, List<Long> menuIds) {
         sysRoleMenuRelationService.remove(Wrappers.<SysRoleMenuRelation>lambdaQuery().eq(SysRoleMenuRelation::getRoleId, roleId));
         List<SysRoleMenuRelation> relationList = menuIds.stream().filter(id -> getById(id) != null).map(mid -> {

@@ -11,6 +11,8 @@ import com.matrix.api.resource.sms.SmsSceneEnum;
 import com.matrix.api.resource.sms.SmsSignNameEnum;
 import com.matrix.common.enums.SystemErrorTypeEnum;
 import com.matrix.common.result.R;
+import com.matrix.log.annotation.Log;
+import com.matrix.log.enums.BusinessType;
 import com.matrix.common.util.spring.ProfileUtils;
 import com.matrix.redis.utils.RedisUtils;
 import com.matrix.sms.enums.SmsBlendEnum;
@@ -37,6 +39,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class SmsController implements SmsApi {
 
     @Override
+    @Log(title = "短信管理", businessType = BusinessType.INSERT)
     public R<Void> sendMsg(SmsDto smsDto) {
         if (smsDto.getParams() == null) {
             smsDto.setParams(new LinkedHashMap<>());
@@ -59,11 +62,13 @@ public class SmsController implements SmsApi {
     }
 
     @Override
+    @Log(title = "短信管理", businessType = BusinessType.INSERT)
     public void sendMsgAsync(SmsDto smsVo) {
         CompletableFuture.runAsync(() -> sendMsg(smsVo));
     }
 
     @Override
+    @Log(title = "短信管理", businessType = BusinessType.INSERT)
     public R<Void> sendSmsCode(SmsCodeSendDTO smsCodeSendDTO) {
         final SmsSceneEnum sceneEnum = smsCodeSendDTO.getScene();
         // 创建验证码

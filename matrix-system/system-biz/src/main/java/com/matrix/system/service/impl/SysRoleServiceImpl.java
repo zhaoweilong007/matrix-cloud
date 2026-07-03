@@ -9,6 +9,7 @@ import com.matrix.system.mapper.SysRoleMapper;
 import com.matrix.system.service.SysAdminRoleRelationService;
 import com.matrix.system.service.SysRoleService;
 import lombok.RequiredArgsConstructor;
+import com.matrix.prometheus.annotation.BizTrace;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -50,6 +51,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     }
 
     @Override
+    @BizTrace(id = "#userId", type = "ROLE_ASSIGN")
     public Boolean assignRole(Long userId, List<Long> roleIds) {
         List<SysAdminRoleRelation> collect = roleIds.stream().filter(id -> getById(id) != null)
                 .map(id -> {

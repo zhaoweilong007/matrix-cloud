@@ -6,6 +6,8 @@ import com.matrix.api.system.client.ResourceAPI;
 import com.matrix.api.system.entity.dto.SysResourceDto;
 import com.matrix.api.system.entity.po.SysResource;
 import com.matrix.common.result.R;
+import com.matrix.log.annotation.Log;
+import com.matrix.log.enums.BusinessType;
 import com.matrix.system.service.SysResourceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,17 +30,20 @@ public class ResourceController implements ResourceAPI {
 
     private final SysResourceService sysResourceService;
 
+    @Log(title = "资源管理", businessType = BusinessType.INSERT)
     @PostMapping
     public R<Boolean> create(@Validated @RequestBody SysResourceDto sysResourceDto) {
         return R.success(sysResourceService.create(sysResourceDto));
     }
 
+    @Log(title = "资源管理", businessType = BusinessType.UPDATE)
     @PutMapping
     public R<Boolean> update(@Validated @RequestBody SysResourceDto sysResourceDto) {
         return R.success(sysResourceService.update(sysResourceDto));
     }
 
 
+    @Log(title = "资源管理", businessType = BusinessType.DELETE)
     @DeleteMapping("{id}")
     public R<Boolean> delete(@PathVariable("id") Long id) {
         return R.success(sysResourceService.removeById(id));

@@ -4,6 +4,8 @@ import com.matrix.api.resource.client.EmailApi;
 import com.matrix.api.resource.vo.EmailVo;
 import com.matrix.mail.core.MailBuilder;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import com.matrix.log.annotation.Log;
+import com.matrix.log.enums.BusinessType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,6 +24,7 @@ public class EmailController implements EmailApi {
     private final MailBuilder mailBuilder;
 
     @Override
+    @Log(title = "邮件管理", businessType = BusinessType.INSERT)
     public String sendEmail(EmailVo emailVo) {
         mailBuilder.to(emailVo.getTo())
                 .subject(emailVo.getSubject())

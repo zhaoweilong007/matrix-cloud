@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.matrix.common.annotation.Sensitive;
 import com.matrix.common.entity.BaseEntity;
+import com.matrix.common.enums.SensitiveStrategyEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -51,6 +53,7 @@ public class Tenant extends BaseEntity {
     /**
      * 联系电话
      */
+    @Sensitive(strategy = SensitiveStrategyEnum.PHONE)
     private String contactMobile;
 
     /**

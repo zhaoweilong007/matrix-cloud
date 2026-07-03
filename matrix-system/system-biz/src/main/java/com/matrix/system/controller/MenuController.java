@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.PageDTO;
 import com.matrix.api.system.entity.dto.SysMenuDto;
 import com.matrix.api.system.entity.po.SysMenu;
 import com.matrix.common.result.R;
+import com.matrix.log.annotation.Log;
+import com.matrix.log.enums.BusinessType;
 import com.matrix.system.service.SysMenuService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -34,6 +36,7 @@ public class MenuController {
      * @param sysMenuDto
      * @return
      */
+    @Log(title = "菜单管理", businessType = BusinessType.INSERT)
     @PostMapping
     public R<Boolean> create(@Validated @RequestBody SysMenuDto sysMenuDto) {
         return R.success(sysMenuService.create(sysMenuDto));
@@ -45,6 +48,7 @@ public class MenuController {
      * @param sysMenuDto
      * @return
      */
+    @Log(title = "菜单管理", businessType = BusinessType.UPDATE)
     @PutMapping
     public R<Boolean> update(@Validated @RequestBody SysMenuDto sysMenuDto) {
         return R.success(sysMenuService.update(sysMenuDto));
@@ -122,6 +126,7 @@ public class MenuController {
      *
      * @param id 菜单ID
      */
+    @Log(title = "菜单管理", businessType = BusinessType.DELETE)
     @DeleteMapping("{id}")
     @Operation(summary = "删除菜单")
     public R<Boolean> delete(@PathVariable("id") Long id) {

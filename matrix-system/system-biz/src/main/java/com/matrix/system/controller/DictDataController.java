@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.matrix.api.system.entity.dto.DictDataDto;
 import com.matrix.api.system.entity.po.SysDictData;
 import com.matrix.common.result.R;
+import com.matrix.log.annotation.Log;
+import com.matrix.log.enums.BusinessType;
 import com.matrix.system.service.SysDictDataService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -43,6 +45,7 @@ public class DictDataController {
     @Operation(summary = "字典数据详情")
     public R<SysDictData> getById(@PathVariable Long id) { return R.success(dictDataService.getById(id)); }
 
+    @Log(title = "字典数据管理", businessType = BusinessType.INSERT)
     @PostMapping
     @Operation(summary = "新增字典数据")
     public R<Boolean> create(@Validated @RequestBody DictDataDto dto) {
@@ -54,6 +57,7 @@ public class DictDataController {
         return R.success(dictDataService.save(entity));
     }
 
+    @Log(title = "字典数据管理", businessType = BusinessType.UPDATE)
     @PutMapping
     @Operation(summary = "修改字典数据")
     public R<Boolean> update(@Validated @RequestBody DictDataDto dto) {
@@ -65,6 +69,7 @@ public class DictDataController {
         return R.success(dictDataService.updateById(entity));
     }
 
+    @Log(title = "字典数据管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/{id}")
     @Operation(summary = "删除字典数据")
     public R<Boolean> delete(@PathVariable Long id) { return R.success(dictDataService.removeById(id)); }

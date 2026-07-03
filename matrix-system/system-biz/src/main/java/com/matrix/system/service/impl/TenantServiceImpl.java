@@ -10,6 +10,7 @@ import com.matrix.system.mapper.SysAdminMapper;
 import com.matrix.system.mapper.TenantMapper;
 import com.matrix.system.service.TenantService;
 import org.springframework.beans.factory.annotation.Autowired;
+import com.matrix.prometheus.annotation.BizTrace;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,6 +28,7 @@ public class TenantServiceImpl extends ServiceImpl<TenantMapper, Tenant> impleme
     private SysAdminMapper sysAdminMapper;
 
     @Override
+    @BizTrace(id = "#tenantId", type = "TENANT_ASSIGN")
     public Boolean assignUser(List<Long> userIds, Long tenantId) {
         boolean exists = baseMapper.exists(Wrappers.<Tenant>lambdaQuery().eq(Tenant::getId, tenantId));
         Assert.isFalse(exists, "租户不存在");
