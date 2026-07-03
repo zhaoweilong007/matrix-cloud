@@ -10,6 +10,7 @@ import com.matrix.system.mapper.SysResourceMapper;
 import com.matrix.system.service.SysResourceService;
 import com.matrix.system.service.SysRoleResourceRelationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -44,12 +45,14 @@ public class SysResourceServiceImpl extends ServiceImpl<SysResourceMapper, SysRe
     }
 
     @Override
+    @CacheEvict(value = "resource", allEntries = true)
     public Boolean create(SysResourceDto sysResourceDto) {
         SysResource sysResource = ConvertMapper.INSTALL.convert(sysResourceDto);
         return this.save(sysResource);
     }
 
     @Override
+    @CacheEvict(value = "resource", allEntries = true)
     public Boolean update(SysResourceDto sysResourceDto) {
         SysResource sysResource = ConvertMapper.INSTALL.convert(sysResourceDto);
         return this.updateById(sysResource);

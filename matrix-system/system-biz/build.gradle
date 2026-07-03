@@ -8,6 +8,7 @@ dependencies {
     implementation project(':matrix-core:matrix-doc')
     implementation project(':matrix-core:matrix-config')
     implementation project(':matrix-core:matrix-log')
+    implementation project(':matrix-core:matrix-data-permission')
     implementation project(':matrix-core:matrix-prometheus')
     implementation project(':matrix-core:matrix-validator')
     implementation project(':matrix-core:matrix-sentinel')

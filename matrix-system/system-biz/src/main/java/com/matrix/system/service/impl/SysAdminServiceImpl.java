@@ -18,6 +18,8 @@ import com.matrix.common.enums.DeviceTypeEnum;
 import com.matrix.common.model.login.LoginUser;
 import com.matrix.common.enums.BusinessErrorTypeEnum;
 import com.matrix.common.exception.ServiceException;
+import com.matrix.common.util.spring.SpringUtils;
+import com.matrix.log.event.LogininforEvent;
 import com.matrix.system.mapper.SysAdminMapper;
 import com.matrix.auth.core.PasswordLockoutService;
 import com.matrix.auth.utils.LoginHelper;
@@ -65,14 +67,23 @@ public class SysAdminServiceImpl extends ServiceImpl<SysAdminMapper, SysAdmin> i
     @Override
     public SaTokenInfo login(SysAdminLoginDto sysAdminLoginDto) {
         SysAdmin sysAdmin = baseMapper.selectOne(Wrappers.<SysAdmin>lambdaQuery().eq(SysAdmin::getUsername, sysAdminLoginDto.getUsername()));
-        Assert.notNull(sysAdmin, () -> new ServiceException(BusinessErrorTypeEnum.USER_NOT_EXIST));
+        if (sysAdmin == null) {
+            publishLoginEvent(sysAdminLoginDto.getUsername(), "1", "用户不存在");
+            throw new ServiceException(BusinessErrorTypeEnum.USER_NOT_EXIST);
+        }
 
         // 检查账户锁定
-        passwordLockoutService.checkLocked(sysAdminLoginDto.getUsername());
+        try {
+            passwordLockoutService.checkLocked(sysAdminLoginDto.getUsername());
+        } catch (ServiceException e) {
+            publishLoginEvent(sysAdminLoginDto.getUsername(), "1", "账户已锁定");
+            throw e;
+        }
 
         // 验证密码
         if (!sysAdmin.getPassword().equals(SaSecureUtil.md5(sysAdminLoginDto.getPassword()))) {
             passwordLockoutService.recordPasswordError(sysAdminLoginDto.getUsername());
+            publishLoginEvent(sysAdminLoginDto.getUsername(), "1", "密码错误");
             throw new ServiceException(BusinessErrorTypeEnum.AUTHENTICATION_FAILED);
         }
 
@@ -83,7 +94,25 @@ public class SysAdminServiceImpl extends ServiceImpl<SysAdminMapper, SysAdmin> i
         LoginHelper.loginByDevice(loginUser, DeviceTypeEnum.PC);
         sysAdmin.setLoginTime(new Date());
         updateById(sysAdmin);
+
+        publishLoginEvent(sysAdminLoginDto.getUsername(), "0", "登录成功");
         return StpUtil.getTokenInfo();
+    }
+
+    /**
+     * 发布登录日志事件。
+     *
+     * @param username 用户名
+     * @param status   状态：0-成功 1-失败
+     * @param msg      消息
+     */
+    private void publishLoginEvent(String username, String status, String msg) {
+        LogininforEvent event = new LogininforEvent();
+        event.setType(1);
+        event.setUserName(username);
+        event.setStatus(status);
+        event.setMsg(msg);
+        SpringUtils.context().publishEvent(event);
     }
 
     private LoginUser buildLoginUser(SysAdmin sysAdmin) {

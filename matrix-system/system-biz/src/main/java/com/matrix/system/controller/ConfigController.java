@@ -9,7 +9,6 @@ import com.matrix.redis.utils.RedisUtils;
 import com.matrix.system.service.SysConfigService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.time.Duration;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -37,14 +36,7 @@ public class ConfigController {
     @GetMapping("/get-by-key/{key}")
     @Operation(summary = "按键名获取配置值")
     public R<String> getByKey(@PathVariable String key) {
-        String cached = RedisUtils.getCacheObject(CONFIG_CACHE_PREFIX + key);
-        if (cached != null) return R.success(cached);
-        SysConfig config = configService.getOne(new LambdaQueryWrapper<SysConfig>().eq(SysConfig::getConfigKey, key));
-        if (config != null) {
-            RedisUtils.setCacheObject(CONFIG_CACHE_PREFIX + key, config.getValue(), Duration.ofHours(1));
-            return R.success(config.getValue());
-        }
-        return R.success(null);
+        return R.success(configService.getValueByKey(key));
     }
 
     @PostMapping
@@ -80,7 +72,7 @@ public class ConfigController {
     @PostMapping("/refresh")
     @Operation(summary = "刷新配置缓存")
     public R<Boolean> refresh() {
-        configService.list().forEach(c -> RedisUtils.deleteObject(CONFIG_CACHE_PREFIX + c.getConfigKey()));
+        configService.refreshCache();
         return R.success(true);
     }
 }

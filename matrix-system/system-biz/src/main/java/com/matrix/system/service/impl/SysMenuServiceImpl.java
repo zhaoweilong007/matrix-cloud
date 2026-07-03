@@ -11,6 +11,7 @@ import com.matrix.system.mapper.SysMenuMapper;
 import com.matrix.system.service.SysMenuService;
 import com.matrix.system.service.SysRoleMenuRelationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -56,6 +57,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     }
 
     @Override
+    @CacheEvict(value = "menuCache", allEntries = true)
     public Boolean update(SysMenuDto sysMenuDto) {
         updateLevel(sysMenuDto);
         SysMenu sysMenu = ConvertMapper.INSTALL.convert(sysMenuDto);
@@ -68,6 +70,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     }
 
     @Override
+    @CacheEvict(value = "menuCache", allEntries = true)
     public Boolean delete(Long id) {
         return this.removeById(id);
     }

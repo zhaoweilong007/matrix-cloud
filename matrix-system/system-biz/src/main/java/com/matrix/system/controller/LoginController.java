@@ -8,7 +8,11 @@ import com.matrix.api.system.entity.dto.SysAdminLoginDto;
 import com.matrix.api.system.entity.dto.SysAdminRegisterDto;
 import com.matrix.common.constant.CacheConstants;
 import com.matrix.common.enums.SystemErrorTypeEnum;
+import com.matrix.common.model.login.LoginUser;
 import com.matrix.common.result.R;
+import com.matrix.common.util.spring.SpringUtils;
+import com.matrix.log.event.LogininforEvent;
+import com.matrix.auth.utils.LoginHelper;
 import com.matrix.redis.utils.RedisUtils;
 import com.matrix.system.service.LoginService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -87,6 +91,15 @@ public class LoginController {
     @GetMapping("/logout")
     @Operation(summary = "退出登录")
     public R<Void> logout() {
+        LoginUser loginUser = LoginHelper.getLoginUser();
+        if (loginUser != null) {
+            LogininforEvent event = new LogininforEvent();
+            event.setType(2);
+            event.setUserName(loginUser.getUsername());
+            event.setStatus("0");
+            event.setMsg("退出成功");
+            SpringUtils.context().publishEvent(event);
+        }
         StpUtil.logout();
         return R.success();
     }
