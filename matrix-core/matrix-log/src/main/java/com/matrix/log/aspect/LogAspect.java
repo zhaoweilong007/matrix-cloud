@@ -55,7 +55,7 @@ public class LogAspect {
     private static final ConcurrentHashMap<Class<?>, Boolean> SENSITIVE_CLASS_CACHE
             = new ConcurrentHashMap<>();
 
-    public static String obtainMethodArgs(JoinPoint joinPoint) {
+    public static String obtainMethodArgs(JoinPoint joinPoint, String[] excludeParamNames) {
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
         String[] argNames = methodSignature.getParameterNames();
         Object[] argValues = joinPoint.getArgs();
@@ -64,10 +64,27 @@ public class LogAspect {
         for (int i = 0; i < argNames.length; i++) {
             String argName = argNames[i];
             Object argValue = argValues[i];
+            // 排除敏感参数
+            if (isExcludeParam(argName, excludeParamNames)) {
+                args.put(argName, "[exclude]");
+                continue;
+            }
             // 被忽略时，标记为 ignore 字符串，避免和 null 混在一起
             args.put(argName, !isIgnoreArgs(argValue) ? argValue : "[ignore]");
         }
         return JSON.toJSONString(args);
+    }
+
+    private static boolean isExcludeParam(String name, String[] excludeParamNames) {
+        if (excludeParamNames == null || excludeParamNames.length == 0) {
+            return false;
+        }
+        for (String exclude : excludeParamNames) {
+            if (exclude.equalsIgnoreCase(name)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static boolean isIgnoreArgs(Object object) {
@@ -222,9 +239,14 @@ public class LogAspect {
         if (HttpMethod.GET.name().equals(requestMethod)
                 || HttpMethod.DELETE.name().equals(requestMethod)) {
             Map<String, String> paramsMap = ServletUtils.getParamMap(request);
+            if (excludeParamNames != null && excludeParamNames.length > 0) {
+                paramsMap = paramsMap.entrySet().stream()
+                        .filter(entry -> !isExcludeParam(entry.getKey(), excludeParamNames))
+                        .collect(java.util.stream.Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+            }
             operLog.setOperParam(JSON.toJSONString(paramsMap));
         } else {
-            operLog.setOperParam(obtainMethodArgs(joinPoint));
+            operLog.setOperParam(obtainMethodArgs(joinPoint, excludeParamNames));
         }
     }
 }
