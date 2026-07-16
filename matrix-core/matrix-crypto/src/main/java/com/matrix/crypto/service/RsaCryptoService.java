@@ -13,9 +13,9 @@ import lombok.extern.slf4j.Slf4j;
 public class RsaCryptoService implements CryptoService {
 
     /**
-     * RSA 加密器（Hutool 封装）
+     * 使用 ThreadLocal 线程安全包装 RSA 加密器
      */
-    private final RSA rsa;
+    private final ThreadLocal<RSA> rsaHolder;
 
     /**
      * 使用公钥和私钥构造 RSA 加解密服务
@@ -24,7 +24,7 @@ public class RsaCryptoService implements CryptoService {
      * @param privateKey RSA 私钥
      */
     public RsaCryptoService(String publicKey, String privateKey) {
-        this.rsa = new RSA(privateKey, publicKey);
+        this.rsaHolder = ThreadLocal.withInitial(() -> new RSA(privateKey, publicKey));
     }
 
     @Override
@@ -33,7 +33,7 @@ public class RsaCryptoService implements CryptoService {
             return data;
         }
         try {
-            return rsa.encryptBase64(data.getBytes(StandardCharsets.UTF_8), KeyType.PublicKey);
+            return rsaHolder.get().encryptBase64(data.getBytes(StandardCharsets.UTF_8), KeyType.PublicKey);
         } catch (Exception e) {
             log.error("RSA加密失败: {}", e.getMessage(), e);
             throw new RuntimeException("加密失败", e);
@@ -46,7 +46,7 @@ public class RsaCryptoService implements CryptoService {
             return encryptedData;
         }
         try {
-            return rsa.decryptStr(encryptedData, KeyType.PrivateKey);
+            return rsaHolder.get().decryptStr(encryptedData, KeyType.PrivateKey);
         } catch (Exception e) {
             log.error("RSA解密失败: {}", e.getMessage(), e);
             throw new RuntimeException("解密失败", e);

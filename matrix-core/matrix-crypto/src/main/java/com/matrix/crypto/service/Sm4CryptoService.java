@@ -14,9 +14,9 @@ import java.nio.charset.StandardCharsets;
 public class Sm4CryptoService implements CryptoService {
 
     /**
-     * SM4 加密器（Hutool 封装）
+     * 使用 ThreadLocal 线程安全包装 SM4 加密器
      */
-    private final SymmetricCrypto sm4;
+    private final ThreadLocal<SymmetricCrypto> sm4Holder;
 
     /**
      * 使用密钥构造 SM4 加解密服务
@@ -27,16 +27,17 @@ public class Sm4CryptoService implements CryptoService {
         if (secretKey == null || secretKey.length() != 16) {
             throw new IllegalArgumentException("SM4 密钥长度必须为16字节");
         }
-        this.sm4 = SmUtil.sm4(secretKey.getBytes(StandardCharsets.UTF_8));
+        byte[] keyBytes = secretKey.getBytes(StandardCharsets.UTF_8);
+        this.sm4Holder = ThreadLocal.withInitial(() -> SmUtil.sm4(keyBytes));
     }
 
     @Override
     public String encrypt(String data) {
-        return sm4.encryptBase64(data);
+        return sm4Holder.get().encryptBase64(data);
     }
 
     @Override
     public String decrypt(String encryptedData) {
-        return sm4.decryptStr(encryptedData);
+        return sm4Holder.get().decryptStr(encryptedData);
     }
 }

@@ -12,9 +12,9 @@ import lombok.extern.slf4j.Slf4j;
 public class AesCryptoService implements CryptoService {
 
     /**
-     * AES 加密器（Hutool 封装）
+     * 使用 ThreadLocal 线程安全包装 AES 加密器
      */
-    private final AES aes;
+    private final ThreadLocal<AES> aesHolder;
 
     /**
      * 使用密钥构造 AES 加解密服务
@@ -22,7 +22,8 @@ public class AesCryptoService implements CryptoService {
      * @param secretKey AES 密钥（16/24/32 字节）
      */
     public AesCryptoService(String secretKey) {
-        this.aes = new AES(secretKey.getBytes(StandardCharsets.UTF_8));
+        byte[] keyBytes = secretKey.getBytes(StandardCharsets.UTF_8);
+        this.aesHolder = ThreadLocal.withInitial(() -> new AES(keyBytes));
     }
 
     @Override
@@ -31,7 +32,7 @@ public class AesCryptoService implements CryptoService {
             return data;
         }
         try {
-            return aes.encryptBase64(data);
+            return aesHolder.get().encryptBase64(data);
         } catch (Exception e) {
             log.error("AES加密失败: {}", e.getMessage(), e);
             throw new RuntimeException("加密失败", e);
@@ -44,7 +45,7 @@ public class AesCryptoService implements CryptoService {
             return encryptedData;
         }
         try {
-            return aes.decryptStr(encryptedData);
+            return aesHolder.get().decryptStr(encryptedData);
         } catch (Exception e) {
             log.error("AES解密失败: {}", e.getMessage(), e);
             throw new RuntimeException("解密失败", e);

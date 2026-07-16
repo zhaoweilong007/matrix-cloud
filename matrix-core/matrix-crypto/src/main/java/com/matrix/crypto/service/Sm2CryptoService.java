@@ -15,9 +15,9 @@ import java.nio.charset.StandardCharsets;
 public class Sm2CryptoService implements CryptoService {
 
     /**
-     * SM2 加密器（Hutool 封装）
+     * 使用 ThreadLocal 线程安全包装 SM2 加密器
      */
-    private final SM2 sm2;
+    private final ThreadLocal<SM2> sm2Holder;
 
     /**
      * 使用私钥和公钥构造 SM2 加解密服务
@@ -30,16 +30,16 @@ public class Sm2CryptoService implements CryptoService {
             throw new IllegalArgumentException("SM2 公私钥不能为空");
         }
         // Hutool 支持十六进制字符串或 Base64 格式的密钥
-        this.sm2 = SmUtil.sm2(privateKey, publicKey);
+        this.sm2Holder = ThreadLocal.withInitial(() -> SmUtil.sm2(privateKey, publicKey));
     }
 
     @Override
     public String encrypt(String data) {
-        return sm2.encryptBase64(data, StandardCharsets.UTF_8, KeyType.PublicKey);
+        return sm2Holder.get().encryptBase64(data, StandardCharsets.UTF_8, KeyType.PublicKey);
     }
 
     @Override
     public String decrypt(String encryptedData) {
-        return sm2.decryptStr(encryptedData, KeyType.PrivateKey, StandardCharsets.UTF_8);
+        return sm2Holder.get().decryptStr(encryptedData, KeyType.PrivateKey, StandardCharsets.UTF_8);
     }
 }
