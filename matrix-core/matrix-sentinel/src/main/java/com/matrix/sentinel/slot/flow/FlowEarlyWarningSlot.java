@@ -42,6 +42,9 @@ public class FlowEarlyWarningSlot extends AbstractLinkedProcessorSlot<DefaultNod
      */
     private ApplicationEventPublisher eventPublisher;
 
+    private static volatile List<FlowRule> lastOriginRules = null;
+    private static volatile Map<String, List<FlowRule>> cachedEarlyWarningRules = null;
+
     public FlowEarlyWarningSlot() {
         this(new FlowRuleChecker(), DEFAULT_WARNING_RATIO);
     }
@@ -72,18 +75,27 @@ public class FlowEarlyWarningSlot extends AbstractLinkedProcessorSlot<DefaultNod
     }
 
     private List<FlowRule> getRuleProvider(String resource) {
-        // Flow rule map should not be null.
         List<FlowRule> rules = FlowRuleManager.getRules();
-        List<FlowRule> earlyWarningRuleList = Lists.newArrayList();
-        for (FlowRule rule : rules) {
-            FlowRule earlyWarningRule = new FlowRule();
-            BeanUtils.copyProperties(rule, earlyWarningRule);
-            // 把规则阈值改成配置的比例，达到提前预警的效果
-            earlyWarningRule.setCount(rule.getCount() * warningRatio);
-            earlyWarningRuleList.add(earlyWarningRule);
+        if (rules.isEmpty()) {
+            return null;
         }
-        Map<String, List<FlowRule>> flowRules = FlowRuleUtil.buildFlowRuleMap(earlyWarningRuleList);
-        return flowRules.get(resource);
+        Map<String, List<FlowRule>> cached = cachedEarlyWarningRules;
+        if (cached == null || lastOriginRules == null || !rules.equals(lastOriginRules)) {
+            synchronized (FlowEarlyWarningSlot.class) {
+                if (cachedEarlyWarningRules == null || lastOriginRules == null || !rules.equals(lastOriginRules)) {
+                    List<FlowRule> earlyWarningRuleList = Lists.newArrayList();
+                    for (FlowRule rule : rules) {
+                        FlowRule earlyWarningRule = new FlowRule();
+                        BeanUtils.copyProperties(rule, earlyWarningRule);
+                        earlyWarningRule.setCount(rule.getCount() * warningRatio);
+                        earlyWarningRuleList.add(earlyWarningRule);
+                    }
+                    cachedEarlyWarningRules = FlowRuleUtil.buildFlowRuleMap(earlyWarningRuleList);
+                    lastOriginRules = rules;
+                }
+            }
+        }
+        return cachedEarlyWarningRules != null ? cachedEarlyWarningRules.get(resource) : null;
     }
 
     /**

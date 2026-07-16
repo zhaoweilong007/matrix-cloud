@@ -20,6 +20,9 @@ import org.springframework.util.CollectionUtils;
 @Slf4j
 public class DegradeEarlyWarningSlot extends AbstractLinkedProcessorSlot<DefaultNode> {
 
+    private static volatile List<DegradeRule> lastOriginRules = null;
+    private static volatile List<DegradeRule> cachedEarlyWarningRules = null;
+
     /**
      * 与流控基本一致 就是取原规则的方式不一样
      *
@@ -27,16 +30,27 @@ public class DegradeEarlyWarningSlot extends AbstractLinkedProcessorSlot<Default
      * @return
      */
     private List<DegradeRule> getRuleProvider(String resource) {
-        // Flow rule map should not be null.
         List<DegradeRule> rules = DegradeRuleManager.getRules();
-        List<DegradeRule> earlyWarningRuleList = Lists.newArrayList();
-        for (DegradeRule rule : rules) {
-            DegradeRule earlyWarningRule = new DegradeRule();
-            BeanUtils.copyProperties(rule, earlyWarningRule);
-            earlyWarningRule.setCount(rule.getCount() * 0.8);
-            earlyWarningRuleList.add(earlyWarningRule);
+        if (rules.isEmpty()) {
+            return null;
         }
-        return earlyWarningRuleList.stream()
+        List<DegradeRule> cached = cachedEarlyWarningRules;
+        if (cached == null || lastOriginRules == null || !rules.equals(lastOriginRules)) {
+            synchronized (DegradeEarlyWarningSlot.class) {
+                if (cachedEarlyWarningRules == null || lastOriginRules == null || !rules.equals(lastOriginRules)) {
+                    List<DegradeRule> earlyWarningRuleList = Lists.newArrayList();
+                    for (DegradeRule rule : rules) {
+                        DegradeRule earlyWarningRule = new DegradeRule();
+                        BeanUtils.copyProperties(rule, earlyWarningRule);
+                        earlyWarningRule.setCount(rule.getCount() * 0.8);
+                        earlyWarningRuleList.add(earlyWarningRule);
+                    }
+                    cachedEarlyWarningRules = earlyWarningRuleList;
+                    lastOriginRules = rules;
+                }
+            }
+        }
+        return cachedEarlyWarningRules.stream()
                 .filter(rule -> resource.equals(rule.getResource()))
                 .collect(Collectors.toList());
     }
@@ -60,6 +74,34 @@ public class DegradeEarlyWarningSlot extends AbstractLinkedProcessorSlot<Default
     /**
      * entry 方法，在熔断触发前发出预警日志
      */
+    private boolean checkEarlyWarning(DegradeRule rule, DefaultNode node) {
+        if (node == null || rule == null) {
+            return true;
+        }
+        int minRequest = rule.getMinRequestAmount() > 0 ? rule.getMinRequestAmount() : 5;
+        if (node.totalRequest() < minRequest * 0.8) {
+            return true;
+        }
+        double warningThreshold = rule.getCount() * 0.8;
+        int grade = rule.getGrade();
+        if (grade == 0) { // RT
+            return node.avgRt() < warningThreshold;
+        } else if (grade == 1) { // Exception Ratio
+            double total = node.totalRequest();
+            if (total == 0) {
+                return true;
+            }
+            double exceptionRatio = node.totalException() / total;
+            return exceptionRatio < warningThreshold;
+        } else if (grade == 2) { // Exception Count
+            return node.totalException() < warningThreshold;
+        }
+        return true;
+    }
+
+    /**
+     * entry 方法，在熔断触发前发出预警日志
+     */
     @Override
     public void entry(
             Context context,
@@ -73,16 +115,16 @@ public class DegradeEarlyWarningSlot extends AbstractLinkedProcessorSlot<Default
         List<DegradeRule> rules = getRuleProvider(resource);
         if (rules != null) {
             for (DegradeRule rule : rules) {
-                //                if (!rule.passCheck(context, node, count)) {
-                DegradeRule originRule = getOriginRule(resource);
-                String originRuleCount = originRule == null ? "未知" : String.valueOf(originRule.getCount());
-                log.info(
-                        "DegradeEarlyWarning:服务{}目前的熔断指标已经超过{}，接近配置的熔断阈值:{},",
-                        resource,
-                        rule.getCount(),
-                        originRuleCount);
-                break;
-                //                }
+                if (!checkEarlyWarning(rule, node)) {
+                    DegradeRule originRule = getOriginRule(resource);
+                    String originRuleCount = originRule == null ? "未知" : String.valueOf(originRule.getCount());
+                    log.info(
+                            "DegradeEarlyWarning:服务{}目前的熔断指标已经超过{}，接近配置的熔断阈值:{},",
+                            resource,
+                            rule.getCount(),
+                            originRuleCount);
+                    break;
+                }
             }
         }
         fireEntry(context, resourceWrapper, node, count, prioritized, args);

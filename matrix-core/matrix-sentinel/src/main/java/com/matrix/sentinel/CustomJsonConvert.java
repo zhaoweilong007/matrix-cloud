@@ -58,6 +58,9 @@ public class CustomJsonConvert<T extends Object> implements Converter<String, Co
             clientIp = NetUtil.getLocalhost().getHostAddress();
         }
         port = SpringUtils.getProperty("spring.cloud.sentinel.transport.port");
+        if (port == null) {
+            port = "8719";
+        }
     }
 
     /**
@@ -95,19 +98,21 @@ public class CustomJsonConvert<T extends Object> implements Converter<String, Co
                             return map.get("ip").toString() + ":"
                                     + map.get("port").toString();
                         });
-                sourceArray = ruleMap.get(clientIp + ":" + port.toString());
+                sourceArray = ruleMap.get(clientIp + ":" + port);
             }
 
-            for (HashMap obj : sourceArray) {
-                if (obj.containsKey("rule")) {
-                    obj.putAll(((Map) obj.get("rule")));
-                }
-                try {
-                    String item = objectMapper.writeValueAsString(obj);
-                    Optional.ofNullable(convertRule(item)).ifPresent(ruleCollection::add);
-                } catch (IOException e) {
-                    log.error("sentinel rule convert error: " + e.getMessage(), e);
-                    throw new IllegalArgumentException("sentinel rule convert error: " + e.getMessage(), e);
+            if (sourceArray != null) {
+                for (HashMap obj : sourceArray) {
+                    if (obj.containsKey("rule")) {
+                        obj.putAll(((Map) obj.get("rule")));
+                    }
+                    try {
+                        String item = objectMapper.writeValueAsString(obj);
+                        Optional.ofNullable(convertRule(item)).ifPresent(ruleCollection::add);
+                    } catch (IOException e) {
+                        log.error("sentinel rule convert error: " + e.getMessage(), e);
+                        throw new IllegalArgumentException("sentinel rule convert error: " + e.getMessage(), e);
+                    }
                 }
             }
         } catch (Exception e) {
