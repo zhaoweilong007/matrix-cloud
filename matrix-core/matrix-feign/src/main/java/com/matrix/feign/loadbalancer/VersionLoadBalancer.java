@@ -49,12 +49,20 @@ public class VersionLoadBalancer implements ReactorServiceInstanceLoadBalancer {
 
     @Override
     public Mono<Response<ServiceInstance>> choose(Request request) {
-        // 从request中获取版本，兼容webflux方式
-        RequestData requestData = ((RequestDataContext) (request.getContext())).getClientRequest();
         final ServiceInstanceListSupplier supplier =
                 serviceInstanceListSuppliers.getIfAvailable(NoopServiceInstanceListSupplier::new);
-        String version = getVersionFromRequestData(requestData);
-        return supplier.get(request).next().map(instanceList -> getInstanceResponse(instanceList, version));
+
+        String version = null;
+        // 兼容非 HTTP (RequestDataContext 为 null 或其它类型) 调用的安全兜底
+        if (request.getContext() instanceof RequestDataContext context) {
+            RequestData requestData = context.getClientRequest();
+            if (requestData != null) {
+                version = getVersionFromRequestData(requestData);
+            }
+        }
+
+        final String finalVersion = version;
+        return supplier.get(request).next().map(instanceList -> getInstanceResponse(instanceList, finalVersion));
     }
 
     private String getVersionFromRequestData(RequestData requestData) {

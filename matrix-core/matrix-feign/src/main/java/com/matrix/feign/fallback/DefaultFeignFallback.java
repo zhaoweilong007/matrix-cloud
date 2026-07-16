@@ -3,23 +3,23 @@ package com.matrix.feign.fallback;
 import com.matrix.common.enums.SystemErrorTypeEnum;
 import com.matrix.common.result.R;
 import feign.FeignException;
+import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cglib.proxy.MethodInterceptor;
-import org.springframework.cglib.proxy.MethodProxy;
 import org.springframework.lang.Nullable;
 import org.springframework.util.ObjectUtils;
 
 /**
  * fallback 代理处理
+ * <p>使用 JDK 动态代理实现，完全兼容 JDK 21 模块强封装设计。</p>
  *
  * @param <T>
  */
 @Slf4j
 @AllArgsConstructor
-public class DefaultFeignFallback<T> implements MethodInterceptor {
+public class DefaultFeignFallback<T> implements InvocationHandler {
 
     private final Class<T> targetType;
     private final String targetName;
@@ -27,7 +27,12 @@ public class DefaultFeignFallback<T> implements MethodInterceptor {
 
     @Nullable
     @Override
-    public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        // 处理 Object 的通用方法 (hashCode/equals/toString)
+        if (method.getDeclaringClass() == Object.class) {
+            return method.invoke(this, args);
+        }
+
         String errorMessage = cause.getMessage();
         log.error(
                 "DefaultFeignFallback:[{}.{}] serviceId:[{}] message:[{}]",

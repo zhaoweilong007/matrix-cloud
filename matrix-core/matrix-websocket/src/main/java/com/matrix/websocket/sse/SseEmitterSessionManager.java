@@ -63,24 +63,9 @@ public class SseEmitterSessionManager {
         emitters.put(token, emitter);
 
         // 生命周期回调：完成后清理
-        emitter.onCompletion(() -> {
-            emitters.remove(token);
-            if (emitters.isEmpty()) {
-                USER_TOKEN_EMITTERS.remove(userId);
-            }
-        });
-        emitter.onTimeout(() -> {
-            emitters.remove(token);
-            if (emitters.isEmpty()) {
-                USER_TOKEN_EMITTERS.remove(userId);
-            }
-        });
-        emitter.onError(e -> {
-            emitters.remove(token);
-            if (emitters.isEmpty()) {
-                USER_TOKEN_EMITTERS.remove(userId);
-            }
-        });
+        emitter.onCompletion(() -> cleanSession(userId, token));
+        emitter.onTimeout(() -> cleanSession(userId, token));
+        emitter.onError(e -> cleanSession(userId, token));
 
         // 发送连接成功事件
         try {
@@ -99,17 +84,15 @@ public class SseEmitterSessionManager {
             return;
         }
         Map<String, SseEmitter> emitters = USER_TOKEN_EMITTERS.get(userId);
-        if (MapUtil.isNotEmpty(emitters)) {
-            SseEmitter emitter = emitters.remove(token);
+        if (emitters != null) {
+            SseEmitter emitter = emitters.get(token);
             if (emitter != null) {
                 try {
                     emitter.complete();
                 } catch (Exception ignore) {
                 }
             }
-            if (emitters.isEmpty()) {
-                USER_TOKEN_EMITTERS.remove(userId);
-            }
+            cleanSession(userId, token);
         }
     }
 
@@ -208,5 +191,19 @@ public class SseEmitterSessionManager {
         return USER_TOKEN_EMITTERS.values().stream()
                 .mapToInt(Map::size)
                 .sum();
+    }
+
+    /**
+     * 原子地清理失效会话，防止高并发 connect/disconnect 产生孤儿 Map 导致连接泄露
+     */
+    private void cleanSession(Long userId, String token) {
+        Map<String, SseEmitter> emitters = USER_TOKEN_EMITTERS.get(userId);
+        if (emitters != null) {
+            emitters.remove(token);
+            // 使用 computeIfPresent 的原子保证：如果 map 为空则将其从全局连接池中彻底移除
+            USER_TOKEN_EMITTERS.computeIfPresent(userId, (key, currentMap) -> {
+                return currentMap.isEmpty() ? null : currentMap;
+            });
+        }
     }
 }

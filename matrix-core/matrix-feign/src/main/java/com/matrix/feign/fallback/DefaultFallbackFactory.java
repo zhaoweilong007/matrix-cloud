@@ -2,11 +2,12 @@ package com.matrix.feign.fallback;
 
 import feign.Target;
 import lombok.AllArgsConstructor;
-import org.springframework.cglib.proxy.Enhancer;
+import java.lang.reflect.Proxy;
 import org.springframework.cloud.openfeign.FallbackFactory;
 
 /**
  * 默认fallback，减少必要的编写fallback类
+ * <p>基于 JDK 原生动态代理构建代理实例。</p>
  *
  * @param <T>
  */
@@ -19,10 +20,12 @@ public class DefaultFallbackFactory<T> implements FallbackFactory<T> {
     public T create(Throwable cause) {
         final Class<T> targetType = target.type();
         final String targetName = target.name();
-        Enhancer enhancer = new Enhancer();
-        enhancer.setSuperclass(targetType);
-        enhancer.setUseCache(true);
-        enhancer.setCallback(new DefaultFeignFallback<>(targetType, targetName, cause));
-        return (T) enhancer.create();
+
+        // 使用 JVM 原生 JDK 动态代理，无 Jigsaw 强封装访问警告，性能更高
+        return (T) Proxy.newProxyInstance(
+                targetType.getClassLoader(),
+                new Class<?>[]{targetType},
+                new DefaultFeignFallback<>(targetType, targetName, cause)
+        );
     }
 }
