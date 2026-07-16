@@ -29,7 +29,7 @@ public class ApiSignatureAspect {
 
     private static final String NONCE_CACHE_PREFIX = "api_signature:nonce:";
 
-    private final ApiSignatureProperties apiSignatureProperties;
+    private final AppSecretProvider appSecretProvider;
 
     @Before("@annotation(apiSignature)")
     public void verify(ApiSignature apiSignature) {
@@ -89,7 +89,7 @@ public class ApiSignatureAspect {
     }
 
     private String getAppSecret(String appId) {
-        String secret = apiSignatureProperties.getSecrets().get(appId);
+        String secret = appSecretProvider.getSecret(appId);
         if (secret == null || secret.isBlank()) {
             throw new ServiceException(SystemErrorTypeEnum.PARAM_ERROR, "未找到 appId 对应的密钥: " + appId);
         }

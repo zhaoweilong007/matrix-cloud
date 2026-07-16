@@ -1,17 +1,18 @@
 package com.matrix.redis.ratelimiter;
 
 import cn.hutool.extra.spring.SpringUtil;
+import com.matrix.common.context.LoginUserContextHolder;
 import com.matrix.common.enums.SystemErrorTypeEnum;
 import com.matrix.common.exception.ServiceException;
+import com.matrix.common.model.login.LoginUser;
 import com.matrix.redis.utils.RedisUtils;
 import java.lang.reflect.Method;
-import java.time.Duration;
-import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.redisson.api.RateType;
 import org.springframework.core.DefaultParameterNameDiscoverer;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
@@ -19,7 +20,7 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
 
 /**
  * Redis 令牌桶限流切面
- *
+ * <p>使用 Redisson 原生 {@link org.redisson.api.RRateLimiter} 实现原子限流。</p>
  */
 @Slf4j
 @Aspect
@@ -32,16 +33,17 @@ public class RateLimiterAspect {
     @Around("@annotation(rateLimiter)")
     public Object around(ProceedingJoinPoint joinPoint, RateLimiter rateLimiter) throws Throwable {
         String key = buildKey(joinPoint, rateLimiter);
-        double permitsPerSecond = rateLimiter.permitsPerSecond();
-        long timeoutMs = rateLimiter.timeout() * 1000;
-
-        // 令牌桶 key
         String bucketKey = RATE_LIMITER_KEY_PREFIX + key;
-        // 使用 Redis 实现简单令牌桶
-        if (!tryAcquire(bucketKey, permitsPerSecond, timeoutMs)) {
+        // 使用 Redisson 原生 RRateLimiter（原子操作，线程安全，替代原非原子两步 Redis 操作）
+        long available = RedisUtils.rateLimiter(
+                bucketKey,
+                RateType.OVERALL,
+                (int) rateLimiter.permitsPerSecond(),
+                1
+        );
+        if (available == -1) {
             throw new ServiceException(SystemErrorTypeEnum.OPERATE_FAIL, rateLimiter.message());
         }
-
         return joinPoint.proceed();
     }
 
@@ -79,65 +81,26 @@ public class RateLimiterAspect {
         return SPEL_PARSER.parseExpression(spelExpression).getValue(context, String.class);
     }
 
-    private boolean tryAcquire(String bucketKey, double permitsPerSecond, long timeoutMs) {
-        long now = System.currentTimeMillis();
-        String lastTimeKey = bucketKey + ":last";
-        String tokensKey = bucketKey + ":tokens";
-
-        Long lastTime = (Long) RedisUtils.getCacheObject(lastTimeKey);
-        double tokens = 0;
-        Object tokensObj = RedisUtils.getCacheObject(tokensKey);
-        if (tokensObj != null) {
-            tokens = ((Number) tokensObj).doubleValue();
-        }
-
-        if (lastTime == null) {
-            lastTime = now;
-        }
-
-        long elapsed = now - lastTime;
-        tokens = Math.min(permitsPerSecond, tokens + elapsed * permitsPerSecond / 1000.0);
-
-        if (tokens >= 1.0) {
-            tokens -= 1.0;
-            RedisUtils.setCacheObject(lastTimeKey, now, Duration.ofSeconds((long) Math.ceil(permitsPerSecond)));
-            RedisUtils.setCacheObject(tokensKey, tokens, Duration.ofSeconds((long) Math.ceil(permitsPerSecond)));
-            return true;
-        }
-
-        // 等待指定时间
-        if (timeoutMs > 0 && tokens > 0) {
-            return true;
-        }
-
-        return false;
-    }
-
     private String getClientIp() {
         try {
             jakarta.servlet.http.HttpServletRequest request =
                     com.matrix.common.util.servlet.ServletUtils.getRequest();
             return com.matrix.common.util.servlet.ServletUtils.getClientIP(request);
         } catch (Exception e) {
-            return UUID.randomUUID().toString();
+            return "unknown";
         }
     }
 
     private String getLoginUserId() {
-        try {
-            Class<?> stpUtil = Class.forName("cn.dev33.satoken.stp.StpUtil");
-            return (String) stpUtil.getMethod("getLoginIdAsString").invoke(null);
-        } catch (Exception e) {
-            return "anonymous";
-        }
+        // 直接从 TTL 上下文获取，避免反射调用 StpUtil
+        LoginUser user = LoginUserContextHolder.getUser();
+        return user != null ? String.valueOf(user.getUserId()) : "anonymous";
     }
 
     private String getServerNode() {
-        try {
-            return SpringUtil.getProperty("spring.cloud.client.ip-address")
-                    + ":" + SpringUtil.getProperty("server.port");
-        } catch (Exception e) {
-            return "unknown";
-        }
+        // 使用默认值避免 NullPointerException
+        String ip = SpringUtil.getProperty("spring.cloud.client.ip-address", "127.0.0.1");
+        String port = SpringUtil.getProperty("server.port", "8080");
+        return ip + ":" + port;
     }
 }

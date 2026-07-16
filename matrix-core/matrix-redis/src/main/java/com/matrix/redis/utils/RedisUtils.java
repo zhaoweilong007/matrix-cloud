@@ -134,7 +134,7 @@ public class RedisUtils {
     }
 
     /**
-     * 缓存基本的对象并设置过期时间（同步操作）。
+     * 缓存基本的对象并设置过期时间（原子操作）。
      *
      * @param key      缓存的键值
      * @param value    缓存的值
@@ -142,11 +142,11 @@ public class RedisUtils {
      * @return true
      */
     public static <T> Boolean set(final String key, final T value, final Duration duration) {
-        final RBucket<T> bucket = CLIENT.getBucket(key);
-        bucket.set(value);
-        bucket.expire(duration);
+        // 使用 Redisson 内置带 TTL 的 set，原子操作，避免 set 后宕机导致 key 永不过期
+        CLIENT.getBucket(key).set(value, duration);
         return true;
     }
+
 
     /**
      * 注册对象监听器

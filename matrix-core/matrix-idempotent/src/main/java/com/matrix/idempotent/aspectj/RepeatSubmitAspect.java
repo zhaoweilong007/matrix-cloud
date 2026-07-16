@@ -4,6 +4,7 @@ import cn.dev33.satoken.SaManager;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.crypto.SecureUtil;
+import com.alibaba.ttl.TransmittableThreadLocal;
 import com.matrix.common.constant.Constants;
 import com.matrix.common.enums.SystemErrorTypeEnum;
 import com.matrix.common.exception.ServiceException;
@@ -34,7 +35,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Aspect
 public class RepeatSubmitAspect {
 
-    private static final ThreadLocal<String> KEY_CACHE = new ThreadLocal<>();
+    private static final ThreadLocal<String> KEY_CACHE = new TransmittableThreadLocal<>();
 
     @Before("@annotation(repeatSubmit)")
     public void doBefore(JoinPoint point, RepeatSubmit repeatSubmit) throws Throwable {
@@ -75,17 +76,14 @@ public class RepeatSubmitAspect {
      */
     @AfterReturning(pointcut = "@annotation(repeatSubmit)", returning = "jsonResult")
     public void doAfterReturning(JoinPoint joinPoint, RepeatSubmit repeatSubmit, Object jsonResult) {
-        if (jsonResult instanceof R) {
-            try {
-                R<?> r = (R<?>) jsonResult;
-                // 成功则不删除redis数据 保证在有效时间内无法重复提交
-                if (r.getCode() == SystemErrorTypeEnum.SUCCESS.getCode()) {
-                    return;
-                }
+        try {
+            // 非成功响应时才删除锁，保证成功请求在有效期内不可重复提交
+            if (jsonResult instanceof R<?> r
+                    && r.getCode() != SystemErrorTypeEnum.SUCCESS.getCode()) {
                 RedisUtils.deleteObject(KEY_CACHE.get());
-            } finally {
-                KEY_CACHE.remove();
             }
+        } finally {
+            KEY_CACHE.remove();  // 无论何种结果都清理 ThreadLocal，防止内存泄漏
         }
     }
 
@@ -97,8 +95,11 @@ public class RepeatSubmitAspect {
      */
     @AfterThrowing(value = "@annotation(repeatSubmit)", throwing = "e")
     public void doAfterThrowing(JoinPoint joinPoint, RepeatSubmit repeatSubmit, Exception e) {
-        RedisUtils.deleteObject(KEY_CACHE.get());
-        KEY_CACHE.remove();
+        try {
+            RedisUtils.deleteObject(KEY_CACHE.get());
+        } finally {
+            KEY_CACHE.remove();
+        }
     }
 
     /**

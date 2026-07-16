@@ -22,8 +22,7 @@ public class TenantDatabaseInterceptor implements TenantLineHandler {
      */
     public TenantDatabaseInterceptor(TenantProperties properties) {
         ignoreTables = properties.getIgnoreTables();
-        ignoreTables.add("dual");
-        ignoreTables.add("DUAL");
+        // DUAL 表通过 ignoreTable 大小写不敏感判断处理，无需手动添加
     }
 
     /**
@@ -45,6 +44,7 @@ public class TenantDatabaseInterceptor implements TenantLineHandler {
     @Override
     public boolean ignoreTable(String tableName) {
         return TenantContextHolder.isIgnore() // 情况一，全局忽略多租户
-                || CollUtil.contains(ignoreTables, tableName); // 情况二，忽略多租户的表
+                || CollUtil.contains(ignoreTables, tableName) // 情况二，忽略多租户的表
+                || "dual".equalsIgnoreCase(tableName); // 情况三，Oracle DUAL 表大小写不敏感处理
     }
 }

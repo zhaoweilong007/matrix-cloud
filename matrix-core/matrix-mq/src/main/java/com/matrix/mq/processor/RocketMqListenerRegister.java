@@ -7,7 +7,7 @@ import com.aliyun.openservices.ons.api.MessageListener;
 import com.aliyun.openservices.ons.api.ONSFactory;
 import com.matrix.auto.properties.RocketMQProperties;
 import com.matrix.mq.annotation.RocketMQMessageListener;
-import com.matrix.mq.constans.MQConstant;
+import com.matrix.mq.constants.MQConstant;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import java.util.*;

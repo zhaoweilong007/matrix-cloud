@@ -1,4 +1,4 @@
-package com.matrix.mq.constans;
+package com.matrix.mq.constants;
 
 /**
  * MQ 常量定义

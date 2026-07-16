@@ -37,32 +37,22 @@ public class GlobalExceptionHandler {
      * @return 通用返回
      */
     public R<?> allExceptionHandler(HttpServletRequest request, Throwable ex) {
-        if (ex instanceof MissingServletRequestParameterException) {
-            return missingServletRequestParameterExceptionHandler(request, (MissingServletRequestParameterException) ex);
-        }
-        if (ex instanceof MethodArgumentTypeMismatchException) {
-            return methodArgumentTypeMismatchExceptionHandler(request, (MethodArgumentTypeMismatchException) ex);
-        }
-        if (ex instanceof MethodArgumentNotValidException) {
-            return methodArgumentNotValidExceptionExceptionHandler(request, (MethodArgumentNotValidException) ex);
-        }
-        if (ex instanceof BindException) {
-            return bindExceptionHandler((BindException) ex);
-        }
-        if (ex instanceof ConstraintViolationException) {
-            return constraintViolationExceptionHandler((ConstraintViolationException) ex, request);
-        }
-        if (ex instanceof NoHandlerFoundException) {
-            return noHandlerFoundExceptionHandler((NoHandlerFoundException) ex);
-        }
-        if (ex instanceof HttpRequestMethodNotSupportedException) {
-            return httpRequestMethodNotSupportedExceptionHandler((HttpRequestMethodNotSupportedException) ex, request);
-        }
-        if (ex instanceof ServiceException) {
-            return serviceExceptionHandler(request, (ServiceException) ex);
-        }
-
-        return defaultExceptionHandler(request, ex);
+        return switch (ex) {
+            case MissingServletRequestParameterException e ->
+                    missingServletRequestParameterExceptionHandler(request, e);
+            case MethodArgumentTypeMismatchException e ->
+                    methodArgumentTypeMismatchExceptionHandler(request, e);
+            case MethodArgumentNotValidException e ->
+                    methodArgumentNotValidExceptionExceptionHandler(request, e);
+            case BindException e -> bindExceptionHandler(e);
+            case ConstraintViolationException e ->
+                    constraintViolationExceptionHandler(e, request);
+            case NoHandlerFoundException e -> noHandlerFoundExceptionHandler(e);
+            case HttpRequestMethodNotSupportedException e ->
+                    httpRequestMethodNotSupportedExceptionHandler(e, request);
+            case ServiceException e -> serviceExceptionHandler(request, e);
+            default -> defaultExceptionHandler(request, ex);
+        };
     }
 
     /**
@@ -112,8 +102,10 @@ public class GlobalExceptionHandler {
     public R<?> methodArgumentNotValidExceptionExceptionHandler(HttpServletRequest request, MethodArgumentNotValidException ex) {
         log.warn("[methodArgumentNotValidExceptionExceptionHandler][uri({}/{}) 参数校验不正确:{}]", request.getRequestURI(), request.getMethod(), ex.getMessage());
         FieldError fieldError = ex.getBindingResult().getFieldError();
-        assert fieldError != null; // 断言，避免告警
-        return R.fail(SystemErrorTypeEnum.ARGUMENT_NOT_VALID, String.format("请求参数不正确,字段%s:%s", fieldError.getField(), fieldError.getDefaultMessage()));
+        String detail = fieldError != null
+                ? String.format("请求参数不正确,字段%s:%s", fieldError.getField(), fieldError.getDefaultMessage())
+                : "参数校验失败";
+        return R.fail(SystemErrorTypeEnum.ARGUMENT_NOT_VALID, detail);
     }
 
     /**
@@ -123,8 +115,10 @@ public class GlobalExceptionHandler {
     public R<?> bindExceptionHandler(BindException ex) {
         log.warn("[handleBindException]", ex);
         FieldError fieldError = ex.getFieldError();
-        assert fieldError != null; // 断言，避免告警
-        return R.fail(SystemErrorTypeEnum.ARGUMENT_NOT_VALID, String.format("请求参数不正确:%s", fieldError.getDefaultMessage()));
+        String detail = fieldError != null
+                ? String.format("请求参数不正确:%s", fieldError.getDefaultMessage())
+                : "参数绑定失败";
+        return R.fail(SystemErrorTypeEnum.ARGUMENT_NOT_VALID, detail);
     }
 
     /**

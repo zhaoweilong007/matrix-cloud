@@ -22,12 +22,13 @@ import com.matrix.log.utils.AddressUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.lang.reflect.Array;
+import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -43,7 +44,6 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @Slf4j
 @Aspect
-@RequiredArgsConstructor
 public class LogAspect {
 
     /**
@@ -51,7 +51,9 @@ public class LogAspect {
      */
     public static final String[] EXCLUDE_PROPERTIES = {"password", "oldPwd", "newPwd"};
 
-    private final RemoteUserService remoteUserService;
+    /** 缓存 Class → 是否含敏感字段，避免每次请求反射遍历 */
+    private static final ConcurrentHashMap<Class<?>, Boolean> SENSITIVE_CLASS_CACHE
+            = new ConcurrentHashMap<>();
 
     public static String obtainMethodArgs(JoinPoint joinPoint) {
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
@@ -89,21 +91,28 @@ public class LogAspect {
                 || object instanceof BindingResult) {
             return true;
         }
-        // 检查是否包含敏感字段（使用反射而非 JSON 序列化）
-        try {
-            java.lang.reflect.Field[] fields = clazz.getDeclaredFields();
-            for (java.lang.reflect.Field field : fields) {
-                String fieldName = field.getName();
-                for (String excludeProperty : EXCLUDE_PROPERTIES) {
-                    if (excludeProperty.equals(fieldName)) {
-                        return true;
+        // 使用缓存避免每次请求反射遍历（首次计算后缓存结果）
+        return hasSensitiveField(clazz);
+    }
+
+    /**
+     * 检查 Class 是否含敏感字段，结果缓存以避免重复反射。
+     */
+    private static boolean hasSensitiveField(Class<?> clazz) {
+        return SENSITIVE_CLASS_CACHE.computeIfAbsent(clazz, c -> {
+            try {
+                for (Field field : c.getDeclaredFields()) {
+                    for (String exclude : EXCLUDE_PROPERTIES) {
+                        if (exclude.equals(field.getName())) {
+                            return true;
+                        }
                     }
                 }
+            } catch (Exception e) {
+                log.debug("日志脱敏缓存构建异常：{}", e.getMessage());
             }
-        } catch (Exception e) {
-            log.debug("日志脱敏处理异常：{}", e.getMessage());
-        }
-        return false;
+            return false;
+        });
     }
 
     /**
@@ -164,18 +173,14 @@ public class LogAspect {
     }
 
     private String getUserName() {
-        return Optional.ofNullable(LoginUserContextHolder.getUser())
-                .map(LoginUser::getUsername)
-                .orElseGet(() -> {
-                    Long userId = ServletUtils.getUserIdByRequestHead();
-                    if (userId != null) {
-                        final R<String> res = remoteUserService.selectAuditUserByUserId(userId);
-                        if (VUtils.checkRes(res)) {
-                            return res.getData();
-                        }
-                    }
-                    return null;
-                });
+        // 优先从上下文获取，避免同步 Feign 远程调用增加请求延迟
+        // 未登录场景：以 userId 字符串作 fallback，日志服务端可按需补全
+        LoginUser user = LoginUserContextHolder.getUser();
+        if (user != null) {
+            return user.getUsername();
+        }
+        Long userId = ServletUtils.getUserIdByRequestHead();
+        return userId != null ? String.valueOf(userId) : null;
     }
 
     /**

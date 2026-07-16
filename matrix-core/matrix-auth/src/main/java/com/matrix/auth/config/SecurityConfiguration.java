@@ -10,6 +10,7 @@ import com.matrix.auth.filter.ValidateCodeFilter;
 import com.matrix.auth.handler.AuthExceptionHandler;
 import com.matrix.auth.sign.ApiSignatureAspect;
 import com.matrix.auth.sign.ApiSignatureProperties;
+import com.matrix.auth.sign.AppSecretProvider;
 import com.matrix.auto.properties.CaptchaProperties;
 import com.matrix.auto.properties.UserPasswordProperties;
 import com.matrix.common.constant.WebFilterOrderConstants;
@@ -94,7 +95,7 @@ public class SecurityConfiguration implements WebMvcConfigurer {
     }
 
     @Bean
-    public ApiSignatureAspect apiSignatureAspect(ApiSignatureProperties apiSignatureProperties) {
-        return new ApiSignatureAspect(apiSignatureProperties);
+    public ApiSignatureAspect apiSignatureAspect(AppSecretProvider appSecretProvider) {
+        return new ApiSignatureAspect(appSecretProvider);
     }
 }
