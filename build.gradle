@@ -22,7 +22,6 @@ ext.appModules = appModules
 ext {
     scaVersion = libs.versions.springCloudAlibaba.get()
     scVersion = libs.versions.springCloud.get()
-    micaVersion = libs.versions.mica.get()
     checkstyleVersion = libs.versions.checkstyle.get()
     pmdVersion = libs.versions.pmd.get()
 }
@@ -89,12 +88,13 @@ subprojects {
         imports {
             mavenBom "com.alibaba.cloud:spring-cloud-alibaba-dependencies:${rootProject.ext.scaVersion}"
             mavenBom "org.springframework.cloud:spring-cloud-dependencies:${rootProject.ext.scVersion}"
-            mavenBom "net.dreamlu:mica-bom:${rootProject.ext.micaVersion}"
         }
     }
 
     dependencies {
         implementation platform(project(':matrix-bom'))
+        annotationProcessor platform(project(':matrix-bom'))
+        testAnnotationProcessor platform(project(':matrix-bom'))
 
         testImplementation rootProject.libs.junit.jupiter
         testRuntimeOnly rootProject.libs.junit.platform.launcher
@@ -108,9 +108,6 @@ subprojects {
         implementation rootProject.libs.mapstruct.plus.starter
         annotationProcessor rootProject.libs.mapstruct.plus.processor
         testAnnotationProcessor rootProject.libs.mapstruct.plus.processor
-
-        compileOnly rootProject.libs.mica.auto
-        annotationProcessor rootProject.libs.mica.auto
 
         compileOnly rootProject.libs.spotbugs.annotations
     }

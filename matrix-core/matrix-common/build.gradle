@@ -1,5 +1,5 @@
 dependencies {
-    api 'net.dreamlu:mica-core'
+    api libs.mica.core
     api 'one.util:streamex'
     api "cn.hutool:hutool-all"
     api 'org.apache.commons:commons-lang3'

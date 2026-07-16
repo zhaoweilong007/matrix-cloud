@@ -1,6 +1,6 @@
 dependencies {
     api project(':matrix-core:matrix-auto')
-    api 'net.dreamlu:mica-ip2region'
+    api libs.mica.ip2region
 
     implementation project(':matrix-core:matrix-feign')
     implementation project(':matrix-core:matrix-prometheus')

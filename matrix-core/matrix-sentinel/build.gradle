@@ -2,4 +2,7 @@ dependencies {
     api project(':matrix-core:matrix-auto')
     api 'com.alibaba.cloud:spring-cloud-starter-alibaba-sentinel'
     api 'com.alibaba.csp:sentinel-datasource-nacos'
+
+    compileOnly libs.mica.auto
+    annotationProcessor libs.mica.auto
 }

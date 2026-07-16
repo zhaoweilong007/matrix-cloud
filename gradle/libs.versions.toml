@@ -8,7 +8,8 @@
 springboot = "4.1.0"
 springCloud = "2025.1.2"
 springCloudAlibaba = "2025.1.0.0"
-mica = "4.1.0"
+micaCore = "4.1.0"
+micaAuto = "4.0.1"
 dependency-management = "1.1.7"
 
 # === 核心组件 ===
@@ -172,8 +173,10 @@ tiny-pinyin = { module = "io.github.biezhi:TinyPinyin", version.ref = "pinyin" }
 user-agent-utils = { module = "eu.bitwalker:UserAgentUtils", version.ref = "userAgent" }
 
 # === Mica 生态 ===
-# mica-core、mica-ip2region 由模块直接使用 GAV 字符串（版本由 mica-bom 管理）
-mica-auto = { module = "net.dreamlu:mica-auto" }
+# Mica 仅使用以下制品；mica-auto 4.0.1 是 mica-core/ip2region 4.1.0 的实际编译期配套版本。
+mica-core = { module = "net.dreamlu:mica-core", version.ref = "micaCore" }
+mica-ip2region = { module = "net.dreamlu:mica-ip2region", version.ref = "micaCore" }
+mica-auto = { module = "net.dreamlu:mica-auto", version.ref = "micaAuto" }
 
 # === MapStruct Plus ===
 mapstruct-plus-starter = { module = "io.github.linpeilie:mapstruct-plus-spring-boot-starter", version.ref = "mapstruct-plus" }

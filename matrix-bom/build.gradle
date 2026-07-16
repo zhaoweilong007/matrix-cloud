@@ -7,6 +7,9 @@ javaPlatform {
 def v = libs.versions
 
 dependencies {
+    api platform("org.springframework.boot:spring-boot-dependencies:${libs.versions.springboot.get()}")
+    api platform("net.dreamlu:mica-bom:${libs.versions.micaCore.get()}")
+
     constraints {
         // === Spring Boot Starters ===
         api libs.mybatis.plus

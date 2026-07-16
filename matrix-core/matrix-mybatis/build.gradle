@@ -12,4 +12,6 @@ dependencies {
     compileOnly project(':matrix-core:matrix-crypto')
     compileOnly 'com.alibaba.csp:sentinel-core'
     compileOnly 'io.micrometer:micrometer-core'
+    compileOnly libs.mica.auto
+    annotationProcessor libs.mica.auto
 }

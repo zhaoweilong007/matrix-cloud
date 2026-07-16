@@ -1,4 +1,7 @@
 dependencies {
     api project(':matrix-core:matrix-auto')
     api libs.xxl.job
+
+    compileOnly libs.mica.auto
+    annotationProcessor libs.mica.auto
 }
