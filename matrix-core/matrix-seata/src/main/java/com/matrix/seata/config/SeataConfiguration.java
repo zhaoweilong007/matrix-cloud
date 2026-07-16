@@ -58,8 +58,9 @@ public class SeataConfiguration {
      */
     @PostConstruct
     public void detectTable() {
-        try {
-            dataSource.getConnection().prepareStatement(undoLogSql).execute();
+        try (java.sql.Connection conn = dataSource.getConnection();
+             java.sql.PreparedStatement ps = conn.prepareStatement(undoLogSql)) {
+            ps.execute();
         } catch (SQLException e) {
             log.error("创建[seata] undo_log表错误。", e);
         }

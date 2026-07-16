@@ -32,11 +32,11 @@ import lombok.extern.slf4j.Slf4j;
  * 极光推送操作模板，封装推送、别名管理、手机号解密等核心操作
  **/
 @Slf4j
-@RequiredArgsConstructor
 public class JPushTemplate {
 
     private final JPushClient jPushClient;
     private final JPushProperties properties;
+    private final PrivateKey privateKey;
 
     /**
      * 根据配置创建 JPush 模板
@@ -45,7 +45,15 @@ public class JPushTemplate {
      */
     public JPushTemplate(JPushProperties properties) {
         this.properties = properties;
-        jPushClient = new JPushClient(properties.getMasterSecret(), properties.getAppKey());
+        this.jPushClient = new JPushClient(properties.getMasterSecret(), properties.getAppKey());
+        try {
+            PKCS8EncodedKeySpec keySpec =
+                    new PKCS8EncodedKeySpec(Base64.getDecoder().decode(properties.getPrivateKey()));
+            this.privateKey = KeyFactory.getInstance("RSA").generatePrivate(keySpec);
+        } catch (Exception e) {
+            log.error("极光初始化RSA私钥异常", e);
+            throw new RuntimeException("极光初始化RSA私钥异常", e);
+        }
     }
 
     /**
@@ -154,9 +162,6 @@ public class JPushTemplate {
      */
     public String decrypt(String phone) {
         try {
-            PKCS8EncodedKeySpec keySpec =
-                    new PKCS8EncodedKeySpec(Base64.getDecoder().decode(properties.getPrivateKey()));
-            PrivateKey privateKey = KeyFactory.getInstance("RSA").generatePrivate(keySpec);
             Cipher cipher = Cipher.getInstance("RSA");
             cipher.init(Cipher.DECRYPT_MODE, privateKey);
             byte[] b = Base64.getDecoder().decode(phone);
