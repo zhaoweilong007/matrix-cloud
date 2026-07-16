@@ -41,38 +41,29 @@ public class MailBuilder {
      */
     private final MailProperties properties;
 
-    /**
-     * 收件人地址数组
-     */
-    private String[] to;
-    /**
-     * 邮件主题
-     */
-    private String subject;
-    /**
-     * 纯文本内容
-     */
-    private String text;
-    /**
-     * HTML 内容
-     */
-    private String html;
-    /**
-     * 抄送地址数组
-     */
-    private String[] cc;
-    /**
-     * 密送地址数组
-     */
-    private String[] bcc;
-    /**
-     * 附件列表
-     */
-    private final List<File> attachments = new ArrayList<>();
-    /**
-     * 是否为 HTML 格式
-     */
-    private boolean isHtml;
+    private static final ThreadLocal<MailState> STATE = ThreadLocal.withInitial(MailState::new);
+
+    private static class MailState {
+        String[] to;
+        String subject;
+        String text;
+        String html;
+        String[] cc;
+        String[] bcc;
+        final List<File> attachments = new ArrayList<>();
+        boolean isHtml;
+
+        void clear() {
+            to = null;
+            subject = null;
+            text = null;
+            html = null;
+            cc = null;
+            bcc = null;
+            attachments.clear();
+            isHtml = false;
+        }
+    }
 
     public MailBuilder(JavaMailSender mailSender, MailProperties properties) {
         this.mailSender = mailSender;
@@ -86,7 +77,9 @@ public class MailBuilder {
      * @return MailBuilder 实例
      */
     public MailBuilder to(String... to) {
-        this.to = to;
+        MailState state = STATE.get();
+        state.clear(); // 链式起点：清洗该线程上一轮因异常未完成发送的残留状态，防止内存泄漏
+        state.to = to;
         return this;
     }
 
@@ -97,7 +90,7 @@ public class MailBuilder {
      * @return MailBuilder 实例
      */
     public MailBuilder subject(String subject) {
-        this.subject = subject;
+        STATE.get().subject = subject;
         return this;
     }
 
@@ -108,8 +101,9 @@ public class MailBuilder {
      * @return MailBuilder 实例
      */
     public MailBuilder text(String text) {
-        this.text = text;
-        this.isHtml = false;
+        MailState state = STATE.get();
+        state.text = text;
+        state.isHtml = false;
         return this;
     }
 
@@ -120,8 +114,9 @@ public class MailBuilder {
      * @return MailBuilder 实例
      */
     public MailBuilder html(String html) {
-        this.html = html;
-        this.isHtml = true;
+        MailState state = STATE.get();
+        state.html = html;
+        state.isHtml = true;
         return this;
     }
 
@@ -132,7 +127,7 @@ public class MailBuilder {
      * @return MailBuilder 实例
      */
     public MailBuilder cc(String... cc) {
-        this.cc = cc;
+        STATE.get().cc = cc;
         return this;
     }
 
@@ -143,7 +138,7 @@ public class MailBuilder {
      * @return MailBuilder 实例
      */
     public MailBuilder bcc(String... bcc) {
-        this.bcc = bcc;
+        STATE.get().bcc = bcc;
         return this;
     }
 
@@ -154,7 +149,7 @@ public class MailBuilder {
      * @return MailBuilder 实例
      */
     public MailBuilder attach(File file) {
-        this.attachments.add(file);
+        STATE.get().attachments.add(file);
         return this;
     }
 
@@ -165,7 +160,7 @@ public class MailBuilder {
      * @return MailBuilder 实例
      */
     public MailBuilder attach(String filePath) {
-        this.attachments.add(new File(filePath));
+        STATE.get().attachments.add(new File(filePath));
         return this;
     }
 
@@ -173,62 +168,65 @@ public class MailBuilder {
      * 发送邮件。
      */
     public void send() {
-        if (to == null || to.length == 0) {
-            throw new IllegalArgumentException("收件人不能为空");
-        }
+        MailState state = STATE.get();
         try {
-            if (isHtml || !attachments.isEmpty() || cc != null || bcc != null) {
-                sendMimeMessage();
+            if (state.to == null || state.to.length == 0) {
+                throw new IllegalArgumentException("收件人不能为空");
+            }
+            if (state.isHtml || !state.attachments.isEmpty() || state.cc != null || state.bcc != null) {
+                sendMimeMessage(state);
             } else {
-                sendSimpleMessage();
+                sendSimpleMessage(state);
             }
         } catch (MailException | MessagingException | UnsupportedEncodingException e) {
-            log.error("邮件发送失败: to={}, subject={}", to, subject, e);
+            log.error("邮件发送失败: to={}, subject={}", state.to, state.subject, e);
             throw new com.matrix.common.exception.ServiceException(
                     com.matrix.common.enums.SystemErrorTypeEnum.OPERATE_FAIL);
+        } finally {
+            STATE.remove(); // 强制回收 ThreadLocal，杜绝内存泄漏
         }
     }
 
     /**
      * 发送纯文本邮件（使用 SimpleMailMessage）
      */
-    private void sendSimpleMessage() {
+    private void sendSimpleMessage(MailState state) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(buildFrom());
-        message.setTo(to);
-        message.setSubject(subject);
-        message.setText(text);
+        message.setTo(state.to);
+        message.setSubject(state.subject);
+        message.setText(state.text);
         message.setSentDate(new Date());
         mailSender.send(message);
-        log.info("邮件发送成功: to={}, subject={}", to, subject);
+        log.info("邮件发送成功: to={}, subject={}", state.to, state.subject);
     }
 
     /**
      * 发送 MIME 格式邮件（支持 HTML、附件、抄送、密送）
      */
-    private void sendMimeMessage() throws MessagingException, UnsupportedEncodingException {
+    private void sendMimeMessage(MailState state) throws MessagingException, UnsupportedEncodingException {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 
         helper.setFrom(buildFrom(), properties.getFromName());
-        helper.setTo(to);
-        helper.setSubject(subject);
-        helper.setText(isHtml ? html : text, isHtml);
+        helper.setTo(state.to);
+        helper.setSubject(state.subject);
+        helper.setText(state.isHtml ? state.html : state.text, state.isHtml);
         helper.setSentDate(new Date());
 
-        if (cc != null && cc.length > 0) {
-            helper.setCc(cc);
+        if (state.cc != null && state.cc.length > 0) {
+            helper.setCc(state.cc);
         }
-        if (bcc != null && bcc.length > 0) {
-            helper.setBcc(bcc);
+        if (state.bcc != null && state.bcc.length > 0) {
+            helper.setBcc(state.bcc);
         }
-        for (File file : attachments) {
+        for (File file : state.attachments) {
             FileSystemResource resource = new FileSystemResource(file);
             helper.addAttachment(file.getName(), resource);
         }
 
         mailSender.send(mimeMessage);
-        log.info("邮件发送成功: to={}, subject={}, attachments={}", to, subject, attachments.size());
+        log.info("邮件发送成功: to={}, subject={}, attachments={}", state.to, state.subject, state.attachments.size());
     }
 
     /**
