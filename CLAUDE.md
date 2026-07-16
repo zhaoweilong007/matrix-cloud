@@ -150,7 +150,7 @@ spring.config.import:
 | 前缀 | 说明 |
 |------|------|
 | `matrix.access-log` | API访问日志(enabled/ignoreUrls) |
-| `matrix.asyc-task` | 异步任务线程池配置 |
+| `matrix.async-task` | 异步任务线程池配置 |
 | `matrix.black-list` | 黑名单配置 |
 | `matrix.captcha` | 验证码(type/category/enabled/validateUrl) |
 | `matrix.crypto` | API加解密(enabled/type/secretKey/publicKey/privateKey) |

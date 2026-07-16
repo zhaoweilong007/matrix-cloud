@@ -1,7 +1,6 @@
 package com.matrix.web.config;
 
 import com.matrix.auto.properties.AsyncTaskProperties;
-import com.matrix.auto.properties.AsycTaskProperties;
 import com.matrix.common.thread.CustomThreadPoolTaskExecutor;
 import com.matrix.web.thread.ContextCopyingDecorator;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -18,7 +17,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  * 自定义异步任务配置
  */
 @EnableAsync(proxyTargetClass = true)
-@EnableConfigurationProperties({AsyncTaskProperties.class, AsycTaskProperties.class})
+@EnableConfigurationProperties(AsyncTaskProperties.class)
 @AutoConfiguration
 public class DefaultAsycTaskConfig {
 
@@ -27,12 +26,12 @@ public class DefaultAsycTaskConfig {
      */
     @Bean
     @ConditionalOnMissingBean(name = "taskExecutor")
-    public TaskExecutor taskExecutor(AsyncTaskProperties asyncTaskProperties, AsycTaskProperties legacyProperties) {
+    public TaskExecutor taskExecutor(AsyncTaskProperties asyncTaskProperties) {
         ThreadPoolTaskExecutor executor = new CustomThreadPoolTaskExecutor();
-        executor.setCorePoolSize(firstNonNull(asyncTaskProperties.getCorePoolSize(), legacyProperties.getCorePoolSize(), 10));
-        executor.setMaxPoolSize(firstNonNull(asyncTaskProperties.getMaxPoolSize(), legacyProperties.getMaxPoolSize(), 200));
-        executor.setQueueCapacity(firstNonNull(asyncTaskProperties.getQueueCapacity(), legacyProperties.getQueueCapacity(), 10));
-        executor.setThreadNamePrefix(firstNonNull(asyncTaskProperties.getThreadNamePrefix(), legacyProperties.getThreadNamePrefix(), "matrixExecutor-"));
+        executor.setCorePoolSize(defaultIfNull(asyncTaskProperties.getCorePoolSize(), 10));
+        executor.setMaxPoolSize(defaultIfNull(asyncTaskProperties.getMaxPoolSize(), 200));
+        executor.setQueueCapacity(defaultIfNull(asyncTaskProperties.getQueueCapacity(), 10));
+        executor.setThreadNamePrefix(defaultIfNull(asyncTaskProperties.getThreadNamePrefix(), "matrixExecutor-"));
         // for passing in request scope context
         executor.setTaskDecorator(new ContextCopyingDecorator());
         /*
@@ -45,7 +44,7 @@ public class DefaultAsycTaskConfig {
         return executor;
     }
 
-    private static <T> T firstNonNull(T preferredValue, T fallbackValue, T defaultValue) {
-        return preferredValue != null ? preferredValue : fallbackValue != null ? fallbackValue : defaultValue;
+    private static <T> T defaultIfNull(T value, T defaultValue) {
+        return value != null ? value : defaultValue;
     }
 }
