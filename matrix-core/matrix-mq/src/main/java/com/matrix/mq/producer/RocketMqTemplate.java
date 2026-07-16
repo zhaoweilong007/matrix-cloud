@@ -32,6 +32,10 @@ public class RocketMqTemplate {
         }
         Message message = new Message(event.getTopic(), event.getTag(), JSON.toJSONBytes(event.getDomain()));
         message.setKey(event.generateTxId());
+
+        // 自动注入当前线程多租户上下文属性，以进行分布式消息传播
+        com.matrix.mq.tenant.TenantMqUtils.injectTenantContext(message);
+
         return message;
     }
 

@@ -36,6 +36,8 @@ public class DefaultMessageListener implements MessageListener {
             return Action.ReconsumeLater;
         }
         try {
+            // 消费前恢复消息中所携带的租户上下文
+            com.matrix.mq.tenant.TenantMqUtils.restoreTenantContext(message);
             final Class<?> handlerType = messageHandlerManager.getHandlerType(messageHandler);
             messageHandler.handler(JSON.parseObject(message.getBody(), handlerType));
             return Action.CommitMessage;
@@ -49,6 +51,9 @@ public class DefaultMessageListener implements MessageListener {
                     message.getMsgID(),
                     e);
             return Action.ReconsumeLater;
+        } finally {
+            // 强制清理租户上下文，防范 ThreadLocal 内存泄漏
+            com.matrix.mq.tenant.TenantMqUtils.clearTenantContext();
         }
     }
 }
