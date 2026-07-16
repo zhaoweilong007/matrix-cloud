@@ -43,8 +43,8 @@ public abstract class AbstractRedisStreamMessageListener<T extends AbstractRedis
 
     @Override
     public void onMessage(ObjectRecord<String, String> message) {
-        T messageObj = JsonUtils.parseObject(message.getValue(), messageType);
         try {
+            T messageObj = JsonUtils.parseObject(message.getValue(), messageType);
             this.onMessage(messageObj);
             redisMqTemplate.getRedisTemplate().opsForStream().acknowledge(group, message);
         } catch (Exception e) {

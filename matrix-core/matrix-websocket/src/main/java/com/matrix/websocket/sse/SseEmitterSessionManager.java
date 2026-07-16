@@ -30,13 +30,21 @@ public class SseEmitterSessionManager {
      * SSE 超时时间（毫秒），默认 0 表示无超时
      */
     private final long timeout;
+    private final int maxConnections;
+    private final int maxConnectionsPerUser;
 
     public SseEmitterSessionManager() {
-        this(0L);
+        this(0L, 10_000, 10);
     }
 
     public SseEmitterSessionManager(long timeout) {
+        this(timeout, 10_000, 10);
+    }
+
+    public SseEmitterSessionManager(long timeout, int maxConnections, int maxConnectionsPerUser) {
         this.timeout = timeout;
+        this.maxConnections = maxConnections;
+        this.maxConnectionsPerUser = maxConnectionsPerUser;
     }
 
     /**
@@ -49,6 +57,13 @@ public class SseEmitterSessionManager {
     public SseEmitter connect(Long userId, String token) {
         Map<String, SseEmitter> emitters = USER_TOKEN_EMITTERS.computeIfAbsent(userId,
                 k -> new ConcurrentHashMap<>());
+
+        if (!emitters.containsKey(token) && emitters.size() >= maxConnectionsPerUser) {
+            throw new IllegalStateException("SSE connections exceed per-user limit");
+        }
+        if (!emitters.containsKey(token) && getActiveConnectionCount() >= maxConnections) {
+            throw new IllegalStateException("SSE connections exceed global limit");
+        }
 
         // 关闭同 token 的旧连接（防止重复连接）
         SseEmitter oldEmitter = emitters.remove(token);

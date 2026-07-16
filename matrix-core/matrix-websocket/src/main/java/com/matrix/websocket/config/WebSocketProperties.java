@@ -19,4 +19,13 @@ public class WebSocketProperties {
 
     /** 允许的跨域源 */
     private String allowedOrigins = "*";
+
+    private Sse sse = new Sse();
+
+    @Data
+    public static class Sse {
+        private long timeoutMillis = 0L;
+        private int maxConnections = 10_000;
+        private int maxConnectionsPerUser = 10;
+    }
 }

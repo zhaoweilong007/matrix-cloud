@@ -215,8 +215,9 @@ public class WebSocketAutoConfiguration implements WebSocketConfigurer {
      */
     @Bean
     @ConditionalOnProperty(prefix = "matrix.websocket.sse", name = "enabled", havingValue = "true")
-    public SseEmitterSessionManager sseEmitterSessionManager() {
+    public SseEmitterSessionManager sseEmitterSessionManager(WebSocketProperties properties) {
         log.info("SSE support enabled");
-        return new SseEmitterSessionManager();
+        WebSocketProperties.Sse sse = properties.getSse();
+        return new SseEmitterSessionManager(sse.getTimeoutMillis(), sse.getMaxConnections(), sse.getMaxConnectionsPerUser());
     }
 }
