@@ -18,3 +18,14 @@ dependencies {
 
     runtimeOnly 'com.mysql:mysql-connector-j'
 }
+
+tasks.register('integrationTest', Test) {
+    group = 'verification'
+    description = 'Runs tests that require Nacos, MySQL, or other external services.'
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+    useJUnitPlatform {
+        includeTags 'integration'
+    }
+    shouldRunAfter tasks.test
+}

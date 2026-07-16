@@ -1,8 +1,10 @@
 package com.matrix.test;
 
 import com.matrix.api.system.entity.po.SysResource;
+import com.matrix.system.SystemApp;
 import com.matrix.system.service.SysResourceService;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,7 +17,8 @@ import java.util.List;
  * @author zwl
  * @since 2022/8/4 15:38
  **/
-@SpringBootTest
+@SpringBootTest(classes = SystemApp.class)
+@Tag("integration")
 public class MapperTest {
 
     @Autowired

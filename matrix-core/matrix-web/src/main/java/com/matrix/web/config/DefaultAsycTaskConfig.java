@@ -1,5 +1,6 @@
 package com.matrix.web.config;
 
+import com.matrix.auto.properties.AsyncTaskProperties;
 import com.matrix.auto.properties.AsycTaskProperties;
 import com.matrix.common.thread.CustomThreadPoolTaskExecutor;
 import com.matrix.web.thread.ContextCopyingDecorator;
@@ -17,7 +18,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  * 自定义异步任务配置
  */
 @EnableAsync(proxyTargetClass = true)
-@EnableConfigurationProperties({AsycTaskProperties.class})
+@EnableConfigurationProperties({AsyncTaskProperties.class, AsycTaskProperties.class})
 @AutoConfiguration
 public class DefaultAsycTaskConfig {
 
@@ -26,12 +27,12 @@ public class DefaultAsycTaskConfig {
      */
     @Bean
     @ConditionalOnMissingBean(name = "taskExecutor")
-    public TaskExecutor taskExecutor(AsycTaskProperties asycTaskProperties) {
+    public TaskExecutor taskExecutor(AsyncTaskProperties asyncTaskProperties, AsycTaskProperties legacyProperties) {
         ThreadPoolTaskExecutor executor = new CustomThreadPoolTaskExecutor();
-        executor.setCorePoolSize(asycTaskProperties.getCorePoolSize());
-        executor.setMaxPoolSize(asycTaskProperties.getMaxPoolSize());
-        executor.setQueueCapacity(asycTaskProperties.getQueueCapacity());
-        executor.setThreadNamePrefix(asycTaskProperties.getThreadNamePrefix());
+        executor.setCorePoolSize(firstNonNull(asyncTaskProperties.getCorePoolSize(), legacyProperties.getCorePoolSize(), 10));
+        executor.setMaxPoolSize(firstNonNull(asyncTaskProperties.getMaxPoolSize(), legacyProperties.getMaxPoolSize(), 200));
+        executor.setQueueCapacity(firstNonNull(asyncTaskProperties.getQueueCapacity(), legacyProperties.getQueueCapacity(), 10));
+        executor.setThreadNamePrefix(firstNonNull(asyncTaskProperties.getThreadNamePrefix(), legacyProperties.getThreadNamePrefix(), "matrixExecutor-"));
         // for passing in request scope context
         executor.setTaskDecorator(new ContextCopyingDecorator());
         /*
@@ -42,5 +43,9 @@ public class DefaultAsycTaskConfig {
         executor.setWaitForTasksToCompleteOnShutdown(true);
         executor.initialize();
         return executor;
+    }
+
+    private static <T> T firstNonNull(T preferredValue, T fallbackValue, T defaultValue) {
+        return preferredValue != null ? preferredValue : fallbackValue != null ? fallbackValue : defaultValue;
     }
 }

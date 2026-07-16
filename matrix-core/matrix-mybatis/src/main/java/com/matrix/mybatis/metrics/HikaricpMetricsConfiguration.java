@@ -8,15 +8,17 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 
 /**
  * 基于Prometheus监控平台的HikariDataSource监控
  *
  */
-@Configuration
+@AutoConfiguration
 @ConditionalOnBean(HikariDataSource.class)
 @ConditionalOnClass({HikariDataSource.class, MeterRegistry.class})
+@ConditionalOnProperty(prefix = "matrix.monitor", name = "datasource-metrics-enabled", matchIfMissing = true)
 public class HikaricpMetricsConfiguration {
 
     /**
@@ -26,7 +28,7 @@ public class HikaricpMetricsConfiguration {
      */
     @Bean
     @ConditionalOnMissingBean(value = MetricsTrackerFactory.class)
-    public MetricsTrackerFactory druidFilterRegistrationBean() {
+    public MetricsTrackerFactory hikariMetricsTrackerFactory() {
         return new PrometheusMetricsTrackerFactory();
     }
 }

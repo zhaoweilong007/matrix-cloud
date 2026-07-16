@@ -4,6 +4,9 @@ server:
 spring:
   application:
     name: matrix-resource
+  autoconfigure:
+    exclude:
+      - org.dromara.trans.config.TransServiceConfig
   profiles:
     active: ${PROFILE:dev}
   main:
@@ -43,4 +46,3 @@ mybatis-plus:
 # seata 已启用：seata-server 已升级到 JDK17 镜像，NamingServer 兼容性问题已解决
 seata:
   enabled: true
-

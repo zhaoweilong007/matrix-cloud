@@ -4,6 +4,9 @@ server:
   shutdown: graceful
 
 spring:
+  autoconfigure:
+    exclude:
+      - org.dromara.trans.config.TransServiceConfig
   lifecycle:
     timeout-per-shutdown-phase: 10s
   main:
@@ -250,6 +253,7 @@ matrix:
   monitor:
     traceEnable: true
     metricsEnable: true
+    datasource-metrics-enabled: true
 
   # 消息队列 (matrix.mq / matrix.mq.redis)
   mq:

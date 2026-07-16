@@ -59,8 +59,8 @@ matrix:
     ignore-urls:
       - /actuator/**
 
-  # 异步任务线程池 (matrix.asyc-task)
-  asyc-task:
+  # 异步任务线程池 (matrix.async-task)
+  async-task:
     core-pool-size: 5
     max-pool-size: 10
     queue-capacity: 200

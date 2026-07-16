@@ -1,9 +1,7 @@
-//依赖太多的情况下可直接引入该模块
+// 通用契约层：仅保留 DTO、校验与翻译基础能力，避免把客户端或导出实现传递给所有消费者。
 dependencies {
     api(project(":matrix-core:matrix-common"))
     api(project(":matrix-core:matrix-validator"))
     api(project(":matrix-core:matrix-translation"))
-    api(project(":matrix-core:matrix-feign"))
-    api(project(":matrix-core:matrix-excel"))
-    api "cn.zhxu:bean-searcher"
+    compileOnly 'org.springframework:spring-web'
 }

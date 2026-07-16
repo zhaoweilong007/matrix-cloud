@@ -6,7 +6,6 @@ import com.matrix.web.client.ApiAccessLogApi;
 import com.matrix.web.exception.GlobalExceptionHandler;
 import com.matrix.web.filter.ApiAccessLogFilter;
 import com.matrix.web.filter.CacheRequestBodyFilter;
-import com.matrix.web.handler.I18nLocaleResolver;
 import jakarta.servlet.Filter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -17,7 +16,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
-import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
@@ -90,14 +88,5 @@ public class WebAutoConfig implements WebMvcConfigurer {
         FilterRegistrationBean<T> bean = new FilterRegistrationBean<>(filter);
         bean.setOrder(order);
         return bean;
-    }
-
-
-    /**
-     * 区域解析器
-     */
-    @Bean
-    public LocaleResolver localeResolver() {
-        return new I18nLocaleResolver();
     }
 }
