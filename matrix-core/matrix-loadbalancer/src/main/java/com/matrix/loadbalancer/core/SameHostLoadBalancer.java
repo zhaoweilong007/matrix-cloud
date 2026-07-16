@@ -30,6 +30,11 @@ import java.util.concurrent.ThreadLocalRandom;
 public class SameHostLoadBalancer implements ReactorServiceInstanceLoadBalancer {
 
     /**
+     * 静态缓存本地主机的所有 IPv4 地址，避免每次请求都读取网卡物理配置的系统调用开销
+     */
+    private static final java.util.Set<String> LOCAL_IPS = NetUtil.localIpv4s();
+
+    /**
      * 服务 ID
      */
     private final String serviceId;
@@ -77,7 +82,7 @@ public class SameHostLoadBalancer implements ReactorServiceInstanceLoadBalancer 
         }
         // 优先匹配本机 IP
         for (ServiceInstance instance : instances) {
-            if (NetUtil.localIpv4s().contains(instance.getHost())) {
+            if (LOCAL_IPS.contains(instance.getHost())) {
                 return new DefaultResponse(instance);
             }
         }
