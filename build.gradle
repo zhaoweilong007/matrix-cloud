@@ -96,6 +96,9 @@ subprojects {
     dependencies {
         implementation platform(project(':matrix-bom'))
 
+        testImplementation rootProject.libs.junit.jupiter
+        testRuntimeOnly rootProject.libs.junit.platform.launcher
+
         compileOnly rootProject.libs.lombok
         annotationProcessor rootProject.libs.lombok
         annotationProcessor rootProject.libs.lombok.mapstruct.binding
@@ -113,7 +116,6 @@ subprojects {
     }
 
     test {
-        enabled = false
         useJUnitPlatform()
     }
 

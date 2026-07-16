@@ -1,7 +1,7 @@
 package com.matrix.redis.core;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * {@link RedisKeyDefine} 注册表
@@ -11,7 +11,7 @@ public class RedisKeyRegistry {
     /**
      * Redis RedisKeyDefine 数组
      */
-    private static final List<RedisKeyDefine> DEFINES = new ArrayList<>();
+    private static final List<RedisKeyDefine> DEFINES = new CopyOnWriteArrayList<>();
 
     /**
      * 注册 Key 定义。
@@ -28,7 +28,7 @@ public class RedisKeyRegistry {
      * @return Key 定义列表
      */
     public static List<RedisKeyDefine> list() {
-        return DEFINES;
+        return List.copyOf(DEFINES);
     }
 
     /**

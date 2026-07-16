@@ -50,7 +50,7 @@ public abstract class AbstractRedisStreamMessageListener<T extends AbstractRedis
         } catch (Exception e) {
             log.error("Redis Stream 消息消费失败 streamKey=[{}] messageId=[{}]",
                     streamKey, message.getId(), e);
-            // 不 ack，消息进入 PEL，由 RedisPendingMessageResendJob 重新投递
+            // 不 ack，消息进入 PEL，由监控任务记录并由业务恢复策略处理。
         }
     }
 

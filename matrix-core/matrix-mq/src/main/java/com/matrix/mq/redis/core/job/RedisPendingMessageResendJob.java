@@ -1,6 +1,7 @@
 package com.matrix.mq.redis.core.job;
 
 import com.matrix.mq.redis.core.RedisMqTemplate;
+import com.matrix.mq.redis.config.RedisMqProperties;
 import com.matrix.mq.redis.stream.AbstractRedisStreamMessageListener;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,25 +17,24 @@ import java.util.List;
 /**
  * Redis Stream 待处理消息重发 Job。
  *
- * <p>每分钟执行一次，检查各 Stream 的 Pending Entries List (PEL)，
- * 将超过 5 分钟未确认的消息重新投递到 Stream 中。</p>
+ * <p>按配置周期检查各 Stream 的 Pending Entries List (PEL)，
+ * 对超时未确认消息记录告警，供运维处理或由消费者恢复机制接管。</p>
  */
 @Slf4j
 @RequiredArgsConstructor
 public class RedisPendingMessageResendJob {
 
-    /** 待处理消息过期时间（毫秒） */
-    private static final long EXPIRE_MILLIS = 5 * 60 * 1000;
     private static final String LOCK_KEY = "redis:stream:pending-message-resend:lock";
 
     private final RedisMqTemplate redisMqTemplate;
     private final RedissonClient redissonClient;
+    private final RedisMqProperties properties;
     private final List<AbstractRedisStreamMessageListener<?>> listeners;
 
     /**
      * 每分钟第 35 秒执行。
      */
-    @Scheduled(cron = "35 * * * * ?")
+    @Scheduled(cron = "${matrix.mq.redis.pending-retry-cron:35 * * * * ?}")
     public void resend() {
         RLock lock = redissonClient.getLock(LOCK_KEY);
         if (!lock.tryLock()) {
@@ -47,12 +47,12 @@ public class RedisPendingMessageResendJob {
                 String group = listener.getGroup();
                 try {
                     PendingMessages pendingMessages = redisTemplate.opsForStream()
-                            .pending(streamKey, group, null, 100);
+                            .pending(streamKey, group, null, properties.getPendingScanLimit());
                     for (PendingMessage pendingMessage : pendingMessages) {
                         long elapsedMs = pendingMessage.getElapsedTimeSinceLastDelivery().toMillis();
-                        if (elapsedMs > EXPIRE_MILLIS) {
-                            // 消息超时未确认，重新 ack 后由 ResendJob 定期重试
-                            // 实际重发由 PEL 机制保证，这里记录日志用于监控
+                        if (elapsedMs > properties.getPendingExpireMillis()) {
+                            // 不确认或转交消息，避免在没有幂等语义时重复投递。
+                            // 此处仅记录告警，实际恢复策略由业务消费者决定。
                             log.warn("[RedisMQ] 待处理消息超时 streamKey=[{}] messageId=[{}] elapsedMs=[{}]",
                                     streamKey, pendingMessage.getIdAsString(), elapsedMs);
                         }
@@ -62,7 +62,9 @@ public class RedisPendingMessageResendJob {
                 }
             }
         } finally {
-            lock.unlock();
+            if (lock.isHeldByCurrentThread()) {
+                lock.unlock();
+            }
         }
     }
 }

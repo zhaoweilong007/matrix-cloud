@@ -1,6 +1,7 @@
 package com.matrix.mq.redis.core.job;
 
 import com.matrix.mq.redis.core.RedisMqTemplate;
+import com.matrix.mq.redis.config.RedisMqProperties;
 import com.matrix.mq.redis.stream.AbstractRedisStreamMessageListener;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,18 +22,17 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RedisStreamMessageCleanupJob {
 
-    /** Stream 最大保留消息数 */
-    private static final long MAX_LEN = 10000;
     private static final String LOCK_KEY = "redis:stream:message-cleanup:lock";
 
     private final RedisMqTemplate redisMqTemplate;
     private final RedissonClient redissonClient;
+    private final RedisMqProperties properties;
     private final List<AbstractRedisStreamMessageListener<?>> listeners;
 
     /**
      * 每小时整点执行。
      */
-    @Scheduled(cron = "0 0 * * * ?")
+    @Scheduled(cron = "${matrix.mq.redis.cleanup-cron:0 0 * * * ?}")
     public void cleanup() {
         RLock lock = redissonClient.getLock(LOCK_KEY);
         if (!lock.tryLock()) {
@@ -42,7 +42,7 @@ public class RedisStreamMessageCleanupJob {
             StringRedisTemplate redisTemplate = redisMqTemplate.getRedisTemplate();
             for (AbstractRedisStreamMessageListener<?> listener : listeners) {
                 try {
-                    Long trimmed = redisTemplate.opsForStream().trim(listener.getStreamKey(), MAX_LEN, false);
+                    Long trimmed = redisTemplate.opsForStream().trim(listener.getStreamKey(), properties.getStreamMaxLength(), false);
                     if (trimmed != null && trimmed > 0) {
                         log.info("[RedisMQ] Stream 清理完成 streamKey=[{}] trimmed=[{}]", listener.getStreamKey(), trimmed);
                     }
@@ -51,7 +51,9 @@ public class RedisStreamMessageCleanupJob {
                 }
             }
         } finally {
-            lock.unlock();
+            if (lock.isHeldByCurrentThread()) {
+                lock.unlock();
+            }
         }
     }
 }

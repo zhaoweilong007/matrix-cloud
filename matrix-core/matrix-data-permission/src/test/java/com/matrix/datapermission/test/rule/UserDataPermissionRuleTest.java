@@ -113,7 +113,7 @@ public class UserDataPermissionRuleTest extends BaseMockitoUnitTest {
             final Expression expression = rule.getExpression(tableName, tableAlias);
 
             // 断言
-            assertEquals("u.tenant_id = 1", expression.toString());
+            assertEquals("u.created_by = " + loginUser.getUserId(), expression.toString());
         }
     }
 }

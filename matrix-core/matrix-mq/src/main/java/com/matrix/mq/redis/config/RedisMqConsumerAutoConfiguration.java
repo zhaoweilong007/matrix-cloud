@@ -11,6 +11,7 @@ import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.connection.stream.Consumer;
 import org.springframework.data.redis.connection.stream.ObjectRecord;
@@ -34,6 +35,7 @@ import java.util.List;
 @Slf4j
 @AutoConfiguration
 @EnableScheduling
+@EnableConfigurationProperties(RedisMqProperties.class)
 @ConditionalOnClass(StringRedisTemplate.class)
 @ConditionalOnProperty(prefix = "matrix.mq.redis", name = "enabled", havingValue = "true")
 public class RedisMqConsumerAutoConfiguration {
@@ -63,12 +65,13 @@ public class RedisMqConsumerAutoConfiguration {
     @ConditionalOnBean(AbstractRedisStreamMessageListener.class)
     public StreamMessageListenerContainer<String, ObjectRecord<String, String>> redisStreamMessageListenerContainer(
             RedisMqTemplate redisMqTemplate,
+            RedisMqProperties properties,
             List<AbstractRedisStreamMessageListener<?>> listeners) {
         StringRedisTemplate redisTemplate = redisMqTemplate.getRedisTemplate();
 
         StreamMessageListenerContainer.StreamMessageListenerContainerOptions<String, ObjectRecord<String, String>> options =
                 StreamMessageListenerContainer.StreamMessageListenerContainerOptions.builder()
-                        .batchSize(10)
+                        .batchSize(properties.getStreamBatchSize())
                         .targetType(String.class)
                         .build();
 
@@ -111,8 +114,9 @@ public class RedisMqConsumerAutoConfiguration {
     public RedisPendingMessageResendJob redisPendingMessageResendJob(
             RedisMqTemplate redisMqTemplate,
             RedissonClient redissonClient,
+            RedisMqProperties properties,
             List<AbstractRedisStreamMessageListener<?>> listeners) {
-        return new RedisPendingMessageResendJob(redisMqTemplate, redissonClient, listeners);
+        return new RedisPendingMessageResendJob(redisMqTemplate, redissonClient, properties, listeners);
     }
 
     /**
@@ -123,7 +127,8 @@ public class RedisMqConsumerAutoConfiguration {
     public RedisStreamMessageCleanupJob redisStreamMessageCleanupJob(
             RedisMqTemplate redisMqTemplate,
             RedissonClient redissonClient,
+            RedisMqProperties properties,
             List<AbstractRedisStreamMessageListener<?>> listeners) {
-        return new RedisStreamMessageCleanupJob(redisMqTemplate, redissonClient, listeners);
+        return new RedisStreamMessageCleanupJob(redisMqTemplate, redissonClient, properties, listeners);
     }
 }

@@ -14,7 +14,7 @@ dependencies {
     implementation project(':matrix-core:matrix-sentinel')
     implementation project(':matrix-core:matrix-seata')
     implementation project(':matrix-core:matrix-mq')
-    implementation project(':matrix-core:matrix-test')
+    testImplementation project(':matrix-core:matrix-test')
 
     runtimeOnly 'com.mysql:mysql-connector-j'
 }

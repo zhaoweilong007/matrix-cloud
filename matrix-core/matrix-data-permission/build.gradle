@@ -4,5 +4,5 @@ dependencies {
 
     compileOnly 'org.aspectj:aspectjweaver'
 
-    testCompileOnly(project(":matrix-core:matrix-test"))
+    testImplementation(project(":matrix-core:matrix-test"))
 }

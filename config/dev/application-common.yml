@@ -257,6 +257,10 @@ matrix:
     ons-addr: ${MQ_ONSADDR:}
     redis:
       enabled: false
+      stream-batch-size: 10
+      pending-scan-limit: 100
+      pending-expire-millis: 300000
+      stream-max-length: 10000
 
   # 同主机优先负载均衡 (matrix.loadbalancer.same-host)
   loadbalancer:

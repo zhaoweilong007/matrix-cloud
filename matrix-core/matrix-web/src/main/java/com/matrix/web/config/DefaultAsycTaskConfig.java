@@ -3,11 +3,10 @@ package com.matrix.web.config;
 import com.matrix.auto.properties.AsycTaskProperties;
 import com.matrix.common.thread.CustomThreadPoolTaskExecutor;
 import com.matrix.web.thread.ContextCopyingDecorator;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -23,17 +22,11 @@ import java.util.concurrent.ThreadPoolExecutor;
 public class DefaultAsycTaskConfig {
 
     /**
-     * 异步任务线程池配置
-     */
-    @Lazy
-    @Autowired(required = false)
-    private AsycTaskProperties asycTaskProperties;
-
-    /**
      * 创建异步任务线程池
      */
     @Bean
-    public TaskExecutor taskExecutor() {
+    @ConditionalOnMissingBean(name = "taskExecutor")
+    public TaskExecutor taskExecutor(AsycTaskProperties asycTaskProperties) {
         ThreadPoolTaskExecutor executor = new CustomThreadPoolTaskExecutor();
         executor.setCorePoolSize(asycTaskProperties.getCorePoolSize());
         executor.setMaxPoolSize(asycTaskProperties.getMaxPoolSize());
