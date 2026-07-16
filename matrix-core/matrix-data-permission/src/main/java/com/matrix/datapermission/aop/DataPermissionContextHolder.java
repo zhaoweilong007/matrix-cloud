@@ -11,10 +11,26 @@ import java.util.List;
 public class DataPermissionContextHolder {
 
     /**
-     * 使用 List 的原因，可能存在方法的嵌套调用
+     * 使用 List 存储嵌套调用的权限栈。
+     * 重写 TTL 复制机制，当进行异步传递时执行深拷贝克隆，避免父子线程共享同一个 list 导致并发冲突
      */
     private static final ThreadLocal<LinkedList<DataPermission>> DATA_PERMISSIONS =
-            TransmittableThreadLocal.withInitial(LinkedList::new);
+            new TransmittableThreadLocal<LinkedList<DataPermission>>() {
+                @Override
+                protected LinkedList<DataPermission> initialValue() {
+                    return new LinkedList<>();
+                }
+
+                @Override
+                public LinkedList<DataPermission> copy(LinkedList<DataPermission> parentValue) {
+                    return parentValue != null ? new LinkedList<>(parentValue) : null;
+                }
+
+                @Override
+                protected LinkedList<DataPermission> childValue(LinkedList<DataPermission> parentValue) {
+                    return copy(parentValue);
+                }
+            };
 
     /**
      * 获得当前的 DataPermission 注解

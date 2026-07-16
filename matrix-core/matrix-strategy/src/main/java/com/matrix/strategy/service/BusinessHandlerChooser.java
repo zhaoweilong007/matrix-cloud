@@ -11,25 +11,30 @@ import org.springframework.core.annotation.AnnotationUtils;
  */
 public class BusinessHandlerChooser {
 
-    private Map<HandlerType, BusinessHandler> businessHandlerMap;
+    private Map<String, BusinessHandler> businessHandlerMap;
 
     public void setBusinessHandlerMap(List<BusinessHandler> orderHandlers) {
-        // 注入各类型的订单处理类
+        // 注入各类型的订单处理类，并过滤掉无有效策略标识的 Bean 规避 NullPointerException
         businessHandlerMap = orderHandlers.stream()
+                .filter(handler -> handler instanceof IHandlerType
+                        || AnnotationUtils.findAnnotation(handler.getClass(), HandlerType.class) != null)
                 .collect(Collectors.toMap(
                         orderHandler -> {
                             if (orderHandler instanceof IHandlerType handler) {
-                                HandlerType handlerType = new HandlerTypeImpl(handler.type(), handler.source());
-                                return handlerType;
+                                return getHandlerKey(handler.type(), handler.source());
                             }
-                            return AnnotationUtils.findAnnotation(orderHandler.getClass(), HandlerType.class);
+                            HandlerType annotation = AnnotationUtils.findAnnotation(orderHandler.getClass(), HandlerType.class);
+                            return getHandlerKey(annotation.type(), annotation.source());
                         },
                         v -> v,
                         (v1, v2) -> v1));
     }
 
     public <R, T> BusinessHandler<R, T> businessHandlerChooser(String type, String source) {
-        HandlerType orderHandlerType = new HandlerTypeImpl(type, source);
-        return businessHandlerMap.get(orderHandlerType);
+        return businessHandlerMap.get(getHandlerKey(type, source));
+    }
+
+    private String getHandlerKey(String type, String source) {
+        return type + ":" + source;
     }
 }
