@@ -6,16 +6,18 @@ import com.matrix.gateway.order.FilterOrder;
 import com.matrix.gateway.utils.WebFluxUtils;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 import lombok.Getter;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.core.Ordered;
+import org.springframework.util.AntPathMatcher;
 
 /**
  * 黑名单过滤器
  */
 public class BlackListUrlFilter extends AbstractGatewayFilterFactory<BlackListUrlFilter.Config> implements Ordered {
+    private static final AntPathMatcher PATH_MATCHER = new AntPathMatcher();
+
     public BlackListUrlFilter() {
         super(Config.class);
     }
@@ -24,7 +26,7 @@ public class BlackListUrlFilter extends AbstractGatewayFilterFactory<BlackListUr
     public GatewayFilter apply(Config config) {
         return (exchange, chain) -> {
             String url = exchange.getRequest().getURI().getPath();
-            if (config.matchBlacklist(url)) {
+            if (config.matchBlacklist(url, PATH_MATCHER)) {
                 return WebFluxUtils.webFluxResponseWriter(
                         exchange.getResponse(), R.fail(SystemErrorTypeEnum.FORBIDDEN));
             }
@@ -39,23 +41,17 @@ public class BlackListUrlFilter extends AbstractGatewayFilterFactory<BlackListUr
     }
 
     public static class Config {
-        private final List<Pattern> blacklistUrlPattern = new ArrayList<>();
-
         @Getter
-        private List<String> blacklistUrl;
+        private List<String> blacklistUrl = new ArrayList<>();
 
-        public boolean matchBlacklist(String url) {
-            return !blacklistUrlPattern.isEmpty()
-                    && blacklistUrlPattern.stream().anyMatch(p -> p.matcher(url).find());
+        public boolean matchBlacklist(String url, AntPathMatcher pathMatcher) {
+            return !blacklistUrl.isEmpty()
+                    && blacklistUrl.stream().anyMatch(pattern -> pathMatcher.match(pattern.trim(), url));
         }
 
         public void setBlacklistUrl(List<String> blacklistUrl) {
             this.blacklistUrl = blacklistUrl;
-            this.blacklistUrlPattern.clear();
-            this.blacklistUrl.forEach(url -> {
-                this.blacklistUrlPattern.add(
-                        Pattern.compile(url.replaceAll("\\*\\*", "(.*?)"), Pattern.CASE_INSENSITIVE));
-            });
         }
     }
 }
+

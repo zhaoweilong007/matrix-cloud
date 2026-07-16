@@ -46,11 +46,10 @@ public class RateLimiterGatewayFilter implements GlobalFilter, Ordered {
         String bucketKey = RATE_LIMITER_KEY_PREFIX + key;
 
         RRateLimiter rateLimiter = redissonClient.getRateLimiter(bucketKey);
-        // trySetRate 只在首次创建时生效，不会重置已存在的限流器
-        rateLimiter.trySetRate(RateType.OVERALL, properties.getReplenishRate(),
-                properties.getBurstCapacity(), RateIntervalUnit.SECONDS);
-
-        return Mono.fromFuture(rateLimiter.tryAcquireAsync().toCompletableFuture())
+        // 使用 trySetRateAsync 异步调用，并在其完成后再 tryAcquireAsync，确保 WebFlux 事件循环不被阻塞
+        return Mono.fromFuture(rateLimiter.trySetRateAsync(RateType.OVERALL, properties.getReplenishRate(),
+                        properties.getBurstCapacity(), RateIntervalUnit.SECONDS).toCompletableFuture())
+                .flatMap(unused -> Mono.fromFuture(rateLimiter.tryAcquireAsync().toCompletableFuture()))
                 .flatMap(acquired -> {
                     if (Boolean.TRUE.equals(acquired)) {
                         return chain.filter(exchange);

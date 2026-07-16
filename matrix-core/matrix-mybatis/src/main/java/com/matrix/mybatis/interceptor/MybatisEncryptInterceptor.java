@@ -39,14 +39,23 @@ public class MybatisEncryptInterceptor implements Interceptor, ApplicationContex
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
         Object parameter = invocation.getArgs()[1];
+        boolean hasEncrypted = false;
         if (parameter != null && cryptoService != null) {
             MappedStatement ms = (MappedStatement) invocation.getArgs()[0];
             SqlCommandType commandType = ms.getSqlCommandType();
             if (commandType == SqlCommandType.INSERT || commandType == SqlCommandType.UPDATE) {
                 encryptFields(parameter);
+                hasEncrypted = true;
             }
         }
-        return invocation.proceed();
+        try {
+            return invocation.proceed();
+        } finally {
+            if (hasEncrypted) {
+                // SQL执行完成后，还原Java实体属性为明文状态，避免污染逻辑层对象
+                decryptFields(parameter);
+            }
+        }
     }
 
     private void encryptFields(Object entity) {
@@ -71,6 +80,26 @@ public class MybatisEncryptInterceptor implements Interceptor, ApplicationContex
                 }
             } catch (Exception e) {
                 log.debug("Failed to encrypt field: {}.{}", entity.getClass().getSimpleName(), field.getName(), e);
+            }
+        }
+    }
+
+    private void decryptFields(Object entity) {
+        if (entity == null) {
+            return;
+        }
+        List<Field> fields = encryptFieldCache.get(entity.getClass());
+        if (fields == null) {
+            return;
+        }
+        for (Field field : fields) {
+            try {
+                String value = (String) field.get(entity);
+                if (value != null && !value.isEmpty()) {
+                    field.set(entity, cryptoService.decrypt(value));
+                }
+            } catch (Exception e) {
+                log.debug("Failed to decrypt field on rollback: {}.{}", entity.getClass().getSimpleName(), field.getName(), e);
             }
         }
     }

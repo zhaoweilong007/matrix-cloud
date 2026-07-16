@@ -49,9 +49,6 @@ public class SecurityAuthStrategy implements SaFilterAuthStrategy {
         }
         ServerWebExchange exchange = SaReactorSyncHolder.getExchange();
 
-        // P0-1: 移除伪造的 login-user 请求头，防止下游服务被伪造信息攻击
-        exchange = removeLoginUserHeader(exchange);
-
         // 是否白名单 — 如白名单包含 token，也进行校验（校验不通过也放行）
         if (SaRouter.match(ignoreWhite.getWhites()).isHit()) {
             try {
@@ -87,31 +84,8 @@ public class SecurityAuthStrategy implements SaFilterAuthStrategy {
                 .findFirst()
                 .orElseThrow(() -> new NotPermissionException(path));
         log.info("用户:【{}】 资源:【{}】授权成功", StpUtil.getLoginId(), resource);
-
-        // 设置用户类型
-        final ServerHttpRequest httpRequest = request.mutate()
-                .header(CommonConstants.USER_TYPE, PlatformUserTypeEnum.SYS_USER.name())
-                .build();
-        SaReactorSyncHolder.getExchange().mutate().request(httpRequest);
     }
 
-    /** P0-1: 移除伪造的 login-user、login-user-id 等认证请求头 */
-    private ServerWebExchange removeLoginUserHeader(ServerWebExchange exchange) {
-        ServerHttpRequest request = exchange.getRequest();
-        HttpHeaders headers = request.getHeaders();
-        if (headers.getFirst("login-user") != null
-                || headers.getFirst("login-user-id") != null
-                || headers.getFirst("login-user-type") != null) {
-            ServerHttpRequest cleaned = request.mutate()
-                    .headers(h -> {
-                        h.remove("login-user");
-                        h.remove("login-user-id");
-                        h.remove("login-user-type");
-                    }).build();
-            return exchange.mutate().request(cleaned).build();
-        }
-        return exchange;
-    }
 
     /** P0-2: 客户端 ID 与 Token 绑定校验 */
     private void validateClientBinding(ServerWebExchange exchange) {
