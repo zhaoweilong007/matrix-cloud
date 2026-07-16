@@ -1,7 +1,6 @@
 dependencies {
     api project(':matrix-core:matrix-auto')
     api project(':matrix-core:matrix-validator')
-    api 'net.dreamlu:mica-xss'
     api 'org.springframework.boot:spring-boot-starter-web'
     api 'org.springframework.boot:spring-boot-starter-actuator'
     api 'com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-discovery'

@@ -4,9 +4,6 @@ server:
 spring:
   application:
     name: matrix-system
-  autoconfigure:
-    exclude:
-      - org.dromara.trans.config.TransServiceConfig
   profiles:
     active: ${PROFILE:dev}
   config:

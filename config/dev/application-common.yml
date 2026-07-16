@@ -4,9 +4,6 @@ server:
   shutdown: graceful
 
 spring:
-  autoconfigure:
-    exclude:
-      - org.dromara.trans.config.TransServiceConfig
   lifecycle:
     timeout-per-shutdown-phase: 10s
   main:

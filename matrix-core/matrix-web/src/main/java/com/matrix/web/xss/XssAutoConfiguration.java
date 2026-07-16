@@ -1,13 +1,15 @@
 package com.matrix.web.xss;
 
-import java.util.Collections;
-import java.util.List;
+import com.matrix.auto.properties.XssProperties;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.jackson.autoconfigure.JsonMapperBuilderCustomizer;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import tools.jackson.databind.module.SimpleModule;
 
 /**
  * XSS 过滤自动配置
@@ -15,14 +17,12 @@ import org.springframework.stereotype.Component;
  */
 @AutoConfiguration
 @ConditionalOnProperty(prefix = "matrix.xss", value = "enabled", havingValue = "true")
-public class XssAutoConfiguration {
+@EnableConfigurationProperties(XssProperties.class)
+public class XssAutoConfiguration implements WebMvcConfigurer {
+    private final XssProperties properties;
 
-    /**
-     * 创建 XSS 配置属性
-     */
-    @Bean
-    public XssProperties xssProperties() {
-        return new XssProperties();
+    public XssAutoConfiguration(XssProperties properties) {
+        this.properties = properties;
     }
 
     /**
@@ -38,23 +38,18 @@ public class XssAutoConfiguration {
         return registration;
     }
 
-    /**
-     * XSS 配置属性
-     */
-    @Component
-    @ConfigurationProperties(prefix = "matrix.xss")
-    public static class XssProperties {
-        /**
-         * 排除过滤的 URL 模式列表
-         */
-        private List<String> excludeUrls = Collections.emptyList();
+    @Bean
+    public JsonMapperBuilderCustomizer xssJacksonCustomizer() {
+        return builder -> {
+            SimpleModule module = new SimpleModule();
+            module.addDeserializer(String.class, new XssStringDeserializer());
+            builder.addModule(module);
+        };
+    }
 
-        public List<String> getExcludeUrls() {
-            return excludeUrls;
-        }
-
-        public void setExcludeUrls(List<String> excludeUrls) {
-            this.excludeUrls = excludeUrls;
-        }
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new XssPathExcludeInterceptor(properties.getExcludeUrls()))
+                .addPathPatterns("/**");
     }
 }

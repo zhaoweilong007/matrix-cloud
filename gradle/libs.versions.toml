@@ -172,7 +172,7 @@ tiny-pinyin = { module = "io.github.biezhi:TinyPinyin", version.ref = "pinyin" }
 user-agent-utils = { module = "eu.bitwalker:UserAgentUtils", version.ref = "userAgent" }
 
 # === Mica 生态 ===
-# mica-core, mica-xss, mica-ip2region 由模块直接使用 GAV 字符串（版本由 mica-bom 管理）
+# mica-core、mica-ip2region 由模块直接使用 GAV 字符串（版本由 mica-bom 管理）
 mica-auto = { module = "net.dreamlu:mica-auto" }
 
 # === MapStruct Plus ===
