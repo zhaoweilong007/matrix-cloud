@@ -8,6 +8,8 @@ def v = libs.versions
 
 dependencies {
     api platform("org.springframework.boot:spring-boot-dependencies:${libs.versions.springboot.get()}")
+    api platform("org.springframework.cloud:spring-cloud-dependencies:${libs.versions.springCloud.get()}")
+    api platform("com.alibaba.cloud:spring-cloud-alibaba-dependencies:${libs.versions.springCloudAlibaba.get()}")
     api platform("net.dreamlu:mica-bom:${libs.versions.micaCore.get()}")
 
     constraints {

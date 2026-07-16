@@ -6,6 +6,17 @@ pluginManagement {
     }
 }
 
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
+    repositories {
+        if (providers.gradleProperty('useMavenLocal').map { it.toBoolean() }.orElse(false).get()) {
+            mavenLocal()
+        }
+        maven { url = 'https://maven.aliyun.com/repository/public' }
+        mavenCentral()
+    }
+}
+
 rootProject.name = 'matrix-cloud'
 
 // 排除非模块目录

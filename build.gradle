@@ -3,7 +3,6 @@ plugins {
     id 'java-platform'
     alias(libs.plugins.sonarqube)
     alias(libs.plugins.spring.boot) apply false
-    alias(libs.plugins.dependency.management) apply false
     alias(libs.plugins.jib) apply false
     alias(libs.plugins.spotless) apply false
     alias(libs.plugins.spotbugs) apply false
@@ -20,8 +19,6 @@ ext.appModules = appModules
 
 // Gradle 9.x: 提取版本目录引用
 ext {
-    scaVersion = libs.versions.springCloudAlibaba.get()
-    scVersion = libs.versions.springCloud.get()
     checkstyleVersion = libs.versions.checkstyle.get()
     pmdVersion = libs.versions.pmd.get()
 }
@@ -42,12 +39,6 @@ sonar {
 allprojects {
     group = GROUP
     version = VERSION
-
-    repositories {
-        mavenLocal()
-        maven { url = 'https://maven.aliyun.com/repository/public' }
-        mavenCentral()
-    }
 }
 
 // ============================================================
@@ -60,7 +51,6 @@ subprojects {
     plugins.apply('java')
     plugins.apply('java-library')
     plugins.apply('org.sonarqube')
-    plugins.apply('io.spring.dependency-management')
 
     // 静态分析工具
     apply from: "${rootProject.projectDir}/gradle/checkstyle.gradle"
@@ -84,16 +74,14 @@ subprojects {
         options.compilerArgs.add '-parameters'
     }
 
-    dependencyManagement {
-        imports {
-            mavenBom "com.alibaba.cloud:spring-cloud-alibaba-dependencies:${rootProject.ext.scaVersion}"
-            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${rootProject.ext.scVersion}"
-        }
-    }
-
     dependencies {
         implementation platform(project(':matrix-bom'))
+        compileOnly platform(project(':matrix-bom'))
+        runtimeOnly platform(project(':matrix-bom'))
         annotationProcessor platform(project(':matrix-bom'))
+        testImplementation platform(project(':matrix-bom'))
+        testCompileOnly platform(project(':matrix-bom'))
+        testRuntimeOnly platform(project(':matrix-bom'))
         testAnnotationProcessor platform(project(':matrix-bom'))
 
         testImplementation rootProject.libs.junit.jupiter
@@ -110,6 +98,12 @@ subprojects {
         testAnnotationProcessor rootProject.libs.mapstruct.plus.processor
 
         compileOnly rootProject.libs.spotbugs.annotations
+    }
+
+    configurations.configureEach {
+        if (canBeResolved) {
+            resolutionStrategy.activateDependencyLocking()
+        }
     }
 
     test {
