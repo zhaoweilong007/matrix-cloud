@@ -81,6 +81,9 @@ public class ServiceExceptionUtil {
      */
     @VisibleForTesting
     public static String doFormat(int code, String messagePattern, Object... params) {
+        if (messagePattern == null) {
+            return "";
+        }
         StringBuilder sbuf = new StringBuilder(messagePattern.length() + 50);
         int i = 0;
         int j;

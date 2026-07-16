@@ -25,6 +25,9 @@ public class ReflectUtils extends ReflectUtil {
     public static <E> E invokeGetter(Object obj, String propertyName) {
         Object object = obj;
         for (String name : StringUtils.split(propertyName, ".")) {
+            if (object == null) {
+                return null;
+            }
             String getterMethodName = GETTER_PREFIX + StringUtils.capitalize(name);
             object = invoke(object, getterMethodName);
         }
@@ -39,6 +42,9 @@ public class ReflectUtils extends ReflectUtil {
         Object object = obj;
         String[] names = StringUtils.split(propertyName, ".");
         for (int i = 0; i < names.length; i++) {
+            if (object == null) {
+                return;
+            }
             if (i < names.length - 1) {
                 String getterMethodName = GETTER_PREFIX + StringUtils.capitalize(names[i]);
                 object = invoke(object, getterMethodName);
