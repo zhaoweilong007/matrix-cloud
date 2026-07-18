@@ -2,6 +2,8 @@ package com.matrix.redis.cache;
 
 import cn.hutool.core.util.StrUtil;
 import java.time.Duration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.cache.RedisCache;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
@@ -22,6 +24,8 @@ import org.springframework.data.redis.cache.RedisCacheWriter;
  */
 public class TimeoutRedisCacheManager extends RedisCacheManager {
 
+    private static final Logger log = LoggerFactory.getLogger(TimeoutRedisCacheManager.class);
+
     public TimeoutRedisCacheManager(RedisCacheWriter cacheWriter, RedisCacheConfiguration defaultCacheConfiguration) {
         super(cacheWriter, defaultCacheConfiguration);
     }
@@ -34,7 +38,6 @@ public class TimeoutRedisCacheManager extends RedisCacheManager {
         }
 
         String[] parts = name.split("#", 2);
-        String realName = parts[0];
         String ttlStr = parts[1];
 
         Duration ttl = parseDuration(ttlStr);
@@ -42,7 +45,7 @@ public class TimeoutRedisCacheManager extends RedisCacheManager {
             cacheConfig = cacheConfig.entryTtl(ttl);
         }
 
-        return super.createRedisCache(realName, cacheConfig);
+        return super.createRedisCache(name, cacheConfig);
     }
 
     /**
@@ -55,15 +58,25 @@ public class TimeoutRedisCacheManager extends RedisCacheManager {
         try {
             String unit = ttlStr.substring(ttlStr.length() - 1).toLowerCase();
             long value = Long.parseLong(ttlStr.substring(0, ttlStr.length() - 1));
+            if (value <= 0) {
+                log.warn("Ignoring non-positive cache TTL: {}", ttlStr);
+                return null;
+            }
             return switch (unit) {
                 case "s" -> Duration.ofSeconds(value);
                 case "m" -> Duration.ofMinutes(value);
                 case "h" -> Duration.ofHours(value);
                 case "d" -> Duration.ofDays(value);
-                default -> null;
+                default -> unsupportedDuration(ttlStr);
             };
         } catch (NumberFormatException e) {
+            log.warn("Ignoring invalid cache TTL: {}", ttlStr);
             return null;
         }
+    }
+
+    private Duration unsupportedDuration(String ttlStr) {
+        log.warn("Ignoring unsupported cache TTL: {}", ttlStr);
+        return null;
     }
 }

@@ -7,6 +7,7 @@ import com.matrix.translation.annotation.TranslationType;
 import com.matrix.translation.constant.TransConstant;
 import com.matrix.translation.core.TranslationInterface;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -49,24 +50,27 @@ public class ImgPrefixTranslationImpl implements TranslationInterface<Object> {
             return mapping(value, other);
         }
 
-        if (value instanceof List) {
+        if (value instanceof List<?> values) {
             String finalOther = other;
-            return ((List<?>) value).stream().map(o -> mapping(o, finalOther)).collect(Collectors.toList());
+            return values.stream()
+                    .map(item -> item instanceof String ? mapping(item, finalOther) : item)
+                    .collect(Collectors.toList());
         }
 
-        if (value instanceof Map) {
+        if (value instanceof Map<?, ?> source) {
             final String[] fields = translation.fields();
-            final Map<String, Object> map = (Map) value;
+            final Map<Object, Object> map = new LinkedHashMap<>(source);
             for (String field : fields) {
                 if (map.containsKey(field)) {
                     Object val = map.get(field);
-                    Object mappingValue = null;
-                    if (val instanceof String) {
-                        mappingValue = mapping(val, other);
-                    } else if (val instanceof List<?>) {
+                    Object mappingValue = val;
+                    if (val instanceof String text) {
+                        mappingValue = mapping(text, other);
+                    } else if (val instanceof List<?> values) {
                         String finalOther = other;
-                        mappingValue = ((List<?>) val)
-                                .stream().map(o -> mapping(o, finalOther)).collect(Collectors.toList());
+                        mappingValue = values.stream()
+                                .map(item -> item instanceof String ? mapping(item, finalOther) : item)
+                                .collect(Collectors.toList());
                     }
                     map.put(field, mappingValue);
                 }

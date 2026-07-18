@@ -7,4 +7,5 @@ dependencies {
 
     compileOnly 'org.aspectj:aspectjweaver'
     compileOnly 'org.springframework:spring-web'
+
 }

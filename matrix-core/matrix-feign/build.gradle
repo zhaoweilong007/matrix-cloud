@@ -9,4 +9,6 @@ dependencies {
 
     compileOnly libs.mica.auto
     annotationProcessor libs.mica.auto
+
+    testImplementation project(':matrix-core:matrix-test')
 }

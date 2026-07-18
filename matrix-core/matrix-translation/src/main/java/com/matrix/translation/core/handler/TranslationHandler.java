@@ -31,10 +31,22 @@ public class TranslationHandler extends JsonSerializer<Object> implements Contex
     /**
      * 当前字段上的 {@link Translation} 注解
      */
-    private Translation translation;
+    private final Translation translation;
+
+    public TranslationHandler() {
+        this(null);
+    }
+
+    private TranslationHandler(Translation translation) {
+        this.translation = translation;
+    }
 
     @Override
     public void serialize(Object value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
+        if (translation == null) {
+            gen.writeObject(value);
+            return;
+        }
         TranslationInterface<?> trans = TRANSLATION_MAPPER.get(translation.type());
         if (Objects.isNull(trans)) {
             gen.writeObject(value);
@@ -68,8 +80,7 @@ public class TranslationHandler extends JsonSerializer<Object> implements Contex
             throws JsonMappingException {
         Translation translation = property.getAnnotation(Translation.class);
         if (Objects.nonNull(translation)) {
-            this.translation = translation;
-            return this;
+            return new TranslationHandler(translation);
         }
         return prov.findValueSerializer(property.getType(), property);
     }

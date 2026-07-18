@@ -5,4 +5,5 @@ dependencies {
     api libs.easy.trans.mybatis
     api('cn.dev33:sa-token-core')
 
+    testImplementation project(':matrix-core:matrix-test')
 }

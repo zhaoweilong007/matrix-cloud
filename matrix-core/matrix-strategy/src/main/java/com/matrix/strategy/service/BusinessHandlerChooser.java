@@ -11,9 +11,9 @@ import org.springframework.core.annotation.AnnotationUtils;
  */
 public class BusinessHandlerChooser {
 
-    private Map<String, BusinessHandler> businessHandlerMap;
+    private Map<String, BusinessHandler<?, ?>> businessHandlerMap;
 
-    public void setBusinessHandlerMap(List<BusinessHandler> orderHandlers) {
+    public void setBusinessHandlerMap(List<BusinessHandler<?, ?>> orderHandlers) {
         // 注入各类型的订单处理类，并过滤掉无有效策略标识的 Bean 规避 NullPointerException
         businessHandlerMap = orderHandlers.stream()
                 .filter(handler -> handler instanceof IHandlerType
@@ -31,10 +31,15 @@ public class BusinessHandlerChooser {
     }
 
     public <R, T> BusinessHandler<R, T> businessHandlerChooser(String type, String source) {
-        return businessHandlerMap.get(getHandlerKey(type, source));
+        return castHandler(businessHandlerMap.get(getHandlerKey(type, source)));
     }
 
     private String getHandlerKey(String type, String source) {
         return type + ":" + source;
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <R, T> BusinessHandler<R, T> castHandler(BusinessHandler<?, ?> handler) {
+        return (BusinessHandler<R, T>) handler;
     }
 }

@@ -25,9 +25,8 @@ public class InvitationCodeGenerator {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
             return md.digest(input);
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            throw new IllegalStateException("JVM does not support SHA-256", e);
         }
-        return null;
     }
 
     private static String toSixDigitCode(byte[] hashBytes) {

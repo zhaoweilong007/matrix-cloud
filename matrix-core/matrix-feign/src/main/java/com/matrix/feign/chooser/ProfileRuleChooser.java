@@ -1,5 +1,6 @@
 package com.matrix.feign.chooser;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.matrix.auto.properties.GaryLoadBalanceProperties;
 import com.matrix.common.util.spring.SpringUtils;
@@ -26,11 +27,14 @@ public class ProfileRuleChooser implements IRuleChooser {
 
     @Override
     public ServiceInstance choose(List<ServiceInstance> instances) {
+        if (CollUtil.isEmpty(instances)) {
+            return null;
+        }
         final String host = getHost();
         final Set<String> ips = loadBalanceProperties.getIps();
         for (ServiceInstance instance : instances) {
             final String instanceHost = instance.getHost();
-            if (Objects.equals(instanceHost, host) || ips.contains(instanceHost)) {
+            if (Objects.equals(instanceHost, host) || (ips != null && ips.contains(instanceHost))) {
                 return instance;
             }
         }
@@ -54,7 +58,7 @@ public class ProfileRuleChooser implements IRuleChooser {
                 host = address;
             }
         } catch (UnknownHostException e) {
-            e.printStackTrace();
+            log.warn("无法解析本机地址，使用回环地址进行服务实例选择", e);
         }
         return host;
     }

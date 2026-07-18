@@ -21,7 +21,6 @@ public class QueueServiceImpl<M extends BaseMapper<T>, T extends Model<T>> exten
      * 并发安全队列，多个线程同时添加数据时保证线程安全
      */
     private final ConcurrentLinkedQueue<FutureModel<T>> taskQueue = new ConcurrentLinkedQueue<>();
-
     private ScheduledExecutorService scheduledExecutor;
 
     public QueueServiceImpl() {}
@@ -38,7 +37,11 @@ public class QueueServiceImpl<M extends BaseMapper<T>, T extends Model<T>> exten
         Objects.requireNonNull(queue);
         List<T> lists = new ArrayList<>(size);
         for (int i = 0; i < size; ++i) {
-            lists.add(queue.poll());
+            T element = queue.poll();
+            if (element == null) {
+                break;
+            }
+            lists.add(element);
         }
         return lists;
     }
@@ -86,9 +89,7 @@ public class QueueServiceImpl<M extends BaseMapper<T>, T extends Model<T>> exten
         return () -> {
             int size = Math.min(taskQueue.size(), maxRequestSize);
             if (size != 0) {
-                List<FutureModel<T>> requests = extractElement(taskQueue, size).stream()
-                        .filter(Objects::nonNull)
-                        .toList();
+                List<FutureModel<T>> requests = extractElement(taskQueue, size);
                 if (requests.isEmpty()) {
                     return;
                 }
@@ -121,7 +122,7 @@ public class QueueServiceImpl<M extends BaseMapper<T>, T extends Model<T>> exten
             if (exception instanceof InterruptedException) {
                 Thread.currentThread().interrupt();
             }
-            log.error("查询异常：{}", exception.getMessage());
+            log.error("查询异常", exception.getCause() == null ? exception : exception.getCause());
             return null;
         } catch (TimeoutException exception) {
             taskQueue.removeIf(request -> request.getFuture() == future);
@@ -134,6 +135,11 @@ public class QueueServiceImpl<M extends BaseMapper<T>, T extends Model<T>> exten
     public void destroy() {
         if (scheduledExecutor != null) {
             scheduledExecutor.shutdownNow();
+        }
+        IllegalStateException exception = new IllegalStateException("Queue service is shutting down");
+        FutureModel<T> request;
+        while ((request = taskQueue.poll()) != null) {
+            request.getFuture().completeExceptionally(exception);
         }
     }
 

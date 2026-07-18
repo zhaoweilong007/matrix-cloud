@@ -16,7 +16,7 @@ public class RandomRuleChooser implements IRuleChooser {
         if (CollUtil.isNotEmpty(instances)) {
             int randomValue = ThreadLocalRandom.current().nextInt(instances.size());
             ServiceInstance serviceInstance = instances.get(randomValue);
-            log.info("选择了ip为{}, 端口为：{}的服务", serviceInstance.getHost(), serviceInstance.getPort());
+            log.debug("选择了ip为{}, 端口为：{}的服务", serviceInstance.getHost(), serviceInstance.getPort());
             return serviceInstance;
         }
         return null;

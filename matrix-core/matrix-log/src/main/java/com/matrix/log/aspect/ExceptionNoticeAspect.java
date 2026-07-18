@@ -10,6 +10,7 @@ import com.matrix.log.config.ExceptionCondition;
 import com.matrix.log.event.ExceptionEvent;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Optional;
 import lombok.SneakyThrows;
@@ -37,9 +38,19 @@ public class ExceptionNoticeAspect {
     @After("@within(exceptionNoticeLog) || @annotation(exceptionNoticeLog)")
     public void beforeMethod(JoinPoint joinPoint, ExceptionNoticeLog exceptionNoticeLog) {
         try {
-            ExceptionEvent event = this.getEvent(joinPoint);
+            Exception exception = Arrays.stream(joinPoint.getArgs())
+                    .filter(Exception.class::isInstance)
+                    .map(Exception.class::cast)
+                    .findFirst()
+                    .orElse(null);
+            if (exception == null) {
+                log.debug("Skipping exception notification without an exception argument: {}", joinPoint.getSignature());
+                return;
+            }
+            ExceptionEvent event = this.getEvent(exception);
             SpringUtils.context().publishEvent(event);
-        } catch (Exception ignored) {
+        } catch (Exception exception) {
+            log.warn("Failed to publish exception notification for {}", joinPoint.getSignature(), exception);
         }
     }
 
@@ -47,15 +58,13 @@ public class ExceptionNoticeAspect {
      * 构建异常事件
      */
     @SneakyThrows
-    private ExceptionEvent getEvent(JoinPoint joinPoint) {
-        Object[] args = joinPoint.getArgs();
-        Exception exception = (Exception) args[0];
+    private ExceptionEvent getEvent(Exception exception) {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        HttpServletRequest request = attributes.getRequest();
+        String apiPath = attributes == null ? "unknown" : attributes.getRequest().getRequestURI();
         ExceptionEvent event = ExceptionEvent.builder().build();
         event.setApplication(Optional.ofNullable(SpringUtil.getProperty("spring.application.name"))
                 .orElseGet(() -> "default"));
-        event.setApiPath(request.getRequestURI());
+        event.setApiPath(apiPath);
         event.setTraceId(TracerUtils.getTraceId());
         event.setMessage(objectMapper.writeValueAsString(exception.getMessage()));
         event.setStackTrace(stackTrace(exception));
@@ -63,22 +72,13 @@ public class ExceptionNoticeAspect {
     }
 
     private String stackTrace(Exception exception) {
-        try {
-            StackTraceElement callInfo = exception.getStackTrace()[0];
-            StringBuffer stringBuffer = new StringBuffer();
-            stringBuffer
-                    .append(DateUtil.formatDateTime(new Date()))
-                    .append(" ")
-                    .append("[" + callInfo.getClassName() + "#" + callInfo.getMethodName() + "]")
-                    .append("-")
-                    .append("[" + callInfo.getLineNumber() + "]")
-                    .append("-")
-                    .append("[" + Thread.currentThread().getName() + "]")
-                    .append(" ");
-            return stringBuffer.toString();
-        } catch (Exception e) {
-            e.printStackTrace();
+        StackTraceElement[] stackTrace = exception.getStackTrace();
+        if (stackTrace.length == 0) {
+            return DateUtil.formatDateTime(new Date()) + " [no stack trace]";
         }
-        return null;
+        StackTraceElement callInfo = stackTrace[0];
+        return DateUtil.formatDateTime(new Date()) + " [" + callInfo.getClassName() + "#"
+                + callInfo.getMethodName() + "]-[" + callInfo.getLineNumber() + "]-["
+                + Thread.currentThread().getName() + "] ";
     }
 }

@@ -78,12 +78,12 @@ public class RepeatSubmitAspect {
     public void doAfterReturning(JoinPoint joinPoint, RepeatSubmit repeatSubmit, Object jsonResult) {
         try {
             // 非成功响应时才删除锁，保证成功请求在有效期内不可重复提交
-            if (jsonResult instanceof R<?> r
-                    && r.getCode() != SystemErrorTypeEnum.SUCCESS.getCode()) {
-                RedisUtils.deleteObject(KEY_CACHE.get());
+            if (jsonResult instanceof R<?> result
+                    && result.getCode() != SystemErrorTypeEnum.SUCCESS.getCode()) {
+                deleteCachedKey();
             }
         } finally {
-            KEY_CACHE.remove();  // 无论何种结果都清理 ThreadLocal，防止内存泄漏
+            KEY_CACHE.remove();
         }
     }
 
@@ -96,7 +96,7 @@ public class RepeatSubmitAspect {
     @AfterThrowing(value = "@annotation(repeatSubmit)", throwing = "e")
     public void doAfterThrowing(JoinPoint joinPoint, RepeatSubmit repeatSubmit, Exception e) {
         try {
-            RedisUtils.deleteObject(KEY_CACHE.get());
+            deleteCachedKey();
         } finally {
             KEY_CACHE.remove();
         }
@@ -124,22 +124,27 @@ public class RepeatSubmitAspect {
      * @param o 对象信息。
      * @return 如果是需要过滤的对象，则返回true；否则返回false。
      */
-    @SuppressWarnings("rawtypes")
     public boolean isFilterObject(final Object o) {
         Class<?> clazz = o.getClass();
         if (clazz.isArray()) {
             return clazz.getComponentType().isAssignableFrom(MultipartFile.class);
         } else if (Collection.class.isAssignableFrom(clazz)) {
-            Collection collection = (Collection) o;
+            Collection<?> collection = (Collection<?>) o;
             return collection.stream().anyMatch(value -> value instanceof MultipartFile);
         } else if (Map.class.isAssignableFrom(clazz)) {
-            Map map = (Map) o;
-            return map.entrySet().stream()
-                    .anyMatch(entry -> ((Map.Entry) entry).getValue() instanceof MultipartFile);
+            Map<?, ?> map = (Map<?, ?>) o;
+            return map.values().stream().anyMatch(value -> value instanceof MultipartFile);
         }
         return o instanceof MultipartFile
                 || o instanceof HttpServletRequest
                 || o instanceof HttpServletResponse
                 || o instanceof BindingResult;
+    }
+
+    private void deleteCachedKey() {
+        String cacheKey = KEY_CACHE.get();
+        if (cacheKey != null) {
+            RedisUtils.deleteObject(cacheKey);
+        }
     }
 }

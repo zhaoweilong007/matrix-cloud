@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Bean;
 public class StrategyConfiguration {
 
     @Bean
-    public BusinessHandlerChooser businessHandlerChooser(List<BusinessHandler> businessHandlers) {
+    public BusinessHandlerChooser businessHandlerChooser(List<BusinessHandler<?, ?>> businessHandlers) {
         BusinessHandlerChooser businessHandlerChooser = new BusinessHandlerChooser();
         businessHandlerChooser.setBusinessHandlerMap(businessHandlers);
         return businessHandlerChooser;

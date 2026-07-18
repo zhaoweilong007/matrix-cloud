@@ -9,6 +9,7 @@ dependencies {
     // Caffeine L1 本地缓存
     api libs.caffeine
 
+    testImplementation project(':matrix-core:matrix-test')
     // AOP 支持（RateLimiter 切面）
     api 'org.aspectj:aspectjweaver'
 }

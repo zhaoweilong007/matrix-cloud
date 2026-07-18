@@ -102,8 +102,10 @@ public class UserDataPermissionRuleTest extends BaseMockitoUnitTest {
             // mock 方法
             final RoleDTO roleDTO = new RoleDTO();
             roleDTO.setRoleKey(RoleEnum.BROKER.getRoleKey());
-            LoginUser loginUser =
-                    randomPojo(LoginUser.class, o -> o.setTenantId(1L).setRoles(List.of(roleDTO)));
+            LoginUser loginUser = randomPojo(LoginUser.class);
+            loginUser.setUserId(42L);
+            loginUser.setTenantId(1L);
+            loginUser.setRoles(List.of(roleDTO));
             loginUserMock.when(LoginUserContextHolder::getUser).thenReturn(loginUser);
             teiminalMock.when(TerminalContextHolder::getUserType).thenReturn(PlatformUserTypeEnum.SYS_USER);
             // 调用

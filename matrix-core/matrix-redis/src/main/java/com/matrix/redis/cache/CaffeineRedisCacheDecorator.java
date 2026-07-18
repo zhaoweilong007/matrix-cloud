@@ -61,7 +61,7 @@ public class CaffeineRedisCacheDecorator implements org.springframework.cache.Ca
         // L1: Caffeine
         Object value = caffeineCache.getIfPresent(key);
         if (value == NULL_HOLDER) {
-            return null;
+            return () -> null;
         }
         if (value != null) {
             return () -> value;
@@ -69,7 +69,7 @@ public class CaffeineRedisCacheDecorator implements org.springframework.cache.Ca
         // L2: Redis
         ValueWrapper wrapper = redisCache.get(key);
         if (wrapper != null) {
-            caffeineCache.put(key, wrapper.get());
+            caffeineCache.put(key, toStoreValue(wrapper.get()));
             return wrapper;
         }
         return null;
@@ -87,9 +87,7 @@ public class CaffeineRedisCacheDecorator implements org.springframework.cache.Ca
             return (T) value;
         }
         T result = redisCache.get(key, type);
-        if (result != null) {
-            caffeineCache.put(key, result);
-        }
+        caffeineCache.put(key, toStoreValue(result));
         return result;
     }
 
@@ -99,19 +97,20 @@ public class CaffeineRedisCacheDecorator implements org.springframework.cache.Ca
     public <T> T get(Object key, Callable<T> valueLoader) {
         // 使用 Caffeine 的原子加载能力
         try {
-            return (T) caffeineCache.get(key, k -> {
+            Object result = caffeineCache.get(key, k -> {
                 ValueWrapper wrapper = redisCache.get(k);
                 if (wrapper != null) {
-                    return wrapper.get();
+                    return toStoreValue(wrapper.get());
                 }
                 try {
                     T loaded = valueLoader.call();
                     redisCache.put(k, loaded);
-                    return loaded;
+                    return toStoreValue(loaded);
                 } catch (Exception e) {
                     throw new ValueRetrievalException(k, valueLoader, e);
                 }
             });
+            return result == NULL_HOLDER ? null : (T) result;
         } catch (Exception e) {
             if (e instanceof ValueRetrievalException) {
                 throw (ValueRetrievalException) e;
@@ -144,4 +143,8 @@ public class CaffeineRedisCacheDecorator implements org.springframework.cache.Ca
 
     /** 空值占位符（避免缓存穿透） */
     private static final Object NULL_HOLDER = new Object();
+
+    private static Object toStoreValue(@Nullable Object value) {
+        return value == null ? NULL_HOLDER : value;
+    }
 }

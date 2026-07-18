@@ -5,4 +5,8 @@ dependencies {
     compileOnly 'org.springframework:spring-web'
     compileOnly 'org.aspectj:aspectjweaver'
     compileOnly 'cn.dev33:sa-token-core'
+
+    testImplementation project(':matrix-core:matrix-test')
+    testImplementation project(':matrix-core:matrix-redis')
+    testImplementation 'org.aspectj:aspectjweaver'
 }
